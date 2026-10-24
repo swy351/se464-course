@@ -1,0 +1,84 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:06.334
+Software architecture helps us reason about a system
+that is too complex to hold entirely in our
+
+00:00:06.334 --> 00:00:06.730
+heads.
+
+00:00:06.730 --> 00:00:10.557
+The slides use growing codebases to motivate this
+problem.
+
+00:00:10.557 --> 00:00:16.693
+Architecture connects requirements to important
+structural decisions, and helps people locate
+
+00:00:16.693 --> 00:00:19.663
+changes, examine quality, and plan evolution.
+
+00:00:19.663 --> 00:00:22.962
+Size alone does not determine the effort required.
+
+00:00:22.962 --> 00:00:29.296
+Ask which decisions affect many parts of the system,
+and which assumptions would be expensive to
+
+00:00:29.296 --> 00:00:29.758
+change.
+
+00:00:29.800 --> 00:00:34.422
+Begin with the system mission, its environment, and
+its stakeholders.
+
+00:00:34.422 --> 00:00:39.178
+Then identify the decisions that strongly shape
+structure and behavior.
+
+00:00:39.178 --> 00:00:45.340
+Architecture includes important responsibilities,
+interfaces, relationships, and principles.
+
+00:00:45.340 --> 00:00:48.220
+Not every design choice has the same reach.
+
+00:00:48.220 --> 00:00:53.579
+Even an algorithm can be architectural when it
+determines a system-wide quality.
+
+00:00:53.579 --> 00:00:59.875
+The purpose is to support communication and
+analysis, so a useful description explains why its
+
+00:00:59.875 --> 00:01:02.555
+decisions matter to the people involved.
+
+00:01:02.600 --> 00:01:06.773
+An intended architecture states how a system should
+be organized.
+
+00:01:06.773 --> 00:01:09.983
+An implemented architecture describes what exists.
+
+00:01:09.983 --> 00:01:16.340
+Drift adds undocumented decisions without violating
+the intended design; erosion breaks an intended
+
+00:01:16.340 --> 00:01:17.046
+constraint.
+
+00:01:17.046 --> 00:01:23.274
+To distinguish them, first identify the actual rule,
+then inspect evidence of the implementation.
+
+00:01:23.274 --> 00:01:26.741
+Architecture recovery helps reconstruct that
+evidence.
+
+00:01:26.741 --> 00:01:33.097
+A team can repair a violation or consciously revise
+a decision, but should keep its description and
+
+00:01:33.097 --> 00:01:35.280
+rationale aligned with the result.

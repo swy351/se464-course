@@ -1,0 +1,14 @@
+Introduction to software architecture
+Part 2 • Synthetic narration
+
+Views and meaningful diagrams
+
+A diagram needs a question and a legend. Boxes may represent domain concepts, modules, processes, or machines; arrows may mean very different things. The four plus one model separates logical, process, development, and physical concerns, and uses scenarios to connect them. Choose a view for the question being asked. Then check that the views agree about the same system, without trying to put every detail into one crowded picture.
+
+Abstraction, reuse, and C4
+
+Reusable architectural ideas include styles, reference architectures, and product-line architectures. Their assumptions and constraints matter as much as their shapes. C4 offers nested descriptions: context, containers, components, and code. These levels help match detail to an audience. A container here means a running application or data store, not necessarily a packaging technology. C4 levels and four plus one views are complementary ways to organize descriptions, rather than interchangeable lists.
+
+Patterns and architectural styles
+
+Patterns organize responsibilities around recurring problems. Three-tier architecture separates presentation, application processing, and data management. MVC focuses on model, view, and controller responsibilities, while sense, compute, control organizes observation and action. These are useful ideas, but labels do not establish deployment or guarantee quality. Explain the problem, the relationships, and the constraints. Then examine whether the proposed arrangement serves the system mission and stakeholder concerns.

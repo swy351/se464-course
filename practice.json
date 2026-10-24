@@ -1,51 +1,51 @@
 {
-  "ai": [
+  "introduction": [
     {
-      "id": "ai-p1",
+      "id": "introduction-p1",
       "type": "choice",
-      "title": "What evidence supports the diagram?",
-      "question": "An AI assistant generates a deployment diagram for a campus equipment-loan service. It draws separate reservation, payment and notification services. The team has only browser access and observes that reservation and notification fail together during an outage. Which review response is best supported by this evidence, before anyone has inspected source code or deployment configuration?",
-      "hint": "Correlation in visible failures does not uniquely identify internal structure.",
-      "answer": "The best response is to mark the service boundaries as unverified and propose further evidence. Two features failing together could share a process, storage dependency, network path or identity provider. Browser observations establish the visible failure pattern, not its cause. Keep the generated diagram as a hypothesis, label the observed behavior separately and ask for permitted traces or deployment configuration that can distinguish the alternatives. A polished diagram does not increase the strength of the underlying evidence.",
-      "explanation": "Architecture recovery must distinguish observation from inference; several different implementations can produce the same visible result.",
+      "title": "An undocumented adapter",
+      "question": "A weather-display application requires its presentation module to call only a display interface. A developer adds a new screen adapter behind that interface, obeying all intended dependency rules, but leaves the architecture description unchanged. Which classification best fits the distinction in this unit?",
+      "hint": "First ask whether any stated constraint was violated.",
+      "answer": "Architecture drift: the new decision is undocumented but does not violate the intended architecture. Update the descriptive account and decide whether the intended description should also record the extension.",
+      "explanation": "A difference from documentation does not automatically establish erosion.",
       "criteria": [
-        "Separates observed behavior from inferred topology",
-        "Identifies evidence that distinguishes competing explanations"
+        "Identifies drift",
+        "Uses compatibility with the intended rules as evidence"
       ],
       "options": [
-        "Label the boundaries unverified and seek traces or deployment evidence.",
-        "Replace all three services with one process because the failures coincide.",
-        "Accept the diagram because independent services can fail together.",
-        "Infer a shared database and mark that inference as confirmed."
+        "Architecture erosion because any new component violates the design.",
+        "Architecture drift because the compatible addition is undocumented.",
+        "No architectural change because an interface exists.",
+        "A physical view because the adapter drives a screen."
       ],
-      "answerIndex": 0
+      "answerIndex": 1
     },
     {
-      "id": "ai-p2",
+      "id": "introduction-p2",
       "type": "written",
-      "title": "Review a generated reconciliation change",
-      "question": "A rental platform promises that one physical bicycle cannot be assigned to two active rentals. An AI-generated optimization checks availability in a read replica, then writes a rental to the primary. Sequential tests pass. Write a short architecture review: identify the promise at risk, propose a concurrent test, and describe a design constraint that would protect it. Do not assume the replica is current or that an extra pre-check is atomic.",
-      "hint": "Two callers can both observe availability before either creates a rental.",
-      "answer": "The invariant is at most one active rental per bicycle. Start two requests for the same bicycle behind a test barrier so both availability checks complete before either write proceeds; introduce replica lag if needed. Assert that at most one request commits a rental. Enforce the invariant at the authoritative write boundary through an atomic conditional operation or suitable transaction and uniqueness mechanism. A second check outside that boundary still races. Record why the optimization was rejected or constrained and add the concurrent scenario to verification.",
-      "explanation": "Architecture review evaluates a generated change against a system promise, rather than treating passing sequential tests as sufficient.",
+      "title": "Choose two complementary views",
+      "question": "A library kiosk team needs to answer two questions: which source modules may depend on the catalog module, and which device runs the kiosk process? Choose a suitable 4+1 view for each. Specify what boxes and arrows mean and explain why one unlabeled diagram is insufficient.",
+      "hint": "Separate code organization from execution placement.",
+      "answer": "Use the development view for source modules and permitted dependency arrows. Use the physical view for devices and explicit process-to-device placement. Include a legend and a consistent mapping between the descriptions. An unlabeled box might mean a module, process, or machine, so it cannot reliably answer both questions.",
+      "explanation": "Views organize different concerns; consistency does not require identical notation or detail.",
       "criteria": [
-        "States the cross-request invariant",
-        "Constructs a controlled concurrent failure test",
-        "Places enforcement at an authoritative atomic boundary"
+        "Matches development view to code dependencies",
+        "Matches physical view to execution placement",
+        "Defines notation and relates the views"
       ]
     },
     {
-      "id": "ai-p3",
+      "id": "introduction-p3",
       "type": "written",
-      "title": "Recover missing decision rationale",
-      "question": "A team inherits an AI-assisted document-conversion service with a twenty-megabyte upload limit. Nobody remembers why the limit exists. Product wants to raise it to two gigabytes tomorrow. Propose an evidence-gathering plan and a minimal decision record. Explain how you would distinguish an intentional architectural constraint from an arbitrary generated default without asserting that either explanation is already true.",
-      "hint": "Look for consequences across storage, memory, timeouts, dependencies and operational limits.",
-      "answer": "Inspect configuration history, tickets, provider limits and permitted operational measurements, then trace how upload size affects buffering, conversion memory, duration and temporary storage. Run bounded experiments at increasing sizes and check cancellation and partial-file cleanup. The limit may protect a resource, satisfy a dependency or simply be a default; label these as hypotheses until evidence distinguishes them. Record the user need, alternatives, measured constraints, chosen limit and review trigger. A larger limit should follow an explicit streaming or resource-management decision if whole-file processing is unsafe.",
-      "explanation": "This task addresses intent debt by reconstructing rationale and making the next decision auditable, rather than inventing a reason for existing code.",
+      "title": "Explain a pattern without overclaiming",
+      "question": "A greenhouse system reads temperature, computes a desired adjustment, and commands a vent. Describe it using sense–compute–control. Identify a stakeholder concern and one architectural decision. Can the pattern name alone prove the system will respond quickly enough?",
+      "hint": "Map responsibilities before judging quality.",
+      "answer": "Sensing obtains temperature observations; computation decides the adjustment; control issues a vent command. A grower may care about protecting plants from excessive heat. A significant decision could define the interfaces and interaction between these responsibilities. The pattern alone does not prove adequate response: the design and implementation must be checked against a stated response requirement. No numerical threshold is implied by this scenario.",
+      "explanation": "A pattern supplies an organizing idea; system-specific evidence supports quality claims.",
       "criteria": [
-        "Collects multiple relevant evidence types",
-        "Keeps hypotheses distinct from findings",
-        "Records tradeoffs and a verification plan"
+        "Maps all three responsibilities",
+        "Connects a stakeholder concern to a decision",
+        "Rejects an unsupported quality guarantee"
       ]
     }
   ],

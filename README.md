@@ -4,7 +4,7 @@
 
 Interactive course companions based on Weiyi Shang’s SE464 lecture material: 24 units, 122 chapters, 50 short narrated videos, 26 interactive labs, and 72 additional practice questions with hints and worked answers.
 
-The Week 1 administration deck is excluded. The Week 14 review deck informs newly authored practice questions within the units; there is no separate review unit. The two architecture-modeling queueing decks are labeled as overlapping variants.
+Unit 1 uses only the introduction material (slides 9–48 and 50–57) from the Week 1 Admin and intro deck. Administrative material is excluded. The Week 14 review deck informs newly authored practice questions within the units; there is no separate review unit. The two architecture-modeling queueing decks are labeled as overlapping variants.
 
 ## Use locally
 

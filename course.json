@@ -1,138 +1,198 @@
 {
   "units": [
     {
-      "id": "ai",
+      "id": "introduction",
       "label": "01",
-      "title": "AI & the LEARN submission case",
-      "shortTitle": "AI & the LEARN case",
-      "description": "Use a hypothetical assignment-submission service to evaluate generated code, define a trustworthy receipt, and connect architectural views.",
-      "file": "Week1 - AI context and concluding LEARN case.pptx",
-      "slideCount": 77,
+      "title": "Introduction to software architecture",
+      "shortTitle": "Introduction",
+      "description": "Explain architectural decisions, compare intended and implemented structures, and choose views and patterns for a system.",
+      "file": " [Week1] Admin and intro.pptx",
+      "slideCount": 48,
       "chapters": [
         {
-          "title": "Architecture foundations recap",
-          "slides": "1–19,24–61",
+          "title": "Why software needs architecture",
+          "slides": "9–21",
           "paragraphs": [
-            "The extended Week1 deck repeats the original foundations and adds AI context plus a concluding submission case. Use the repeated sections as an optional recap: architecture identifies significant decisions, distinguishes intended and implemented systems and describes several views. Keep orientation details separate and verify the current outline, since the two versions link to different course outlines.",
-            "The recap prepares learners to apply the vocabulary rather than simply hear it twice. Ask them to name stakeholders, define diagram semantics and identify a rule that implementation must preserve. The later case supplies a concrete promise: a confirmation should mean the submission is durably saved. That promise connects abstract architecture definitions to failure handling, code organization and recovery evidence, making the companion unit useful even for students who already know the introductory material."
+            "Software supports everyday activities, and a large system can exceed what any one developer can understand at once. The historical codebase examples in the slides illustrate growth and complexity. Their exact line counts are snapshots, not a measure of design quality or a rule for when architecture becomes necessary.",
+            "Complexity creates practical questions: where should a change go, what might it break, how can we inspect security and quality, and how will the system run and evolve? Architecture provides a manageable account of important parts, their relationships, and the decisions that constrain them. It connects a problem and its requirements to a solution that developers can implement and test.",
+            "The engineering analogy in the slides emphasizes planning, coordination, and checking the result. It does not require every decision to be completed before coding. Architectural reasoning can continue as implementation and feedback reveal new constraints. Maintenance and evolution make preserving the reasons behind important decisions valuable."
           ],
-          "prediction": "Should learners complete both copies of the foundations before reaching the LEARN case?",
-          "explanation": "No. The repeated material can serve as optional recap; the AI context and case are the distinct contribution of this deck.",
-          "narration": "This chapter recalls the foundations needed for the case study: significant decisions, intended versus implemented structure and multiple views. The extended deck repeats much of the original introduction, so use those sections for review. Then apply the vocabulary to one concrete promise about durable submission and reliable confirmation.",
-          "focus": "Optional recap of the original Week1 unit; avoid duplicating its full lessons in the companion unit."
+          "prediction": "Two systems have the same number of source lines. Must they need the same architectural effort?",
+          "explanation": "No. Relationships, stakeholder concerns, quality requirements, and the cost of changing important decisions matter. Line count alone does not reveal these factors.",
+          "narration": "Software architecture helps us reason about a system that is too complex to hold entirely in our heads. The slides use growing codebases to motivate this problem. Architecture connects requirements to important structural decisions, and helps people locate changes, examine quality, and plan evolution. Size alone does not determine the effort required. Ask which decisions affect many parts of the system, and which assumptions would be expensive to change.",
+          "focus": "Connect complexity, requirements, and decisions."
         },
         {
-          "title": "AI generation and engineering judgment",
-          "slides": "20–23,62–63",
+          "title": "Systems, stakeholders, and decisions",
+          "slides": "22–28",
           "paragraphs": [
-            "AI-generated software can run before a team has developed a reliable model of its behavior. The slides distinguish technical debt in the implementation, cognitive debt in understanding and intent debt in missing rationale. The Startup Studio account illustrates a reported experience in which early progress later exposed change and debugging difficulties; treat it as contextual evidence, not a universal result about AI.",
-            "Engineering judgment remains necessary to define what the system should promise, determine whether it fulfills that promise and plan how it will change. Architecture makes important assumptions and dependencies visible to both human collaborators and generated implementations. A useful review asks the team to explain a decision, identify a failure mode and show evidence. Attractive interfaces, passing happy-path tests and clean-looking code are helpful observations but do not settle those questions."
+            "A system exists in an environment and serves a mission. Its stakeholders are people or organizations with an interest in its behavior or development. For a museum catalog, the mission might be to help visitors discover exhibits; curators, visitors, and maintainers have different concerns. State the system boundary so that external people and systems are not mistaken for internal components.",
+            "The definitions in the slides emphasize components, relationships, interfaces, behavior, composition, and guiding principles. Architectural decisions are the design decisions significant to the system as a whole: they shape how major responsibilities fit together and how important qualities can be achieved. Architecture is design, but a local design choice is not automatically architecturally significant.",
+            "Significance depends on context. An algorithm or data structure can become an architectural concern if it determines system-wide performance, compatibility, or feasible behavior. Conversely, a small local implementation choice may be easy to replace. Architecture supports communication among stakeholders, analysis of a proposed system, and reuse of successful structures; a diagram is useful only when people agree on its meaning."
           ],
-          "prediction": "Can clean-looking generated code still leave the team with cognitive debt?",
-          "explanation": "Yes. Readability alone does not ensure a shared understanding of behavior, dependencies or failure recovery.",
-          "narration": "Generated code can accelerate visible progress while leaving questions about understanding and rationale unresolved. Distinguish technical, cognitive and intent debt. Architecture helps teams define promises, explain structure and evaluate evidence. Review generated implementations through concrete scenarios and failure tests rather than treating a working demonstration as complete proof of quality.",
-          "focus": "Technical, cognitive and intent debt; generation versus validation and evolution."
+          "prediction": "Is choosing an algorithm always outside software architecture?",
+          "explanation": "No. A locally replaceable algorithm may be detailed design, but one that constrains the whole system or determines a critical quality can be architecturally significant.",
+          "narration": "Begin with the system mission, its environment, and its stakeholders. Then identify the decisions that strongly shape structure and behavior. Architecture includes important responsibilities, interfaces, relationships, and principles. Not every design choice has the same reach. Even an algorithm can be architectural when it determines a system-wide quality. The purpose is to support communication and analysis, so a useful description explains why its decisions matter to the people involved.",
+          "focus": "Judge a decision by its consequences, not its label."
         },
         {
-          "title": "Define the submission promise",
-          "slides": "64–68",
+          "title": "Intended and implemented architecture",
+          "slides": "29–35",
           "paragraphs": [
-            "The case begins at 23:59: a student uploads an assignment, the page keeps spinning and no confirmation appears after refresh. The uncertainty is the problem to solve. A student wants evidence of receipt; an instructor needs access and timing; support staff need diagnostic evidence. The teaching model is inspired by LEARN, but its internal architecture is hypothetical.",
-            "Define the boundary and responsibilities before choosing deployment units. A submission handler, access check, file storage, authoritative record and notification responsibility must cooperate, yet these boxes do not automatically represent independent services. Ask where a student can check authoritative status and what that status promises. Concurrent users, interrupted uploads and authorization failures are part of the required reasoning, even when the basic happy path already passes its tests."
+            "Prescriptive, or intended, architecture describes how the system is supposed to be organized. Descriptive, or implemented, architecture describes what actually exists. The two can differ because software evolves, documentation becomes stale, or implementation decisions bypass agreed boundaries. Treat an intended diagram as a statement of design intent, not proof of the current code structure.",
+            "Architecture drift means new implementation decisions are absent from the intended description without violating it. Architecture erosion means the implementation violates the intended architecture. Suppose the intended design permits a presentation module to call only an application interface. An allowed new implementation behind that interface may be undocumented drift; a direct presentation-to-storage dependency violates the stated boundary and is erosion.",
+            "Architecture recovery reconstructs an account of the implemented system from evidence such as source code, executable structure, configuration, and developer knowledge. Record uncertainty rather than filling gaps with guesses. Compare the recovered account with the intended one, investigate differences, and decide whether to repair the implementation or deliberately revise the intended design and its rationale."
           ],
-          "prediction": "Does drawing a notification responsibility require deploying a notification microservice?",
-          "explanation": "No. A responsibility can be implemented inside a process, module or separate service; the diagram must distinguish those choices.",
-          "narration": "Start with the student’s uncertainty: did the submission succeed? Identify stakeholder needs and a trustworthy source of status. The LEARN-inspired architecture is a hypothetical teaching model. Its responsibility boxes explain cooperation without committing to separate services. Include interruptions, concurrency and authorization in the problem before choosing implementation details.",
-          "focus": "Failure-oriented questions, stakeholder boundaries and responsibility decomposition."
+          "prediction": "An undocumented component is added within all permitted dependency rules. Is that necessarily erosion?",
+          "explanation": "No. Under the distinction in the slides, a compatible undocumented decision is drift. Erosion requires evidence of a violated intended rule.",
+          "narration": "An intended architecture states how a system should be organized. An implemented architecture describes what exists. Drift adds undocumented decisions without violating the intended design; erosion breaks an intended constraint. To distinguish them, first identify the actual rule, then inspect evidence of the implementation. Architecture recovery helps reconstruct that evidence. A team can repair a violation or consciously revise a decision, but should keep its description and rationale aligned with the result.",
+          "focus": "Distinguish missing documentation from violated constraints."
         },
         {
-          "title": "Reliable receipt and retry semantics",
-          "slides": "69–71",
+          "title": "Views and meaningful diagrams",
+          "slides": "36–46",
           "paragraphs": [
-            "Confirmation timing defines a user-visible guarantee. Acknowledging a request on arrival is fast but can precede persistence. Waiting for an email couples receipt to an additional dependency. The selected teaching design confirms after the file and authoritative submission record are durable, while notification may complete later. The receipt therefore represents saved work rather than simply accepted work.",
-            "Lost responses make retries unavoidable. Preserve a stable request identity and recorded result so another app instance can return the same logical outcome. Concurrent duplicates and partial persistence failures require explicit handling; separate writes do not automatically form one atomic action. Pending notification work must also survive failures. This design supports an idempotent user outcome, not a blanket promise that every underlying operation executes exactly once."
+            "A single box-and-arrow picture rarely answers every architectural question. A static decomposition can show code responsibilities and dependencies. A runtime view can show processes and interactions. A deployment view can show where software executes across devices. State what each box and arrow represents, and distinguish a code dependency from a runtime message or a deployment relationship.",
+            "The 4+1 model organizes complementary views. The logical view describes key abstractions and responsibilities; the process view addresses runtime concurrency and interactions; the development view describes code organization; the physical view maps software onto hardware or execution nodes. The additional scenarios connect and help examine the views through representative system behavior.",
+            "For a museum catalog, a logical view might distinguish exhibits and collections, a development view might show modules, and a physical view might place the application on a server. A visitor searching for an exhibit is a scenario that can be traced through the relevant views. These descriptions must agree, but they need not contain identical boxes or identical levels of detail."
           ],
-          "prediction": "The server saves the submission and crashes before sending a response. Should a retry create a new submission?",
-          "explanation": "No. With the same valid request identity, it should recover and return the recorded result; durable shared identity and result storage make that possible.",
-          "narration": "A reliable receipt must mean something precise. In this case, it means the file and authoritative record are durable. Notification can follow later through preserved pending work and retries. Stable request identity lets a repeated request return the recorded result. Check partial failures and concurrent duplicates instead of assuming all writes succeed together.",
-          "focus": "Persist file and authoritative record before receipt, stable request identity, durable pending notification work."
+          "prediction": "A maintainer asks which device runs a process. Would a class diagram alone answer the question?",
+          "explanation": "Usually not. A physical or deployment view identifies execution placement. A class diagram describes a different concern and needs an explicit mapping to runtime and deployment elements.",
+          "narration": "A diagram needs a question and a legend. Boxes may represent domain concepts, modules, processes, or machines; arrows may mean very different things. The four plus one model separates logical, process, development, and physical concerns, and uses scenarios to connect them. Choose a view for the question being asked. Then check that the views agree about the same system, without trying to put every detail into one crowded picture.",
+          "focus": "Choose a view and define its notation."
         },
         {
-          "title": "Use four views to explain one outcome",
-          "slides": "72–74",
+          "title": "Abstraction, reuse, and C4",
+          "slides": "47–48, 50",
           "paragraphs": [
-            "One diagram cannot answer every question about submission. A logical view names Student, Assignment and Submission relationships. A process view describes concurrent request handlers accessing shared state and an independent worker processing notifications. Their arrows have different meanings, so each picture needs a clear legend and should avoid implying a mapping that has not been decided.",
-            "The development view identifies modules and their dependencies; the physical view places software and data on deployment nodes. A retry that reaches another app instance is the connecting scenario. Trace how that instance finds the same request identity and result, how it respects authorization and how notification proceeds without changing the receipt guarantee. A coherent architecture allows all four perspectives to explain the same outcome while exposing different implementation questions."
+            "Architectural descriptions can reuse ideas at different scopes. A style describes a family of structures through constraints on elements and relationships. A reference architecture gives a reusable architectural organization for a domain. A product-line architecture captures shared structure and planned variation across related products. These concepts help teams reuse reasoning, rather than copy a diagram without checking its assumptions.",
+            "C4 provides four nested levels of structural description: system context, containers, components, and code. Context shows the system in relation to people and external systems. Containers show major running applications or data stores within the system; components describe responsibilities within a container; code shows implementation detail when useful. A C4 container is a modeling concept, not necessarily a Docker container.",
+            "C4 levels and 4+1 views answer different organizing questions. C4 changes the level of detail; 4+1 separates concerns such as code organization and runtime processes. Neither requires every diagram for every audience. Architectural significance also does not follow a fixed line-count threshold or a rule that architecture happens only early: revisit consequential decisions as the system evolves."
           ],
-          "prediction": "If a retry reaches another instance, is an instance-local in-memory request table sufficient?",
-          "explanation": "No. The new instance needs access to authoritative durable identity and result information, consistent with the promised recovery behavior.",
-          "narration": "Use the same retry scenario to connect four views. Domain relationships explain the submission, runtime processes explain cooperation, modules explain code ownership and deployment explains where state is reachable. The views should agree on one outcome: a valid retry can find the saved result even when it reaches a different application instance.",
-          "focus": "Domain concepts, concurrent runtime, code modules and physical deployment; retry reaches another app instance."
+          "prediction": "A context diagram contains every class in the application. Does the extra detail necessarily help its audience?",
+          "explanation": "No. A context audience needs the system boundary, people, and external relationships. Class detail can obscure that purpose; move it to a more detailed description when it answers a relevant question.",
+          "narration": "Reusable architectural ideas include styles, reference architectures, and product-line architectures. Their assumptions and constraints matter as much as their shapes. C4 offers nested descriptions: context, containers, components, and code. These levels help match detail to an audience. A container here means a running application or data store, not necessarily a packaging technology. C4 levels and four plus one views are complementary ways to organize descriptions, rather than interchangeable lists.",
+          "focus": "Match abstraction to audience and purpose."
         },
         {
-          "title": "Review and recover the architecture",
-          "slides": "75–77",
+          "title": "Patterns and architectural styles",
+          "slides": "51–57",
           "paragraphs": [
-            "Architecture review compares an intended promise with implementation evidence. In the case, the intended rule permits confirmation only after file and record persistence. A new bulk-upload path that responds before saving violates that rule, even if ordinary uploads still work. A new route that follows the same rules but is undocumented instead illustrates drift. Classify the change by the actual decision affected.",
-            "Recovery depends on the evidence available to each observer. Students see receipts, errors and timing; support teams may see integration configuration and permitted logs; vendor engineers may inspect code, schemas and deployment. These perspectives support different strengths of claim. Mark observations, inferences and unknowns explicitly. A useful conclusion states what was demonstrated, what remains uncertain and which additional observation or test would resolve the uncertainty."
+            "An architectural pattern describes a recurring design problem and an arrangement of responsibilities that addresses it in a context. A style constrains the kinds of elements and relationships allowed in a family of architectures. The terms can overlap in use; explaining the responsibilities, constraints, and consequences is more useful than relying only on a name.",
+            "The three-tier example separates presentation, application processing, and data management. This helps identify responsibilities and the interfaces between them. A logical separation of these concerns does not by itself prove that they run on three separate machines. MVC separates model, view, and controller responsibilities around an interface; it should not be assumed to be a one-to-one synonym for three deployment tiers.",
+            "The sense–compute–control example organizes observation, computation, and action on an environment. It highlights a different set of responsibilities from a typical presentation-and-data application. When selecting any pattern, state the problem it addresses and the constraints it imposes. A named style may support desired qualities, but its name alone cannot guarantee maintainability, performance, or other outcomes."
           ],
-          "prediction": "Can an external observer infer the full internal architecture from a successful upload?",
-          "explanation": "No. Visible behavior supports limited observations; internal structure remains inferred or unknown without additional evidence.",
-          "narration": "Review architecture by comparing intended rules with actual behavior. An early confirmation violates the durability promise and is erosion; an undocumented compliant route is drift. Recover structure using the evidence your role can access. Label claims as observed, inferred or unknown so the review remains honest about what has been established.",
-          "focus": "Bulk-upload counterexample, drift/erosion and observed/inferred/unknown evidence labels."
+          "prediction": "A team labels three boxes MVC. Has it demonstrated a three-machine deployment?",
+          "explanation": "No. MVC describes responsibilities. Deployment requires separate evidence about where those responsibilities execute; a diagram label does not establish placement.",
+          "narration": "Patterns organize responsibilities around recurring problems. Three-tier architecture separates presentation, application processing, and data management. MVC focuses on model, view, and controller responsibilities, while sense, compute, control organizes observation and action. These are useful ideas, but labels do not establish deployment or guarantee quality. Explain the problem, the relationships, and the constraints. Then examine whether the proposed arrangement serves the system mission and stakeholder concerns.",
+          "focus": "Explain responsibilities and constraints behind a pattern."
         }
       ],
       "quiz": [
         {
-          "question": "The file and authoritative record are saved but the response is lost. What should a retry using the same request identity do?",
-          "answer": "Return the recorded submission result without creating another logical submission; the identity/result must be durably shared across app instances."
+          "question": "How does an architectural decision differ from an ordinary local design choice?",
+          "answer": "Its significance comes from its system-wide consequences, relationships, quality concerns, or cost of change. The boundary is contextual, not a fixed size or phase rule."
         },
         {
-          "question": "Why choose save-first, notify-later rather than waiting for email before confirming?",
-          "answer": "It makes the receipt depend on durable submission state and avoids email delays blocking confirmation; it requires durable pending work, retries and status handling."
+          "question": "What evidence distinguishes architecture drift from erosion?",
+          "answer": "Compare the implemented decision with an explicit intended constraint. An undocumented compatible addition is drift; a violated constraint is erosion. Without a known constraint, do not assert a violation."
         },
         {
-          "question": "A new bulk-upload path confirms when requests enter memory, before persistence. What evidence and classification apply?",
-          "answer": "Compare runtime behavior/code with the intended save-before-confirm rule. It is erosion because the implementation violates that rule; record what is observed versus inferred."
+          "question": "How do C4 levels differ from the 4+1 views?",
+          "answer": "C4 organizes structural descriptions by abstraction level. The 4+1 model separates architectural concerns and relates them through scenarios. They are not a one-to-one mapping."
         }
       ],
       "review": [
         {
-          "slides": "1–61",
-          "issue": "Extensive overlap and inherited concerns from the original Admin deck; administrative outline and office values differ. Use source mapping rather than teaching the duplicate as entirely new content.",
-          "correction": "",
+          "slides": "1–8, 49, 58",
+          "issue": "These slides are outside the selected introduction scope.",
+          "correction": "Exclude introductory administration and biography, the mixed action-items slide, and the blank final slide. Slides 9–48 and 50–57 supply the unit.",
           "sources": []
         },
         {
-          "slides": "22",
-          "issue": "Startup Studio results need a source, study context and limitations; treat as a reported teaching example until verified, not a general causal result about all AI-assisted development.",
-          "correction": "",
+          "slides": "11–18",
+          "issue": "Historical size and project-outcome figures need context.",
+          "correction": "Use their qualitative motivation; do not present dated code sizes or unsourced failure percentages as current general facts.",
           "sources": []
         },
         {
-          "slides": "66–77",
-          "issue": "Preserve the explicit label that the LEARN architecture is a hypothetical teaching model, not a factual description of Waterloo or vendor internals.",
-          "correction": "",
+          "slides": "27, 48",
+          "issue": "Absolute boundaries between architecture and design can mislead.",
+          "correction": "Significance depends on consequences and context; algorithms can be architectural and decisions evolve beyond an initial phase.",
           "sources": []
         },
         {
-          "slides": "69–71",
-          "issue": "Idempotent retries require a stored request identity and recorded result, appropriate request/authentication scope, and handling of concurrent duplicates. Avoid promising exactly-once execution.",
-          "correction": "",
-          "sources": []
+          "slides": "46, 50",
+          "issue": "Views and abstraction levels are different organizing dimensions.",
+          "correction": "Keep the 4+1 concerns distinct from C4 levels, and distinguish C4 containers from Docker containers.",
+          "sources": [
+            "https://www.cs.ubc.ca/~gregor/teaching/papers/4+1view-architecture.pdf",
+            "https://c4model.com/"
+          ]
         },
         {
-          "slides": "71,74",
-          "issue": "File, submission record and pending notification must remain consistent across partial failures. A lesson should discuss the atomicity gap or recovery approach rather than imply independent writes are automatically durable as one unit. Email delivery may be retried and may duplicate.",
-          "correction": "",
+          "slides": "53–57",
+          "issue": "Pattern diagrams do not establish physical placement or guarantee qualities.",
+          "correction": "Explain responsibility boundaries, state deployment separately, and evaluate qualities in context. The truncated back-end description is expressed as data management.",
           "sources": []
         }
       ],
       "exercise": {
-        "prompt": "A generated bulk-upload endpoint returns success as soon as a job enters memory. Redesign the receipt protocol for a student who retries after losing the response. Explain how notifications can fail without losing the submission.",
-        "answer": "Use a stable request identifier, persist the file and authoritative record before acknowledging completion, and recover the recorded result on retry. Make pending notification work durable and retry it separately. Coordinate file and record persistence, define partial-failure recovery, and test crashes between each step. This is a LEARN-inspired model, not a claim about the actual service."
+        "prompt": "Design an introductory architecture description for a museum exhibit catalog. State its mission and two stakeholders. Draw a system-context diagram and one complementary view, with a legend. Describe one significant decision, then explain how you would check whether the implementation follows it.",
+        "answer": "A possible mission is helping visitors find exhibits. Visitors need understandable search results; curators need a maintainable catalog. The context diagram shows people, the catalog boundary, and any explicitly assumed external system. A development view can show presentation, application, and data-access modules with arrows meaning permitted dependencies. Record a decision that presentation uses the application interface, then inspect code dependencies for direct storage access. Other decompositions are valid when their rationale and notation are clear."
       },
-      "coverageNote": "This unit uses the AI context and LEARN case deck. The separate Week 1 admin deck is excluded from the course material."
+      "sourceTotalSlides": 58,
+      "selectedSlides": [
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57
+      ],
+      "coverageNote": "Introduction content only: slides 9–48 and 50–57 (48 selected slides from the 58-slide deck). Administrative, biographical, and action-item material is excluded."
     },
     {
       "id": "design",

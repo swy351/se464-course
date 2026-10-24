@@ -1,0 +1,14 @@
+Introduction to software architecture
+Part 1 • Synthetic narration
+
+Why software needs architecture
+
+Software architecture helps us reason about a system that is too complex to hold entirely in our heads. The slides use growing codebases to motivate this problem. Architecture connects requirements to important structural decisions, and helps people locate changes, examine quality, and plan evolution. Size alone does not determine the effort required. Ask which decisions affect many parts of the system, and which assumptions would be expensive to change.
+
+Systems, stakeholders, and decisions
+
+Begin with the system mission, its environment, and its stakeholders. Then identify the decisions that strongly shape structure and behavior. Architecture includes important responsibilities, interfaces, relationships, and principles. Not every design choice has the same reach. Even an algorithm can be architectural when it determines a system-wide quality. The purpose is to support communication and analysis, so a useful description explains why its decisions matter to the people involved.
+
+Intended and implemented architecture
+
+An intended architecture states how a system should be organized. An implemented architecture describes what exists. Drift adds undocumented decisions without violating the intended design; erosion breaks an intended constraint. To distinguish them, first identify the actual rule, then inspect evidence of the implementation. Architecture recovery helps reconstruct that evidence. A team can repair a violation or consciously revise a decision, but should keep its description and rationale aligned with the result.

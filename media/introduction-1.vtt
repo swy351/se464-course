@@ -1,0 +1,86 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:02.772
+A diagram needs a question and a legend.
+
+00:00:02.772 --> 00:00:09.703
+Boxes may represent domain concepts, modules,
+processes, or machines; arrows may mean very
+different
+
+00:00:09.703 --> 00:00:10.188
+things.
+
+00:00:10.188 --> 00:00:16.841
+The four plus one model separates logical, process,
+development, and physical concerns, and uses
+
+00:00:16.841 --> 00:00:18.643
+scenarios to connect them.
+
+00:00:18.643 --> 00:00:21.623
+Choose a view for the question being asked.
+
+00:00:21.623 --> 00:00:28.415
+Then check that the views agree about the same
+system, without trying to put every detail into one
+
+00:00:28.415 --> 00:00:29.524
+crowded picture.
+
+00:00:29.524 --> 00:00:35.575
+Reusable architectural ideas include styles,
+reference architectures, and product-line
+
+00:00:35.575 --> 00:00:36.560
+architectures.
+
+00:00:36.560 --> 00:00:41.134
+Their assumptions and constraints matter as much as
+their shapes.
+
+00:00:41.134 --> 00:00:46.270
+C4 offers nested descriptions: context, containers,
+components, and code.
+
+00:00:46.270 --> 00:00:49.507
+These levels help match detail to an audience.
+
+00:00:49.507 --> 00:00:56.473
+A container here means a running application or data
+store, not necessarily a packaging technology.
+
+00:00:56.473 --> 00:01:03.087
+C4 levels and four plus one views are complementary
+ways to organize descriptions, rather than
+
+00:01:03.087 --> 00:01:04.635
+interchangeable lists.
+
+00:01:04.635 --> 00:01:08.916
+Patterns organize responsibilities around recurring
+problems.
+
+00:01:08.916 --> 00:01:15.371
+Three-tier architecture separates presentation,
+application processing, and data management.
+
+00:01:15.371 --> 00:01:22.388
+MVC focuses on model, view, and controller
+responsibilities, while sense, compute, control
+organizes
+
+00:01:22.388 --> 00:01:24.002
+observation and action.
+
+00:01:24.002 --> 00:01:29.897
+These are useful ideas, but labels do not establish
+deployment or guarantee quality.
+
+00:01:29.897 --> 00:01:34.107
+Explain the problem, the relationships, and the
+constraints.
+
+00:01:34.107 --> 00:01:40.913
+Then examine whether the proposed arrangement serves
+the system mission and stakeholder concerns.

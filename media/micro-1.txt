@@ -1,0 +1,6 @@
+Microservices & client architectures
+Part 2 • Synthetic narration
+
+Teams, mocks and multiple clients
+
+An explicit service contract allows teams to build clients and servers in parallel. Mocks help early work, and real integration tests check the assumptions they encode. A shared API can support web, mobile and desktop experiences. Compare server rendering and SPAs as presentation choices, while keeping backend validation and access control consistent.

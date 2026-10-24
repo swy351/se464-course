@@ -1,0 +1,10 @@
+REST APIs & serialization
+Part 1 • Synthetic narration
+
+HTTP as an API contract
+
+An API is a contract, not merely a JSON document. Read the weather request as a combination of method, target, headers and body, and interpret the response using status and representation. Document units and errors as carefully as success. HTTP conventions let clients and infrastructure cooperate when the API follows their semantics.
+
+Retries and resource identity
+
+Use a lost-response scenario to understand idempotence. The operation may already have happened when the client retries. Stable resource identity makes repeated PUT or DELETE requests predictable. Compare deleting the latest post with deleting a specific post, and remember that different response codes can still accompany the same idempotent server effect.

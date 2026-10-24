@@ -1,0 +1,10 @@
+Microservices & client architectures
+Part 1 • Synthetic narration
+
+One deployable application
+
+Distinguish replication from decomposition. Replicas run the same application to serve more requests; microservices divide responsibilities into separately deployable components. A monolith often simplifies development and transactions. Its suitability depends on the system and team, so begin with concrete change and coordination problems rather than assuming more services are automatically better.
+
+Choosing service boundaries
+
+Choose service boundaries around responsibilities and change patterns. Network APIs hide implementation details, but calls can fail independently and cross-service data updates require deliberate recovery. Compare the gain in independent deployment with the added testing and operational burden. A service split is justified when those benefits matter enough to pay the coordination cost.

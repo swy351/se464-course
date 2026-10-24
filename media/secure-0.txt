@@ -1,0 +1,14 @@
+Secure Microservices: Boundaries, Tokens and Response
+Part 1 • Synthetic narration
+
+Protect the exposed service boundary
+
+Start with the public boundary: expose only the routes clients need, apply common gateway protections and restrict management access. Then examine what happens after traffic enters the cluster. A gateway reduces exposure but does not make internal callers trustworthy. Distinguish a client application credential from the identity and permissions of the user behind a request.
+
+Verify peers and protect channels
+
+Follow the certificate trust decision before discussing encryption. The client must verify the intended service, not merely receive a certificate. Mutual TLS adds client-side credentials to the channel and can identify workloads. It still leaves application authorization to be decided. Key protection, certificate renewal and recovery are ongoing architectural responsibilities, especially when pinning is used.
+
+Contain compromise inside the cluster
+
+Containment starts with a communication map. Allow required paths and consider outbound traffic as carefully as inbound traffic. Namespaces organize resources, while supported network policies enforce selected network boundaries. Monitoring and quotas add detection and resource controls. Evaluate each mechanism by the consequence it limits, and do not mistake an alert or configuration object for guaranteed prevention.

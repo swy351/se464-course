@@ -1,0 +1,10 @@
+Asynchronous processing and message queues
+Part 1 • Synthetic narration
+
+Accepted is different from completed
+
+A synchronous request returns after the promised operation finishes; an asynchronous request can return once the system accepts responsibility for later work. Both can use HTTP. The important distinction is the contract, not whether a response exists. Sending an email, preparing a large download or provisioning a virtual machine can return an operation identifier while the requested work continues elsewhere.
+
+Queues as durable work contracts
+
+A queue lets a producer describe work and hand it to consumers that run later. The message schema is an interface contract, including identifiers, required fields and version behavior. In the tweet example, one service accepts publication work, another expands it into feed updates, and another handles optional notifications. This separates stages with different cost, latency and failure requirements.

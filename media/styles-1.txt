@@ -1,0 +1,18 @@
+Architecture styles and their tradeoffs
+Part 2 • Synthetic narration
+
+Interpreter and virtual-machine architectures
+
+Interpreter architectures make a program and its execution state explicit data managed by an engine. This can support portability or simulate a machine that is not directly available. A virtual machine is an abstraction, not a requirement to interpret every instruction. Consider compilation, validation and build-time dependencies when explaining the complete execution architecture.
+
+Control systems and feedback
+
+Process-control architecture separates the process, measurements and control decisions. Identify the controlled variable, manipulated variable and set point. Feedback uses observed results to adjust action; open-loop control does not. Simple diagrams explain these relationships, but an implemented controller must also address timing, disturbances and limits before its behavior can be judged reliable.
+
+Client–server responsibilities and remote calls
+
+Client–server describes roles in an interaction. Keeping query processing near data can reduce some transfers, but network and failure behavior remain architectural concerns. Discovery, state and coordination affect scaling. A useful diagram explains who requests what and how the interaction behaves when the service is slow, unavailable or returns an uncertain outcome.
+
+Peer-to-peer structure and practical hybrids
+
+Peer-to-peer systems let participants share both client and server roles. BitTorrent gains capacity from exchanging pieces during download, not only after completion. Check discovery and bootstrap mechanisms before claiming full decentralization. Resilience, privacy and scaling depend on the protocol and peer behavior, including partitions and unavailable or untrustworthy participants. Keep the model boundary explicit and connect each conclusion to its assumptions.

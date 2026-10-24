@@ -1,0 +1,43 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:04.870
+A ride arrival or an auction bid happens because
+another participant acts.
+
+00:00:04.870 --> 00:00:10.201
+The recipient needs an update without repeatedly
+asking whether anything changed.
+
+00:00:10.201 --> 00:00:16.321
+Yet a phone is not an ordinary public server: its
+address changes, NAT and firewalls restrict
+
+00:00:16.321 --> 00:00:20.138
+inbound connections, and the application may be
+suspended.
+
+00:00:20.138 --> 00:00:26.456
+Email and SMS provide useful notification channels,
+but do not replace every in-app interaction.
+
+00:00:26.500 --> 00:00:32.643
+Mobile push services let an application backend
+address a registered app instance through platform
+
+00:00:32.643 --> 00:00:33.583
+infrastructure.
+
+00:00:33.583 --> 00:00:39.037
+The app obtains a provider-issued identifier and
+sends it to its authenticated backend.
+
+00:00:39.037 --> 00:00:45.180
+Later, the backend associates an event with the
+relevant installations and submits a notification.
+
+00:00:45.180 --> 00:00:51.009
+The operating system manages the delivery
+connection, avoiding a separate continuously active
+
+00:00:51.009 --> 00:00:53.705
+connection for every installed application.

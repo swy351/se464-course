@@ -1,0 +1,47 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:06.432
+A synchronous request returns after the promised
+operation finishes; an asynchronous request can
+
+00:00:06.432 --> 00:00:10.519
+return once the system accepts responsibility for
+later work.
+
+00:00:10.519 --> 00:00:11.725
+Both can use HTTP.
+
+00:00:11.725 --> 00:00:16.616
+The important distinction is the contract, not
+whether a response exists.
+
+00:00:16.616 --> 00:00:22.781
+Sending an email, preparing a large download or
+provisioning a virtual machine can return an
+
+00:00:22.781 --> 00:00:27.203
+operation identifier while the requested work
+continues elsewhere.
+
+00:00:27.203 --> 00:00:32.525
+A queue lets a producer describe work and hand it to
+consumers that run later.
+
+00:00:32.525 --> 00:00:39.008
+The message schema is an interface contract,
+including identifiers, required fields and version
+
+00:00:39.008 --> 00:00:39.622
+behavior.
+
+00:00:39.622 --> 00:00:46.241
+In the tweet example, one service accepts
+publication work, another expands it into feed
+updates,
+
+00:00:46.241 --> 00:00:49.175
+and another handles optional notifications.
+
+00:00:49.175 --> 00:00:54.361
+This separates stages with different cost, latency
+and failure requirements.

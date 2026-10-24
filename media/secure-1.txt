@@ -1,0 +1,14 @@
+Secure Microservices: Boundaries, Tokens and Response
+Part 2 • Synthetic narration
+
+Token trust, validation and revocation
+
+Treat a token as a claim that must be evaluated in context. Verify its issuer, cryptographic protection, audience and time constraints, then authorize the operation. Follow access and refresh tokens separately through expiry and compromise. Central issuance and local verification offer a useful pattern, but revocation and key rotation must be explicit rather than assumed.
+
+Harden each service and its data paths
+
+Apply security at the service as well as the perimeter. Reduce runtime privileges, expose only needed interfaces and manage secrets through their lifecycle. Validate data for its actual destination: SQL, HTML and outbound URLs require different controls. Shared middleware can make checks consistent, but its trust assumptions and execution order must be understood and tested.
+
+Practice incident response with bounded simulations
+
+Use simulations to practice decisions as well as detections. Tabletop exercises, broad red-team engagements and focused repeatable tests answer different questions. Our course exercise stays with synthetic evidence and role-based discussion. Trace escalation, containment and recovery, then assign concrete improvements after the review. Coverage tracking is useful evidence, not a guarantee of future detection.

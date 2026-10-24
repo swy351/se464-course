@@ -1,0 +1,10 @@
+Design exercise: feeds, fan-out and locality
+Part 1 • Synthetic narration
+
+Start with normalized data and a read workload
+
+The exercise imagines a social feed backed by users, follows and tweets tables. Publishing one tweet is initially a small write. Reading a feed requires finding followed authors and their recent posts, then assembling the result. Joins are not inherently slow, but broad access across many authors or shards can make this request expensive compared with retrieving a prepared feed.
+
+Materialized feeds and asynchronous publication
+
+A materialized feed moves work from reading time to publication time. When an author posts, workers add a reference or entry to followers’ prepared feeds. A reader can then fetch a bounded structure keyed by user. This suits a workload with many repeated reads, but each post now creates work proportional to the number of destinations receiving the update.

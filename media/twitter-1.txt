@@ -1,0 +1,10 @@
+Design exercise: feeds, fan-out and locality
+Part 2 • Synthetic narration
+
+Partitioning a social graph
+
+Partitioning by follower can keep a person’s follow list and prepared feed together. It cannot simultaneously place every followed author’s original posts beside every reader without duplication. Social relationships cross partition boundaries, so a normalized read may fetch from several owners. The graph model makes the tension visible: balancing vertices and keeping related vertices together are competing objectives.
+
+Hybrid feeds and the celebrity exception
+
+A hybrid design precomputes updates for ordinary authors and merges selected high-fan-out authors’ recent posts when a reader opens the feed. This avoids sending every popular post to millions of inactive followers. The threshold is a workload decision: compare expected fan-out cost against the reads that would need an on-demand merge, including freshness and cache behavior for popular content.

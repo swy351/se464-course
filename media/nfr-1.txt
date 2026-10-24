@@ -1,0 +1,10 @@
+Requirements & quality attributes
+Part 2 • Synthetic narration
+
+Make quality measurable
+
+Turn quality goals into measurable agreements. State the metric, workload, threshold and observation interval, including how failures are counted. Capacity needs an activity model, not just a user total. For other attributes, distinguish an outcome from a prescribed technology and test the outcome that stakeholders actually care about.
+
+Optimize the system rather than isolated parts
+
+Optimize the end-to-end flow, not isolated component rates. In this simplified producer-consumer model, throughput is limited by combined production or consumption, whichever is smaller. Balancing the stages can outperform equal allocations. State the equal-cost assumption and remember that full CPU utilization is still a capacity limit, with no practical headroom.

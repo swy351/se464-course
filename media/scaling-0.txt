@@ -1,0 +1,10 @@
+Scalability, services & HTTP
+Part 1 • Synthetic narration
+
+From programs to services
+
+A service handles a continuing stream of requests. Scaling is therefore more than choosing an efficient algorithm. We must understand concurrent demand, throughput, latency and failure. Use the course-registration opening rush as a concrete workload, and ask what performance the system can sustain while still meeting its requirements.
+
+Scaling up and scaling out
+
+Scaling up changes one machine; scaling out adds more machines. Both are practical tools with different costs. The worker example explains why concurrency can help during IO waits even without additional cores. Diagnose the bottleneck first, then predict whether more CPU, memory, storage capacity or independent workers will address it.

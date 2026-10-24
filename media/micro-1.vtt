@@ -1,0 +1,20 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:05.575
+An explicit service contract allows teams to build
+clients and servers in parallel.
+
+00:00:05.575 --> 00:00:11.218
+Mocks help early work, and real integration tests
+check the assumptions they encode.
+
+00:00:11.218 --> 00:00:15.315
+A shared API can support web, mobile and desktop
+experiences.
+
+00:00:15.315 --> 00:00:21.696
+Compare server rendering and SPAs as presentation
+choices, while keeping backend validation and
+
+00:00:21.696 --> 00:00:23.443
+access control consistent.

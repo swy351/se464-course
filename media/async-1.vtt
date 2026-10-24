@@ -1,0 +1,48 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:06.209
+Queues distribute pending work across consumers and
+smooth a temporary mismatch between arrival and
+
+00:00:06.209 --> 00:00:07.275
+processing rates.
+
+00:00:07.275 --> 00:00:13.483
+Producers and consumers can scale independently, but
+the broker has its own capacity and durability
+
+00:00:13.483 --> 00:00:13.922
+limits.
+
+00:00:13.922 --> 00:00:17.811
+An in-process queue is simple but may vanish with
+the process.
+
+00:00:17.811 --> 00:00:23.894
+A separate broker or replicated service provides
+different persistence and recovery options, with
+
+00:00:23.894 --> 00:00:26.716
+additional operational cost and coordination.
+
+00:00:26.716 --> 00:00:33.121
+A bounded queue must eventually reject, delay or
+otherwise regulate producers when it cannot safely
+
+00:00:33.121 --> 00:00:34.220
+accept more work.
+
+00:00:34.220 --> 00:00:39.266
+This backpressure is a protective control rather
+than merely an error to hide.
+
+00:00:39.266 --> 00:00:45.348
+Monitor oldest-message age as well as depth, because
+a small queue of expensive jobs can still
+
+00:00:45.348 --> 00:00:46.771
+violate latency goals.
+
+00:00:46.771 --> 00:00:52.464
+Retry policies should use limits and backoff instead
+of continuously recycling failures.

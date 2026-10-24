@@ -1,0 +1,59 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:05.401
+The open–closed principle encourages stable code
+around deliberate extension points.
+
+00:00:05.401 --> 00:00:11.573
+In the shape example, a common drawing operation
+keeps the painter independent of concrete shape
+
+00:00:11.573 --> 00:00:11.958
+types.
+
+00:00:11.958 --> 00:00:16.330
+This does not eliminate all edits or require
+inheritance everywhere.
+
+00:00:16.330 --> 00:00:22.760
+Judge the abstraction by the changes it localizes
+and the contract new implementations must satisfy.
+
+00:00:22.800 --> 00:00:27.769
+Liskov substitution preserves the expectations
+clients are entitled to make.
+
+00:00:27.769 --> 00:00:33.784
+The mutable Rectangle and Square example fails
+because setters violate independent-dimension
+
+00:00:33.784 --> 00:00:34.372
+behavior.
+
+00:00:34.372 --> 00:00:37.707
+Check actual preconditions, results and invariants.
+
+00:00:37.707 --> 00:00:42.937
+Exceptions are not automatically violations:
+optional operations may allow them.
+
+00:00:42.937 --> 00:00:48.560
+The right question is whether the subtype honors the
+contract the client was promised.
+
+00:00:48.600 --> 00:00:55.110
+Design interfaces around client roles and put high-
+level policy behind appropriate abstractions.
+
+00:00:55.110 --> 00:00:59.992
+Read-only and mutable capabilities need not be
+bundled for every client.
+
+00:00:59.992 --> 00:01:05.348
+JDBC shows how a stable API can separate application
+logic from driver details.
+
+00:01:05.348 --> 00:01:11.994
+These boundaries reduce coupling, but only a
+preserved behavioral contract makes replacement
+safe.

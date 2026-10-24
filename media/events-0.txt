@@ -1,0 +1,10 @@
+Implicit invocation, pub/sub and event-driven systems
+Part 1 • Synthetic narration
+
+From direct calls to implicit invocation
+
+With a direct call, the caller names the operation it wants another component to perform. With implicit invocation, a component announces an event and registered handlers react. A debugger can announce that execution stopped, letting an editor highlight source without the debugger depending on that editor’s implementation. The same idea supports user-interface observers and database triggers inside a single application.
+
+Event-driven architecture and brokered fan-out
+
+An event describes something that happened, such as a seat becoming available. Consumers can react independently: notify a student, update a dashboard or record an audit trail. A publisher-subscriber intermediary routes events to interested subscriptions, reducing the producer’s need to track every consumer address. Topics and filters let consumers select relevant changes without requiring a new direct integration for each interested service.

@@ -1,0 +1,14 @@
+Model architecture and estimate execution cost
+Part 1 • Synthetic narration
+
+Choose what the architecture model must explain
+
+Architecture modeling makes selected decisions explicit. Start with the question, then choose components, relationships, constraints and rationale that answer it. More detail is not automatically better. The model must remain understandable and maintainable, while preserving the assumptions needed to evaluate behavior and quality. Treat runtime state and structural organization as related but distinct perspectives.
+
+Estimate before committing to implementation
+
+Use early models to challenge a design while change is still affordable. An execution graph estimates required work without contention, making it useful for spotting obvious problems. A good baseline does not establish loaded performance. Refine assumptions with prototypes and measurements, then add queueing or simulation when competition for resources matters.
+
+Reduce execution graphs
+
+An execution graph describes sequencing, repetition, alternatives and concurrency. Reduce each structure using the metric you intend to estimate. A probability-weighted case answers an average-path question, while minimum and maximum answer different questions. Keep parallel work and asynchronous work distinct, and remember that a no-contention graph has not yet accounted for waiting behind other requests.

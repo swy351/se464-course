@@ -1,0 +1,10 @@
+Batch, streaming and two leader–follower patterns
+Part 2 • Synthetic narration
+
+The thread-pool Leader/Followers pattern
+
+The Leader/Followers concurrency pattern coordinates a pool of threads waiting for events. One thread leads by waiting on an event source; when an event arrives, another follower can become leader while the previous leader handles the work. The purpose is efficient event dispatch with controlled coordination overhead, not replication of durable data across a cluster of machines.
+
+Kafka partition leaders and replicated logs
+
+Kafka illustrates a different use of leader and follower terminology. A partition has a leader responsible for its log operations and replica followers that copy its data. Leadership can move after failure under a cluster coordination policy. Several partitions can distribute leadership across brokers, so one leader per partition does not mean the entire system has only one active writer.

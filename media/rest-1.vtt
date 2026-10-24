@@ -1,0 +1,45 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:04.468
+Serialization bridges program structures and
+transmitted bytes.
+
+00:00:04.468 --> 00:00:10.566
+JSON and XML work well for trees, but shared
+references and cycles require an explicit
+
+00:00:10.566 --> 00:00:11.630
+representation.
+
+00:00:11.630 --> 00:00:14.963
+Encode each person once and link friends by ID.
+
+00:00:14.963 --> 00:00:21.345
+Validate syntax and distinguish characters from
+bytes: the ASCII example uses one byte per
+
+00:00:21.345 --> 00:00:25.103
+character, while UTF-8 supports wider characters
+too.
+
+00:00:25.103 --> 00:00:28.117
+Choose technologies at the correct layer.
+
+00:00:28.117 --> 00:00:35.248
+HTTP is a protocol, JSON and Protocol Buffers
+serialize data, and gRPC provides an RPC framework.
+
+00:00:35.248 --> 00:00:38.262
+REST describes architectural constraints.
+
+00:00:38.262 --> 00:00:44.511
+Reusing HTTP infrastructure is useful, but its
+semantics remain part of the contract.
+
+00:00:44.511 --> 00:00:51.789
+Decide using compatibility and operational
+requirements, supported by measurement where
+performance
+
+00:00:51.789 --> 00:00:52.377
+matters.

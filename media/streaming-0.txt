@@ -1,0 +1,14 @@
+Batch, streaming and two leader–follower patterns
+Part 1 • Synthetic narration
+
+Distributed aggregates and data movement
+
+Serving independent requests is different from calculating one answer over a large shared dataset. For a global maximum, each worker can compute a local maximum and send one candidate to a coordinator. The coordinator takes the maximum of those candidates, so little data moves. Other operations need richer summaries or repeated communication, making network cost part of algorithm design rather than an incidental implementation detail.
+
+MapReduce and finite batch jobs
+
+MapReduce asks a programmer to transform input records into intermediate key-value pairs, then combine values sharing a key. For word counting, the mapper emits one pair per word occurrence and the reducer sums counts for each word. The shuffle groups intermediate data by key. Scheduling, distribution and retries belong largely to the framework, so the program can focus on the transformations.
+
+Continuous streams and state
+
+Stream processing reacts to an ongoing sequence rather than waiting for a complete dataset. Monitoring and recommendations may benefit from short update latency, while historical reporting can tolerate larger batch intervals. Low latency is a target, not an automatic guarantee. A stream operator may still wait for enough evidence, and overloaded consumers can accumulate lag even when the architecture is called real time.

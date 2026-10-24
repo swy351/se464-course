@@ -1,0 +1,10 @@
+A scalable publishing system: the NGVM case
+Part 2 • Synthetic narration
+
+Scale the read path deliberately
+
+Scale the bottleneck you actually have. Application replication, database read replicas, larger machines and caching solve different problems. Decide which reads tolerate staleness and which responses can be shared safely. A stateless monolith can run across many instances; deployment scaling does not by itself require a change to microservice boundaries.
+
+Evaluate scaling claims with workload evidence
+
+Convert workload claims into rates, then inspect the assumptions behind those rates. Monthly averages hide peaks and user actions are not identical to disk operations. The case scales favorably because many responses can be shared and cached. Validate those properties, model the limiting resources and measure representative traffic before promising a particular scaling factor.

@@ -1,0 +1,66 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:03.996
+Treat a token as a claim that must be evaluated in
+context.
+
+00:00:03.996 --> 00:00:10.363
+Verify its issuer, cryptographic protection,
+audience and time constraints, then authorize the
+
+00:00:10.363 --> 00:00:11.040
+operation.
+
+00:00:11.040 --> 00:00:16.052
+Follow access and refresh tokens separately through
+expiry and compromise.
+
+00:00:16.052 --> 00:00:22.826
+Central issuance and local verification offer a
+useful pattern, but revocation and key rotation must
+
+00:00:22.826 --> 00:00:24.993
+be explicit rather than assumed.
+
+00:00:25.000 --> 00:00:28.771
+Apply security at the service as well as the
+perimeter.
+
+00:00:28.771 --> 00:00:35.627
+Reduce runtime privileges, expose only needed
+interfaces and manage secrets through their
+lifecycle.
+
+00:00:35.627 --> 00:00:42.278
+Validate data for its actual destination: SQL, HTML
+and outbound URLs require different controls.
+
+00:00:42.278 --> 00:00:49.065
+Shared middleware can make checks consistent, but
+its trust assumptions and execution order must be
+
+00:00:49.065 --> 00:00:50.574
+understood and tested.
+
+00:00:50.600 --> 00:00:54.632
+Use simulations to practice decisions as well as
+detections.
+
+00:00:54.632 --> 00:01:00.815
+Tabletop exercises, broad red-team engagements and
+focused repeatable tests answer different
+
+00:01:00.815 --> 00:01:01.487
+questions.
+
+00:01:01.487 --> 00:01:06.594
+Our course exercise stays with synthetic evidence
+and role-based discussion.
+
+00:01:06.594 --> 00:01:12.978
+Trace escalation, containment and recovery, then
+assign concrete improvements after the review.
+
+00:01:12.978 --> 00:01:17.951
+Coverage tracking is useful evidence, not a
+guarantee of future detection.

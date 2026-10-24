@@ -1,0 +1,80 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:05.080
+Describe architectural styles using components,
+connectors and constraints.
+
+00:00:05.080 --> 00:00:08.602
+A name alone does not explain behavior or tradeoffs.
+
+00:00:08.602 --> 00:00:14.970
+Real systems often combine styles, so identify which
+part of the system each description fits.
+
+00:00:14.970 --> 00:00:21.134
+Evaluate the assumptions that make an advantage
+possible, and use shared vocabulary to make
+
+00:00:21.134 --> 00:00:24.995
+decisions easier to inspect rather than to assign
+labels.
+
+00:00:25.000 --> 00:00:29.689
+The repository style coordinates components through
+shared information.
+
+00:00:29.689 --> 00:00:34.511
+It can simplify data management while coupling
+clients to a common model.
+
+00:00:34.511 --> 00:00:39.002
+Blackboard systems extend the idea through
+cooperating computations.
+
+00:00:39.002 --> 00:00:45.607
+Examine schema ownership, concurrency and failure
+behavior before claiming easy reuse or centralized
+
+00:00:45.607 --> 00:00:51.683
+control; one shared box does not automatically
+provide scalable or highly available storage.
+
+00:00:51.700 --> 00:00:55.975
+Pipes and filters compose transformations through
+data contracts.
+
+00:00:55.975 --> 00:01:02.552
+A linear pipeline is one specialization, and batch
+processing changes when output becomes available.
+
+00:01:02.552 --> 00:01:08.931
+Compiler examples show that practical systems often
+add shared representations, creating hybrids.
+
+00:01:08.931 --> 00:01:15.245
+Consider conversion cost, buffering and feedback
+before assuming that connecting reusable stages
+
+00:01:15.245 --> 00:01:20.178
+automatically gives good performance or supports
+every interaction pattern.
+
+00:01:20.200 --> 00:01:25.639
+Objects encapsulate state and contracts; layers
+organize services by abstraction.
+
+00:01:25.639 --> 00:01:30.138
+Both help manage dependencies but do not erase
+behavioral coupling.
+
+00:01:30.138 --> 00:01:34.032
+Distinguish logical layers from physical deployment
+tiers.
+
+00:01:34.032 --> 00:01:40.545
+Shared mutable state and changes in interface
+meaning can still propagate, so evaluate the actual
+
+00:01:40.545 --> 00:01:46.253
+contracts and dependency rules rather than assuming
+isolation from the diagram alone.

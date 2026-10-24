@@ -1,0 +1,10 @@
+Scalability, services & HTTP
+Part 2 • Synthetic narration
+
+Request processing and HTTP
+
+Follow a request from the network through a queue to application logic and back as a response. The queue-and-worker model makes concurrency and overload visible. HTTP supplies a common contract, while frameworks handle much of the mechanics. Remember that asynchronous servers can implement the same service without a thread for every request.
+
+A Wikipedia request, end to end
+
+Trace a wiki request through browser, application and database. MediaWiki reads article data, renders it and adds presentation and possibly user-specific content. This example connects web protocols to architectural responsibilities. It also sets up two important questions: which state must be shared, and which repeated work can be safely cached?

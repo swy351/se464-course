@@ -1,0 +1,38 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:04.817
+Read the case as a set of cooperating
+responsibilities and data rules.
+
+00:00:04.817 --> 00:00:09.978
+Public pages, contributions and volunteer actions
+exercise different paths.
+
+00:00:09.978 --> 00:00:16.447
+Resource-oriented HTTP design can clarify an
+interface, but it does not supply access control.
+
+00:00:16.447 --> 00:00:22.916
+Preserve schema integrity and identify external
+dependencies before deciding which part of the
+
+00:00:22.916 --> 00:00:25.531
+historical architecture should change.
+
+00:00:25.531 --> 00:00:30.709
+Object storage and a CDN separate media delivery
+from application processing.
+
+00:00:30.709 --> 00:00:37.165
+Thumbnails reduce payload for different displays,
+while caching can reduce repeated origin work.
+
+00:00:37.165 --> 00:00:39.586
+Random names are not access control.
+
+00:00:39.586 --> 00:00:46.311
+The cost charts are historical context from 2020, so
+use them to understand tradeoffs rather than as
+
+00:00:46.311 --> 00:00:49.808
+current infrastructure prices or guaranteed savings.

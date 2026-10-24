@@ -1,0 +1,43 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:04.382
+Subscribers must plan for duplicates, failures and
+delayed delivery.
+
+00:00:04.382 --> 00:00:10.568
+An idempotent handler prevents repeated execution
+from creating an extra effect, but it does not
+
+00:00:10.568 --> 00:00:12.566
+make out-of-order changes safe.
+
+00:00:12.566 --> 00:00:18.752
+Include entity versions or process related events in
+an ordered partition when sequence matters.
+
+00:00:18.752 --> 00:00:25.067
+A priority queue changes which message runs first;
+it is not a substitute for preserving business-
+
+00:00:25.067 --> 00:00:25.840
+event order.
+
+00:00:25.840 --> 00:00:30.632
+The robotics example organizes computation into
+nodes with typed messages.
+
+00:00:30.632 --> 00:00:36.913
+Topics carry streams such as sensor readings,
+services provide request-and-response interactions,
+
+00:00:36.913 --> 00:00:41.186
+and actions support longer goals with progress and a
+final result.
+
+00:00:41.186 --> 00:00:47.338
+These interfaces let sensing, planning, control and
+visualization evolve separately while still
+
+00:00:47.338 --> 00:00:53.813
+communicating through explicit data contracts suited
+to their interaction patterns and timing needs.

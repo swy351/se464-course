@@ -1,0 +1,10 @@
+Case study: Uber’s real-time push platform
+Part 2 • Synthetic narration
+
+Scaling connection ownership
+
+The slides describe an early RAMEN implementation using sharded connections and Redis, followed by a redesign separating connection handling, routing and cluster management. Treat the throughput and connection counts as reported historical observations. They illustrate why topology convergence and overloaded event loops can become important even when each individual message is small and the application’s business logic appears straightforward.
+
+Protocol evolution and the reliability boundary
+
+The case identifies long-tail delivery problems involving acknowledgement loss, inconsistent client behavior and limitations of the earlier unidirectional stream. Its later protocol work explores bidirectional communication and more standardized client support. Separate the enduring requirement from a particular transport choice: the service needs feedback about progress, recoverable state and a clear policy for clients whose networks disappear for extended periods.

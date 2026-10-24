@@ -1,0 +1,10 @@
+Stateless services, proxies & caches
+Part 2 • Synthetic narration
+
+Proxies and cache hits
+
+Follow a cache hit and a cache miss through a proxy. On a hit, saved data avoids backend work. On a miss, the backend supplies the value and the cache may retain it. Use a small LRU trace to make eviction concrete, then compare application-managed caching with a transparent intermediary.
+
+Popularity, freshness and HTTP caching
+
+Caching exploits repeated access, especially when popularity is uneven. The key design question is when reuse remains valid. Compare expiry, invalidation and versioned names, then apply HTTP cache directives. A successful cache reduces backend work while respecting freshness and identity boundaries; a high hit rate alone does not prove correctness.

@@ -1,0 +1,14 @@
+Choosing a data store
+Part 2 • Synthetic narration
+
+Documents, search and wide-column stores
+
+A document store can keep a nested profile as one aggregate, with a configured shard key controlling distribution A search engine serves another need: locating documents by terms and relevance. Find the document-ID list for each normalized term and return their intersection.
+
+Caches and memory data structures
+
+An application cache stores values that help construct responses, such as a leaderboard or precomputed summary An HTTP reverse-proxy cache stores reusable responses at a different layer. No. If it is designed as a rebuildable cache, the source records remain elsewhere and the leaderboard can be recomputed.
+
+Files, objects and final selection
+
+A mounted network filesystem provides a file interface that existing applications can use Block storage instead exposes volumes on which a filesystem may be built; object storage exposes named objects through service APIs. Not necessarily. It must check required file operations and semantics against the object API and adapt its access pattern.

@@ -1,0 +1,74 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:03.668
+Read a class diagram as a precise but selective
+model.
+
+00:00:03.668 --> 00:00:10.393
+Identify classes, access levels, operations and
+relationships, then interpret multiplicities in the
+
+00:00:10.393 --> 00:00:10.869
+domain.
+
+00:00:10.869 --> 00:00:17.458
+Use code examples to check the model, especially
+when a collection’s capacity differs from actual
+
+00:00:17.458 --> 00:00:18.205
+membership.
+
+00:00:18.205 --> 00:00:24.250
+Ownership, inheritance and interface contracts
+communicate different ideas, so choose the
+
+00:00:24.250 --> 00:00:27.511
+relationship that matches the intended behavior.
+
+00:00:27.511 --> 00:00:33.568
+Patterns preserve design knowledge by naming
+recurring problems and explaining solutions and
+
+00:00:33.568 --> 00:00:34.424
+consequences.
+
+00:00:34.424 --> 00:00:37.255
+Apply them with judgment, not mechanically.
+
+00:00:37.255 --> 00:00:41.403
+Selective diagrams can help communicate the relevant
+structure.
+
+00:00:41.403 --> 00:00:47.987
+When comparing composition and inheritance, examine
+the relationship and the behavior clients depend
+
+00:00:47.987 --> 00:00:52.004
+on; reuse alone is not enough to justify a subtype
+hierarchy.
+
+00:00:52.011 --> 00:00:55.948
+Single responsibility concerns coherent reasons to
+change.
+
+00:00:55.948 --> 00:01:02.466
+Use method relationships and shared fields as clues,
+then ask which stakeholder or policy drives
+
+00:01:02.466 --> 00:01:03.280
+each change.
+
+00:01:03.280 --> 00:01:10.001
+Splitting responsibilities can improve
+maintainability, but excessive fragmentation can
+obscure the
+
+00:01:10.001 --> 00:01:10.408
+model.
+
+00:01:10.408 --> 00:01:17.197
+Public libraries add compatibility costs, making
+clear boundaries especially valuable before clients
+
+00:01:17.197 --> 00:01:18.216
+depend on them.

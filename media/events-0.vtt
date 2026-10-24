@@ -1,0 +1,42 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:05.550
+With a direct call, the caller names the operation
+it wants another component to perform.
+
+00:00:05.550 --> 00:00:10.976
+With implicit invocation, a component announces an
+event and registered handlers react.
+
+00:00:10.976 --> 00:00:16.838
+A debugger can announce that execution stopped,
+letting an editor highlight source without the
+
+00:00:16.838 --> 00:00:20.018
+debugger depending on that editor’s implementation.
+
+00:00:20.018 --> 00:00:26.130
+The same idea supports user-interface observers and
+database triggers inside a single application.
+
+00:00:26.130 --> 00:00:31.181
+An event describes something that happened, such as
+a seat becoming available.
+
+00:00:31.181 --> 00:00:37.462
+Consumers can react independently: notify a student,
+update a dashboard or record an audit trail.
+
+00:00:37.462 --> 00:00:43.355
+A publisher-subscriber intermediary routes events to
+interested subscriptions, reducing the
+
+00:00:43.355 --> 00:00:46.464
+producer’s need to track every consumer address.
+
+00:00:46.464 --> 00:00:52.875
+Topics and filters let consumers select relevant
+changes without requiring a new direct integration
+
+00:00:52.875 --> 00:00:54.688
+for each interested service.

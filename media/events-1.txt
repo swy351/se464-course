@@ -1,0 +1,10 @@
+Implicit invocation, pub/sub and event-driven systems
+Part 2 • Synthetic narration
+
+Delivery, ordering and poison messages
+
+Subscribers must plan for duplicates, failures and delayed delivery. An idempotent handler prevents repeated execution from creating an extra effect, but it does not make out-of-order changes safe. Include entity versions or process related events in an ordered partition when sequence matters. A priority queue changes which message runs first; it is not a substitute for preserving business-event order.
+
+ROS as an architectural example
+
+The robotics example organizes computation into nodes with typed messages. Topics carry streams such as sensor readings, services provide request-and-response interactions, and actions support longer goals with progress and a final result. These interfaces let sensing, planning, control and visualization evolve separately while still communicating through explicit data contracts suited to their interaction patterns and timing needs.

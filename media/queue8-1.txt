@@ -1,0 +1,14 @@
+Queueing networks — alternate slide version
+Part 2 • Synthetic narration
+
+Build an open queueing network
+
+Trace requests through resources and count visits. Device throughput differs from external request throughput when a request visits repeatedly. Convert visits and service time into demand, then calculate utilization and response under the chosen model. The ATM example shows why doubling arrivals near a bottleneck can increase delay much more than twofold.
+
+Closed populations and model construction
+
+Choose open, closed or mixed workload behavior before solving the network. Fixed users with think time differ from independent external arrivals. Map execution demands onto stations and keep per-visit and per-request quantities distinct. Then vary uncertain parameters, identify the limiting resource and communicate what an average-value model does not predict about bursts or tail latency.
+
+End-to-end ATM modeling workshop
+
+This workshop connects the two performance-modeling units. Convert operation requests through the overhead matrix, reduce the execution graph and obtain demand at each device. Apply arrival intensity only after that step. Check stability first, and do not hide ambiguous branch labels: state the mapping you use or obtain it from the original diagram.

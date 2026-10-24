@@ -1,0 +1,14 @@
+Requirements & quality attributes
+Part 1 • Synthetic narration
+
+Discover the problem and its stakeholders
+
+Requirements work establishes what problem the system must solve and whose concerns matter. Gather needs, examine conflicts and feasibility, then validate the specification with stakeholders. Ask why a technology or deadline is required. Clear boundaries and explicit priorities give architectural decisions a defensible starting point.
+
+Write specifications people can test
+
+A useful specification connects real needs to observable acceptance conditions. Review wording for ambiguity, consistency and traceability. Examples such as character limits reveal missing boundary conditions. When a requirement changes, follow its links into design, implementation and tests so the update remains coherent rather than producing a locally correct but incompatible feature.
+
+Classify requirements and quality attributes
+
+Separate behavior, quality and other constraints, then assign priorities explicitly. Quality requirements often cross component boundaries and shape architecture. Replace words such as fast or secure with scenarios and observable checks. Functional and quality requirements can both be mandatory, and both need clear evidence of satisfaction.

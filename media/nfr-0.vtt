@@ -1,0 +1,55 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:06.057
+Requirements work establishes what problem the
+system must solve and whose concerns matter.
+
+00:00:06.057 --> 00:00:12.647
+Gather needs, examine conflicts and feasibility,
+then validate the specification with stakeholders.
+
+00:00:12.647 --> 00:00:15.642
+Ask why a technology or deadline is required.
+
+00:00:15.642 --> 00:00:22.165
+Clear boundaries and explicit priorities give
+architectural decisions a defensible starting point.
+
+00:00:22.200 --> 00:00:27.407
+A useful specification connects real needs to
+observable acceptance conditions.
+
+00:00:27.407 --> 00:00:31.295
+Review wording for ambiguity, consistency and
+traceability.
+
+00:00:31.295 --> 00:00:35.843
+Examples such as character limits reveal missing
+boundary conditions.
+
+00:00:35.843 --> 00:00:42.170
+When a requirement changes, follow its links into
+design, implementation and tests so the update
+
+00:00:42.170 --> 00:00:47.575
+remains coherent rather than producing a locally
+correct but incompatible feature.
+
+00:00:47.600 --> 00:00:53.137
+Separate behavior, quality and other constraints,
+then assign priorities explicitly.
+
+00:00:53.137 --> 00:00:58.212
+Quality requirements often cross component
+boundaries and shape architecture.
+
+00:00:58.212 --> 00:01:03.090
+Replace words such as fast or secure with scenarios
+and observable checks.
+
+00:01:03.090 --> 00:01:09.022
+Functional and quality requirements can both be
+mandatory, and both need clear evidence of
+
+00:01:09.022 --> 00:01:09.879
+satisfaction.

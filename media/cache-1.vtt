@@ -1,0 +1,36 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:03.478
+Follow a cache hit and a cache miss through a proxy.
+
+00:00:03.478 --> 00:00:06.220
+On a hit, saved data avoids backend work.
+
+00:00:06.220 --> 00:00:10.902
+On a miss, the backend supplies the value and the
+cache may retain it.
+
+00:00:10.902 --> 00:00:17.323
+Use a small LRU trace to make eviction concrete,
+then compare application-managed caching with a
+
+00:00:17.323 --> 00:00:18.995
+transparent intermediary.
+
+00:00:19.000 --> 00:00:23.920
+Caching exploits repeated access, especially when
+popularity is uneven.
+
+00:00:23.920 --> 00:00:27.524
+The key design question is when reuse remains valid.
+
+00:00:27.524 --> 00:00:33.275
+Compare expiry, invalidation and versioned names,
+then apply HTTP cache directives.
+
+00:00:33.275 --> 00:00:40.066
+A successful cache reduces backend work while
+respecting freshness and identity boundaries; a high
+
+00:00:40.066 --> 00:00:42.977
+hit rate alone does not prove correctness.

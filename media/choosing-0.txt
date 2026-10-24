@@ -1,0 +1,14 @@
+Choosing a data store
+Part 1 • Synthetic narration
+
+Start with workload and invariants
+
+Choose storage by describing the application’s operations before choosing a product Record the shape and size of the data, lookup keys, range queries, joins, update rates and required guarantees. No. Large-object delivery and concurrent invariant-preserving updates have different access patterns and can justify different stores.
+
+Transactions and concurrency
+
+A checkout updates several related facts: the order, its line items and the remaining gift-card balance Atomicity means these changes commit together or roll back together. No. The operation needs appropriate isolation, locking or an atomic conditional update, plus balance validation and failure handling.
+
+Storage models and analytics
+
+Operational transaction processing usually consists of many small reads and writes, such as fetching a student’s enrolments or reserving a seat Analytics may scan years of records to compare enrolment trends. The calculation needs only selected attributes, so reading and compressing those columns can reduce I/O substantially.

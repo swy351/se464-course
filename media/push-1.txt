@@ -1,0 +1,10 @@
+Push notifications and connected clients
+Part 2 • Synthetic narration
+
+WebSockets, long polling and alternatives
+
+An active browser can open a WebSocket and exchange messages in both directions while the connection remains alive. Long polling instead leaves an HTTP request pending until data or a timeout arrives, then starts another request. Both permit an update to arrive without a fresh user action. Their latency and operational behavior differ from repeatedly making short periodic polling requests.
+
+Routing to the correct connection
+
+A distributed notification service must find the worker holding each live client connection. Other backend services should send a logical user notification rather than guess the physical socket owner. A registry connects user and installation identities to provider destinations or live connection identifiers. This allows the notification service to serve multiple devices and browser tabs without duplicating routing logic across domain services.

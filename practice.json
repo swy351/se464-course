@@ -1,0 +1,1218 @@
+{
+  "ai": [
+    {
+      "id": "ai-p1",
+      "type": "choice",
+      "title": "What evidence supports the diagram?",
+      "question": "An AI assistant generates a deployment diagram for a campus equipment-loan service. It draws separate reservation, payment and notification services. The team has only browser access and observes that reservation and notification fail together during an outage. Which review response is best supported by this evidence, before anyone has inspected source code or deployment configuration?",
+      "hint": "Correlation in visible failures does not uniquely identify internal structure.",
+      "answer": "The best response is to mark the service boundaries as unverified and propose further evidence. Two features failing together could share a process, storage dependency, network path or identity provider. Browser observations establish the visible failure pattern, not its cause. Keep the generated diagram as a hypothesis, label the observed behavior separately and ask for permitted traces or deployment configuration that can distinguish the alternatives. A polished diagram does not increase the strength of the underlying evidence.",
+      "explanation": "Architecture recovery must distinguish observation from inference; several different implementations can produce the same visible result.",
+      "criteria": [
+        "Separates observed behavior from inferred topology",
+        "Identifies evidence that distinguishes competing explanations"
+      ],
+      "options": [
+        "Label the boundaries unverified and seek traces or deployment evidence.",
+        "Replace all three services with one process because the failures coincide.",
+        "Accept the diagram because independent services can fail together.",
+        "Infer a shared database and mark that inference as confirmed."
+      ],
+      "answerIndex": 0
+    },
+    {
+      "id": "ai-p2",
+      "type": "written",
+      "title": "Review a generated reconciliation change",
+      "question": "A rental platform promises that one physical bicycle cannot be assigned to two active rentals. An AI-generated optimization checks availability in a read replica, then writes a rental to the primary. Sequential tests pass. Write a short architecture review: identify the promise at risk, propose a concurrent test, and describe a design constraint that would protect it. Do not assume the replica is current or that an extra pre-check is atomic.",
+      "hint": "Two callers can both observe availability before either creates a rental.",
+      "answer": "The invariant is at most one active rental per bicycle. Start two requests for the same bicycle behind a test barrier so both availability checks complete before either write proceeds; introduce replica lag if needed. Assert that at most one request commits a rental. Enforce the invariant at the authoritative write boundary through an atomic conditional operation or suitable transaction and uniqueness mechanism. A second check outside that boundary still races. Record why the optimization was rejected or constrained and add the concurrent scenario to verification.",
+      "explanation": "Architecture review evaluates a generated change against a system promise, rather than treating passing sequential tests as sufficient.",
+      "criteria": [
+        "States the cross-request invariant",
+        "Constructs a controlled concurrent failure test",
+        "Places enforcement at an authoritative atomic boundary"
+      ]
+    },
+    {
+      "id": "ai-p3",
+      "type": "written",
+      "title": "Recover missing decision rationale",
+      "question": "A team inherits an AI-assisted document-conversion service with a twenty-megabyte upload limit. Nobody remembers why the limit exists. Product wants to raise it to two gigabytes tomorrow. Propose an evidence-gathering plan and a minimal decision record. Explain how you would distinguish an intentional architectural constraint from an arbitrary generated default without asserting that either explanation is already true.",
+      "hint": "Look for consequences across storage, memory, timeouts, dependencies and operational limits.",
+      "answer": "Inspect configuration history, tickets, provider limits and permitted operational measurements, then trace how upload size affects buffering, conversion memory, duration and temporary storage. Run bounded experiments at increasing sizes and check cancellation and partial-file cleanup. The limit may protect a resource, satisfy a dependency or simply be a default; label these as hypotheses until evidence distinguishes them. Record the user need, alternatives, measured constraints, chosen limit and review trigger. A larger limit should follow an explicit streaming or resource-management decision if whole-file processing is unsafe.",
+      "explanation": "This task addresses intent debt by reconstructing rationale and making the next decision auditable, rather than inventing a reason for existing code.",
+      "criteria": [
+        "Collects multiple relevant evidence types",
+        "Keeps hypotheses distinct from findings",
+        "Records tradeoffs and a verification plan"
+      ]
+    }
+  ],
+  "design": [
+    {
+      "id": "design-p1",
+      "type": "choice",
+      "title": "A subtype that rejects a valid client",
+      "question": "A scheduling library exposes Notifier.send(message), whose documented contract accepts any nonempty message up to 1,000 characters. A new SMSNotifier implementation rejects messages longer than 160 characters, although existing clients may send 500-character messages. Which redesign best preserves the stated client contract while making the SMS limitation explicit?",
+      "hint": "A subtype cannot silently narrow the inputs clients were promised.",
+      "answer": "The appropriate choice is to separate the SMS capability or introduce an adapter that genuinely fulfills the original contract. Merely throwing for messages above 160 characters strengthens the precondition and breaks valid existing clients. An adapter might split messages only if that behavior satisfies the documented delivery semantics; it must not silently truncate content. A narrower SMS interface can require clients to choose compatible behavior explicitly. Renaming the implementation or adding an exception comment does not repair substitutability under the original contract.",
+      "explanation": "The problem is a mismatch between promised accepted inputs and the replacement implementation, not whether inheritance syntax compiles.",
+      "criteria": [
+        "Identifies strengthened precondition",
+        "Chooses a contract-preserving or explicitly narrower interface"
+      ],
+      "options": [
+        "Keep the implementation because clients should know SMS limitations.",
+        "Silently truncate all long messages.",
+        "Rename SMSNotifier to FastNotifier without changing behavior.",
+        "Use a narrower SMS capability or an adapter that fulfills the original delivery contract."
+      ],
+      "answerIndex": 3
+    },
+    {
+      "id": "design-p2",
+      "type": "written",
+      "title": "Design an extension point with an exception",
+      "question": "A shipping service chooses a price policy by destination region. Next quarter it must support promotional policies installed by another team. Compliance also requires a mandatory tax calculation that plugins must not bypass. Propose the responsibilities and narrow interfaces for this extension point. Explain where composition is useful and name one test that would detect a plugin violating the intended boundary.",
+      "hint": "Extensible pricing need not give plugins control over the entire checkout workflow.",
+      "answer": "Keep orchestration and mandatory tax application in trusted checkout policy. Give a pricing plugin only the information and operation needed to propose a pre-tax shipping price, with explicit currency and valid-range rules. Compose the chosen policy into the orchestrator rather than allowing subclasses to replace the entire workflow. Validate plugin results and apply tax afterward through the mandatory path. Test a plugin returning an invalid amount or attempting to claim a tax-inclusive result, and assert that checkout rejects it or still applies the documented tax rule.",
+      "explanation": "Open extension points should protect stable policy; greater extensibility is not a reason to expose unrelated control.",
+      "criteria": [
+        "Separates optional pricing from mandatory tax policy",
+        "Defines a narrow validated contract",
+        "Tests the protected boundary"
+      ]
+    },
+    {
+      "id": "design-p3",
+      "type": "written",
+      "title": "Model ownership and independent lifetimes",
+      "question": "A museum Catalog references Artworks. Removing a Catalog must never delete an Artwork, because the same Artwork can appear in several catalogs. Each Catalog also owns layout Blocks that have no meaning outside that catalog. Describe UML relationships and multiplicities for both cases. Then explain one implementation risk if the team maps every association to cascading deletion in its database.",
+      "hint": "Consider whether a part can have multiple owners and survive removal of a container.",
+      "answer": "Use an ordinary many-to-many association between Catalog and Artwork, for example zero or more at both ends if empty catalogs and uncataloged artworks are permitted. Use composition from Catalog to Block when each block belongs to exactly one catalog and shares its modeled lifetime; a catalog may own zero or more blocks. A generic cascade rule could delete an artwork still referenced elsewhere, violating the domain rule. Implement artwork-link deletion separately from artwork deletion and verify persistence behavior rather than assuming UML notation enforces it.",
+      "explanation": "Ownership and lifecycle are domain decisions. Similar-looking references do not imply identical deletion semantics.",
+      "criteria": [
+        "Models shared artworks without composite ownership",
+        "States block ownership and multiplicities",
+        "Connects deletion behavior to domain invariants"
+      ]
+    }
+  ],
+  "nfr": [
+    {
+      "id": "nfr-p1",
+      "type": "choice",
+      "title": "Choose the correct acceptance evidence",
+      "question": "A transit display must show a changed platform within five seconds for at least 99% of updates during a two-hour rush-hour test. The team reports an average update delay of 700 ms and no process crashes. Which additional evidence is essential to decide whether this requirement passed? Assume timestamps can be correlated from the accepted platform change to its appearance on the display.",
+      "hint": "The requirement concerns a fraction of end-to-end updates, including ones never displayed.",
+      "answer": "The team needs the number of eligible updates displayed within five seconds divided by all eligible updates during the specified workload. Missing or never-displayed updates must not disappear from the denominator. A low mean can coexist with enough slow updates to fail a 99% objective, and process uptime does not demonstrate propagation. Check timestamp correlation and workload representativeness as part of the evidence. Report both the measured fraction and excluded or invalid observations with a justified measurement policy.",
+      "explanation": "An acceptance test must measure the property actually promised, at the correct boundary and with failures counted.",
+      "criteria": [
+        "Uses the correct denominator and time boundary",
+        "Rejects average latency as sufficient evidence"
+      ],
+      "options": [
+        "The median delay of successful updates only.",
+        "The fraction of all eligible updates displayed within five seconds, counting missing updates as failures.",
+        "The total number of servers that remained running.",
+        "The average network round-trip time between two servers."
+      ],
+      "answerIndex": 1
+    },
+    {
+      "id": "nfr-p2",
+      "type": "written",
+      "title": "Audit a misleading availability report",
+      "question": "A remote-assistance portal has a 99% successful-session target for a test window. There are 9,600 sessions that connect successfully, 250 that fail authentication because the identity service is unavailable, and 150 that time out before connecting. The dashboard excludes dependency errors and reports 9,600/9,750. Calculate the user-observed success rate and decide whether the target passed. State one scope clarification needed before the next test.",
+      "hint": "Dependency location does not remove a failure from an end-user promise.",
+      "answer": "With all 10,000 attempted eligible sessions in scope, the user-observed success rate is 9,600/10,000=96%, below the 99% target. The dashboard’s denominator of 9,750 excludes 250 failures and produces about 98.46%, which also fails but misrepresents the promised experience. Define which attempts are eligible, where the observation begins and ends, and whether expected user mistakes are distinct from service errors. Identity-service unavailability should count when the promise is successful end-to-end connection, even though another component caused it.",
+      "explanation": "Quality accounting must follow the stakeholder-visible service boundary rather than organizational ownership of failing components.",
+      "criteria": [
+        "Computes 96% with explicit denominator",
+        "Evaluates against 99%",
+        "Clarifies session eligibility and boundary"
+      ]
+    },
+    {
+      "id": "nfr-p3",
+      "type": "written",
+      "title": "Negotiate two conflicting quality goals",
+      "question": "A mobile field-inspection app must remain usable during a six-hour network outage, but central administrators want every revoked account blocked everywhere within thirty seconds. Inspectors may be offline with previously issued credentials. Explain why these requirements conflict under that condition, propose two defensible product policies, and write one acceptance test for the policy you recommend. Treat the choice as a stakeholder decision rather than a technical trick.",
+      "hint": "An isolated device cannot learn an arbitrary new revocation without communication.",
+      "answer": "An offline device cannot reliably learn a new central revocation within thirty seconds. One policy prioritizes offline work using bounded cached credentials, explicitly delaying revocation until reconnection or expiry and limiting allowed operations. Another requires recent online authorization, sacrificing extended offline use. For inspection capture, a defensible compromise may permit locally encrypted drafts but require online authorization before submission or sensitive retrieval. Test a revocation during a simulated six-hour disconnection: verify only permitted draft operations remain available and that synchronization is denied until authorization is re-established.",
+      "explanation": "The exercise turns conflicting stakeholder goals into explicit behavior and acceptance evidence instead of silently weakening one promise.",
+      "criteria": [
+        "Explains the information constraint",
+        "Offers policies with clear tradeoffs",
+        "Tests the selected behavior under outage"
+      ]
+    }
+  ],
+  "scaling": [
+    {
+      "id": "scaling-p1",
+      "type": "choice",
+      "title": "Replicate work or remove work?",
+      "question": "A rendering service runs on one machine with eight CPU cores. Each request uses 40 ms of CPU and no significant I/O. At 180 requests/s, CPU use is roughly 90%. A proposal doubles the number of worker processes on the same machine without adding cores or changing request work. Which prediction is best justified for sustained throughput, ignoring scheduler overhead for the estimate?",
+      "hint": "Calculate CPU seconds required per wall-clock second.",
+      "answer": "The same eight cores provide at most eight CPU-seconds per second. At forty milliseconds per request, the ideal CPU capacity is 8/.040=200 requests/s, so 180 requests/s consumes 7.2 CPU-seconds/s, or 90%. More worker processes may alter scheduling but cannot double this CPU budget. Additional cores, lower per-request work or reduced offered work can raise the bound. Real capacity may be lower because of scheduling, synchronization and other overhead, so the calculation is an upper-bound model rather than a guaranteed throughput.",
+      "explanation": "Workers expose concurrency, while cores provide execution capacity for a CPU-bound workload.",
+      "criteria": [
+        "Computes the resource capacity bound",
+        "Separates worker count from CPU capacity"
+      ],
+      "options": [
+        "Throughput must double because worker count doubles.",
+        "Throughput falls to zero because workers cannot share cores.",
+        "The ideal CPU bound remains about 200 requests/s.",
+        "The machine can sustain unlimited requests if its queue is unbounded."
+      ],
+      "answerIndex": 2
+    },
+    {
+      "id": "scaling-p2",
+      "type": "written",
+      "title": "Rolling deployment with local conversation state",
+      "question": "A customer-support service has four application instances. Each holds a conversation draft only in local memory, and a load balancer uses sticky routing. Operators want to replace all instances one at a time without losing drafts or interrupting ongoing conversations. Propose a migration sequence and failure test. Explain why sticky routing alone does not satisfy the deployment requirement, even if ordinary traffic remains correctly routed.",
+      "hint": "Consider what happens to the state when the selected process disappears.",
+      "answer": "Introduce an authoritative shared draft store with versioned updates, then migrate active drafts before relying on replacement instances. A transitional release can persist drafts and read shared state while retaining compatibility with old clients. Drain an instance from new traffic, finish or transfer active work, verify persistence and then terminate it. Sticky routing only selects a process; it does not preserve that process’s memory. Test abrupt termination during an acknowledged draft update and require another instance to recover the acknowledged version without overwriting a newer edit.",
+      "explanation": "Deployment continuity is a state-ownership and update-semantics problem as well as a routing problem.",
+      "criteria": [
+        "Provides an ordered migration and drain plan",
+        "Explains sticky-routing limitation",
+        "Tests abrupt failure and version preservation"
+      ]
+    },
+    {
+      "id": "scaling-p3",
+      "type": "written",
+      "title": "Estimate bandwidth before buying compute",
+      "question": "A download portal must serve 90 files per second during a launch. Each response transfers exactly 2 MB, using decimal units. The application has ample CPU, but its outbound link is limited to 1 Gbit/s; ignore protocol overhead. Calculate whether the link can sustain the load. A compressed representation averages 1.2 MB and takes an extra 3 ms CPU per response. Evaluate the bandwidth effect and identify the next measurement needed.",
+      "hint": "Convert bytes to bits before comparing with link capacity.",
+      "answer": "The original traffic is 90×2=180 MB/s, or 1,440 Mbit/s, exceeding the 1,000 Mbit/s link. Its ideal link-limited capacity is 125 MB/s divided by 2 MB, or 62.5 responses/s. Compression lowers demand to 108 MB/s=864 Mbit/s, which fits the ideal link budget but leaves limited overhead margin. Its added CPU demand is 90×.003=.27 CPU-seconds per second. Measure actual transfer sizes, protocol overhead, compression CPU and burst behavior to verify that the new bottleneck has not moved elsewhere.",
+      "explanation": "Scaling choices should address the limiting resource; adding application workers cannot widen a saturated network link.",
+      "criteria": [
+        "Converts units and identifies the initial bottleneck",
+        "Computes compressed load and CPU demand",
+        "Names relevant validation measurements"
+      ]
+    }
+  ],
+  "cache": [
+    {
+      "id": "cache-p1",
+      "type": "choice",
+      "title": "A cache that increases failure load",
+      "question": "A train timetable API caches one popular route for sixty seconds. At expiry, 500 requests arrive nearly together; every request independently fetches the same route from the database before storing it. The database becomes overloaded although the long-run cache hit rate is high. Which design most directly reduces this duplicate refresh work without extending freshness beyond the published limit?",
+      "hint": "Coordinate who refreshes the same key while other requests wait for that result.",
+      "answer": "Coalescing concurrent misses for the same key lets one request fetch and populate the new value while others await that refresh. It avoids five hundred identical database reads without serving content beyond the allowed freshness limit. The refresh coordination needs a timeout and failure path so a failed owner does not block everyone forever. Increasing cache capacity does not address synchronized expiry for one key. Indefinitely serving stale content would change the correctness promise rather than solving the stated problem.",
+      "explanation": "A high average hit rate can hide a dangerous burst at expiry; refresh coordination targets that burst.",
+      "criteria": [
+        "Identifies coordinated single refresh",
+        "Preserves freshness and handles refresh failure"
+      ],
+      "options": [
+        "Coalesce simultaneous misses by key, with bounded waiting and refresh-failure handling.",
+        "Increase capacity so the route occupies more cache entries.",
+        "Serve expired data forever whenever the database is busy.",
+        "Give every requester a separate database connection and refresh immediately."
+      ],
+      "answerIndex": 0
+    },
+    {
+      "id": "cache-p2",
+      "type": "written",
+      "title": "Budget the origin after a traffic change",
+      "question": "A media service sees 2,000 requests/s: 70% request thumbnails and 30% request originals. Thumbnail cache hit rate is 95%; original hit rate is 40%. Each origin request costs the same CPU work. Calculate the origin request rate and overall hit rate. Then a release changes the mix to 40% thumbnails and 60% originals, with hit rates unchanged. Quantify the origin-load change and explain why a single old hit-rate number is unsafe for capacity planning.",
+      "hint": "Weight each miss rate by its own traffic share before adding.",
+      "answer": "Initially, thumbnail misses are 2000×.7×.05=70/s and original misses are 2000×.3×.6=360/s. Origin load is 430/s and hit rate is 1−430/2000=78.5%. After the mix changes, misses are 40/s plus 720/s, totaling 760/s; hit rate becomes 62%. Origin load rises by 330/s, or about 76.7%, despite unchanged total traffic and per-class hit rates. Capacity planning must preserve workload composition, not assume that a historical aggregate cache ratio stays valid. Track these classes separately when setting origin-capacity alerts.",
+      "explanation": "Cache effectiveness is a workload-dependent weighted quantity; changing popularity or object classes can expose the origin.",
+      "criteria": [
+        "Computes both weighted miss rates",
+        "Quantifies relative origin increase",
+        "Explains why aggregation hides workload change"
+      ]
+    },
+    {
+      "id": "cache-p3",
+      "type": "written",
+      "title": "Prevent an old refresh from undoing an edit",
+      "question": "A catalog cache is initially empty. Reader A begins loading version 10 from the database. An editor commits version 11 and invalidates the cache. Reader A then finishes and stores version 10, so subsequent readers receive stale data for the full TTL. Propose a cache-population protocol that prevents this specific race. State the ordering or version assumption it needs and a deterministic test for it.",
+      "hint": "Invalidation can happen before an already-running refresh writes its result.",
+      "answer": "Associate cache population with a version or generation and reject writes from an older generation. For example, refresh A reads generation g before loading; after commit, the editor atomically advances the cache generation and invalidates the value. A may populate only if the generation remains g. This requires coordination that preserves the generation marker even when the value is absent and orders invalidation after commit. In a test, pause A after its old read, commit and invalidate version 11, then resume A and assert version 10 is not installed.",
+      "explanation": "Invalidation alone cannot stop an in-flight stale writer; the protocol must check whether the writer’s evidence is still current.",
+      "criteria": [
+        "Describes version-aware conditional population",
+        "States coordination and ordering assumptions",
+        "Tests the exact interleaving"
+      ]
+    }
+  ],
+  "modeling": [
+    {
+      "id": "modeling-p1",
+      "type": "choice",
+      "title": "Choose the correct critical path",
+      "question": "A document preview request validates input for 12 ms, then starts two independent operations on separate unconstrained resources: image generation takes 45 ms and metadata extraction takes 20 ms. The response waits for both, then packages the result for 8 ms. Ignore launch overhead and contention. Which no-contention response estimate is correct, and what property of the graph determines it?",
+      "hint": "The parallel region finishes when its slower required branch finishes.",
+      "answer": "The estimate is 12+max(45,20)+8=65 ms. Both branches are required, but they overlap on the explicitly separate resources. Adding all node times would measure accumulated work rather than this elapsed response path. Using the shorter branch would return before image generation completes. This estimate depends on the stated independent-resource and zero-overhead assumptions; if both operations contend for one resource or a synchronization cost exists, the graph or resource model must change before reusing the result.",
+      "explanation": "A parallel join contributes its critical branch under the stipulated assumptions, not the sum of overlapping branch durations.",
+      "criteria": [
+        "Identifies the join and critical branch",
+        "States the resource assumption"
+      ],
+      "options": [
+        "40 ms, because the first branch to finish determines the response.",
+        "45 ms, because validation and packaging overlap automatically.",
+        "85 ms, because all operation times must always be added.",
+        "65 ms, because validation and packaging surround the slower parallel branch."
+      ],
+      "answerIndex": 3
+    },
+    {
+      "id": "modeling-p2",
+      "type": "written",
+      "title": "An optimization that moves the bottleneck",
+      "question": "Two implementations of an image-tagging request have equal no-contention total demand of 60 ms. A uses 50 ms CPU and 10 ms disk; B uses 20 ms CPU and 40 ms disk. The deployment has two CPU cores and one disk service station. Assume demands consume these resources exclusively, all requests follow the same path, and throughput is bounded by resource demand. Derive the ideal capacity bound for each design and explain why equal baseline times do not imply equal scalability.",
+      "hint": "Capacity bounds are resource count divided by per-request demand, then limited by the smallest result.",
+      "answer": "For A, CPU capacity is 2/.050=40 requests/s and disk capacity is 1/.010=100 requests/s, so the ideal bound is 40 requests/s. For B, CPU allows 100 requests/s but disk allows only 25 requests/s, giving a bound of 25 requests/s. Both sum to 60 ms without contention, yet B concentrates work on the less-replicated resource. These are capacity bounds, not latency predictions or guaranteed sustainable operating points; scheduling, queueing and other overhead require further analysis and measurement.",
+      "explanation": "Preserving the per-resource demand vector exposes bottlenecks that a single execution-time total hides.",
+      "criteria": [
+        "Derives resource-specific bounds",
+        "Chooses the correct limiting resource",
+        "Distinguishes capacity bound from measured throughput"
+      ]
+    },
+    {
+      "id": "modeling-p3",
+      "type": "written",
+      "title": "Compare optimizations through a resource matrix",
+      "question": "A weather bulletin executes two Encode actions sequentially, then either one Lookup (probability 0.8) or three Lookups (probability 0.2), then a fixed 3 ms finalization. The resource matrix is: Encode = 300 CPU units, 0 disk I/Os, 1 network message; Lookup = 100 CPU units, 2 disk I/Os, 0 messages. Costs are 0.02 ms/CPU unit, 3 ms/I/O and 1 ms/message. Assume all costs add, with no contention. Calculate expected bulletin time, then compare halving Encode CPU work against halving Lookup disk work.",
+      "hint": "Convert each matrix row into action time, then weight the Lookup count before comparing savings.",
+      "answer": "Encode costs 300×.02+1×1=7 ms; Lookup costs 100×.02+2×3=8 ms. Expected Lookup count is .8×1+.2×3=1.4. Expected time is 2×7+1.4×8+3=28.2 ms. Halving Encode CPU work saves 2×(300×.02/2)=6 ms, giving 22.2 ms. Halving Lookup disk work saves 1.4×(2×3/2)=4.2 ms, giving 24 ms. Choose Encode optimization for this no-contention mean objective. This conclusion does not determine loaded response: disk contention could make reduced disk demand more valuable under concurrency. Both alternatives hold branch probabilities fixed and must preserve the same correct bulletin output.",
+      "explanation": "The matrix reveals which resource contribution changes. A larger reduction in unloaded average execution time need not dominate after queueing is introduced.",
+      "criteria": [
+        "Converts matrix rows with correct units",
+        "Computes probability-weighted time and both savings",
+        "Distinguishes no-contention result from loaded performance"
+      ]
+    }
+  ],
+  "queue6": [
+    {
+      "id": "queue6-p1",
+      "type": "choice",
+      "title": "Choose an intervention that meets the latency goal",
+      "question": "A single-server M/M/1 image-checking stage receives 28 requests/s and has mean service time 25 ms. Its mean residence target is at most 60 ms. Option A reduces service time to 20 ms at the same arrival rate. Option B keeps 25 ms service but admits only 20 requests/s, deferring the rest outside this measured stage. Which conclusion is correct? Evaluate residence inside the stage only; do not claim deferred users meet the end-to-end target.",
+      "hint": "Use R=S/(1−λS), checking stability for each option.",
+      "answer": "The baseline has utilization 28×.025=.7 and residence .025/.3≈83.33 ms, so it misses the target. A gives utilization .56 and R=.020/.44≈45.45 ms. B gives utilization .5 and R=.025/.5=50 ms. Both meet the stage-local target, but B defers eight arrivals per second outside the boundary. Its apparent success therefore does not establish a sixty-millisecond user experience. A fair decision compares the full path, deferral policy and implementation cost, not just the displayed stage metric.",
+      "explanation": "Changing a measurement boundary can hide waiting; a valid local improvement is not automatically an end-to-end improvement.",
+      "criteria": [
+        "Computes both stable residence times",
+        "Recognizes waiting moved outside the boundary"
+      ],
+      "options": [
+        "Only A meets the stage target.",
+        "Only B meets the stage target.",
+        "Both meet the stage target, but B leaves deferred time outside the result.",
+        "Neither meets the stage target because utilization must be zero."
+      ],
+      "answerIndex": 2
+    },
+    {
+      "id": "queue6-p2",
+      "type": "written",
+      "title": "Detect incompatible dashboard boundaries",
+      "question": "During a stable 120-second interval, a conversion system completes 2,400 requests and has an average of four requests inside its measured boundary, including service. A dashboard reports mean response of 80 ms for that same interval. Use Little’s law to test whether all three numbers can describe the same boundary. Then describe two concrete instrumentation mistakes that could reconcile the discrepancy without concluding that Little’s law is false.",
+      "hint": "Throughput is completions divided by time; compare N/X with the displayed duration.",
+      "answer": "Throughput is 2400/120=20 requests/s, so four average in-system requests imply residence R=N/X=4/20=.2 seconds, or 200 ms. A reported 80 ms would instead imply N=20×.08=1.6. Under the stated stable, consistent accounting, the three numbers conflict. The duration timer might start after queue waiting, while population includes queued work; alternatively the completion counter might include a different request class or boundary. Check population sampling, timer endpoints, class filters and interval alignment before using these metrics for capacity decisions.",
+      "explanation": "Operational-law consistency checks can reveal instrumentation mismatches before a team acts on misleading performance data.",
+      "criteria": [
+        "Computes 200 ms and the inconsistency",
+        "Proposes two specific measurement mismatches",
+        "Maintains consistent boundary assumptions"
+      ]
+    },
+    {
+      "id": "queue6-p3",
+      "type": "written",
+      "title": "Solve backward from a response objective",
+      "question": "A single M/M/1 validation station must sustain 60 requests/s with mean residence at most 40 ms. Its current mean service time is 15 ms. Find the largest allowable mean service time under the model, decide whether the current implementation passes, and calculate the minimum percentage reduction in mean service time needed. Assume stationary Poisson arrivals, exponential service, one server and no other latency in this objective.",
+      "hint": "Rearrange S/(1−60S)≤.040 rather than choosing a utilization target arbitrarily.",
+      "answer": "Stability requires S<1/60 seconds. The response condition gives S≤.040(1−60S), hence 3.4S≤.040 and S≤.0117647 seconds, or about 11.765 ms. Current utilization is .9 and residence is .015/.1=.15 seconds, so the current implementation fails. Reducing mean service from 15 to 11.7647 ms requires at least (15−11.7647)/15≈21.57% under this ideal model. A real design should leave margin for workload uncertainty and verify the model assumptions; equality at the computed threshold provides no objective margin.",
+      "explanation": "Latency constraints near saturation can demand substantially more optimization than a raw service-time comparison suggests.",
+      "criteria": [
+        "Solves the inequality with seconds",
+        "Checks current response and required reduction",
+        "States stability and modeling limits"
+      ]
+    }
+  ],
+  "queue8": [
+    {
+      "id": "queue8-p1",
+      "type": "choice",
+      "title": "Choose a workload model for self-throttling clients",
+      "question": "A laboratory has exactly 24 analysis terminals. Each operator submits one job, waits for its result, spends an average of eight seconds examining it, and then submits the next job. After a server slowdown, the observed submission rate falls even though every operator continues this routine. Which model best captures this coupling, and what should remain fixed when evaluating a proposed server upgrade?",
+      "hint": "The next request is gated by the previous response, so arrivals are not externally independent.",
+      "answer": "A closed interactive workload with twenty-four users and eight-second mean think time captures the routine. Population and user behavior stay fixed while response and throughput change. An open model with a fixed external arrival rate would miss the feedback from slow responses to fewer new submissions. For a stable one-outstanding-request cycle, the interactive relationship is X=N/(R+Z). It explains why an upgrade can increase throughput even without adding users, although solving device contention still requires service-demand and scheduling assumptions.",
+      "explanation": "Workload structure determines what is an input and what is an outcome in a performance comparison.",
+      "criteria": [
+        "Selects a closed population model",
+        "Keeps population and think time fixed"
+      ],
+      "options": [
+        "An open model with the pre-slowdown arrival rate fixed forever.",
+        "A closed model with 24 users and eight-second mean think time.",
+        "An infinite-server model because every terminal is independent.",
+        "A model that removes think time and treats all operators as constantly requesting."
+      ],
+      "answerIndex": 1
+    },
+    {
+      "id": "queue8-p2",
+      "type": "written",
+      "title": "Evaluate a bounded waiting room",
+      "question": "An upload worker has one active service slot and room for four additional waiting jobs. In a stable ten-minute observation, 3,000 requests reach its admission boundary, 600 are rejected immediately, and admitted requests have mean residence 0.5 seconds. Assume no admitted work is lost and boundary effects are negligible. Calculate accepted throughput, rejection fraction and average jobs inside the worker boundary. Explain why using the offered arrival rate in Little’s law would miscount this population.",
+      "hint": "The population inside the worker consists only of admitted requests; total capacity is five.",
+      "answer": "Accepted requests are 3000−600=2400 over 600 seconds, so accepted throughput is 4 requests/s. The rejection fraction is 600/3000=20%. Little’s law for admitted work gives N=X×R=4×.5=2 jobs on average, including the one potentially in service. Using the offered rate 3000/600=5/s would give 2.5 and incorrectly include requests that never entered this boundary. These observed values do not require M/M/1 assumptions, and a mean population below capacity does not imply that full-capacity rejection never occurred.",
+      "explanation": "Finite admission changes the relevant flow rate; average occupancy and rejection probability measure different aspects of load.",
+      "criteria": [
+        "Uses admitted throughput and computes 20% rejection",
+        "Computes average population two",
+        "Explains boundary and capacity conventions"
+      ]
+    },
+    {
+      "id": "queue8-p3",
+      "type": "written",
+      "title": "Compare two service-demand optimizations",
+      "question": "A two-station open model receives 30 jobs/s. Every job visits CPU once for mean 12 ms and storage four times for mean 4 ms per visit. Use independent M/M/1 station approximations, with per-request response contribution D/(1−λD). Option C halves CPU demand; option S removes two storage visits without changing per-visit cost. Compute baseline response and each option’s response. Recommend the better option for mean latency under this model, and name a condition that could change the recommendation.",
+      "hint": "Convert storage visits to total demand before applying utilization and response formulas.",
+      "answer": "Baseline demands are .012 and 4×.004=.016 seconds/job. Response is .012/.64+.016/.52=.0495192 seconds, or 49.52 ms. C changes CPU demand to .006: .006/.82+.016/.52≈38.09 ms. S changes storage demand to .008: .012/.64+.008/.76≈29.28 ms. S produces the lower modeled mean latency, reducing the more heavily utilized demand. The recommendation may change if removing visits violates correctness, changes cache-hit behavior or adds substantial CPU work. The station approximation and fixed workload must also be validated.",
+      "explanation": "Optimizing the dominant resource can yield greater end-to-end benefit than an equally impressive percentage improvement elsewhere.",
+      "criteria": [
+        "Uses per-request storage demand",
+        "Computes all three responses",
+        "Makes a conditional rather than absolute recommendation"
+      ]
+    }
+  ],
+  "db1": [
+    {
+      "id": "db1-p1",
+      "type": "choice",
+      "title": "The expensive status index",
+      "question": "A repair shop records equipment readings in a relational table. A proposed status index reduces one hourly diagnostic query from eight seconds to one second, but tests show every insert takes 0.4 milliseconds longer. The system receives 2,000 inserts per second, and its write path is already near saturation. The diagnostic query has a thirty-second deadline. Which next step best fits these requirements?",
+      "hint": "Compare the frequency and urgency of the benefit with the continuous maintenance cost.",
+      "answer": "Keep the index out of the saturated production write path for now and evaluate a separate analytical copy or another measured query improvement. The existing eight-second query already meets its thirty-second deadline, while 2,000 inserts each adding 0.4 milliseconds require 800 milliseconds of additional aggregate insert work per second. That is not automatically eighty percentage points of CPU utilization, because the delay may include other resources, but it is material write-path overhead. Reassess if diagnostics become more frequent or their deadline changes.",
+      "explanation": "An index is a workload trade-off, not a universally free optimization. A measured improvement to a rare query can be outweighed by maintenance on frequent writes.",
+      "criteria": [
+        "Recognizes that the current query meets its deadline",
+        "Accounts for continuous index maintenance",
+        "Avoids interpreting elapsed insert delay as directly measured CPU demand"
+      ],
+      "options": [
+        "Keep the index off the write path and evaluate an analytical copy or measured alternative",
+        "Add the index because every faster query improves overall capacity",
+        "Add read replicas and assume they eliminate primary index maintenance",
+        "Replace SQL with NoSQL because NoSQL indexes have no update cost"
+      ],
+      "answerIndex": 0
+    },
+    {
+      "id": "db1-p2",
+      "type": "written",
+      "title": "A hot tenant hides inside balanced storage",
+      "question": "A field-service database uses four equal-capacity shards, each able to process 900 requests per second. Storage occupies the same number of bytes on every shard. At peak, tenant A generates 1,200 requests per second and all other tenants together generate 600, spread evenly across the remaining three shards. Records are placed by tenant ID. Diagnose the overload and propose a migration that preserves efficient tenant queries without assuming every tenant can remain on one shard.",
+      "hint": "Calculate load per shard rather than comparing only total traffic with total nominal capacity.",
+      "answer": "The tenant-A shard receives 1,200 requests per second against a 900-request limit, while each other shard receives only 200. Aggregate nominal capacity is 3,600, but spare capacity elsewhere cannot serve data owned only by A’s shard. Split A using a second key, such as equipment group, while retaining tenant-local placement for smaller tenants. Route group-specific requests directly and fan out only queries that need all of A. Migrate with explicit ownership, verification and a cutover plan; copying bytes alone does not safely move concurrent writes.",
+      "explanation": "Even data size does not imply even request load. A composite placement rule can trade some tenant-wide query locality for better load distribution.",
+      "criteria": [
+        "Calculates 1200 versus 900 and 200 on other shards",
+        "Proposes targeted partitioning of the hot tenant",
+        "Addresses routing and safe ownership during migration"
+      ]
+    },
+    {
+      "id": "db1-p3",
+      "type": "written",
+      "title": "One report, two replication positions",
+      "question": "A warehouse transfer commits two changes in one primary transaction: remove twelve units from shelf A and add twelve to shelf B. A reporting service reads A from replica East and B from replica West. Each replica applies complete transactions, but East has applied this transfer and West has not. The report adds the two shelf quantities and raises a stock-loss alarm. Explain the anomaly and design a read strategy for this report.",
+      "hint": "Individually consistent replicas need not represent the same database version.",
+      "answer": "The report combines two different transaction positions: the decrease is visible but its matching increase is not, so it invents a twelve-unit loss. No replica necessarily exposed a partial transaction. Run both reads in one consistent snapshot on a single replica, or execute the aggregate as one snapshot-consistent query. If the report must include this newly committed transfer, first require a replication progress token or use an appropriate primary read. A same-replica route alone is insufficient when separate statements can observe changing snapshots without a transaction.",
+      "explanation": "Replica self-consistency does not imply consistency across a multi-request report. Snapshot selection and minimum freshness are separate requirements.",
+      "criteria": [
+        "Identifies cross-replica version mixing",
+        "Specifies one consistent snapshot",
+        "Separates snapshot consistency from inclusion of the latest transfer"
+      ]
+    }
+  ],
+  "db2": [
+    {
+      "id": "db2-p1",
+      "type": "choice",
+      "title": "The isolated inventory desk",
+      "question": "A five-node inventory service normally provides linearizable reservations for the last item of a product. A network partition separates two nodes in a remote shop from the other three. The application forbids promising the same item to two customers. The isolated shop can still accept local HTTP requests, but cannot communicate with the majority. Under these constraints, which behavior is the strongest defensible choice for a new reservation?",
+      "hint": "A reachable node is not necessarily able to make a globally safe decision during a partition.",
+      "answer": "The isolated shop should decline or defer confirmation and clearly report that the reservation is not yet committed. During this partition, the service cannot both guarantee linearizable reservations and successfully complete every request on both sides. It may offer a nonbinding expression of interest, but must not label that a confirmed reservation. The majority can continue only through the system’s valid coordination protocol. This is a partition-specific trade-off; it does not mean the service must sacrifice availability during ordinary healthy operation.",
+      "explanation": "The application requires one authoritative decision about a scarce item. Local acknowledgement without coordination would weaken that promise.",
+      "criteria": [
+        "Rejects independent confirmation on the minority",
+        "States the trade-off specifically during partition",
+        "Distinguishes deferred interest from committed reservation"
+      ],
+      "options": [
+        "Confirm locally because HTTP requests still reach the shop",
+        "Confirm on both sides and call the service linearizable because each node is sequential",
+        "Defer or reject confirmation on the isolated side while preserving the consistency contract",
+        "Add a read cache and assume it can decide exclusive ownership"
+      ],
+      "answerIndex": 2
+    },
+    {
+      "id": "db2-p2",
+      "type": "written",
+      "title": "Read latency after an unfinished write",
+      "question": "A replicated key initially holds version 10 on nodes A, B and C. A writer sends version 11, which reaches A only, then crashes before completing its write protocol. Reader R1 consults A and B and returns 11. Later reader R2 consults B and C and returns 10; no intervening write occurred. Both readers used two responses. Explain why a quorum-intersection argument alone fails to justify these results, and identify the missing kind of protocol work.",
+      "hint": "Which write was completed, and what must happen after a reader exposes a partially propagated value?",
+      "answer": "The usual completed-write overlap argument does not apply to version 11 because that write never reached its required completion condition. R1 nonetheless exposed it, and the subsequent return to 10 violates a linearizable register history: once 11 is observed, the pending write must be placed before R1, so R2 cannot then return 10. A complete protocol must handle incomplete writes, for example through version validation and read-back/write-back stabilization under its specified algorithm. Merely choosing the largest value among two replies does not supply that proof.",
+      "explanation": "Intersecting response sets are useful structure, but safe handling of partially completed operations is essential to the actual consistency guarantee.",
+      "criteria": [
+        "Recognizes that version 11 was an incomplete write",
+        "Explains why R1 then R2 cannot be linearized",
+        "Names protocol stabilization/validation rather than more arbitrary waiting"
+      ]
+    },
+    {
+      "id": "db2-p3",
+      "type": "written",
+      "title": "Denormalized names with repair",
+      "question": "A directory embeds each laboratory’s display name into 40,000 researcher profiles to make profile reads local. The lab rename operation updates the authoritative laboratory record immediately, then asynchronously changes embedded copies. Product requirements allow names to take five minutes to converge, but an older retry must never overwrite the new name. Design the update metadata, consumer rule and repair process. Explain what this choice gains and what it does not guarantee.",
+      "hint": "The same event may arrive twice, or an older rename may arrive after a newer one.",
+      "answer": "Assign a monotonically increasing version to each laboratory name change and store that laboratory version beside each embedded name. Consumers apply a change only when its version is newer than the stored version; equal versions are safe duplicates and older versions are ignored. Track propagation progress and periodically reconcile profiles against the authoritative record to repair missed events. Alert or rebuild when the five-minute objective is exceeded. Profiles retain local reads at the cost of fan-out and temporary inconsistency; the design does not make every reader immediately see the rename.",
+      "explanation": "Version-aware propagation addresses reordering, while reconciliation addresses loss. These are different failure modes of a derived copy.",
+      "criteria": [
+        "Uses per-laboratory versions and conditional application",
+        "Includes reconciliation and a measurable convergence objective",
+        "States local-read benefit and temporary staleness"
+      ]
+    }
+  ],
+  "choosing": [
+    {
+      "id": "choosing-p1",
+      "type": "choice",
+      "title": "A schema is not a deployment topology",
+      "question": "A small legal-document team has twelve analysts, strongly related case records and frequent ad hoc joins. Its existing relational database meets measured latency and capacity targets. A proposal says to migrate everything to a document store because all SQL databases accept writes on only one machine and therefore cannot scale. No additional workload forecast or product limitation is provided. Which architectural response is best supported by this evidence?",
+      "hint": "Separate the data model, the deployment design and the workload that actually needs improvement.",
+      "answer": "Retain the working relational design while investigating a concrete bottleneck or growth requirement. The existing joins and relationships fit its workload, and the proposal’s claim about all SQL systems is false: a relational interface does not universally dictate a single write topology. A document model might still help a particular aggregate-oriented workload, but that needs evidence and a migration cost analysis. Compare candidate products on actual query patterns, integrity guarantees, operational complexity and growth forecasts rather than treating the SQL/NoSQL label as a capacity measurement.",
+      "explanation": "A storage migration is justified by requirements and measured limitations, not an absolute claim about an entire database family.",
+      "criteria": [
+        "Separates SQL/data model from topology",
+        "Uses measured requirements to evaluate migration",
+        "Recognizes operational and integrity costs"
+      ],
+      "options": [
+        "Migrate immediately because a flexible document schema guarantees higher throughput",
+        "Remove joins by duplicating every record without an update strategy",
+        "Add a search index and use it as the only authoritative case database",
+        "Retain the current fit and require workload-specific evidence before choosing a migration"
+      ],
+      "answerIndex": 3
+    },
+    {
+      "id": "choosing-p2",
+      "type": "written",
+      "title": "The lost cache must not lose the fact",
+      "question": "A museum uses an in-memory store for a popularity leaderboard that can be rebuilt nightly. A developer proposes also storing the only copy of accepted artifact-loan agreements there because writes are fast. The configured policy evicts least-used keys at its memory limit, and disk persistence can lag. Design storage roles for both workloads and describe what should happen after a total cache loss. Keep your answer about guarantees rather than brand names.",
+      "hint": "Rebuildable rankings and authoritative agreements have different loss tolerances.",
+      "answer": "Keep authoritative loan agreements in a durable transactional store with the required acknowledgement and backup/recovery policy. Use the in-memory store for a derived leaderboard, and rebuild it from durable visit or vote records after loss. If fresh rankings matter, replay changes since the latest checkpoint rather than waiting for the next night. Do not rely on eviction-prone, asynchronously persisted keys as the sole accepted agreement record. The same software might support stronger configurations, but the stated configuration does not meet this workload’s durability requirement.",
+      "explanation": "The decision follows the role and configuration of a store. Fast reads, persistence options and authoritative durability are not interchangeable promises.",
+      "criteria": [
+        "Separates authoritative agreements from derived rankings",
+        "Explains a rebuild/replay path",
+        "Evaluates the stated eviction and persistence behavior"
+      ]
+    },
+    {
+      "id": "choosing-p3",
+      "type": "written",
+      "title": "Columns and bytes actually scanned",
+      "question": "An operations report scans 18 million equipment records. Each full row occupies 240 uncompressed bytes, but the report needs only a 4-byte site code and an 8-byte energy value. Assume a column-oriented layout can read exactly those columns and compress them by 3:1; ignore metadata, indexes and caching. Calculate bytes read for each layout and the reduction factor. Then explain why those figures alone do not prove that the transactional database should be replaced.",
+      "hint": "First calculate useful bytes per record, then apply compression; separate an analytical copy from the source of truth.",
+      "answer": "The row scan reads 18,000,000 × 240 = 4,320,000,000 bytes, or 4.32 GB in decimal units. The selected columns total 12 bytes per record; after 3:1 compression the scan reads 18,000,000 × 12 / 3 = 72,000,000 bytes, or 72 MB. The ideal read-volume reduction is 60-fold. Actual runtime also depends on decompression, execution, parallelism and storage. An analytical copy may deliver this benefit while the transactional source retains update and integrity responsibilities; freshness and ingestion costs must also be considered.",
+      "explanation": "Reduced scan volume is a strong workload-specific reason for columnar analytics, not a universal replacement argument.",
+      "criteria": [
+        "Computes 4.32 GB and 72 MB correctly",
+        "Computes the 60-fold reduction",
+        "Distinguishes scan efficiency from transactional and freshness requirements"
+      ]
+    }
+  ],
+  "basic": [
+    {
+      "id": "basic-p1",
+      "type": "choice",
+      "title": "The hidden duplicate scraper",
+      "question": "A publishing site scales its stateless application from one instance to four behind a load balancer. Each instance also starts the same hourly import timer. After rollout, the editor finds four copies of every imported story. Readers are distributed correctly, and session state is externalized. The import must run once per scheduled interval, but failed work must be recoverable. Which change most directly addresses the defect?",
+      "hint": "Request routing does not coordinate timers running independently inside every process.",
+      "answer": "Separate scheduling from the replicated request-serving instances and represent each import interval as a uniquely identified durable job. Let a worker claim it with an appropriate coordination mechanism, and make story insertion idempotent using the source’s stable identifier. A lease or scheduler alone is not enough because a crash can occur after insertion but before completion is recorded. The other application instances can remain behind the load balancer. This preserves recoverability without allowing replicated timers to multiply authoritative content.",
+      "explanation": "Stateless request handling does not make background side effects unique. Scheduling ownership and repeat-safe work require explicit design.",
+      "criteria": [
+        "Identifies replicated background scheduling",
+        "Separates durable job ownership from request balancing",
+        "Adds idempotent import effects for retries"
+      ],
+      "options": [
+        "Enable session affinity so each timer always uses its own instance",
+        "Create uniquely identified scheduled jobs and idempotent imports outside each request instance’s timer",
+        "Increase database capacity so four imports finish faster",
+        "Disable health checks so only the original instance stays active"
+      ],
+      "answerIndex": 1
+    },
+    {
+      "id": "basic-p2",
+      "type": "written",
+      "title": "Two independent cache layers",
+      "question": "A public exhibit page is requested 3,600 times per second during a campaign. Its CDN serves 92% of requests without contacting the origin. For the remainder, an application cache serves 75% without a database query; each application-cache miss issues two database reads. Assume the hit rates are independent and stable. Compute origin requests and database reads per second, then explain what capacity test is missing before trusting this steady-state estimate.",
+      "hint": "Apply the miss fraction at each layer, and remember that a restart may change both hit rates.",
+      "answer": "The CDN miss rate is 8%, so the origin receives 3,600 × 0.08 = 288 requests per second. One quarter of those miss the application cache: 288 × 0.25 = 72. At two reads each, the database receives 144 reads per second. Test cold-start and synchronized-expiry behavior: if both caches are empty, the same demand could create 7,200 reads per second. Staggered expiry, request coalescing and controlled warming can reduce the surge, but their effectiveness and failure behavior need measurement.",
+      "explanation": "Multiplying steady-state hit rates gives a useful average. It can conceal a much larger origin surge when cache misses are correlated.",
+      "criteria": [
+        "Computes 288 origin requests and 144 DB reads per second",
+        "Identifies 7200 DB reads/s in the stated all-miss case",
+        "Proposes a concrete cold-cache or expiry test"
+      ]
+    },
+    {
+      "id": "basic-p3",
+      "type": "written",
+      "title": "The withdrawn photograph remains visible",
+      "question": "An editor removes a public photograph after a consent complaint. The database now marks it withdrawn, but the old object URL remains public and the CDN retains it for twenty-four hours. The site has generated three thumbnail sizes with different URLs. Design a withdrawal procedure that handles these copies and explain the limitation of promising that all previously downloaded copies disappear. Do not assume deleting a database row revokes object access.",
+      "hint": "Inventory every delivery representation and distinguish controlling future access from erasing a recipient’s saved file.",
+      "answer": "Record withdrawal authoritatively, stop rendering new links, restrict or remove the original and each thumbnail at the object layer, and request CDN invalidation for their cache keys. Track invalidation results and retry failures; ensure the rendering and image-generation pipeline does not recreate withdrawn representations. Where stronger future-access control is required, use an authorization-aware delivery design with appropriately short-lived credentials and cache policy. These actions reduce future delivery from controlled systems, but cannot erase copies already downloaded or retained by external recipients.",
+      "explanation": "Content ownership spans metadata, objects and delivery caches. Revocation must reach each controlled representation and be stated with realistic boundaries.",
+      "criteria": [
+        "Covers original, thumbnails and CDN variants",
+        "Includes retry/verification and prevention of regeneration",
+        "Acknowledges previously downloaded copies cannot be recalled"
+      ]
+    }
+  ],
+  "async": [
+    {
+      "id": "async-p1",
+      "type": "choice",
+      "title": "The acknowledgement arrives too early",
+      "question": "A shipping worker receives a label-generation job, acknowledges it immediately, and then calls the label provider. The worker crashes before making that call. The queue removes acknowledged jobs, and no other durable job state exists. The team wants eventual completion after a worker crash and can supply a stable idempotency key to the provider. Which change best addresses the stated failure while limiting duplicate labels?",
+      "hint": "Consider crashes on both sides of the external call, not only before it.",
+      "answer": "Use a stable job identifier as the provider idempotency key, durably record the resulting label or completed state, and acknowledge after that durable outcome. A crash before completion leaves work available for retry. A crash after the provider acted but before local acknowledgement can cause another attempt, so the provider must return or reuse the same logical result for the same key. Moving the acknowledgement alone improves redelivery but does not prevent duplicate external effects. Retain enough state to reconcile uncertain outcomes.",
+      "explanation": "The safe boundary depends on both broker redelivery and the external operation’s repeat behavior. One acknowledgement cannot atomically cover unrelated systems by itself.",
+      "criteria": [
+        "Moves acknowledgement after durable outcome",
+        "Uses stable provider idempotency across retries",
+        "Accounts for crash after external success"
+      ],
+      "options": [
+        "Keep early acknowledgement and add more workers",
+        "Generate a fresh idempotency key on every retry",
+        "Acknowledge after durable completion and reuse the stable provider idempotency key on retries",
+        "Disable all retries so jobs cannot produce duplicates"
+      ],
+      "answerIndex": 2
+    },
+    {
+      "id": "async-p2",
+      "type": "written",
+      "title": "A burst, then a recovery window",
+      "question": "A document-rendering queue starts empty. Jobs arrive at 75 per second for four minutes while workers complete 45 per second. After the burst, arrivals fall to 25 per second and service capacity stays at 45. Assume constant rates, no retries and unlimited waiting space for this calculation. Find the peak backlog and the time to drain after the burst. Recommend an acceptance or capacity policy if the service promises no growing backlog under sustained demand.",
+      "hint": "Backlog grows or shrinks at the difference between arrival and completion rates.",
+      "answer": "During the burst the backlog grows at 75 − 45 = 30 jobs per second for 240 seconds, reaching 7,200 jobs. Afterwards it drains at 45 − 25 = 20 jobs per second, requiring 7,200 / 20 = 360 seconds, or six minutes. A queue absorbs this temporary excess but cannot absorb 75 jobs per second indefinitely with capacity 45. For sustained overload, add effective processing capacity or bound admissions with explicit retry/backoff guidance; monitor job age and retain capacity headroom rather than targeting exact saturation.",
+      "explanation": "A temporary burst and persistent overload require different responses. Buffering changes timing, not long-run processing capacity.",
+      "criteria": [
+        "Calculates 7200 peak jobs",
+        "Calculates six-minute post-burst drain",
+        "Distinguishes transient buffering from sustainable admission/capacity"
+      ]
+    },
+    {
+      "id": "async-p3",
+      "type": "written",
+      "title": "Commit succeeded, publication did not",
+      "question": "A repair-order API commits an order to SQL and then publishes a dispatch job to a broker. A crash between these steps leaves a valid order that no technician ever receives. Publishing first causes the opposite risk: a worker can receive a job for an order that later fails to commit. Propose a design that closes this two-write gap without assuming SQL and the broker share a distributed transaction. Include relay and consumer crash behavior.",
+      "hint": "Can the business change and a durable intention to publish be committed in the same local transaction?",
+      "answer": "Write the order and an outbox record with a stable event ID in one SQL transaction. A relay reads committed outbox records, publishes them, and records progress after broker confirmation. If it crashes after publication but before progress is saved, it may publish the same event again; the consumer must deduplicate or make dispatch creation idempotent by that event or order ID. Monitor old outbox records and retry safely. This ensures a committed order leaves durable publication intent, although delivery remains asynchronous and requires a functioning relay.",
+      "explanation": "The outbox moves the atomicity boundary into one durable database. It prevents lost intent but deliberately retains duplicate-safe retry requirements.",
+      "criteria": [
+        "Commits order and outbox atomically",
+        "Explains relay duplicate window",
+        "Defines idempotent consumption and operational monitoring"
+      ]
+    }
+  ],
+  "twitter": [
+    {
+      "id": "twitter-p1",
+      "type": "choice",
+      "title": "The fan-out job meets a deletion",
+      "question": "A hypothetical community feed stores canonical posts and asynchronously copies post references into followers’ timelines. A moderator deletes a post while its fan-out job is halfway through a large follower list. The job later resumes and inserts more references. Requirements say deleted text must never be rendered after an authoritative deletion check, while background cleanup may take time. Which read/write strategy best satisfies those stated constraints?",
+      "hint": "Deleting currently materialized copies is not enough if a delayed writer can recreate them.",
+      "answer": "Record a durable canonical tombstone or visibility version, make rendering enforce authoritative visibility, and have fan-out reject stale work where possible. Background cleanup can remove old references, but it must not be the sole access control: the resumed job could insert another reference after cleanup. A timeline may temporarily contain a nonrenderable reference without violating the stated text-visibility requirement. If visibility is checked through a stale cache, its policy must meet the requirement; otherwise it cannot be called an authoritative deletion check.",
+      "explanation": "Materialized views can lag. A durable visibility decision prevents delayed fan-out from resurrecting content at rendering time.",
+      "criteria": [
+        "Uses durable tombstone/version",
+        "Enforces authoritative visibility on rendering",
+        "Separates background cleanup from correctness"
+      ],
+      "options": [
+        "Use a durable visibility tombstone checked when rendering and reject stale fan-out work",
+        "Delete existing timeline copies once and allow the job to resume unchanged",
+        "Change the post ID so the old copies cannot be found",
+        "Switch the timeline to NoSQL and assume deleted references cannot recur"
+      ],
+      "answerIndex": 0
+    },
+    {
+      "id": "twitter-p2",
+      "type": "written",
+      "title": "Active readers change the break-even point",
+      "question": "An author has 240,000 followers but only 18,000 follower feed reads occur during the next hour. The author publishes three posts in that hour. Compare two simplified strategies: push each post reference to every follower, costing one unit per insertion; or fetch all three recent posts together during each feed read, costing eight units per read. Ignore caches and other work. Calculate the cheaper strategy and the read count where costs are equal; name two missing real-world factors.",
+      "hint": "The pull cost is per feed read for the whole recent-post set, not per post.",
+      "answer": "Push costs 240,000 × 3 = 720,000 units. Pull costs 18,000 × 8 = 144,000 units, so pull is five times cheaper under these assumptions. Equality occurs at 720,000 / 8 = 90,000 feed reads in the hour. This threshold is not determined solely by follower count. Real factors include repeated reads benefiting from caches, latency of merging the results, active-reader distribution, write batching and freshness requirements. The cost units are a modeling abstraction and must be calibrated before selecting a production threshold.",
+      "explanation": "A fan-out threshold should consider actual reads and publication rates, rather than applying the same strategy to all large accounts.",
+      "criteria": [
+        "Computes 720000 push and 144000 pull units",
+        "Computes 90000-read break-even point",
+        "Names relevant latency/cache/freshness limits of the model"
+      ]
+    },
+    {
+      "id": "twitter-p3",
+      "type": "written",
+      "title": "New posts shift the second page",
+      "question": "A reader fetches the first twenty items of a hypothetical hybrid feed, then requests items 21–40 using an offset. Before the second request, seven new materialized posts arrive and a popular-author source contributes two newer posts. The reader now sees duplicates and misses older items. Design a pagination contract across the two sources that avoids offset shifting, and state whether the session will include new posts that arrive after its first page.",
+      "hint": "A stable cursor needs an ordering boundary; two sources must agree on the comparison rule.",
+      "answer": "Define a deterministic total order, such as publication time plus canonical post ID, and return a cursor containing the last included ordering key and a session upper bound or snapshot marker. Each source fetches candidates below the cursor within that session boundary; the merger deduplicates IDs and selects the next twenty. Newer posts belong to a refreshed feed session, not the existing pagination snapshot. This prevents simple offset shifting; truly stable results also require source retention/version semantics for late arrivals or deletions, which the contract must specify.",
+      "explanation": "Cursor pagination fixes positional drift only when both sources share ordering and session semantics. An opaque offset does not supply a stable snapshot.",
+      "criteria": [
+        "Defines deterministic tie-broken order and cursor",
+        "Merges/deduplicates both sources within a boundary",
+        "States new-post and source-snapshot behavior"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "events-p1",
+      "type": "choice",
+      "title": "An optional observer becomes critical",
+      "question": "A desktop mapping tool announces “route changed” through a synchronous in-process event connector. A newly installed statistics plugin takes three seconds to upload data whenever it receives the event. Dragging a route now freezes the user interface, although the route planner never names that plugin directly. Statistics may be delayed or lost, but route interaction must remain responsive. Which change best matches these requirements?",
+      "hint": "No direct dependency by name does not mean no dependency in execution time.",
+      "answer": "Move the optional statistics work to a bounded asynchronous handoff outside the UI call stack, with a drop or coalescing policy appropriate to noncritical telemetry. Keep essential route validation on a clearly defined synchronous path if it must complete before display. Registration-based coupling does not guarantee asynchronous execution: the connector currently invokes the plugin inline. An unbounded background queue would avoid the immediate block but could create a memory problem during prolonged network failure, so the resource limit belongs in the design.",
+      "explanation": "Implicit invocation describes how handlers are selected, not whether callers wait. Timing and buffering policies must be explicit.",
+      "criteria": [
+        "Identifies synchronous handler execution as the delay",
+        "Uses bounded async work for optional telemetry",
+        "States a suitable overload/drop policy"
+      ],
+      "options": [
+        "Rename the event to make it asynchronous",
+        "Add more synchronous subscribers so work is distributed",
+        "Remove the UI thread’s timeout but keep the upload inline",
+        "Use a bounded asynchronous telemetry handoff with an explicit drop/coalescing policy"
+      ],
+      "answerIndex": 3
+    },
+    {
+      "id": "events-p2",
+      "type": "written",
+      "title": "An event schema evolves independently",
+      "question": "A building-management publisher emits TemperatureMeasured events with sensorId and value, historically understood as Celsius. A new sensor vendor sends Fahrenheit, and one team proposes changing the meaning of value without changing the event name. Three independently deployed subscribers control displays, archives and heating recommendations. Design a compatible event evolution and rollout plan, including what an old consumer should do with an unknown unit or schema.",
+      "hint": "Changing a field’s meaning can break consumers even when its JSON type remains a number.",
+      "answer": "Preserve the original contract while introducing an explicit unit and schema version, or publish a new versioned event type if older consumers cannot safely ignore additions. Normalize measurements at a defined boundary or require each compatible consumer to convert using the declared unit. Roll out support before switching producers, test with recorded examples and monitor rejection rates. Unknown versions or units should be quarantined or rejected visibly rather than guessed. Avoid sending two versions into the same aggregate without deduplication, because dual publication can double-count a measurement.",
+      "explanation": "Independent deployment requires semantic compatibility, not just syntactic validity. Versioning must include migration and duplicate behavior.",
+      "criteria": [
+        "Makes units and schema semantics explicit",
+        "Provides backward-compatible staged rollout",
+        "Rejects unknown semantics and handles dual-publication duplicates"
+      ]
+    },
+    {
+      "id": "events-p3",
+      "type": "written",
+      "title": "Replay should rebuild, not resend",
+      "question": "A retailer retains OrderDispatched events for ninety days. After discovering an analytics bug, engineers want to replay the last month to rebuild a dashboard. The same event type also drives customer text messages, and customers must not receive another dispatch alert during the repair. Explain how subscription progress and consumer design can isolate the replay. Include what happens if the live messaging consumer itself receives a duplicate.",
+      "hint": "A replay consumer need not reset every subscriber’s progress.",
+      "answer": "Create an isolated replay consumer or subscription with its own starting position and write a replacement analytics projection. Do not reset the live notification subscription’s progress. Validate the rebuilt result, catch it up and switch dashboards deliberately. The messaging consumer should separately remember a durable notification identity or use an idempotent delivery boundary so normal duplicate events do not cause repeat alerts. Replaying retained data is useful precisely because independent consumers can maintain different progress; it does not imply that all external side effects are safe to repeat.",
+      "explanation": "Retained events support reconstruction, but replay scope and side-effect suppression are consumer responsibilities.",
+      "criteria": [
+        "Uses independent replay progress and output",
+        "Preserves live notification position",
+        "Includes duplicate-safe notification behavior"
+      ]
+    }
+  ],
+  "streaming": [
+    {
+      "id": "streaming-p1",
+      "type": "choice",
+      "title": "The closing window is not final yet",
+      "question": "A bus dashboard counts arrivals in event-time windows ending every five minutes. Messages can arrive up to two minutes late, and the interface may show provisional counts that are later corrected. The team proposes finalizing a window as soon as the wall clock reaches its end. Under the stated lateness assumption, which policy best supports accurate eventual counts without holding every window open forever?",
+      "hint": "Processing time reaching a boundary does not prove all event-time observations have arrived.",
+      "answer": "Show a provisional result at the window boundary and finalize only when a watermark or equivalent progress rule has passed that boundary under the two-minute lateness assumption. Late events within the supported interval update the provisional count; beyond-bound events need an explicit correction or rejection policy. The watermark expresses an assumption about event-time progress, not absolute proof against arbitrary delay. This approach balances early visibility with eventual completeness and bounded state; simply waiting for the first message in the next window does not establish that the previous window is complete.",
+      "explanation": "Event-time windows need a completeness policy. Low-latency display and final results can be distinct product states.",
+      "criteria": [
+        "Separates provisional from final output",
+        "Uses event-time progress and bounded lateness",
+        "Defines behavior beyond the lateness assumption"
+      ],
+      "options": [
+        "Finalize at wall-clock boundary because streams are always current",
+        "Publish provisionally, then finalize using an explicit watermark/lateness policy",
+        "Keep every window forever because no delayed message can ever be bounded",
+        "Finalize when any message from the next window arrives"
+      ],
+      "answerIndex": 1
+    },
+    {
+      "id": "streaming-p2",
+      "type": "written",
+      "title": "The popular key owns the shuffle",
+      "question": "A batch job counts page views by category. Of 100 million records, 60 million have category “home”; the other records are evenly distributed over thousands of categories. The framework sends all values for one key to one reducer, and mappers currently emit (category,1) for every record. Explain why adding reducers may barely improve completion time. Propose a correct two-stage aggregation and describe which property of counting makes it safe.",
+      "hint": "The largest single key remains indivisible unless the computation introduces partial results.",
+      "answer": "The home key still sends 60 million values to one reducer, so that reducer can dominate job completion even as other reducers gain capacity. First aggregate locally in mappers or use salted partial keys such as (home,bucket), producing partial counts. A second stage groups by the original category and sums those counts. Integer counting is associative and commutative, so regrouping preserves the result when every input contributes exactly once to the logical computation. Task retry/output handling must still avoid duplicate committed contributions; arbitrary side effects cannot be treated like framework-managed output.",
+      "explanation": "More parallel slots do not split a single hot grouping key. Partial aggregation reduces data movement and redistributes the expensive intermediate work.",
+      "criteria": [
+        "Identifies one hot reducer as bottleneck",
+        "Specifies partial keys/counts and final regrouping",
+        "Explains associative counting and retry correctness"
+      ]
+    },
+    {
+      "id": "streaming-p3",
+      "type": "written",
+      "title": "Election with an intentionally stale follower",
+      "question": "A replicated analytics log has leader L and followers F1 and F2. L and F1 have committed records through offset 8,400; F2 has only reached 8,120. L fails, and a network partition makes F1 temporarily unreachable from the controller that can reach F2. The system promises not to lose acknowledged records, even if writes pause. Explain whether promoting F2 is justified and what recovery must establish before safe progress resumes.",
+      "hint": "A reachable replica is not necessarily an eligible replica for the promised durability level.",
+      "answer": "Promoting F2 merely because it is reachable would risk losing the acknowledged suffix from 8,121 through 8,400, so it is not justified under the stated promise. Pause progress until the system can establish a valid authoritative leader with the required committed history, for example by restoring contact with an eligible up-to-date replica under its coordination protocol. Membership, election terms and fencing must also prevent the old leader from accepting conflicting work after recovery. The exact eligibility rule is product-specific; local thread promotion cannot solve this distributed durability problem.",
+      "explanation": "Availability during failure is constrained by the durability contract. Safe leadership needs both an eligible log and an authoritative election.",
+      "criteria": [
+        "Identifies the 280-record missing suffix",
+        "Chooses pause over unsafe promotion under the requirement",
+        "Mentions authoritative election/fencing and eligible history"
+      ]
+    }
+  ],
+  "rest": [
+    {
+      "id": "rest-p1",
+      "type": "choice",
+      "title": "Two editors, one resource",
+      "question": "Two librarians retrieve the same catalogue record with version tag v12. Mara saves a corrected title, producing v13. Noah then submits an edit based on v12 that changes the publication year but also contains the old title. The API currently replaces the entire record with PUT. Which contract change best prevents Noah from silently undoing Mara’s correction while preserving normal retries?",
+      "hint": "Idempotence and protection against concurrent overwrites address different problems.",
+      "answer": "Require a conditional update using the previously observed entity tag, for example If-Match with v12. After Mara’s update changes the tag, Noah’s stale request fails its precondition instead of replacing v13. The client retrieves the current representation and asks the user to merge or reconsider the change. Repeating a PUT can be idempotent in its intended effect while still overwriting another user’s work; idempotence alone does not provide concurrency control. The version check and write must be enforced atomically at the authoritative store.",
+      "explanation": "The condition ties a write to the version the editor actually reviewed. Stable URLs and HTTP method choice do not by themselves detect intervening changes.",
+      "criteria": [
+        "Select conditional version checking.",
+        "Distinguish idempotence from concurrency control.",
+        "Require atomic check-and-write."
+      ],
+      "options": [
+        "Require If-Match with the observed version and reject a stale condition.",
+        "Replace PUT with GET so repeated edits are safe.",
+        "Keep PUT but tell clients never to retry.",
+        "Use POST and accept whichever complete record arrives last."
+      ],
+      "answerIndex": 0
+    },
+    {
+      "id": "rest-p2",
+      "type": "written",
+      "title": "A representation that changes by locale",
+      "question": "A museum API returns a public exhibit description from GET /exhibits/18. It selects English or French text from Accept-Language. A shared cache stores responses using only the URL, and visitors occasionally receive the wrong language. The team proposes changing GET to POST to bypass the cache. Design a better representation and caching contract, including how a client can discover what it received.",
+      "hint": "Consider whether a representation varies by a request field or by an explicit resource URL.",
+      "answer": "Keep retrieval semantics and make language selection part of the representation contract. One approach returns Vary: Accept-Language and Content-Language, with a documented language negotiation and fallback policy; the cache must honor the variant key. Another uses explicit language-specific URLs and ordinary public caching. Specify freshness and validation for translations independently if they change at different times. Switching to POST does not repair an unclear representation contract and needlessly sacrifices common GET infrastructure. Test alternating English and French requests through the actual configured cache, including unsupported-language fallback.",
+      "explanation": "A cache may reuse a response only for compatible request variants. The defect lies in omitting a representation-selection input from the cache decision.",
+      "criteria": [
+        "Preserve retrieval semantics and define language selection.",
+        "Account for cache variants or explicit language URLs.",
+        "Include fallback and response-language observability."
+      ]
+    },
+    {
+      "id": "rest-p3",
+      "type": "written",
+      "title": "Identifiers that survive serialization",
+      "question": "A Java backend sends sensor IDs as JSON numbers. One ID is 9007199254740993, and a browser client parses numbers into ordinary JavaScript Number values, whose exact integer range ends at 9007199254740991. Two adjacent IDs are displayed as the same value and an update targets the wrong sensor. Redesign the API representation and migration contract without changing the underlying database identifiers.",
+      "hint": "An identifier usually needs exact identity, not arithmetic.",
+      "answer": "Represent sensor identifiers as decimal strings and require clients to preserve them as opaque values. The database may continue using its existing integer type. Define the string format, validate it at the server boundary and avoid client-side numeric coercion when building URLs or map keys. Migrate with a versioned contract or an additive string field and a defined deprecation period so old clients do not silently misinterpret changed types. Test values beyond the exact-number boundary and round trips through every supported client. Changing only display formatting cannot recover precision already lost during parsing.",
+      "explanation": "JSON text can carry the digits, but a receiving language’s number model may not preserve them. A cross-language contract must specify a representation with the required precision.",
+      "criteria": [
+        "Use exact string identifiers end to end.",
+        "Address compatibility during migration.",
+        "Test precision boundaries and URL/key use."
+      ]
+    }
+  ],
+  "micro": [
+    {
+      "id": "micro-p1",
+      "type": "choice",
+      "title": "A release that must coexist",
+      "question": "A parcel platform has independently deployed tracking and customer-support services. Tracking plans to replace the response field deliveryStatus with a richer object named progress. Support upgrades weekly, while tracking deploys daily. The old field remains inexpensive to produce for one month. Which release plan best preserves independent deployment without requiring every consumer to upgrade at the same moment?",
+      "hint": "Consider a period when old and new consumers run simultaneously.",
+      "answer": "Publish the new progress field while retaining deliveryStatus with its existing meaning during a documented transition. Test both contracts, measure or inventory consumer adoption, and remove the old field only after the compatibility policy permits it. Consumers should tolerate additive fields where the contract allows. This separates deployment timing from a breaking interface change without maintaining duplicate behavior indefinitely. Coordinated releases can sometimes be justified, but they undermine the claimed independent-deployment benefit here. Renaming the field immediately or relying on mocks alone does not protect the still-running old support service.",
+      "explanation": "Expand-then-contract evolution creates a compatibility interval across independently deployed components; the removal step still requires evidence and ownership.",
+      "criteria": [
+        "Choose additive compatible evolution.",
+        "Include evidence before removal.",
+        "Recognize independent deployment needs contract discipline."
+      ],
+      "options": [
+        "Rename the field immediately because services hide implementation details.",
+        "Keep both fields temporarily, test compatibility and retire the old one after migration.",
+        "Require both services to deploy in one atomic release forever.",
+        "Change only the mock service because production clients will adapt automatically."
+      ],
+      "answerIndex": 1
+    },
+    {
+      "id": "micro-p2",
+      "type": "written",
+      "title": "Parallel calls do not remove every dependency",
+      "question": "A dashboard endpoint first checks access in 20 ms, then fetches warehouse inventory in 90 ms and carrier status in 140 ms. The last two reads are independent and can run concurrently. Rendering takes 15 ms after both return. Ignore network variability and queueing. Calculate sequential and parallel response times, then propose behavior when the carrier call takes two seconds but warehouse data remains useful.",
+      "hint": "Parallel branches contribute their maximum duration; the access check still comes first.",
+      "answer": "Sequential execution takes 20 + 90 + 140 + 15 = 265 ms. Running the independent reads together takes 20 + max(90, 140) + 15 = 175 ms, a 90 ms reduction under the stated assumptions. Parallelism does not remove the slowest dependency. Set a carrier deadline consistent with the page budget and return clearly marked partial or cached carrier information only if product requirements permit it. Preserve the access check before exposing either dataset. Bound outstanding calls and retries so a slow carrier does not accumulate unbounded work across dashboard requests.",
+      "explanation": "This calculation concerns a dependency graph, not a throughput guarantee. Timeout and partial-result policies determine how the architecture behaves beyond the ideal timing case.",
+      "criteria": [
+        "Compute 265 ms and 175 ms correctly.",
+        "State partial-result/deadline semantics.",
+        "Bound dependency work while retaining authorization."
+      ]
+    },
+    {
+      "id": "micro-p3",
+      "type": "written",
+      "title": "Independent code, shared schema",
+      "question": "An insurance company labels claims and reporting as separate microservices. Both have write access to the same claim tables, and reporting updates a processed flag that claims uses to decide whether a record may be edited. A reporting schema migration now blocks claims releases. Identify the coupling and propose a staged boundary repair that keeps reporting available during migration.",
+      "hint": "Look for shared ownership of business state, not just separate repositories.",
+      "answer": "The services share schema and business-invariant ownership, so separate processes have not produced independent change boundaries. Assign claim lifecycle state to one authoritative owner and expose a supported API or event contract for reporting. Give reporting a derived read model whose processing progress does not directly control claim edits. During migration, populate and validate the read model alongside the existing path, define acceptable lag and reconciliation, then remove reporting’s direct writes. Avoid an immediate database split without preserving semantics. If reporting truly controls an edit constraint, model that interaction explicitly instead of hiding it in a shared flag.",
+      "explanation": "A boundary is defined by ownership and contracts as well as deployment. A derived reporting model can reduce coupling but introduces freshness and reconciliation obligations.",
+      "criteria": [
+        "Identify schema and invariant ownership coupling.",
+        "Propose explicit authority and contract.",
+        "Stage migration with reconciliation and lag semantics."
+      ]
+    }
+  ],
+  "load-balancing": [
+    {
+      "id": "load-balancing-p1",
+      "type": "choice",
+      "title": "Connection count hides the work",
+      "question": "A reverse proxy selects the backend with the fewest open connections. Backend A has one HTTP/2 connection carrying 80 active requests, while backend B has ten connections carrying one active request each. All requests require similar CPU time and the machines have equal capacity. The proxy repeatedly sends new work to A. Which observation most directly explains why the policy is making a poor choice?",
+      "hint": "The metric counts transport connections, not necessarily concurrent application work.",
+      "answer": "Connection count is a poor load proxy when one connection multiplexes many requests. A has fewer connections but more active application work in this scenario. Consider an implementation that accounts for active requests, measured outstanding work or another suitable load signal, and verify behavior with the actual protocol configuration. Simply reversing least-connections into most-connections would also be brittle: connection lifetimes, idle connections and request cost can change. CPU and queue metrics may help, but each has reporting delay and overhead. The correct policy follows the workload rather than a universal ranking of algorithms.",
+      "explanation": "HTTP/2 breaks an assumed one-connection-to-one-request relationship. Equal hardware does not rescue a metric that measures the wrong unit of work.",
+      "criteria": [
+        "Recognize multiplexing mismatch.",
+        "Choose a workload-relevant metric.",
+        "Avoid claiming one routing algorithm is universally best."
+      ],
+      "options": [
+        "DNS always sends clients to the wrong continent.",
+        "A has less work because it has fewer connections.",
+        "One connection can carry many requests, so connection count understates A’s load.",
+        "B must be unhealthy because it has more connections."
+      ],
+      "answerIndex": 2
+    },
+    {
+      "id": "load-balancing-p2",
+      "type": "written",
+      "title": "Capacity while draining",
+      "question": "A video-metadata service has six identical stateless workers. Each sustains 180 requests per second while meeting the latency target. Peak incoming traffic is 780 requests per second. Operations want to drain two workers simultaneously for an upgrade and retain 20% capacity headroom on the remaining workers. Using a simple additive-capacity model, determine whether this plan meets the target and how many workers must remain active.",
+      "hint": "Twenty percent headroom means offered load uses at most 80% of available target-compliant capacity.",
+      "answer": "Four remaining workers provide 4 × 180 = 720 requests per second, already below the 780 arrival rate. With 20% headroom, the usable budget is only 0.8 × 720 = 576. The requirement is n × 180 × 0.8 ≥ 780, so n ≥ 5.417 and at least six workers must remain active. Under this model, the current fleet cannot drain even one worker while preserving that headroom. Add temporary capacity, reduce admitted traffic or schedule the change below peak. Confirm the shared database and balancer can support the plan; additive worker capacity is an assumption, not a measurement.",
+      "explanation": "Headroom is a constraint on capacity during maintenance, not merely on the normal fleet. Draining also needs a policy for in-flight requests and a deadline.",
+      "criteria": [
+        "Calculate four-worker deficit and 576 budget.",
+        "Derive at least six active workers.",
+        "State a feasible maintenance adjustment and model limitations."
+      ]
+    },
+    {
+      "id": "load-balancing-p3",
+      "type": "written",
+      "title": "Diagnosing a faraway edge",
+      "question": "Customers in Oslo sometimes reach a CDN edge in London rather than an available Stockholm edge. The hostname may use DNS steering, and some published addresses are anycast. Support concludes that the CDN is broken because Stockholm is geographically closer. Propose measurements that distinguish resolver-based steering, route selection and cache/origin latency before deciding whether the service is actually worse.",
+      "hint": "Geography, routing policy and measured application latency are different quantities.",
+      "answer": "Compare DNS answers and TTLs from affected clients and their actual recursive resolvers, noting whether steering has client-network information. Identify the selected edge using provider diagnostics, and measure connection and application timings over repeated samples rather than assuming physical proximity predicts latency. For anycast addresses, inspect routing observations where available, while recognizing a path trace alone is not a complete performance explanation. Separate fresh cache hits from misses or revalidations that contact the origin. Compare latency, errors and load at both candidate paths. A London edge may perform better because of peering, capacity or policy even when it is farther away.",
+      "explanation": "DNS chooses an address under a policy; anycast routing selects a path to an advertisement; the response may then require an origin fetch. Each stage can explain latency.",
+      "criteria": [
+        "Measure resolver/answer and edge selection separately.",
+        "Distinguish anycast policy from distance.",
+        "Separate hit/miss origin effects and compare observed outcomes."
+      ]
+    }
+  ],
+  "push": [
+    {
+      "id": "push-p1",
+      "type": "choice",
+      "title": "A shared tablet changes users",
+      "question": "A clinic tablet receives appointment push messages through one installed app. Patient A signs out and patient B signs in on the same installation. The push provider has not changed the installation token. A delayed message for A is still queued. Which design best limits accidental disclosure while allowing the installation to receive future notifications for B?",
+      "hint": "An installation destination and the currently authorized account are not identical.",
+      "answer": "Update the authenticated account-to-installation binding on logout and login, and keep sensitive content out of an unauthenticated notification preview. Send a minimal notification that prompts the app to fetch authorized account data; the app must reject or ignore account-mismatched stale messages. Removing A’s backend binding prevents future routing but cannot necessarily recall a provider-queued message. Token rotation alone is not a complete confidentiality mechanism. The design should also clear local account data and define whether any notifications may appear while signed out. Delivery to the same installation does not confer permission to show one patient’s details to another.",
+      "explanation": "The privacy boundary is the account session, while the provider routes to an installation. A queued message can outlive the account-to-device association that caused it.",
+      "criteria": [
+        "Distinguish installation from account.",
+        "Handle already queued stale messages.",
+        "Require authorized fetch or account-safe presentation."
+      ],
+      "options": [
+        "Keep A’s binding because a provider token permanently identifies a person.",
+        "Put full appointment details in every push so the app need not check identity.",
+        "Assume logout automatically deletes all messages queued by the provider.",
+        "Refresh account bindings and use minimal notifications followed by authorized account-scoped fetches."
+      ],
+      "answerIndex": 3
+    },
+    {
+      "id": "push-p2",
+      "type": "written",
+      "title": "Comparing connection overhead",
+      "question": "A foreground monitoring app has 2,400 active devices. Design P polls every 15 seconds, including when nothing changes. Design S uses one established stream per device and sends a keepalive every 45 seconds. Ignoring setup, retries and actual event traffic, estimate messages per minute for each design, counting one poll exchange as two messages and one keepalive as one message. Explain why these counts alone do not prove a battery-life advantage.",
+      "hint": "Count per-device traffic first, then multiply; a keepalive is not the complete energy model.",
+      "answer": "Design P performs four poll exchanges per device per minute, or eight messages: 2,400 × 8 = 19,200 messages per minute. Design S averages 60/45 keepalives per device per minute, giving 3,200 messages per minute. That is one sixth of the counted messages under the stated convention. Energy also depends on payload sizes, radio wakeups and tail time, batching, connection maintenance, network loss, TLS setup and operating-system scheduling. Measure the real device workload before claiming battery savings. The stream also needs reconnect, resynchronization and server connection capacity; fewer messages do not establish reliable event delivery.",
+      "explanation": "The arithmetic isolates idle protocol overhead. It deliberately excludes the physical and operating-system costs that make message count an incomplete energy proxy.",
+      "criteria": [
+        "Compute 19,200 and 3,200 messages/minute.",
+        "Respect the counting assumptions.",
+        "Explain energy and delivery limitations."
+      ]
+    },
+    {
+      "id": "push-p3",
+      "type": "written",
+      "title": "An old disconnect deletes a new connection",
+      "question": "A notification router stores user U → worker A, connection 7. U reconnects through worker B, which replaces the record with connection 8. A delayed disconnect callback from A then deletes the record by user ID alone. Later alerts cannot find U even though connection 8 is healthy. Design registration and cleanup semantics that handle this race and explain how the same scheme can support two legitimate devices.",
+      "hint": "Cleanup should prove ownership of the registration it removes.",
+      "answer": "Store a connection identifier or generation with the owner, and delete only if the stored entry still matches the disconnecting connection. A’s callback for connection 7 then cannot remove connection 8. Use atomic compare-and-delete or equivalent versioned storage semantics, and consider expiring leases for owners that disappear without callbacks. For multiple devices, key registrations by authenticated account plus installation or connection identity, yielding a set of valid destinations rather than one user-wide slot. Authorize registration changes and bound stale entries. Reconnection should also trigger state reconciliation, since a correct directory does not recover events missed during the gap.",
+      "explanation": "The race is stale ownership, not merely network failure. Versioned cleanup preserves the newest registration without preventing intentionally concurrent destinations.",
+      "criteria": [
+        "Use generation/connection-scoped atomic cleanup.",
+        "Support a destination set per user.",
+        "Address stale leases and missed-event recovery."
+      ]
+    }
+  ],
+  "security": [
+    {
+      "id": "security-p1",
+      "type": "choice",
+      "title": "Recovery must not bypass the guard",
+      "question": "A document-sharing service loses connectivity to its authorization database. Engineers suggest temporarily allowing any authenticated account to download a document if it knows the document ID, arguing that IDs are difficult to guess and this preserves availability. The documents include confidential contracts. Which response best follows fail-safe defaults without confusing authentication with authorization?",
+      "hint": "Knowing an identifier is not evidence of an access grant.",
+      "answer": "Deny protected downloads when permission cannot be established, while returning an appropriate temporary-failure response and allowing genuinely public operations to continue. Authentication establishes an account context, not permission for every document, and hard-to-guess identifiers are not a replacement for the intended authorization policy. A previously established bounded authorization cache could be considered only if its freshness and revocation risk were explicitly accepted in advance. The outage should trigger operational recovery, not an improvised expansion of privileges. Availability matters, but this proposed fallback changes the confidentiality policy precisely when the guard cannot evaluate it.",
+      "explanation": "Fail-safe defaults require an explicit grant, not a guess that a requester probably has one. A degraded mode must be designed against the actual security policy.",
+      "criteria": [
+        "Choose fail-closed protected access.",
+        "Separate public availability from confidential authorization.",
+        "Reject secret-looking IDs as substitute permissions."
+      ],
+      "options": [
+        "Deny protected downloads without established permission and preserve permitted public operations.",
+        "Allow access only for long document IDs.",
+        "Allow downloads because authentication proves all necessary permission.",
+        "Log every unauthorized download and approve it automatically."
+      ],
+      "answerIndex": 0
+    },
+    {
+      "id": "security-p2",
+      "type": "written",
+      "title": "A one-use export ticket",
+      "question": "A research archive wants to issue a download ticket for one restricted dataset. The ticket should work for ten minutes and permit only one completed export. Workers are stateless, and the ticket is signed by the archive. Two requests carrying the same valid ticket arrive at different workers simultaneously. Explain why signing and expiry are insufficient and design the shared decision needed to enforce the one-use requirement.",
+      "hint": "Integrity, lifetime and consumption count are separate properties.",
+      "answer": "The signature protects ticket integrity and the expiry limits its time window, but both concurrent requests can satisfy those checks. Give the ticket a unique identifier, bind it to the intended dataset and operation, and atomically claim or consume it in authoritative shared storage. Define what counts as completed export and how an interrupted transfer resumes without creating a second authorization; a short-lived claimed state or a stable export job can separate retries from new consumption. Enforce account binding if the policy requires it. Document whether revocation is checked before use and how failure between claiming and delivery is recovered.",
+      "explanation": "A stateless verifier can validate a signature but cannot independently know whether another worker consumed the same ticket. The one-use invariant needs coordinated state or an equivalent authority.",
+      "criteria": [
+        "Distinguish authenticity/expiry from replay prevention.",
+        "Use atomic shared consumption and scope binding.",
+        "Define retry and interrupted-delivery semantics."
+      ]
+    },
+    {
+      "id": "security-p3",
+      "type": "written",
+      "title": "Diagnostics with bounded authority",
+      "question": "A customer-support team needs enough diagnostic data to investigate failed file uploads. A proposed debug endpoint returns environment variables, request headers and the last 500 log lines, and runs under the same account that can delete stored files. Design a narrower diagnostic interface. Identify one confidentiality risk, one integrity risk and one availability risk, and specify useful information support can still obtain.",
+      "hint": "Useful diagnostics do not require arbitrary secret or administrative access.",
+      "answer": "Expose a bounded, structured report with correlation IDs, sanitized error categories, timestamps, upload sizes and relevant service status. Redact credentials and sensitive content from headers, logs and environment data to address confidentiality. Run report generation with read-only, scoped access rather than file-deletion authority, reducing integrity risk. Bound report size, query cost and request rate so repeated diagnostics cannot exhaust the service, addressing availability. Authorize access to the relevant customer or case, audit sensitive report requests and define retention. Keep deeper privileged investigation behind a separate controlled workflow instead of expanding every support session’s authority.",
+      "explanation": "This design applies least privilege to both data disclosure and execution authority. Bounded work prevents a troubleshooting feature from becoming an uncontrolled resource consumer.",
+      "criteria": [
+        "Identify concrete CIA risks.",
+        "Preserve useful sanitized diagnostics.",
+        "Limit authority and resource consumption."
+      ]
+    }
+  ],
+  "styles": [
+    {
+      "id": "styles-p1",
+      "type": "choice",
+      "title": "Interpreting a workflow language",
+      "question": "A laboratory application lets technicians save experiment recipes in a small language with variables, conditional branches and repeat-until steps. At runtime an execution engine reads the recipe, maintains variable values and chooses the next operation. Hardware adapters perform permitted instrument actions. Which architectural description best explains the recipe-execution core, without claiming that the entire application has only one style?",
+      "hint": "Ask which component assigns meaning to the saved program and maintains execution state.",
+      "answer": "The core follows an interpreter or virtual-machine style: the recipe is a program representation, the engine evaluates its constructs, and stored variables plus control position form execution state. Hardware adapters may separately use object-oriented or client-server patterns. Calling every sequence of steps a pipe-and-filter system would miss the branching and mutable execution context described here. A central recipe store alone also does not explain execution semantics. The style label is useful because it highlights language validation, resource limits and separation between user-defined programs and the trusted engine, while allowing a hybrid overall architecture.",
+      "explanation": "The defining relationship is an engine giving semantics to a program representation. Storage location and the existence of several steps are secondary features.",
+      "criteria": [
+        "Identify interpreter/VM core.",
+        "Relate components to program and execution state.",
+        "Allow hybrid styles around the core."
+      ],
+      "options": [
+        "Pure pipe and filter because the recipe has more than one step.",
+        "Interpreter/virtual-machine style because an engine evaluates a program representation.",
+        "Peer-to-peer because many technicians author recipes.",
+        "Repository style alone because recipes can be saved."
+      ],
+      "answerIndex": 1
+    },
+    {
+      "id": "styles-p2",
+      "type": "written",
+      "title": "A pipeline whose buffer keeps growing",
+      "question": "A document-processing pipeline has three filters: parsing at 120 documents per second, classification at 70, and indexing at 100. A producer supplies 90 documents per second continuously. Assume average rates are stable, no documents are discarded and parsing can keep up. Identify the bottleneck, estimate buffer growth before classification over two minutes, and propose controls that preserve correctness rather than hiding the overload.",
+      "hint": "Compare the arrival rate at each stage with that stage’s sustainable completion rate.",
+      "answer": "Classification is the bottleneck at 70 documents per second, so the upstream queue gains 90 − 70 = 20 documents per second, or 2,400 over two minutes under these assumptions. Indexing has capacity for the classifier’s output but cannot repair the earlier deficit. Use bounded buffers and backpressure, or durably admit work under an explicit backlog policy. Scaling classification is useful only if documents can be processed independently and ordering or shared-model constraints remain satisfied. Measure sustainable rates and provide lag observability. Silently dropping documents or adding an unlimited in-memory queue would violate the stated correctness requirement.",
+      "explanation": "Pipes decouple stages through an agreed record flow, but they do not create capacity. Buffering absorbs a finite burst; sustained excess arrival requires capacity or admission changes.",
+      "criteria": [
+        "Find 70/s bottleneck and 2,400-document growth.",
+        "Propose bounded backpressure or durable admission.",
+        "Discuss parallelism and correctness constraints."
+      ]
+    },
+    {
+      "id": "styles-p3",
+      "type": "written",
+      "title": "Feedback with stale measurements",
+      "question": "A greenhouse controller samples humidity every second and opens a mist valve whenever the latest reading is below a target. A network change delays sensor messages by 25 seconds, yet the controller treats every arriving sample as current. Humidity now repeatedly overshoots the target. Explain the architectural failure and propose sensing, control and safety boundaries; you do not need to derive a numerical control law.",
+      "hint": "A feedback decision depends on when the measurement describes the plant, not merely when it arrives.",
+      "answer": "The controller is acting on delayed plant state, so it can keep adding moisture after the real humidity has crossed the target. Carry measurement timestamps, detect stale or out-of-order observations and make delay an explicit control-design assumption. Use an appropriate tested control strategy with bounded actuation rather than repeatedly reacting as if each sample were current. Define a safe stale-sensor behavior, maximum valve-open duration and independent limits where the hazard warrants them. Observe actuator status as well as sensor values. Separating sensing, decision logic and actuation clarifies responsibilities but does not itself guarantee stability.",
+      "explanation": "Process-control architecture makes the feedback loop central. Communication delay is part of that loop and must be considered alongside sensing accuracy and actuator behavior.",
+      "criteria": [
+        "Explain delayed feedback and overshoot.",
+        "Track freshness and bound actuation.",
+        "Separate responsibilities without claiming automatic stability."
+      ]
+    }
+  ],
+  "secure": [
+    {
+      "id": "secure-p1",
+      "type": "choice",
+      "title": "Signing-key rotation without accepting strangers",
+      "question": "An identity provider rotates from signing key K1 to K2. A reporting service caches the provider’s trusted verification keys and has not refreshed them, so valid K2 tokens fail. An engineer suggests reading an arbitrary key URL from each token header and fetching that key whenever verification fails. Which response restores rotation support without allowing a token sender to choose its own trust authority?",
+      "hint": "Key discovery must remain anchored to configured trusted issuers.",
+      "answer": "Refresh keys only through the configured trusted issuer’s key-distribution mechanism, with controlled caching and bounded retry behavior. Allow planned overlap for K1 and K2 as the issuer’s policy requires, and verify issuer, audience, permitted algorithms and token lifetime in addition to the signature. Do not trust an arbitrary header-supplied URL as a new authority: a malicious sender could offer a key for its own signature or induce unwanted outbound requests. Unknown keys should fail closed if trusted refresh cannot resolve them. Rotation monitoring helps distinguish a rollout problem from malformed or hostile tokens.",
+      "explanation": "The token may identify a key within a trusted set, but it must not redefine who is trusted. Rotation changes key material while preserving the trust anchor.",
+      "criteria": [
+        "Keep discovery anchored to trusted configuration.",
+        "Handle caching/overlap without bypassing validation.",
+        "Fail closed for unresolved untrusted keys."
+      ],
+      "options": [
+        "Fetch any URL the token advertises and trust its result.",
+        "Disable signature checks until the next deployment.",
+        "Refresh through the configured trusted issuer and retain normal claim validation.",
+        "Accept unknown keys if the token has a plausible username."
+      ],
+      "answerIndex": 2
+    },
+    {
+      "id": "secure-p2",
+      "type": "written",
+      "title": "Measuring the revocation window",
+      "question": "An access token is issued at 14:00 and expires at 14:12. At 14:03 an operator revokes its refresh token after suspected theft. API workers verify access tokens locally and do not consult a revocation list. Assume synchronized clocks and no expiration grace. How much longer can the stolen access token be accepted, and what changes could shorten that window without pretending refresh-token revocation already solves it?",
+      "hint": "Issuance of future tokens and acceptance of an existing token are separate decisions.",
+      "answer": "The existing access token can remain acceptable until 14:12, leaving nine minutes after the 14:03 action, assuming its other checks pass. Revoking the refresh token prevents authorized renewal through that credential but does not update a self-contained token already held by an attacker. Shorter access-token lifetimes reduce the maximum window. Introspection, a revocation list or a subject/session version check can support earlier rejection, with explicit propagation and cache freshness guarantees. These add dependencies and operational cost, so define their outage behavior. Rotating a shared signing key can invalidate many unrelated sessions and is not a precise per-session remedy.",
+      "explanation": "The calculation exposes the tradeoff between offline verification and rapidly changing authority. A design must state revocation latency rather than simply claiming tokens are revocable.",
+      "criteria": [
+        "Calculate nine minutes.",
+        "Separate refresh and access-token effects.",
+        "Offer explicit early-rejection mechanisms and tradeoffs."
+      ]
+    },
+    {
+      "id": "secure-p3",
+      "type": "written",
+      "title": "A useful URL-fetching feature",
+      "question": "A media service accepts a customer-supplied image URL and fetches it to create a thumbnail. It runs inside a cluster with access to private administration endpoints. Product requirements need only HTTPS images from two partner domains, but the current implementation follows every redirect and allows any hostname. Design validation and network boundaries for this feature, including what must be rechecked after a redirect.",
+      "hint": "A URL that looked acceptable before resolution or redirect may lead somewhere else.",
+      "answer": "Allow only the required scheme, partner hostnames and expected ports, using a real URL parser and a defined normalization policy. Resolve and restrict destinations so private administration or metadata addresses are not reachable, accounting for resolution changes. Either disallow redirects or revalidate every redirected URL and resolved destination under the same policy. Enforce outbound network restrictions as a separate boundary, and give the fetching workload minimal internal authority. Bound response size, time and decoding resources, then verify the content is an acceptable image. Log safe diagnostic metadata without secrets. An allowlist check on only the first URL is insufficient.",
+      "explanation": "The intended feature is a narrow outbound capability. Validation constrains logical destinations, while network and resource controls limit consequences if parsing or application logic fails.",
+      "criteria": [
+        "Validate every destination including redirects/resolution.",
+        "Combine application policy with egress/least privilege.",
+        "Bound fetch and image-processing resources."
+      ]
+    }
+  ],
+  "pushcase": [
+    {
+      "id": "pushcase-p1",
+      "type": "choice",
+      "title": "Which queued update may replace another?",
+      "question": "A courier platform queues two types of messages for an offline driver: complete route-location snapshots and signed proof-of-delivery records for different parcels. Storage is under pressure. The latest snapshot contains all location state needed by the map, while every proof record is independently required for audit. Which compaction policy preserves the stated semantics without assuming every notification is replaceable?",
+      "hint": "Distinguish superseding state snapshots from independent business records.",
+      "answer": "Coalesce older route-location snapshots into the newest complete snapshot for the same scope, but preserve each distinct proof-of-delivery record in durable authoritative storage. A notification about a proof may be retried or regenerated from that record, rather than making the transient delivery queue its only copy. Define snapshot version and scope so unrelated routes are not collapsed together. Expiry can make an old location snapshot unhelpful, but it does not authorize deleting audit evidence. The policy follows business meaning: message arrival order or a shared destination alone does not establish that one payload supersedes another.",
+      "explanation": "Compaction is valid only when the retained information replaces everything the discarded message was required to convey. Business-event durability belongs beyond a best-effort push queue.",
+      "criteria": [
+        "Coalesce only scoped superseding snapshots.",
+        "Preserve independent audit records durably.",
+        "Separate notification transport from authoritative evidence."
+      ],
+      "options": [
+        "Keep every location snapshot but combine unrelated proof records into one arbitrary record.",
+        "Keep only the last message for the driver, regardless of type.",
+        "Discard all proofs because the provider accepted their notification requests.",
+        "Keep the newest scoped location snapshot and preserve each required proof record."
+      ],
+      "answerIndex": 3
+    },
+    {
+      "id": "pushcase-p2",
+      "type": "written",
+      "title": "A burst with an expiry budget",
+      "question": "A real-time delivery tier receives a burst of 18,000 independent advisory messages at time zero. It can transmit 600 messages per second at a constant rate, has no other traffic and serves FIFO. Every message expires 20 seconds after creation. In a fluid approximation, how many can be sent before expiry and how many become stale? Propose a response that distinguishes operational alerts from guaranteed business actions.",
+      "hint": "Calculate the work completed inside the freshness window, not the time needed to empty the queue.",
+      "answer": "The tier can transmit 600 × 20 = 12,000 messages within the window, leaving 6,000 stale messages in this approximation. Draining all 18,000 would take 30 seconds, so sending the remaining third later would violate the stated freshness policy. Discard or suppress expired advisories and record their outcome; prioritize only if the contract permits it. Add capacity or reduce admitted advisory work when the expected burst exceeds the freshness budget. If some messages represent essential business actions, persist those actions separately and expose authoritative status or recovery rather than treating an expired notification as cancellation of the action.",
+      "explanation": "A queue smooths a burst only within its capacity and freshness constraints. Delivery acceptance and durable business completion are different reliability boundaries.",
+      "criteria": [
+        "Compute 12,000 sent, 6,000 stale and 30-second drain time.",
+        "Respect expiry rather than blindly drain.",
+        "Separate advisory freshness from business durability."
+      ]
+    },
+    {
+      "id": "pushcase-p3",
+      "type": "written",
+      "title": "Acknowledgement lost after application",
+      "question": "A warehouse handheld receives message M77 instructing it to display a task confirmation already committed in the backend. The device records M77 and updates its screen, but its acknowledgement is lost during a disconnect. The delivery tier replays M77 after reconnection. Design the device and server state needed for safe replay, and explain why provider acceptance, device receipt and a worker reading the confirmation are different milestones.",
+      "hint": "Retry the delivery without repeating an irreversible application effect.",
+      "answer": "Give messages stable IDs and define an acknowledgement as a specific processing milestone. The device records M77’s processed status durably enough for the promised replay window and applies any local effect idempotently, then acknowledges duplicates without repeating that effect. Coordinate local recording and application so a crash does not create an ambiguous half-completion, or rebuild the view from authoritative backend state. The server retains replay state until acknowledgement or its documented expiry and does not interpret provider acceptance as device processing. A displayed confirmation still does not prove a human saw or acted on it; that requires a separate explicit interaction.",
+      "explanation": "A lost acknowledgement makes duplicate delivery normal. End-to-end effects need deduplication or idempotency at the consumer, and each reported success must name its actual boundary.",
+      "criteria": [
+        "Use stable IDs and consumer replay-safe effects.",
+        "Define retention/expiry and crash behavior.",
+        "Separate transport, device and human milestones."
+      ]
+    }
+  ]
+}

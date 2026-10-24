@@ -1,0 +1,14 @@
+AI & the LEARN submission case
+Part 1 • Synthetic narration
+
+Architecture foundations recap
+
+This chapter recalls the foundations needed for the case study: significant decisions, intended versus implemented structure and multiple views. The extended deck repeats much of the original introduction, so use those sections for review. Then apply the vocabulary to one concrete promise about durable submission and reliable confirmation.
+
+AI generation and engineering judgment
+
+Generated code can accelerate visible progress while leaving questions about understanding and rationale unresolved. Distinguish technical, cognitive and intent debt. Architecture helps teams define promises, explain structure and evaluate evidence. Review generated implementations through concrete scenarios and failure tests rather than treating a working demonstration as complete proof of quality.
+
+Define the submission promise
+
+Start with the student’s uncertainty: did the submission succeed? Identify stakeholder needs and a trustworthy source of status. The LEARN-inspired architecture is a hypothetical teaching model. Its responsibility boxes explain cooperation without committing to separate services. Include interruptions, concurrency and authorization in the problem before choosing implementation details.

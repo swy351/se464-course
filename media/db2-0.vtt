@@ -1,0 +1,55 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:06.194
+Think of a relational dataset as a graph: rows are
+vertices and references are edges Partitioning
+
+00:00:06.194 --> 00:00:10.728
+tries to balance the data while cutting few
+frequently traversed edges.
+
+00:00:10.728 --> 00:00:10.920
+No.
+
+00:00:10.920 --> 00:00:16.858
+It can make profile reads local, but the rename now
+affects many copies or requires accepting
+
+00:00:16.858 --> 00:00:18.327
+temporary disagreement.
+
+00:00:18.327 --> 00:00:24.530
+A deterministic hash maps a key to a value in a
+fixed hash space Partition owners can divide that
+
+00:00:24.530 --> 00:00:30.286
+space into ranges; a client or routing layer hashes
+a requested key and selects its owner.
+
+00:00:30.286 --> 00:00:30.477
+No.
+
+00:00:30.477 --> 00:00:36.681
+All requests for that key still map to its owner or
+replica set unless the application introduces
+
+00:00:36.681 --> 00:00:39.302
+another distribution or caching strategy.
+
+00:00:39.327 --> 00:00:45.427
+Partitioning spreads different data across machines;
+replication stores multiple copies of each
+
+00:00:45.427 --> 00:00:51.527
+partition Replication allows a system to keep a copy
+when a machine fails, but a change reaches
+
+00:00:51.527 --> 00:00:53.325
+replicas at different times.
+
+00:00:53.325 --> 00:00:59.232
+Not while also remaining available for every
+request; they cannot coordinate the conflicting
+
+00:00:59.232 --> 00:01:01.223
+decisions across the partition.

@@ -1,0 +1,89 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:04.333
+A load balancer presents one service interface to a
+cluster of workers.
+
+00:00:04.333 --> 00:00:06.652
+Imagine a course registration website.
+
+00:00:06.652 --> 00:00:09.338
+The browser sends a request to one hostname.
+
+00:00:09.338 --> 00:00:15.258
+Behind that address, a balancer chooses a worker,
+forwards the request, and returns the response.
+
+00:00:15.258 --> 00:00:18.797
+The browser does not need to know which worker
+handled it.
+
+00:00:18.800 --> 00:00:21.506
+Round robin rotates through eligible workers.
+
+00:00:21.506 --> 00:00:25.295
+With nine requests and three workers, each gets
+three requests.
+
+00:00:25.295 --> 00:00:28.362
+But equal counts do not mean equal processing time.
+
+00:00:28.362 --> 00:00:33.233
+One request may return a small cached result;
+another may run an expensive query.
+
+00:00:33.233 --> 00:00:39.006
+A least connections policy uses active connections
+as a signal, but that signal is still only an
+
+00:00:39.006 --> 00:00:40.329
+approximation of work.
+
+00:00:40.333 --> 00:00:43.443
+Any worker should be able to serve the next request.
+
+00:00:43.443 --> 00:00:49.123
+If a shopping cart exists only in one worker’s
+memory, switching workers may appear to lose it.
+
+00:00:49.123 --> 00:00:54.684
+Store durable state outside individual workers, or
+explicitly design session affinity and its
+
+00:00:54.684 --> 00:00:55.701
+failure behavior.
+
+00:00:55.701 --> 00:01:01.082
+A stateless worker is easier to replace, but shared
+storage now needs its own capacity and
+
+00:01:01.082 --> 00:01:02.159
+availability plan.
+
+00:01:02.159 --> 00:01:06.848
+Layer four balancing uses transport information such
+as addresses and ports.
+
+00:01:06.848 --> 00:01:12.648
+An HTTP layer seven proxy can inspect paths and
+headers, terminate TLS, and route to different
+
+00:01:12.648 --> 00:01:13.758
+application pools.
+
+00:01:13.758 --> 00:01:15.979
+These features cost processing work.
+
+00:01:15.979 --> 00:01:19.250
+Actual throughput depends on the system and
+workload.
+
+00:01:19.250 --> 00:01:25.049
+Pause here: which layer would you choose to route
+slash images and slash checkout to different
+
+00:01:25.049 --> 00:01:25.419
+pools?
+
+00:01:25.419 --> 00:01:27.887
+An HTTP aware proxy is a natural choice.

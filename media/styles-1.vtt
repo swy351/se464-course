@@ -1,0 +1,83 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:06.380
+Interpreter architectures make a program and its
+execution state explicit data managed by an engine.
+
+00:00:06.380 --> 00:00:11.612
+This can support portability or simulate a machine
+that is not directly available.
+
+00:00:11.612 --> 00:00:17.098
+A virtual machine is an abstraction, not a
+requirement to interpret every instruction.
+
+00:00:17.098 --> 00:00:23.415
+Consider compilation, validation and build-time
+dependencies when explaining the complete execution
+
+00:00:23.415 --> 00:00:24.244
+architecture.
+
+00:00:24.244 --> 00:00:30.184
+Process-control architecture separates the process,
+measurements and control decisions.
+
+00:00:30.184 --> 00:00:34.896
+Identify the controlled variable, manipulated
+variable and set point.
+
+00:00:34.896 --> 00:00:40.085
+Feedback uses observed results to adjust action;
+open-loop control does not.
+
+00:00:40.085 --> 00:00:46.913
+Simple diagrams explain these relationships, but an
+implemented controller must also address timing,
+
+00:00:46.913 --> 00:00:51.488
+disturbances and limits before its behavior can be
+judged reliable.
+
+00:00:51.488 --> 00:00:54.669
+Client–server describes roles in an interaction.
+
+00:00:54.669 --> 00:01:00.898
+Keeping query processing near data can reduce some
+transfers, but network and failure behavior
+
+00:01:00.898 --> 00:01:02.887
+remain architectural concerns.
+
+00:01:02.887 --> 00:01:06.134
+Discovery, state and coordination affect scaling.
+
+00:01:06.134 --> 00:01:12.429
+A useful diagram explains who requests what and how
+the interaction behaves when the service is
+
+00:01:12.429 --> 00:01:15.743
+slow, unavailable or returns an uncertain outcome.
+
+00:01:15.788 --> 00:01:20.632
+Peer-to-peer systems let participants share both
+client and server roles.
+
+00:01:20.632 --> 00:01:26.738
+BitTorrent gains capacity from exchanging pieces
+during download, not only after completion.
+
+00:01:26.738 --> 00:01:31.980
+Check discovery and bootstrap mechanisms before
+claiming full decentralization.
+
+00:01:31.980 --> 00:01:38.484
+Resilience, privacy and scaling depend on the
+protocol and peer behavior, including partitions and
+
+00:01:38.484 --> 00:01:41.271
+unavailable or untrustworthy participants.
+
+00:01:41.271 --> 00:01:46.580
+Keep the model boundary explicit and connect each
+conclusion to its assumptions.

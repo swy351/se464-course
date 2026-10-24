@@ -1,0 +1,83 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:03.615
+A content delivery network places caching proxies
+near users.
+
+00:00:03.615 --> 00:00:05.808
+The origin owns the original content.
+
+00:00:05.808 --> 00:00:10.193
+A fresh cache hit lets an edge answer without
+fetching that content again.
+
+00:00:10.193 --> 00:00:11.734
+A miss reaches the origin.
+
+00:00:11.734 --> 00:00:16.297
+Cache policy determines what may be stored and when
+a response can be reused.
+
+00:00:16.297 --> 00:00:18.594
+Read the whole Cache-Control policy.
+
+00:00:18.594 --> 00:00:22.741
+Public max-age sixty can permit shared caching for
+sixty seconds.
+
+00:00:22.741 --> 00:00:29.122
+Private max-age sixty permits a private browser
+cache, but excludes storage of the whole response in
+
+00:00:29.122 --> 00:00:30.334
+a shared CDN cache.
+
+00:00:30.334 --> 00:00:34.545
+No-cache can permit storage, but requires validation
+before reuse.
+
+00:00:34.545 --> 00:00:36.268
+No-store prohibits storage.
+
+00:00:36.268 --> 00:00:39.331
+Max-age zero makes a response immediately stale.
+
+00:00:39.363 --> 00:00:44.279
+Anycast uses routing announcements from multiple
+sites for the same address prefix.
+
+00:00:44.279 --> 00:00:47.891
+BGP selects a route according to network policy and
+topology.
+
+00:00:47.891 --> 00:00:51.918
+The selected site is not necessarily the
+geographically closest one.
+
+00:00:51.918 --> 00:00:57.721
+DNS steering and anycast operate at different points
+in the request path and can be used together.
+
+00:00:57.721 --> 00:01:00.033
+Anycast is used for more than UDP DNS.
+
+00:01:00.033 --> 00:01:05.871
+Stateful connections need careful engineering
+because a route change can shift traffic to a site
+
+00:01:05.871 --> 00:01:07.635
+without the connection state.
+
+00:01:07.635 --> 00:01:13.291
+Likewise, caching and extra workers do not solve
+concurrent seat allocation in a registration
+
+00:01:13.291 --> 00:01:13.778
+service.
+
+00:01:13.778 --> 00:01:19.799
+Finish the unit by explaining which layer handles
+discovery, worker selection, caching, and correct
+
+00:01:19.799 --> 00:01:21.197
+updates to shared data.

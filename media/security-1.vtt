@@ -1,0 +1,64 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:04.842
+Compare identity-based access lists with authority
+carried in a capability.
+
+00:00:04.842 --> 00:00:10.266
+Each can express useful permissions, but delegation
+and revocation work differently.
+
+00:00:10.266 --> 00:00:15.495
+Mandatory controls impose centrally managed
+restrictions beyond owner discretion.
+
+00:00:15.495 --> 00:00:21.629
+Use the event-entry and food-coupon example to see
+how one identity check can lead to a limited
+
+00:00:21.629 --> 00:00:25.180
+capability without making the two mechanisms
+identical.
+
+00:00:25.200 --> 00:00:29.574
+A valid credential or signature does not settle
+every trust question.
+
+00:00:29.574 --> 00:00:35.153
+Ask whether a message is fresh, intended for this
+service and permitted for this action.
+
+00:00:35.153 --> 00:00:38.576
+Replay and compromised keys expose these
+distinctions.
+
+00:00:38.576 --> 00:00:44.789
+Reputation can help assess expected behavior, but it
+is contextual evidence rather than an access-
+
+00:00:44.789 --> 00:00:48.339
+control mechanism or a guarantee about the next
+request.
+
+00:00:48.339 --> 00:00:52.778
+Browser security demonstrates defense in depth at
+architectural scale.
+
+00:00:52.778 --> 00:00:58.865
+Restrict untrusted rendering, mediate privileged
+operations, patch promptly and warn about known
+
+00:00:58.865 --> 00:00:59.372
+threats.
+
+00:00:59.372 --> 00:01:04.444
+These controls reduce different risks and still
+matter when another layer fails.
+
+00:01:04.444 --> 00:01:10.404
+Treat the supplied Chrome diagrams as a historical
+teaching case, and distinguish that durable
+
+00:01:10.404 --> 00:01:14.145
+reasoning from details that change across browser
+versions.

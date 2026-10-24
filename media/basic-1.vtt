@@ -1,0 +1,41 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:02.618
+Scale the bottleneck you actually have.
+
+00:00:02.618 --> 00:00:08.795
+Application replication, database read replicas,
+larger machines and caching solve different
+
+00:00:08.795 --> 00:00:09.399
+problems.
+
+00:00:09.399 --> 00:00:14.703
+Decide which reads tolerate staleness and which
+responses can be shared safely.
+
+00:00:14.703 --> 00:00:21.350
+A stateless monolith can run across many instances;
+deployment scaling does not by itself require a
+
+00:00:21.350 --> 00:00:23.633
+change to microservice boundaries.
+
+00:00:23.633 --> 00:00:29.031
+Convert workload claims into rates, then inspect the
+assumptions behind those rates.
+
+00:00:29.031 --> 00:00:34.301
+Monthly averages hide peaks and user actions are not
+identical to disk operations.
+
+00:00:34.301 --> 00:00:39.057
+The case scales favorably because many responses can
+be shared and cached.
+
+00:00:39.057 --> 00:00:45.291
+Validate those properties, model the limiting
+resources and measure representative traffic before
+
+00:00:45.291 --> 00:00:47.733
+promising a particular scaling factor.

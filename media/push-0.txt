@@ -1,0 +1,10 @@
+Push notifications and connected clients
+Part 1 • Synthetic narration
+
+Why the server cannot simply call the phone
+
+A ride arrival or an auction bid happens because another participant acts. The recipient needs an update without repeatedly asking whether anything changed. Yet a phone is not an ordinary public server: its address changes, NAT and firewalls restrict inbound connections, and the application may be suspended. Email and SMS provide useful notification channels, but do not replace every in-app interaction.
+
+Registration and mobile delivery
+
+Mobile push services let an application backend address a registered app instance through platform infrastructure. The app obtains a provider-issued identifier and sends it to its authenticated backend. Later, the backend associates an event with the relevant installations and submits a notification. The operating system manages the delivery connection, avoiding a separate continuously active connection for every installed application.

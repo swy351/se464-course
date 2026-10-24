@@ -1,0 +1,46 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:06.088
+The slides describe an early RAMEN implementation
+using sharded connections and Redis, followed by a
+
+00:00:06.088 --> 00:00:10.472
+redesign separating connection handling, routing and
+cluster management.
+
+00:00:10.472 --> 00:00:15.282
+Treat the throughput and connection counts as
+reported historical observations.
+
+00:00:15.282 --> 00:00:21.248
+They illustrate why topology convergence and
+overloaded event loops can become important even
+when
+
+00:00:21.248 --> 00:00:26.971
+each individual message is small and the
+application’s business logic appears
+straightforward.
+
+00:00:27.000 --> 00:00:33.388
+The case identifies long-tail delivery problems
+involving acknowledgement loss, inconsistent client
+
+00:00:33.388 --> 00:00:37.389
+behavior and limitations of the earlier
+unidirectional stream.
+
+00:00:37.389 --> 00:00:43.713
+Its later protocol work explores bidirectional
+communication and more standardized client support.
+
+00:00:43.713 --> 00:00:49.907
+Separate the enduring requirement from a particular
+transport choice: the service needs feedback
+
+00:00:49.907 --> 00:00:55.908
+about progress, recoverable state and a clear policy
+for clients whose networks disappear for
+
+00:00:55.908 --> 00:00:57.005
+extended periods.

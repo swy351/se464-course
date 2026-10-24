@@ -1,0 +1,14 @@
+Queueing networks — alternate slide version
+Part 1 • Synthetic narration
+
+From execution cost to resource contention
+
+Begin with the distinction between doing work and waiting for a resource. Execution models estimate demand; queueing models account for contention. Define the station boundary, number of servers and capacity convention before using a formula. The same average service time can yield very different response times when arrivals, scheduling or competing workloads change.
+
+Measure throughput and apply operational laws
+
+Compute each metric with its units attached. Eight completions over twenty seconds means 0.4 jobs per second, while sixteen busy seconds means eighty percent utilization. Operational laws connect these measurements when their boundaries agree. Little’s law uses average jobs, throughput and residence time; it is not restricted to exponential arrivals or service.
+
+Understand single and multiple server queues
+
+M/M/1 provides a simple explanation for sharply increasing delay near saturation. Its assumptions and stability condition are part of the result. Birth–death balance gives state probabilities, while additional servers or finite buffers require changed calculations. Distinguish average delay, queue-tail probability and actual blocking rather than treating them as interchangeable measures of performance.

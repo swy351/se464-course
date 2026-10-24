@@ -1,0 +1,10 @@
+Case study: Uber’s real-time push platform
+Part 1 • Synthetic narration
+
+From polling to separated responsibilities
+
+The historical Uber case begins with rider and driver applications polling for changing trip state. The slides report that polling dominated gateway traffic and that startup requests competed on weak mobile networks. RAMEN separates the decision to send an update from creating its content and delivering it. This division targets both operational efficiency and the difficulty of migrating many existing features.
+
+Priority, expiry and resumable delivery
+
+RAMEN attaches delivery policy to payloads: priority determines which pending updates matter first, expiry limits how long an update remains useful, and replacement can retain the latest state instead of every intermediate version. The historical SSE protocol adds sequence numbers, reconnect cursors and separate acknowledgements. These application mechanisms supply recovery behavior that a persistent transport alone cannot guarantee to the user.

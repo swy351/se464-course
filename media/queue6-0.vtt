@@ -1,0 +1,64 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:04.625
+Begin with the distinction between doing work and
+waiting for a resource.
+
+00:00:04.625 --> 00:00:09.250
+Execution models estimate demand; queueing models
+account for contention.
+
+00:00:09.250 --> 00:00:15.206
+Define the station boundary, number of servers and
+capacity convention before using a formula.
+
+00:00:15.206 --> 00:00:21.415
+The same average service time can yield very
+different response times when arrivals, scheduling
+or
+
+00:00:21.415 --> 00:00:23.125
+competing workloads change.
+
+00:00:23.125 --> 00:00:26.069
+Compute each metric with its units attached.
+
+00:00:26.069 --> 00:00:32.557
+Eight completions over twenty seconds means 0.4 jobs
+per second, while sixteen busy seconds means
+
+00:00:32.557 --> 00:00:34.363
+eighty percent utilization.
+
+00:00:34.363 --> 00:00:39.180
+Operational laws connect these measurements when
+their boundaries agree.
+
+00:00:39.180 --> 00:00:45.735
+Little’s law uses average jobs, throughput and
+residence time; it is not restricted to exponential
+
+00:00:45.735 --> 00:00:47.073
+arrivals or service.
+
+00:00:47.073 --> 00:00:52.264
+M/M/1 provides a simple explanation for sharply
+increasing delay near saturation.
+
+00:00:52.264 --> 00:00:56.301
+Its assumptions and stability condition are part of
+the result.
+
+00:00:56.301 --> 00:01:02.517
+Birth–death balance gives state probabilities, while
+additional servers or finite buffers require
+
+00:01:02.517 --> 00:01:03.863
+changed calculations.
+
+00:01:03.863 --> 00:01:10.143
+Distinguish average delay, queue-tail probability
+and actual blocking rather than treating them as
+
+00:01:10.143 --> 00:01:12.707
+interchangeable measures of performance.

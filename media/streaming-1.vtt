@@ -1,0 +1,41 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:05.539
+The Leader/Followers concurrency pattern coordinates
+a pool of threads waiting for events.
+
+00:00:05.539 --> 00:00:11.570
+One thread leads by waiting on an event source; when
+an event arrives, another follower can become
+
+00:00:11.570 --> 00:00:14.648
+leader while the previous leader handles the work.
+
+00:00:14.648 --> 00:00:20.617
+The purpose is efficient event dispatch with
+controlled coordination overhead, not replication of
+
+00:00:20.617 --> 00:00:23.202
+durable data across a cluster of machines.
+
+00:00:23.202 --> 00:00:27.647
+Kafka illustrates a different use of leader and
+follower terminology.
+
+00:00:27.647 --> 00:00:33.767
+A partition has a leader responsible for its log
+operations and replica followers that copy its
+
+00:00:33.767 --> 00:00:34.089
+data.
+
+00:00:34.089 --> 00:00:38.598
+Leadership can move after failure under a cluster
+coordination policy.
+
+00:00:38.598 --> 00:00:44.846
+Several partitions can distribute leadership across
+brokers, so one leader per partition does not
+
+00:00:44.846 --> 00:00:48.067
+mean the entire system has only one active writer.

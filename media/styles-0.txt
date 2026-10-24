@@ -1,0 +1,18 @@
+Architecture styles and their tradeoffs
+Part 1 • Synthetic narration
+
+Describe a style through its constraints
+
+Describe architectural styles using components, connectors and constraints. A name alone does not explain behavior or tradeoffs. Real systems often combine styles, so identify which part of the system each description fits. Evaluate the assumptions that make an advantage possible, and use shared vocabulary to make decisions easier to inspect rather than to assign labels.
+
+Repository and blackboard architectures
+
+The repository style coordinates components through shared information. It can simplify data management while coupling clients to a common model. Blackboard systems extend the idea through cooperating computations. Examine schema ownership, concurrency and failure behavior before claiming easy reuse or centralized control; one shared box does not automatically provide scalable or highly available storage.
+
+Pipes, filters and compiler hybrids
+
+Pipes and filters compose transformations through data contracts. A linear pipeline is one specialization, and batch processing changes when output becomes available. Compiler examples show that practical systems often add shared representations, creating hybrids. Consider conversion cost, buffering and feedback before assuming that connecting reusable stages automatically gives good performance or supports every interaction pattern.
+
+Objects and layers as boundaries
+
+Objects encapsulate state and contracts; layers organize services by abstraction. Both help manage dependencies but do not erase behavioral coupling. Distinguish logical layers from physical deployment tiers. Shared mutable state and changes in interface meaning can still propagate, so evaluate the actual contracts and dependency rules rather than assuming isolation from the diagram alone.

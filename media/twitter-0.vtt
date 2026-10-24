@@ -1,0 +1,38 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:05.113
+The exercise imagines a social feed backed by users,
+follows and tweets tables.
+
+00:00:05.113 --> 00:00:08.219
+Publishing one tweet is initially a small write.
+
+00:00:08.219 --> 00:00:14.691
+Reading a feed requires finding followed authors and
+their recent posts, then assembling the result.
+
+00:00:14.691 --> 00:00:21.098
+Joins are not inherently slow, but broad access
+across many authors or shards can make this request
+
+00:00:21.098 --> 00:00:24.399
+expensive compared with retrieving a prepared feed.
+
+00:00:24.400 --> 00:00:28.732
+A materialized feed moves work from reading time to
+publication time.
+
+00:00:28.732 --> 00:00:34.007
+When an author posts, workers add a reference or
+entry to followers’ prepared feeds.
+
+00:00:34.007 --> 00:00:37.648
+A reader can then fetch a bounded structure keyed by
+user.
+
+00:00:37.648 --> 00:00:43.802
+This suits a workload with many repeated reads, but
+each post now creates work proportional to the
+
+00:00:43.802 --> 00:00:46.564
+number of destinations receiving the update.

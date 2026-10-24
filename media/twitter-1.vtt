@@ -1,0 +1,42 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:05.359
+Partitioning by follower can keep a person’s follow
+list and prepared feed together.
+
+00:00:05.359 --> 00:00:11.548
+It cannot simultaneously place every followed
+author’s original posts beside every reader without
+
+00:00:11.548 --> 00:00:12.314
+duplication.
+
+00:00:12.314 --> 00:00:18.694
+Social relationships cross partition boundaries, so
+a normalized read may fetch from several owners.
+
+00:00:18.694 --> 00:00:25.010
+The graph model makes the tension visible: balancing
+vertices and keeping related vertices together
+
+00:00:25.010 --> 00:00:26.605
+are competing objectives.
+
+00:00:26.605 --> 00:00:32.657
+A hybrid design precomputes updates for ordinary
+authors and merges selected high-fan-out authors’
+
+00:00:32.657 --> 00:00:35.251
+recent posts when a reader opens the feed.
+
+00:00:35.251 --> 00:00:39.759
+This avoids sending every popular post to millions
+of inactive followers.
+
+00:00:39.759 --> 00:00:45.687
+The threshold is a workload decision: compare
+expected fan-out cost against the reads that would
+
+00:00:45.687 --> 00:00:50.874
+need an on-demand merge, including freshness and
+cache behavior for popular content.

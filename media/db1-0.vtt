@@ -1,0 +1,48 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:06.526
+Moving session and application state out of a web
+process makes that process easier to duplicate The
+
+00:00:06.526 --> 00:00:12.138
+shared database now carries durable data and
+coordinates changes made by those copies.
+
+00:00:12.138 --> 00:00:12.334
+No.
+
+00:00:12.334 --> 00:00:17.162
+All copies may still wait on the same overloaded
+database or storage path.
+
+00:00:17.200 --> 00:00:23.282
+A relational schema describes tables, columns and
+relationships A staff row can refer to one
+
+00:00:23.282 --> 00:00:26.918
+department, and a department can refer to one
+building.
+
+00:00:26.918 --> 00:00:33.132
+With the shown normalized schema, one department row
+changes; staff references retain the same
+
+00:00:33.132 --> 00:00:34.587
+department identifier.
+
+00:00:34.600 --> 00:00:40.782
+An index stores an additional access path to rows
+Without a suitable access path, a query may scan
+
+00:00:40.782 --> 00:00:42.863
+many rows to find a small result.
+
+00:00:42.863 --> 00:00:43.053
+No.
+
+00:00:43.053 --> 00:00:49.108
+It can increase write maintenance and storage cost
+without helping the queries that dominate the
+
+00:00:49.108 --> 00:00:49.676
+workload.

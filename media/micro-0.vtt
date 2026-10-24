@@ -1,0 +1,42 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:02.831
+Distinguish replication from decomposition.
+
+00:00:02.831 --> 00:00:09.416
+Replicas run the same application to serve more
+requests; microservices divide responsibilities into
+
+00:00:09.416 --> 00:00:11.589
+separately deployable components.
+
+00:00:11.589 --> 00:00:15.342
+A monolith often simplifies development and
+transactions.
+
+00:00:15.342 --> 00:00:21.531
+Its suitability depends on the system and team, so
+begin with concrete change and coordination
+
+00:00:21.531 --> 00:00:26.075
+problems rather than assuming more services are
+automatically better.
+
+00:00:26.100 --> 00:00:30.492
+Choose service boundaries around responsibilities
+and change patterns.
+
+00:00:30.492 --> 00:00:36.578
+Network APIs hide implementation details, but calls
+can fail independently and cross-service data
+
+00:00:36.578 --> 00:00:38.837
+updates require deliberate recovery.
+
+00:00:38.837 --> 00:00:44.421
+Compare the gain in independent deployment with the
+added testing and operational burden.
+
+00:00:44.421 --> 00:00:50.193
+A service split is justified when those benefits
+matter enough to pay the coordination cost.

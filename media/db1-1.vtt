@@ -1,0 +1,36 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:06.543
+A primary database can stream changes to read
+replicas Each replica maintains a copy of the
+dataset
+
+00:00:06.543 --> 00:00:12.294
+and can answer eligible reads, so many read requests
+no longer compete for the primary.
+
+00:00:12.294 --> 00:00:18.507
+Only if its consistency policy ensures it has the
+required write; otherwise use an appropriate
+
+00:00:18.507 --> 00:00:20.489
+primary or session-aware read.
+
+00:00:20.500 --> 00:00:26.998
+Sharding assigns disjoint subsets of rows to
+different database partitions A useful key places
+the
+
+00:00:26.998 --> 00:00:32.037
+data for a common operation together while
+distributing storage and traffic.
+
+00:00:32.037 --> 00:00:32.236
+No.
+
+00:00:32.236 --> 00:00:38.667
+Each feed may still contact every shard, and the
+coordinator must merge results; skew and network
+
+00:00:38.667 --> 00:00:39.927
+cost can also grow.

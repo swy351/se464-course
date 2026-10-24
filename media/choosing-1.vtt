@@ -1,0 +1,53 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:06.386
+A document store can keep a nested profile as one
+aggregate, with a configured shard key controlling
+
+00:00:06.386 --> 00:00:12.260
+distribution A search engine serves another need:
+locating documents by terms and relevance.
+
+00:00:12.260 --> 00:00:17.433
+Find the document-ID list for each normalized term
+and return their intersection.
+
+00:00:17.433 --> 00:00:23.196
+An application cache stores values that help
+construct responses, such as a leaderboard or
+
+00:00:23.196 --> 00:00:29.279
+precomputed summary An HTTP reverse-proxy cache
+stores reusable responses at a different layer.
+
+00:00:29.279 --> 00:00:29.471
+No.
+
+00:00:29.471 --> 00:00:35.682
+If it is designed as a rebuildable cache, the source
+records remain elsewhere and the leaderboard
+
+00:00:35.682 --> 00:00:36.835
+can be recomputed.
+
+00:00:36.835 --> 00:00:43.307
+A mounted network filesystem provides a file
+interface that existing applications can use Block
+
+00:00:43.307 --> 00:00:49.848
+storage instead exposes volumes on which a
+filesystem may be built; object storage exposes
+named
+
+00:00:49.848 --> 00:00:51.824
+objects through service APIs.
+
+00:00:51.824 --> 00:00:52.914
+Not necessarily.
+
+00:00:52.914 --> 00:00:59.454
+It must check required file operations and semantics
+against the object API and adapt its access
+
+00:00:59.454 --> 00:00:59.999
+pattern.

@@ -1,0 +1,42 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:03.089
+Ask where information survives between requests.
+
+00:00:03.089 --> 00:00:07.338
+Stateful local workers need routing or state-sharing
+arrangements.
+
+00:00:07.338 --> 00:00:12.294
+Stateless workers can be interchangeable because
+required state is elsewhere.
+
+00:00:12.294 --> 00:00:18.601
+Do not confuse this with pure functions: a stateless
+request handler can read changing records and
+
+00:00:18.601 --> 00:00:19.567
+write new data.
+
+00:00:19.567 --> 00:00:24.008
+The architecture still has state, even when workers
+do not retain it.
+
+00:00:24.008 --> 00:00:28.490
+Use the chess game to compare local memory with
+shared durable state.
+
+00:00:28.490 --> 00:00:34.920
+Stateless workers make routing and replacement
+easier, but the database now carries correctness and
+
+00:00:34.920 --> 00:00:36.869
+coordination responsibilities.
+
+00:00:36.869 --> 00:00:40.311
+Cookies provide request-carried identity
+information.
+
+00:00:40.311 --> 00:00:46.482
+In each design, identify what is stored, who trusts
+it and what happens when a component fails.

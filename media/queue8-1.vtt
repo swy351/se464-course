@@ -1,0 +1,63 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:03.137
+Trace requests through resources and count visits.
+
+00:00:03.137 --> 00:00:08.910
+Device throughput differs from external request
+throughput when a request visits repeatedly.
+
+00:00:08.910 --> 00:00:14.807
+Convert visits and service time into demand, then
+calculate utilization and response under the
+
+00:00:14.807 --> 00:00:15.623
+chosen model.
+
+00:00:15.623 --> 00:00:21.584
+The ATM example shows why doubling arrivals near a
+bottleneck can increase delay much more than
+
+00:00:21.584 --> 00:00:22.086
+twofold.
+
+00:00:22.100 --> 00:00:26.851
+Choose open, closed or mixed workload behavior
+before solving the network.
+
+00:00:26.851 --> 00:00:31.346
+Fixed users with think time differ from independent
+external arrivals.
+
+00:00:31.346 --> 00:00:37.189
+Map execution demands onto stations and keep per-
+visit and per-request quantities distinct.
+
+00:00:37.189 --> 00:00:43.609
+Then vary uncertain parameters, identify the
+limiting resource and communicate what an average-
+value
+
+00:00:43.609 --> 00:00:46.948
+model does not predict about bursts or tail latency.
+
+00:00:46.948 --> 00:00:50.794
+This workshop connects the two performance-modeling
+units.
+
+00:00:50.794 --> 00:00:57.426
+Convert operation requests through the overhead
+matrix, reduce the execution graph and obtain demand
+
+00:00:57.426 --> 00:00:58.420
+at each device.
+
+00:00:58.420 --> 00:01:01.404
+Apply arrival intensity only after that step.
+
+00:01:01.404 --> 00:01:07.969
+Check stability first, and do not hide ambiguous
+branch labels: state the mapping you use or obtain
+
+00:01:07.969 --> 00:01:09.893
+it from the original diagram.

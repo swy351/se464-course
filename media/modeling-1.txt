@@ -1,0 +1,10 @@
+Model architecture and estimate execution cost
+Part 2 • Synthetic narration
+
+Translate software actions into resource demand
+
+The overhead matrix connects software actions to hardware work. First count resource quantities, then multiply by service time with consistent units. Summing provides a simple baseline, while the resource vector supports later contention analysis. Two designs with the same baseline time can behave differently under load if they concentrate work on different devices.
+
+Work through the ATM transaction scenario
+
+The ATM workshop turns graph reduction into a complete baseline estimate. Combine validation, a selected transaction and result delivery. State the branch-probability mapping rather than silently inferring it from extracted labels. The resulting average is conditional on that mapping and omits contention, so use it as input to further analysis rather than a production latency guarantee.

@@ -1,0 +1,10 @@
+A scalable publishing system: the NGVM case
+Part 1 • Synthetic narration
+
+Read the case architecture and its interfaces
+
+Read the case as a set of cooperating responsibilities and data rules. Public pages, contributions and volunteer actions exercise different paths. Resource-oriented HTTP design can clarify an interface, but it does not supply access control. Preserve schema integrity and identify external dependencies before deciding which part of the historical architecture should change.
+
+Place media, caching and operating cost in context
+
+Object storage and a CDN separate media delivery from application processing. Thumbnails reduce payload for different displays, while caching can reduce repeated origin work. Random names are not access control. The cost charts are historical context from 2020, so use them to understand tradeoffs rather than as current infrastructure prices or guaranteed savings.

@@ -1,0 +1,14 @@
+Relational databases & scaling
+Part 1 • Synthetic narration
+
+Why state moves into the database
+
+Moving session and application state out of a web process makes that process easier to duplicate The shared database now carries durable data and coordinates changes made by those copies. No. All copies may still wait on the same overloaded database or storage path.
+
+Relational models and query execution
+
+A relational schema describes tables, columns and relationships A staff row can refer to one department, and a department can refer to one building. With the shown normalized schema, one department row changes; staff references retain the same department identifier.
+
+Indexes and their costs
+
+An index stores an additional access path to rows Without a suitable access path, a query may scan many rows to find a small result. No. It can increase write maintenance and storage cost without helping the queries that dominate the workload.

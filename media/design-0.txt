@@ -1,0 +1,14 @@
+UML, design principles & SOLID
+Part 1 • Synthetic narration
+
+Read and write class diagrams
+
+Read a class diagram as a precise but selective model. Identify classes, access levels, operations and relationships, then interpret multiplicities in the domain. Use code examples to check the model, especially when a collection’s capacity differs from actual membership. Ownership, inheritance and interface contracts communicate different ideas, so choose the relationship that matches the intended behavior.
+
+Patterns as reusable design knowledge
+
+Patterns preserve design knowledge by naming recurring problems and explaining solutions and consequences. Apply them with judgment, not mechanically. Selective diagrams can help communicate the relevant structure. When comparing composition and inheritance, examine the relationship and the behavior clients depend on; reuse alone is not enough to justify a subtype hierarchy.
+
+Single responsibility and cohesion
+
+Single responsibility concerns coherent reasons to change. Use method relationships and shared fields as clues, then ask which stakeholder or policy drives each change. Splitting responsibilities can improve maintainability, but excessive fragmentation can obscure the model. Public libraries add compatibility costs, making clear boundaries especially valuable before clients depend on them.

@@ -1,0 +1,18 @@
+DNS and regional failover
+Synthetic narration • SE464
+
+Discovery before requests
+
+DNS maps a service hostname to an endpoint address. A recursive resolver can reuse an answer from its cache. If it does not have one, it obtains an answer through the DNS hierarchy. A global routing policy may return different regional addresses, after which a regional load balancer chooses a worker.
+
+A cached answer persists
+
+Consider a simplified example. At time zero, a resolver caches region A with a sixty second time to live. At ten seconds, the authoritative answer changes to region B. Predict the result of a lookup at thirty seconds. The resolver still returns A, because its cached entry has not expired.
+
+Expiry permits a refresh
+
+At sixty seconds, the next lookup in this model refreshes the expired entry and discovers B. Real failover has additional delays: detecting the failure, application caching, and existing connections. A lower time to live allows more frequent refreshes, but creates more DNS traffic and does not promise instant recovery.
+
+Location is an estimate
+
+Geographic DNS can use the requesting resolver’s location, or sometimes partial client network information, to choose a region. That estimate may differ from the student’s actual location. Global distribution also needs regional spare capacity and a data replication strategy. DNS changes the endpoint a client discovers; it does not replicate the database.

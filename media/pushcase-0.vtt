@@ -1,0 +1,45 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:06.203
+The historical Uber case begins with rider and
+driver applications polling for changing trip state.
+
+00:00:06.203 --> 00:00:12.405
+The slides report that polling dominated gateway
+traffic and that startup requests competed on weak
+
+00:00:12.405 --> 00:00:13.408
+mobile networks.
+
+00:00:13.408 --> 00:00:19.109
+RAMEN separates the decision to send an update from
+creating its content and delivering it.
+
+00:00:19.109 --> 00:00:25.062
+This division targets both operational efficiency
+and the difficulty of migrating many existing
+
+00:00:25.062 --> 00:00:25.625
+features.
+
+00:00:25.625 --> 00:00:32.092
+RAMEN attaches delivery policy to payloads: priority
+determines which pending updates matter first,
+
+00:00:32.092 --> 00:00:38.625
+expiry limits how long an update remains useful, and
+replacement can retain the latest state instead
+
+00:00:38.625 --> 00:00:40.585
+of every intermediate version.
+
+00:00:40.585 --> 00:00:47.052
+The historical SSE protocol adds sequence numbers,
+reconnect cursors and separate acknowledgements.
+
+00:00:47.052 --> 00:00:53.192
+These application mechanisms supply recovery
+behavior that a persistent transport alone cannot
+
+00:00:53.192 --> 00:00:54.629
+guarantee to the user.

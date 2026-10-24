@@ -1,0 +1,40 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:04.080
+The overhead matrix connects software actions to
+hardware work.
+
+00:00:04.080 --> 00:00:09.584
+First count resource quantities, then multiply by
+service time with consistent units.
+
+00:00:09.584 --> 00:00:15.866
+Summing provides a simple baseline, while the
+resource vector supports later contention analysis.
+
+00:00:15.866 --> 00:00:22.212
+Two designs with the same baseline time can behave
+differently under load if they concentrate work
+
+00:00:22.212 --> 00:00:23.572
+on different devices.
+
+00:00:23.600 --> 00:00:28.296
+The ATM workshop turns graph reduction into a
+complete baseline estimate.
+
+00:00:28.296 --> 00:00:32.350
+Combine validation, a selected transaction and
+result delivery.
+
+00:00:32.350 --> 00:00:38.333
+State the branch-probability mapping rather than
+silently inferring it from extracted labels.
+
+00:00:38.333 --> 00:00:44.509
+The resulting average is conditional on that mapping
+and omits contention, so use it as input to
+
+00:00:44.509 --> 00:00:48.369
+further analysis rather than a production latency
+guarantee.

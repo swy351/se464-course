@@ -1,0 +1,10 @@
+Stateless services, proxies & caches
+Part 1 • Synthetic narration
+
+Where does state live?
+
+Ask where information survives between requests. Stateful local workers need routing or state-sharing arrangements. Stateless workers can be interchangeable because required state is elsewhere. Do not confuse this with pure functions: a stateless request handler can read changing records and write new data. The architecture still has state, even when workers do not retain it.
+
+Stateless workers with stateful data
+
+Use the chess game to compare local memory with shared durable state. Stateless workers make routing and replacement easier, but the database now carries correctness and coordination responsibilities. Cookies provide request-carried identity information. In each design, identify what is stored, who trusts it and what happens when a component fails.

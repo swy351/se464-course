@@ -1,0 +1,42 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:03.085
+Turn quality goals into measurable agreements.
+
+00:00:03.085 --> 00:00:09.725
+State the metric, workload, threshold and
+observation interval, including how failures are
+counted.
+
+00:00:09.725 --> 00:00:13.480
+Capacity needs an activity model, not just a user
+total.
+
+00:00:13.480 --> 00:00:20.120
+For other attributes, distinguish an outcome from a
+prescribed technology and test the outcome that
+
+00:00:20.120 --> 00:00:22.333
+stakeholders actually care about.
+
+00:00:22.333 --> 00:00:26.326
+Optimize the end-to-end flow, not isolated component
+rates.
+
+00:00:26.326 --> 00:00:32.486
+In this simplified producer-consumer model,
+throughput is limited by combined production or
+
+00:00:32.486 --> 00:00:34.787
+consumption, whichever is smaller.
+
+00:00:34.787 --> 00:00:38.442
+Balancing the stages can outperform equal
+allocations.
+
+00:00:38.442 --> 00:00:45.007
+State the equal-cost assumption and remember that
+full CPU utilization is still a capacity limit,
+
+00:00:45.007 --> 00:00:46.835
+with no practical headroom.

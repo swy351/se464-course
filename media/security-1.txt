@@ -1,0 +1,14 @@
+Security: Trust, Identity and Access
+Part 2 • Synthetic narration
+
+Authorization: lists, capabilities and labels
+
+Compare identity-based access lists with authority carried in a capability. Each can express useful permissions, but delegation and revocation work differently. Mandatory controls impose centrally managed restrictions beyond owner discretion. Use the event-entry and food-coupon example to see how one identity check can lead to a limited capability without making the two mechanisms identical.
+
+Impersonation, replay and trust
+
+A valid credential or signature does not settle every trust question. Ask whether a message is fresh, intended for this service and permitted for this action. Replay and compromised keys expose these distinctions. Reputation can help assess expected behavior, but it is contextual evidence rather than an access-control mechanism or a guarantee about the next request.
+
+Browser isolation and the patching lifecycle
+
+Browser security demonstrates defense in depth at architectural scale. Restrict untrusted rendering, mediate privileged operations, patch promptly and warn about known threats. These controls reduce different risks and still matter when another layer fails. Treat the supplied Chrome diagrams as a historical teaching case, and distinguish that durable reasoning from details that change across browser versions.

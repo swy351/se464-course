@@ -1,0 +1,14 @@
+AI & the LEARN submission case
+Part 2 • Synthetic narration
+
+Reliable receipt and retry semantics
+
+A reliable receipt must mean something precise. In this case, it means the file and authoritative record are durable. Notification can follow later through preserved pending work and retries. Stable request identity lets a repeated request return the recorded result. Check partial failures and concurrent duplicates instead of assuming all writes succeed together.
+
+Use four views to explain one outcome
+
+Use the same retry scenario to connect four views. Domain relationships explain the submission, runtime processes explain cooperation, modules explain code ownership and deployment explains where state is reachable. The views should agree on one outcome: a valid retry can find the saved result even when it reaches a different application instance.
+
+Review and recover the architecture
+
+Review architecture by comparing intended rules with actual behavior. An early confirmation violates the durability promise and is erosion; an undocumented compliant route is drift. Recover structure using the evidence your role can access. Label claims as observed, inferred or unknown so the review remains honest about what has been established.

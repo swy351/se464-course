@@ -1,0 +1,10 @@
+REST APIs & serialization
+Part 2 • Synthetic narration
+
+Serialization and references
+
+Serialization bridges program structures and transmitted bytes. JSON and XML work well for trees, but shared references and cycles require an explicit representation. Encode each person once and link friends by ID. Validate syntax and distinguish characters from bytes: the ASCII example uses one byte per character, while UTF-8 supports wider characters too.
+
+Choosing a protocol
+
+Choose technologies at the correct layer. HTTP is a protocol, JSON and Protocol Buffers serialize data, and gRPC provides an RPC framework. REST describes architectural constraints. Reusing HTTP infrastructure is useful, but its semantics remain part of the contract. Decide using compatibility and operational requirements, supported by measurement where performance matters.

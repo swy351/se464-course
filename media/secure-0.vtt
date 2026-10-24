@@ -1,0 +1,69 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:05.714
+Start with the public boundary: expose only the
+routes clients need, apply common gateway
+
+00:00:05.714 --> 00:00:08.475
+protections and restrict management access.
+
+00:00:08.475 --> 00:00:12.263
+Then examine what happens after traffic enters the
+cluster.
+
+00:00:12.263 --> 00:00:17.013
+A gateway reduces exposure but does not make
+internal callers trustworthy.
+
+00:00:17.013 --> 00:00:23.305
+Distinguish a client application credential from the
+identity and permissions of the user behind a
+
+00:00:23.305 --> 00:00:23.819
+request.
+
+00:00:23.819 --> 00:00:28.355
+Follow the certificate trust decision before
+discussing encryption.
+
+00:00:28.355 --> 00:00:33.636
+The client must verify the intended service, not
+merely receive a certificate.
+
+00:00:33.636 --> 00:00:39.188
+Mutual TLS adds client-side credentials to the
+channel and can identify workloads.
+
+00:00:39.188 --> 00:00:42.980
+It still leaves application authorization to be
+decided.
+
+00:00:42.980 --> 00:00:49.209
+Key protection, certificate renewal and recovery are
+ongoing architectural responsibilities,
+
+00:00:49.209 --> 00:00:51.376
+especially when pinning is used.
+
+00:00:51.419 --> 00:00:54.323
+Containment starts with a communication map.
+
+00:00:54.323 --> 00:00:59.801
+Allow required paths and consider outbound traffic
+as carefully as inbound traffic.
+
+00:00:59.801 --> 00:01:06.401
+Namespaces organize resources, while supported
+network policies enforce selected network
+boundaries.
+
+00:01:06.401 --> 00:01:10.228
+Monitoring and quotas add detection and resource
+controls.
+
+00:01:10.228 --> 00:01:16.696
+Evaluate each mechanism by the consequence it
+limits, and do not mistake an alert or configuration
+
+00:01:16.696 --> 00:01:18.874
+object for guaranteed prevention.

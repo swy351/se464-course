@@ -1,0 +1,10 @@
+Asynchronous processing and message queues
+Part 2 • Synthetic narration
+
+Independent scaling and queue boundaries
+
+Queues distribute pending work across consumers and smooth a temporary mismatch between arrival and processing rates. Producers and consumers can scale independently, but the broker has its own capacity and durability limits. An in-process queue is simple but may vanish with the process. A separate broker or replicated service provides different persistence and recovery options, with additional operational cost and coordination.
+
+Backpressure, ordering and recovery
+
+A bounded queue must eventually reject, delay or otherwise regulate producers when it cannot safely accept more work. This backpressure is a protective control rather than merely an error to hide. Monitor oldest-message age as well as depth, because a small queue of expensive jobs can still violate latency goals. Retry policies should use limits and backoff instead of continuously recycling failures.

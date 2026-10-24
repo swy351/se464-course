@@ -1,0 +1,39 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:05.845
+Follow a request from the network through a queue to
+application logic and back as a response.
+
+00:00:05.845 --> 00:00:09.948
+The queue-and-worker model makes concurrency and
+overload visible.
+
+00:00:09.948 --> 00:00:14.860
+HTTP supplies a common contract, while frameworks
+handle much of the mechanics.
+
+00:00:14.860 --> 00:00:20.580
+Remember that asynchronous servers can implement the
+same service without a thread for every
+
+00:00:20.580 --> 00:00:21.078
+request.
+
+00:00:21.100 --> 00:00:25.415
+Trace a wiki request through browser, application
+and database.
+
+00:00:25.415 --> 00:00:32.127
+MediaWiki reads article data, renders it and adds
+presentation and possibly user-specific content.
+
+00:00:32.127 --> 00:00:36.921
+This example connects web protocols to architectural
+responsibilities.
+
+00:00:36.921 --> 00:00:43.701
+It also sets up two important questions: which state
+must be shared, and which repeated work can be
+
+00:00:43.701 --> 00:00:44.660
+safely cached?

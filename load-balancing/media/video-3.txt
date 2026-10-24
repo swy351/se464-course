@@ -1,0 +1,18 @@
+CDNs, caching, and anycast
+Synthetic narration • SE464
+
+An edge can answer locally
+
+A content delivery network places caching proxies near users. The origin owns the original content. A fresh cache hit lets an edge answer without fetching that content again. A miss reaches the origin. Cache policy determines what may be stored and when a response can be reused.
+
+Private means private cache
+
+Read the whole Cache-Control policy. Public max-age sixty can permit shared caching for sixty seconds. Private max-age sixty permits a private browser cache, but excludes storage of the whole response in a shared CDN cache. No-cache can permit storage, but requires validation before reuse. No-store prohibits storage. Max-age zero makes a response immediately stale.
+
+Anycast shares an address
+
+Anycast uses routing announcements from multiple sites for the same address prefix. BGP selects a route according to network policy and topology. The selected site is not necessarily the geographically closest one. DNS steering and anycast operate at different points in the request path and can be used together.
+
+Routing is not data consistency
+
+Anycast is used for more than UDP DNS. Stateful connections need careful engineering because a route change can shift traffic to a site without the connection state. Likewise, caching and extra workers do not solve concurrent seat allocation in a registration service. Finish the unit by explaining which layer handles discovery, worker selection, caching, and correct updates to shared data.

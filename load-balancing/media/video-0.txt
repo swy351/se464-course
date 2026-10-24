@@ -1,0 +1,18 @@
+One address, many workers
+Synthetic narration • SE464
+
+The client sees one service
+
+A load balancer presents one service interface to a cluster of workers. Imagine a course registration website. The browser sends a request to one hostname. Behind that address, a balancer chooses a worker, forwards the request, and returns the response. The browser does not need to know which worker handled it.
+
+Equal counts ≠ equal work
+
+Round robin rotates through eligible workers. With nine requests and three workers, each gets three requests. But equal counts do not mean equal processing time. One request may return a small cached result; another may run an expensive query. A least connections policy uses active connections as a signal, but that signal is still only an approximation of work.
+
+Interchangeable workers
+
+Any worker should be able to serve the next request. If a shopping cart exists only in one worker’s memory, switching workers may appear to lose it. Store durable state outside individual workers, or explicitly design session affinity and its failure behavior. A stateless worker is easier to replace, but shared storage now needs its own capacity and availability plan.
+
+Choose the routing layer
+
+Layer four balancing uses transport information such as addresses and ports. An HTTP layer seven proxy can inspect paths and headers, terminate TLS, and route to different application pools. These features cost processing work. Actual throughput depends on the system and workload. Pause here: which layer would you choose to route slash images and slash checkout to different pools? An HTTP aware proxy is a natural choice.

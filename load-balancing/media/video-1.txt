@@ -1,0 +1,18 @@
+Failures and deployments
+Synthetic narration • SE464
+
+Failure is not instantly visible
+
+Suppose worker B crashes. Until a health check detects the failure, the balancer may still send it new work. A failed probe is evidence of a problem, not proof of a crash. Overload, a dependency, or the network can cause a timeout too. Production systems often use multiple observations to avoid rapidly adding and removing a worker.
+
+Drain before replacing
+
+For a rolling deployment, stop giving one worker new requests. Let existing work finish within a deadline. Deploy the new version, wait for readiness, then restore the worker and move to the next one. The remaining pool needs spare capacity. Old and new code coexist, so interfaces and database schema changes must remain compatible.
+
+A second pool
+
+A blue-green deployment prepares another pool and switches new traffic after verification. It consumes extra capacity. The switch does not magically move every existing connection. A rollback also requires compatible data changes. Ask what happens to a request that was accepted just before the traffic switch.
+
+Failure domains remain
+
+A healthy worker pool cannot compensate for a single failed entry point. Redundant balancers address that failure domain. A second region addresses a larger one. Retries need limits and backoff, because excessive retries can worsen overload. For operations such as payments, use idempotency so retrying a request does not repeat its effect.

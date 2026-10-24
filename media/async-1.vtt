@@ -1,48 +1,121 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:06.209
-Queues distribute pending work across consumers and
-smooth a temporary mismatch between arrival and
+00:00:00.000 --> 00:00:04.153
+An image service accepts twenty uploads per second
+during a burst.
 
-00:00:06.209 --> 00:00:07.275
-processing rates.
+00:00:04.153 --> 00:00:09.124
+Each preview worker completes five jobs per second
+under the assumed image mix.
 
-00:00:07.275 --> 00:00:13.483
-Producers and consumers can scale independently, but
-the broker has its own capacity and durability
+00:00:09.124 --> 00:00:15.165
+Two workers can process ten jobs per second, so the
+backlog grows by approximately ten jobs each
 
-00:00:13.483 --> 00:00:13.922
+00:00:15.165 --> 00:00:16.739
+second during that burst.
+
+00:00:16.739 --> 00:00:22.906
+Adding two more workers could match the arrival rate
+if shared storage and other dependencies have
+
+00:00:22.906 --> 00:00:23.849
+spare capacity.
+
+00:00:23.849 --> 00:00:30.072
+The queue exposes the difference between accepting
+work and providing enough capacity to finish it.
+
+00:00:30.072 --> 00:00:36.296
+Keep admission through the service API, where
+authorization, validation and workload limits
+belong,
+
+00:00:36.296 --> 00:00:40.633
+rather than letting public clients publish arbitrary
+broker messages.
+
+00:00:40.633 --> 00:00:46.919
+Producers and consumers can scale separately, but
+the queue itself and downstream storage still have
+
+00:00:46.919 --> 00:00:47.359
 limits.
 
-00:00:13.922 --> 00:00:17.811
-An in-process queue is simple but may vanish with
-the process.
+00:00:47.359 --> 00:00:53.061
+A larger queue changes how long work can wait; it
+does not increase processing throughput.
 
-00:00:17.811 --> 00:00:23.894
-A separate broker or replicated service provides
-different persistence and recovery options, with
+00:00:53.061 --> 00:00:59.207
+Measure task duration by job type, since a thousand
+small previews may cost less than a few large
 
-00:00:23.894 --> 00:00:26.716
-additional operational cost and coordination.
+00:00:59.207 --> 00:00:59.524
+ones.
 
-00:00:26.716 --> 00:00:33.121
-A bounded queue must eventually reject, delay or
-otherwise regulate producers when it cannot safely
+00:00:59.524 --> 00:01:05.227
+Scale against useful completion rate and queue age,
+and test whether adding workers shifts
 
-00:00:33.121 --> 00:00:34.220
-accept more work.
+00:01:05.227 --> 00:01:06.558
+contention elsewhere.
 
-00:00:34.220 --> 00:00:39.266
-This backpressure is a protective control rather
-than merely an error to hide.
+00:01:06.559 --> 00:01:12.715
+Suppose a report queue holds six hundred pending
+jobs and its workers finish ten jobs per second
 
-00:00:39.266 --> 00:00:45.348
-Monitor oldest-message age as well as depth, because
-a small queue of expensive jobs can still
+00:01:12.715 --> 00:01:15.023
+while new arrivals temporarily stop.
 
-00:00:45.348 --> 00:00:46.771
-violate latency goals.
+00:01:15.023 --> 00:01:17.332
+A rough drain time is sixty seconds.
 
-00:00:46.771 --> 00:00:52.464
-Retry policies should use limits and backoff instead
-of continuously recycling failures.
+00:01:17.332 --> 00:01:23.296
+If arrivals continue at eight jobs per second, the
+net drain rate is only two, stretching the
+
+00:01:23.296 --> 00:01:24.899
+estimate to five minutes.
+
+00:01:24.899 --> 00:01:31.470
+These simplified calculations explain why queue
+length alone is insufficient: arrival rate, service
+
+00:01:31.470 --> 00:01:35.387
+rate and the age of waiting work determine user
+experience.
+
+00:01:35.387 --> 00:01:38.374
+Set an admission policy before storage fills.
+
+00:01:38.374 --> 00:01:44.879
+Depending on the product, reject excess work,
+postpone low-priority jobs or coalesce requests that
+
+00:01:44.879 --> 00:01:47.003
+genuinely supersede one another.
+
+00:01:47.003 --> 00:01:49.201
+Recovery also needs ordering rules.
+
+00:01:49.201 --> 00:01:55.355
+Two changes to the same report configuration should
+not accidentally apply in reverse order merely
+
+00:01:55.355 --> 00:01:58.620
+because different workers finish at different times.
+
+00:01:58.620 --> 00:02:04.836
+A broker's guarantees depend on its configuration
+and partitioning, so define the scope of required
+
+00:02:04.836 --> 00:02:05.213
+order.
+
+00:02:05.213 --> 00:02:11.493
+Bounded retries and a visible failed-job state
+prevent one malformed message from consuming
+capacity
+
+00:02:11.493 --> 00:02:14.067
+indefinitely while legitimate work waits.

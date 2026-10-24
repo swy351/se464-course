@@ -1,36 +1,117 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:06.543
-A primary database can stream changes to read
-replicas Each replica maintains a copy of the
-dataset
+00:00:00.000 --> 00:00:06.365
+Replication introduces two separate architectural
+questions: where reads can run, and which machine
 
-00:00:06.543 --> 00:00:12.294
-and can answer eligible reads, so many read requests
-no longer compete for the primary.
+00:00:06.365 --> 00:00:08.359
+is authorized to accept writes.
 
-00:00:12.294 --> 00:00:18.507
-Only if its consistency policy ensures it has the
-required write; otherwise use an appropriate
+00:00:08.359 --> 00:00:12.473
+We can scale the first without automatically solving
+the second.
 
-00:00:18.507 --> 00:00:20.489
-primary or session-aware read.
+00:00:12.473 --> 00:00:15.945
+Start by classifying the promises made to each
+reader.
 
-00:00:20.500 --> 00:00:26.998
-Sharding assigns disjoint subsets of rows to
-different database partitions A useful key places
-the
+00:00:15.945 --> 00:00:21.089
+A tutoring service updates a student’s appointment
+time on the primary database.
 
-00:00:26.998 --> 00:00:32.037
-data for a common operation together while
-distributing storage and traffic.
+00:00:21.100 --> 00:00:25.533
+A replica that has not yet applied the change still
+returns the old time.
 
-00:00:32.037 --> 00:00:32.236
-No.
+00:00:25.533 --> 00:00:30.816
+The write can have succeeded even though an
+immediately refreshed page looks unchanged.
 
-00:00:32.236 --> 00:00:38.667
-Each feed may still contact every shard, and the
-coordinator must merge results; skew and network
+00:00:30.816 --> 00:00:36.889
+Historical appointment reports may tolerate this
+delay; the confirmation shown to the student should
 
-00:00:38.667 --> 00:00:39.927
-cost can also grow.
+00:00:36.889 --> 00:00:40.047
+follow a path that satisfies the promised freshness.
+
+00:00:40.047 --> 00:00:44.667
+Imagine one primary handling 400 writes and 3,000
+reads per second.
+
+00:00:44.667 --> 00:00:51.217
+Moving 2,400 eligible reads to three replicas leaves
+roughly 600 reads on the primary, but each
+
+00:00:51.217 --> 00:00:54.113
+replica must still apply the write stream.
+
+00:00:54.113 --> 00:00:57.698
+This is a workload sketch, not a capacity guarantee.
+
+00:00:57.698 --> 00:01:04.386
+If the primary fails, promoting a standby requires
+establishing a single writer and understanding
+
+00:01:04.386 --> 00:01:07.007
+which acknowledged writes it contains.
+
+00:01:07.007 --> 00:01:11.971
+A timeout alone does not establish that the previous
+writer has stopped.
+
+00:01:11.971 --> 00:01:16.485
+Sharding distributes different records rather than
+making full copies.
+
+00:01:16.485 --> 00:01:20.031
+Its benefit depends on keeping common operations
+local.
+
+00:01:20.031 --> 00:01:26.222
+Let us follow a customer query, then compare it with
+a global report using a deliberately simple
+
+00:01:26.222 --> 00:01:27.189
+capacity model.
+
+00:01:27.189 --> 00:01:31.058
+A maintenance platform shards equipment records by
+customer.
+
+00:01:31.058 --> 00:01:37.055
+Fetching one customer’s inspection history stays on
+a single shard, while a report across all
+
+00:01:37.055 --> 00:01:40.859
+customers contacts several shards and merges their
+results.
+
+00:01:40.871 --> 00:01:47.469
+Placing customers evenly by count can still overload
+a shard containing a huge customer; traffic and
+
+00:01:47.469 --> 00:01:50.570
+record size matter as well as the routing rule.
+
+00:01:50.570 --> 00:01:56.837
+In a simplified balanced model, eight shards each
+provide 500 equal-cost operations per second.
+
+00:01:56.837 --> 00:02:02.049
+Requests touching one shard have an upper bound near
+4,000 requests per second.
+
+00:02:02.071 --> 00:02:06.792
+If each request touches four shards, the bound drops
+to about 1,000.
+
+00:02:06.792 --> 00:02:09.639
+If it touches all eight, it drops to 500.
+
+00:02:09.639 --> 00:02:16.235
+Parallel requests may finish sooner than serial
+requests, but each still consumes cluster work.
+
+00:02:16.235 --> 00:02:22.275
+Cross-shard updates additionally need an explicit
+atomicity or reconciliation strategy.

@@ -19,24 +19,63 @@ debugger depending on that editor’s implementation.
 The same idea supports user-interface observers and
 database triggers inside a single application.
 
-00:00:26.130 --> 00:00:31.181
-An event describes something that happened, such as
-a seat becoming available.
+00:00:26.130 --> 00:00:29.505
+A laboratory announces that an experiment has
+finished.
 
-00:00:31.181 --> 00:00:37.462
-Consumers can react independently: notify a student,
-update a dashboard or record an audit trail.
+00:00:29.505 --> 00:00:35.336
+The reporting service needs the result for a
+summary, and an audit service needs it for its own
 
-00:00:37.462 --> 00:00:43.355
-A publisher-subscriber intermediary routes events to
-interested subscriptions, reducing the
+00:00:35.336 --> 00:00:35.765
+record.
 
-00:00:43.355 --> 00:00:46.464
-producer’s need to track every consumer address.
+00:00:35.765 --> 00:00:41.657
+If both merely compete to remove one message from
+the same work queue, only one may receive each
 
-00:00:46.464 --> 00:00:52.875
-Topics and filters let consumers select relevant
-changes without requiring a new direct integration
+00:00:41.657 --> 00:00:42.025
+event.
 
-00:00:52.875 --> 00:00:54.688
-for each interested service.
+00:00:42.025 --> 00:00:48.040
+Independent reactions require separate subscription
+progress or an equivalent fan-out arrangement.
+
+00:00:48.040 --> 00:00:54.206
+Within the reporting subscription, multiple workers
+can share processing responsibility without
+
+00:00:54.206 --> 00:00:56.673
+changing the audit service's progress.
+
+00:00:56.673 --> 00:01:02.709
+The message still needs an explicit contract:
+experiment identifier, event identifier, schema
+
+00:01:02.709 --> 00:01:06.798
+version and enough context to retrieve or interpret
+the result.
+
+00:01:06.798 --> 00:01:13.289
+A broker can route messages, but cannot decide
+whether the reporting service needs a snapshot of
+the
+
+00:01:13.289 --> 00:01:15.885
+old result or may read its latest state.
+
+00:01:15.885 --> 00:01:19.465
+Draw the two subscriptions separately and fail one
+consumer.
+
+00:01:19.465 --> 00:01:23.044
+Explain which backlog grows and whether the other
+continues.
+
+00:01:23.044 --> 00:01:28.771
+This exercise connects asynchronous queue mechanisms
+to event-driven structure while keeping the
+
+00:01:28.771 --> 00:01:34.200
+distinction between an instruction to one worker and
+a fact announced to several consumers.

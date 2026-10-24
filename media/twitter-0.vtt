@@ -1,38 +1,120 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:05.113
-The exercise imagines a social feed backed by users,
-follows and tweets tables.
+00:00:00.000 --> 00:00:06.297
+Consider a hypothetical professional discussion
+service with tables for members, subscriptions and
 
-00:00:05.113 --> 00:00:08.219
-Publishing one tweet is initially a small write.
+00:00:06.297 --> 00:00:06.683
+posts.
 
-00:00:08.219 --> 00:00:14.691
-Reading a feed requires finding followed authors and
-their recent posts, then assembling the result.
+00:00:06.683 --> 00:00:10.924
+A member following forty authors requests the newest
+twenty posts.
 
-00:00:14.691 --> 00:00:21.098
-Joins are not inherently slow, but broad access
-across many authors or shards can make this request
+00:00:10.924 --> 00:00:17.221
+A normalized design first finds the followed authors
+and retrieves their recent posts, then orders
 
-00:00:21.098 --> 00:00:24.399
-expensive compared with retrieving a prepared feed.
+00:00:17.221 --> 00:00:18.635
+and limits the result.
 
-00:00:24.400 --> 00:00:28.732
-A materialized feed moves work from reading time to
-publication time.
+00:00:18.635 --> 00:00:22.491
+This can work well with suitable indexes and modest
+traffic.
 
-00:00:28.732 --> 00:00:34.007
-When an author posts, workers add a reference or
-entry to followers’ prepared feeds.
+00:00:22.500 --> 00:00:28.522
+The architectural question is how much data and how
+many storage owners the request must touch as
 
-00:00:34.007 --> 00:00:37.648
-A reader can then fetch a bounded structure keyed by
-user.
+00:00:28.522 --> 00:00:29.826
+the workload changes.
 
-00:00:37.648 --> 00:00:43.802
-This suits a workload with many repeated reads, but
-each post now creates work proportional to the
+00:00:29.826 --> 00:00:35.103
+Now compare a member who follows four thousand
+authors spread across many partitions.
 
-00:00:43.802 --> 00:00:46.564
-number of destinations receiving the update.
+00:00:35.103 --> 00:00:41.062
+The same logical query may require broader fan-out
+and merging, even though the returned page is
+
+00:00:41.062 --> 00:00:42.242
+still twenty posts.
+
+00:00:42.242 --> 00:00:45.623
+A small result does not imply a small amount of
+work.
+
+00:00:45.623 --> 00:00:51.556
+Measure feed-read frequency, author activity and
+partition fan-out before changing the model.
+
+00:00:51.556 --> 00:00:57.809
+Normalization makes canonical updates
+straightforward; it does not imply that every read
+is cheap.
+
+00:00:57.809 --> 00:01:02.530
+Conversely, the presence of a join alone does not
+prove the query is slow.
+
+00:01:02.530 --> 00:01:05.719
+The workload and access path provide the evidence.
+
+00:01:05.742 --> 00:01:10.663
+In the hypothetical discussion service, one author
+has eight hundred followers.
+
+00:01:10.663 --> 00:01:16.517
+Materializing an entry in every follower's feed
+turns one canonical post into as many as eight
+
+00:01:16.517 --> 00:01:18.012
+hundred derived updates.
+
+00:01:18.012 --> 00:01:23.867
+Readers benefit because their recent feed entries
+are already grouped by their own identifier.
+
+00:01:23.867 --> 00:01:29.971
+At ten such posts per second, this illustrative case
+creates up to eight thousand feed updates per
+
+00:01:29.971 --> 00:01:32.214
+second before retries or other work.
+
+00:01:32.242 --> 00:01:35.959
+Faster reads have purchased additional write
+amplification.
+
+00:01:35.959 --> 00:01:42.195
+Queue the derived updates so the posting request can
+acknowledge durable acceptance without waiting
+
+00:01:42.195 --> 00:01:43.581
+for every destination.
+
+00:01:43.581 --> 00:01:49.503
+Then define a freshness target for readers and
+measure the oldest unfinished publication work.
+
+00:01:49.503 --> 00:01:55.488
+Workers can process bounded follower batches and use
+stable post identifiers to avoid duplicate
+
+00:01:55.488 --> 00:01:56.873
+entries after retries.
+
+00:01:56.873 --> 00:02:02.869
+Keep the canonical post distinct from feed
+references so that deletion or moderation has an
+explicit
+
+00:02:02.869 --> 00:02:04.488
+path through derived state.
+
+00:02:04.488 --> 00:02:10.484
+Asynchrony changes when the work happens and who
+waits; it does not remove the work or automatically
+
+00:02:10.484 --> 00:02:11.863
+make all feeds current.

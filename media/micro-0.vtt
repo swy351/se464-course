@@ -1,42 +1,116 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:02.831
-Distinguish replication from decomposition.
+00:00:00.000 --> 00:00:06.094
+A repair platform contains ticketing, technician
+scheduling and customer notifications in one
 
-00:00:02.831 --> 00:00:09.416
-Replicas run the same application to serve more
-requests; microservices divide responsibilities into
+00:00:06.094 --> 00:00:07.601
+deployable application.
 
-00:00:09.416 --> 00:00:11.589
-separately deployable components.
+00:00:07.601 --> 00:00:13.171
+Running four copies behind a load balancer creates
+four replicas of that application.
 
-00:00:11.589 --> 00:00:15.342
-A monolith often simplifies development and
-transactions.
+00:00:13.171 --> 00:00:15.924
+It does not create four business services.
 
-00:00:15.342 --> 00:00:21.531
-Its suitability depends on the system and team, so
-begin with concrete change and coordination
+00:00:15.924 --> 00:00:22.411
+Each replica can still execute all three
+responsibilities, and a release typically deploys
+the same
 
-00:00:21.531 --> 00:00:26.075
-problems rather than assuming more services are
-automatically better.
+00:00:22.411 --> 00:00:23.722
+application package.
 
-00:00:26.100 --> 00:00:30.492
-Choose service boundaries around responsibilities
-and change patterns.
+00:00:23.722 --> 00:00:30.059
+A database and cache outside that package do not, on
+their own, establish independent application
 
-00:00:30.492 --> 00:00:36.578
-Network APIs hide implementation details, but calls
-can fail independently and cross-service data
+00:00:30.059 --> 00:00:30.778
+boundaries.
 
-00:00:36.578 --> 00:00:38.837
-updates require deliberate recovery.
+00:00:30.778 --> 00:00:37.115
+This arrangement can be useful for a small team:
+developers run one application locally, follow a
 
-00:00:38.837 --> 00:00:44.421
-Compare the gain in independent deployment with the
-added testing and operational burden.
+00:00:37.115 --> 00:00:42.669
+request through one process and use a local database
+transaction for related changes.
 
-00:00:44.421 --> 00:00:50.193
-A service split is justified when those benefits
-matter enough to pay the coordination cost.
+00:00:42.669 --> 00:00:49.072
+Trouble may appear when unrelated modules force
+coordinated releases or compete for very different
+
+00:00:49.072 --> 00:00:49.725
+resources.
+
+00:00:49.725 --> 00:00:54.869
+First ask whether clearer modules inside the
+application would address the problem.
+
+00:00:54.869 --> 00:01:00.880
+A network boundary adds deployment and failure
+concerns, so justify it using an observed need for
+
+00:01:00.880 --> 00:01:05.961
+independent change or operation rather than the
+visual appeal of additional boxes.
+
+00:01:05.961 --> 00:01:11.945
+Suppose technician scheduling becomes a separate
+service because its optimization workload and
+
+00:01:11.945 --> 00:01:14.874
+release cadence differ from ticket management.
+
+00:01:14.874 --> 00:01:21.049
+The boundary now has a contract: ticket management
+requests a slot, scheduling accepts or rejects
+
+00:01:21.049 --> 00:01:24.041
+it, and both agree on identifiers and outcomes.
+
+00:01:24.041 --> 00:01:30.407
+This can allow independent implementation, but
+independence is weakened if every schema change
+still
+
+00:01:30.407 --> 00:01:33.017
+forces both services to release together.
+
+00:01:33.061 --> 00:01:36.501
+A meaningful boundary contains change as well as
+code.
+
+00:01:36.501 --> 00:01:39.814
+Now scheduling accepts a slot but the reply is lost.
+
+00:01:39.814 --> 00:01:44.656
+Ticket management sees a timeout while scheduling
+has already changed state.
+
+00:01:44.656 --> 00:01:50.007
+A local rollback in ticket management cannot undo a
+remote commitment automatically.
+
+00:01:50.007 --> 00:01:55.932
+The design needs a way to discover the outcome,
+avoid duplicate reservations and recover from
+
+00:01:55.932 --> 00:01:56.888
+abandoned work.
+
+00:01:56.888 --> 00:02:01.448
+Trace this failure before celebrating a successful
+normal-path demo.
+
+00:02:01.448 --> 00:02:07.753
+Smaller services can make focused tests easier,
+while cross-service behavior requires contract
+
+00:02:07.753 --> 00:02:11.240
+tests, observability and explicit recovery policies.
+
+00:02:11.240 --> 00:02:15.734
+Compare these costs with the independence that
+motivated the split.

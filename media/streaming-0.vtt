@@ -1,70 +1,135 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:06.406
-Serving independent requests is different from
-calculating one answer over a large shared dataset.
+00:00:00.000 --> 00:00:04.683
+A sensor analysis job estimates the average reading
+across two partitions.
 
-00:00:06.406 --> 00:00:12.223
-For a global maximum, each worker can compute a
-local maximum and send one candidate to a
+00:00:04.683 --> 00:00:10.568
+One holds ten readings averaging twenty, and the
+other holds ninety readings averaging forty.
 
-00:00:12.223 --> 00:00:13.007
-coordinator.
+00:00:10.568 --> 00:00:16.327
+Averaging the two local averages gives thirty, but
+the correct global mean is thirty-eight.
 
-00:00:13.007 --> 00:00:17.975
-The coordinator takes the maximum of those
-candidates, so little data moves.
+00:00:16.327 --> 00:00:22.655
+Each worker must return both a sum and a count: two
+hundred plus three thousand six hundred, divided
 
-00:00:17.975 --> 00:00:24.054
-Other operations need richer summaries or repeated
-communication, making network cost part of
+00:00:22.655 --> 00:00:23.604
+by one hundred.
 
-00:00:24.054 --> 00:00:28.303
-algorithm design rather than an incidental
-implementation detail.
+00:00:23.604 --> 00:00:29.007
+The summary must preserve the information needed to
+combine unequal partitions correctly.
 
-00:00:28.303 --> 00:00:34.447
-MapReduce asks a programmer to transform input
-records into intermediate key-value pairs, then
+00:00:29.007 --> 00:00:34.775
+Compare that with finding the global minimum: each
+worker needs to send only its local minimum.
 
-00:00:34.447 --> 00:00:36.343
-combine values sharing a key.
+00:00:34.775 --> 00:00:38.903
+The amount and meaning of intermediate data depend
+on the operation.
 
-00:00:36.343 --> 00:00:42.619
-For word counting, the mapper emits one pair per
-word occurrence and the reducer sums counts for
+00:00:38.903 --> 00:00:44.367
+Sending all raw readings to one coordinator may be
+correct, but can destroy the benefit of
 
-00:00:42.619 --> 00:00:43.273
-each word.
+00:00:44.367 --> 00:00:45.703
+distributing the work.
 
-00:00:43.273 --> 00:00:46.149
-The shuffle groups intermediate data by key.
+00:00:45.704 --> 00:00:51.472
+Design the summary, estimate transfer volume and
+then identify where combination happens.
 
-00:00:46.149 --> 00:00:52.490
-Scheduling, distribution and retries belong largely
-to the framework, so the program can focus on
+00:00:51.472 --> 00:00:56.980
+Some calculations require multiple communication
+rounds or richer intermediate state.
 
-00:00:52.490 --> 00:00:53.797
-the transformations.
+00:00:56.980 --> 00:01:03.461
+More workers reduce only the parallel portion of the
+cost; data movement and coordination still need
 
-00:00:53.803 --> 00:00:59.711
+00:01:03.461 --> 00:01:06.248
+an explicit place in the performance model.
+
+00:01:06.248 --> 00:01:11.835
+A transport agency wants total delay minutes by
+route from a finite day of trip records.
+
+00:01:11.835 --> 00:01:15.709
+Each mapper emits the route identifier and that
+trip's delay.
+
+00:01:15.709 --> 00:01:20.026
+The shuffle groups values by route, and each reducer
+sums its group.
+
+00:01:20.026 --> 00:01:25.741
+The programmer specifies meaningful transformations
+while the framework arranges tasks and
+
+00:01:25.741 --> 00:01:27.138
+intermediate movement.
+
+00:01:27.148 --> 00:01:33.331
+Following one route through those stages makes the
+key's role concrete: it determines which records
+
+00:01:33.331 --> 00:01:34.955
+must meet for aggregation.
+
+00:01:34.955 --> 00:01:40.702
+If one route has most of the trips, its reducer may
+dominate completion time even when other
+
+00:01:40.702 --> 00:01:42.076
+reducers finish early.
+
+00:01:42.076 --> 00:01:48.135
+Local combining can reduce transfer for a sum, but
+the design still needs to account for skew and
+
+00:01:48.135 --> 00:01:48.697
+recovery.
+
+00:01:48.697 --> 00:01:54.983
+A framework that retains reusable intermediate
+datasets in memory can help repeated analyses, while
+
+00:01:54.983 --> 00:01:59.364
+its lineage or persistence rules determine recovery
+after lost state.
+
+00:01:59.364 --> 00:02:01.713
+These are bounded batch computations.
+
+00:02:01.713 --> 00:02:08.062
+They do not by themselves specify event-time windows
+or handling of an endless stream, so keep those
+
+00:02:08.062 --> 00:02:13.078
+separate requirements visible when comparing batch
+and streaming architectures.
+
+00:02:13.097 --> 00:02:19.005
 Stream processing reacts to an ongoing sequence
 rather than waiting for a complete dataset.
 
-00:00:59.711 --> 00:01:06.204
+00:02:19.005 --> 00:02:25.498
 Monitoring and recommendations may benefit from
 short update latency, while historical reporting can
 
-00:01:06.204 --> 00:01:08.281
+00:02:25.498 --> 00:02:27.576
 tolerate larger batch intervals.
 
-00:01:08.281 --> 00:01:11.658
+00:02:27.576 --> 00:02:30.952
 Low latency is a target, not an automatic guarantee.
 
-00:01:11.658 --> 00:01:17.956
+00:02:30.952 --> 00:02:37.250
 A stream operator may still wait for enough
 evidence, and overloaded consumers can accumulate
 lag
 
-00:01:17.956 --> 00:01:21.007
+00:02:37.250 --> 00:02:40.301
 even when the architecture is called real time.

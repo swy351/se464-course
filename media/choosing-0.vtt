@@ -1,57 +1,190 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:06.566
-Choose storage by describing the application’s
-operations before choosing a product Record the
-shape
+00:00:00.000 --> 00:00:06.508
+Storage selection is an architectural argument about
+the application, not a contest between database
 
-00:00:06.566 --> 00:00:12.739
-and size of the data, lookup keys, range queries,
-joins, update rates and required guarantees.
+00:00:06.508 --> 00:00:06.964
+labels.
 
-00:00:12.739 --> 00:00:12.936
-No.
+00:00:06.964 --> 00:00:10.609
+Start with a small set of operations and their
+promises.
 
-00:00:12.936 --> 00:00:19.502
-Large-object delivery and concurrent invariant-
-preserving updates have different access patterns
-and
+00:00:10.609 --> 00:00:16.271
+Then choose the least complicated arrangement that
+can meet and operate those promises.
 
-00:00:19.502 --> 00:00:21.406
-can justify different stores.
+00:00:16.271 --> 00:00:22.389
+A community workshop needs to reserve machines,
+search project descriptions and serve tutorial
 
-00:00:21.406 --> 00:00:27.619
-A checkout updates several related facts: the order,
-its line items and the remaining gift-card
+00:00:22.389 --> 00:00:23.170
+photographs.
 
-00:00:27.619 --> 00:00:32.589
-balance Atomicity means these changes commit
-together or roll back together.
+00:00:23.200 --> 00:00:26.498
+Reservations must not overlap for the same machine.
 
-00:00:32.589 --> 00:00:32.785
-No.
+00:00:26.498 --> 00:00:32.576
+Search can tolerate a short indexing delay, while
+photographs are large immutable objects once
 
-00:00:32.785 --> 00:00:39.063
-The operation needs appropriate isolation, locking
-or an atomic conditional update, plus balance
+00:00:32.576 --> 00:00:33.223
+published.
 
-00:00:39.063 --> 00:00:41.155
-validation and failure handling.
+00:00:33.223 --> 00:00:39.172
+These are three access patterns within one product;
+the shared user interface does not imply
 
-00:00:41.155 --> 00:00:47.446
-Operational transaction processing usually consists
-of many small reads and writes, such as fetching
+00:00:39.172 --> 00:00:41.176
+identical storage requirements.
 
-00:00:47.446 --> 00:00:53.674
-a student’s enrolments or reserving a seat Analytics
-may scan years of records to compare enrolment
+00:00:41.176 --> 00:00:47.578
+Begin with a relational reservation store and object
+storage for photographs, then evaluate whether
 
-00:00:53.674 --> 00:00:54.114
-trends.
+00:00:47.578 --> 00:00:50.811
+its existing text-search capability is sufficient.
 
-00:00:54.114 --> 00:01:00.342
-The calculation needs only selected attributes, so
-reading and compressing those columns can reduce
+00:00:50.811 --> 00:00:57.079
+A separate search service becomes worthwhile only
+when requirements justify its indexing pipeline
 
-00:01:00.342 --> 00:01:01.474
-I/O substantially.
+00:00:57.079 --> 00:00:58.242
+and recovery work.
+
+00:00:58.242 --> 00:01:04.187
+Record expected request rates, acceptable staleness,
+atomic operations and who operates each
+
+00:01:04.187 --> 00:01:04.833
+component.
+
+00:01:04.833 --> 00:01:10.907
+A technically capable store may still be a poor
+choice if the team cannot back it up, diagnose
+
+00:01:10.907 --> 00:01:14.009
+failures or restore it within the required time.
+
+00:01:14.011 --> 00:01:20.033
+A transaction groups changes, while its isolation
+and update protocol determine how concurrent
+
+00:01:20.033 --> 00:01:21.186
+requests interact.
+
+00:01:21.186 --> 00:01:24.454
+We can see the distinction with a single projector.
+
+00:01:24.454 --> 00:01:30.861
+Follow the successful path, the competing request,
+and then the failure that occurs halfway through.
+
+00:01:30.861 --> 00:01:33.231
+A makerspace has one spare projector.
+
+00:01:33.231 --> 00:01:38.293
+Two requests each read available_count equal to one
+and both attempt a booking.
+
+00:01:38.311 --> 00:01:44.256
+Wrapping each request’s statements in a transaction
+gives all-or-nothing changes, but does not by
+
+00:01:44.256 --> 00:01:49.466
+itself specify isolation strong enough to prevent
+both from making the same decision.
+
+00:01:49.466 --> 00:01:53.695
+The read-and-update interaction needs deliberate
+concurrency control.
+
+00:01:53.695 --> 00:01:59.824
+One approach conditionally decrements the count only
+when it is positive, checks whether exactly one
+
+00:01:59.824 --> 00:02:03.808
+row changed, and creates the reservation in the same
+transaction.
+
+00:02:03.811 --> 00:02:10.239
+The database’s supported atomic update semantics
+must ensure competing updates are evaluated safely.
+
+00:02:10.239 --> 00:02:14.995
+The losing request reports unavailability rather
+than inserting a booking.
+
+00:02:14.995 --> 00:02:18.852
+If creating the reservation fails, the decrement
+rolls back.
+
+00:02:18.852 --> 00:02:24.958
+Retried requests also need a way to recognize an
+already committed booking rather than silently
+
+00:02:24.958 --> 00:02:26.373
+creating a second one.
+
+00:02:26.411 --> 00:02:32.626
+One dataset can support both immediate operations
+and broad analysis, but those workloads ask the
+
+00:02:32.626 --> 00:02:34.548
+hardware to do different work.
+
+00:02:34.548 --> 00:02:40.443
+Trace the columns required by a dashboard and then
+compare its freshness needs with the live
+
+00:02:40.443 --> 00:02:41.532
+delivery service.
+
+00:02:41.532 --> 00:02:47.107
+A delivery dashboard computes average journey time
+by district from 120 million events.
+
+00:02:47.111 --> 00:02:53.338
+It needs district, duration and date, but not the
+driver’s notes or the full delivery address.
+
+00:02:53.338 --> 00:02:59.763
+A column-oriented representation can read a smaller
+relevant subset and compress repeated values.
+
+00:02:59.763 --> 00:03:06.321
+The final result may contain only a few dozen rows,
+so aggregation near storage avoids transferring
+
+00:03:06.321 --> 00:03:08.176
+the entire event collection.
+
+00:03:08.211 --> 00:03:14.219
+The operational service instead checks and updates
+one delivery’s state repeatedly throughout the
+
+00:03:14.219 --> 00:03:14.466
+day.
+
+00:03:14.466 --> 00:03:18.616
+That is a different access pattern, even if both
+stores accept SQL.
+
+00:03:18.616 --> 00:03:24.748
+If analytics imports events every fifteen minutes, a
+dashboard can omit recent completed deliveries
+
+00:03:24.748 --> 00:03:27.040
+without either database being broken.
+
+00:03:27.040 --> 00:03:32.862
+Display the data’s freshness and use the operational
+source for decisions that require current
+
+00:03:32.862 --> 00:03:33.234
+state.
+
+00:03:33.234 --> 00:03:39.180
+Benchmark representative queries rather than
+assuming a storage layout makes every query faster.

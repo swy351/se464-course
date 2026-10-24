@@ -1,39 +1,109 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:05.845
-Follow a request from the network through a queue to
-application logic and back as a response.
+00:00:00.000 --> 00:00:05.678
+Follow a catalogue request through an arrival queue,
+application handling and a response.
 
-00:00:05.845 --> 00:00:09.948
-The queue-and-worker model makes concurrency and
-overload visible.
+00:00:05.678 --> 00:00:11.484
+When all workers are busy, another request waits
+rather than receiving an immediate worker.
 
-00:00:09.948 --> 00:00:14.860
-HTTP supplies a common contract, while frameworks
-handle much of the mechanics.
+00:00:11.484 --> 00:00:15.312
+If arrivals remain faster than completions, the
+queue grows.
 
-00:00:14.860 --> 00:00:20.580
-Remember that asynchronous servers can implement the
-same service without a thread for every
+00:00:15.312 --> 00:00:20.672
+A bigger queue may absorb a short burst, but it does
+not create processing capacity.
 
-00:00:20.580 --> 00:00:21.078
-request.
+00:00:20.700 --> 00:00:27.120
+Bounded queues make overload explicit and let the
+service reject or defer work instead of allowing
 
-00:00:21.100 --> 00:00:25.415
-Trace a wiki request through browser, application
-and database.
+00:00:27.120 --> 00:00:30.658
+unlimited memory growth and increasingly late
+answers.
 
-00:00:25.415 --> 00:00:32.127
-MediaWiki reads article data, renders it and adds
-presentation and possibly user-specific content.
+00:00:30.658 --> 00:00:36.948
+The client sends an HTTP method, target and fields,
+with optional content; the service returns a
 
-00:00:32.127 --> 00:00:36.921
-This example connects web protocols to architectural
-responsibilities.
+00:00:36.948 --> 00:00:39.306
+status, fields and optional content.
 
-00:00:36.921 --> 00:00:43.701
-It also sets up two important questions: which state
-must be shared, and which repeated work can be
+00:00:39.306 --> 00:00:45.137
+A framework translates that contract into
+application calls and manages network activity.
 
-00:00:43.701 --> 00:00:44.660
-safely cached?
+00:00:45.137 --> 00:00:48.864
+It might use threads, processes or asynchronous
+handlers.
+
+00:00:48.864 --> 00:00:55.336
+Those choices affect how waits are managed, but they
+do not change the meaning of GET or a response
+
+00:00:55.336 --> 00:00:55.794
+status.
+
+00:00:55.794 --> 00:01:02.004
+In a design review, draw both the public request
+contract and the internal queues: one explains
+
+00:01:02.004 --> 00:01:07.234
+interoperability, while the other explains what
+users experience during a burst.
+
+00:01:07.237 --> 00:01:13.165
+Apply the chapter’s rendering pipeline to a
+different service: a museum collection page.
+
+00:01:13.165 --> 00:01:19.767
+A browser requests an exhibit; the application reads
+its description from durable storage, formats
+
+00:01:19.767 --> 00:01:23.135
+the description, adds navigation and returns HTML.
+
+00:01:23.135 --> 00:01:29.601
+The database owns saved content, while the
+application constructs a representation for a
+reader.
+
+00:01:29.637 --> 00:01:35.899
+Labelling these responsibilities makes the
+architecture diagram useful: each arrow should
+identify a
+
+00:01:35.899 --> 00:01:39.781
+request or data transfer, rather than simply
+connecting boxes.
+
+00:01:39.781 --> 00:01:42.912
+Now compare two visitors reading the same exhibit.
+
+00:01:42.912 --> 00:01:49.173
+They can share the description and public image, but
+one visitor’s private saved-list indicator must
+
+00:01:49.173 --> 00:01:51.553
+not become the other visitor’s answer.
+
+00:01:51.553 --> 00:01:56.523
+This observation identifies possible reuse
+boundaries before choosing a cache.
+
+00:01:56.523 --> 00:02:02.449
+Trace a second request after an exhibit description
+changes, and explain which component must
+
+00:02:02.449 --> 00:02:03.723
+observe that update.
+
+00:02:03.723 --> 00:02:10.031
+The point of the historical diagram is this method
+of reasoning about repeated computation, durable
+
+00:02:10.031 --> 00:02:16.275
+state and personalized output; its component names
+are not a prescription for a modern deployment.

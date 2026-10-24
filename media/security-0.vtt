@@ -43,47 +43,118 @@ necessary access and convenient but excessive
 00:00:48.310 --> 00:00:48.951
 authority.
 
-00:00:49.000 --> 00:00:54.973
-Distinguish authentication from permission and
-transport protection from endpoint security.
+00:00:49.000 --> 00:00:55.084
+Imagine a laboratory booking service whose first
+implementation sends a password with every
 
-00:00:54.973 --> 00:01:01.209
-A login verifier should use a dedicated salted
-password-hashing scheme, not plaintext or a fast
+00:00:55.084 --> 00:00:56.421
+reservation request.
 
-00:01:01.209 --> 00:01:01.668
-digest.
+00:00:56.421 --> 00:01:03.040
+Even over HTTPS, the reservation handler, diagnostic
+logs and downstream integrations may encounter
 
-00:01:01.668 --> 00:01:06.920
-Salt prevents reuse of precomputed tables, while the
-hashing cost slows guesses.
+00:01:03.040 --> 00:01:03.842
+that secret.
 
-00:01:06.920 --> 00:01:13.483
-Moving from repeated passwords to sessions reduces
-how widely the account secret must travel through
+00:01:03.842 --> 00:01:09.859
+Move password verification to a deliberate sign-in
+boundary, then issue a separate session
 
-00:01:13.483 --> 00:01:14.534
-the application.
+00:01:09.859 --> 00:01:12.199
+credential for subsequent requests.
 
-00:01:14.534 --> 00:01:20.185
-A session reduces repeated password handling but
-becomes a credential of its own.
+00:01:12.199 --> 00:01:18.751
+This reduces repeated exposure of the long-lived
+password, although the session credential remains
 
-00:01:20.185 --> 00:01:23.255
-Follow issuance, use, expiry and revocation.
+00:01:18.751 --> 00:01:20.355
+valuable to an attacker.
 
-00:01:23.255 --> 00:01:29.603
-Cookies can transport sessions, while structured
-tokens need standard integrity protection.
+00:01:20.400 --> 00:01:24.555
+Now inspect a different failure: the account
+database is copied.
 
-00:01:29.603 --> 00:01:34.836
-Examine central validation and cached decisions as
-architectural tradeoffs.
+00:01:24.555 --> 00:01:28.970
+TLS cannot protect a database backup after it leaves
+the connection.
 
-00:01:34.836 --> 00:01:41.394
-Finally, challenge-response and second factors need
-careful protocol design; merely avoiding a
+00:01:28.970 --> 00:01:35.202
+Dedicated password hashing with a unique salt
+addresses this separate exposure by making offline
 
-00:01:41.394 --> 00:01:45.440
-plaintext password does not guarantee phishing
-resistance.
+00:01:35.202 --> 00:01:36.501
+guesses more costly.
+
+00:01:36.501 --> 00:01:39.357
+Neither mechanism substitutes for the other.
+
+00:01:39.357 --> 00:01:45.785
+Ask students to draw two attack paths, interception
+during transport and theft of stored verifiers,
+
+00:01:45.785 --> 00:01:48.252
+and label the protection on each path.
+
+00:01:48.252 --> 00:01:54.420
+The architectural lesson is to match a mechanism to
+the asset and threat it actually addresses.
+
+00:01:54.420 --> 00:01:59.790
+A volunteer signs in to a community archive and
+receives an opaque session identifier.
+
+00:01:59.790 --> 00:02:05.661
+Later, an image-editing request carries that
+identifier in a protected cookie or authorization
+
+00:02:05.661 --> 00:02:06.098
+header.
+
+00:02:06.098 --> 00:02:12.031
+The application looks up its associated account and
+expiry, then separately checks whether that
+
+00:02:12.031 --> 00:02:13.779
+account may edit this image.
+
+00:02:13.779 --> 00:02:19.712
+No account name supplied by the browser should
+override the identity established by the session
+
+00:02:19.712 --> 00:02:20.149
+lookup.
+
+00:02:20.149 --> 00:02:24.824
+Authentication and resource authorization are
+distinct steps in the trace.
+
+00:02:24.824 --> 00:02:30.131
+Suppose several application workers cache successful
+session checks for two minutes.
+
+00:02:30.131 --> 00:02:35.880
+Disabling the account in the central store does not
+instantly erase those cached decisions.
+
+00:02:35.880 --> 00:02:41.882
+The design needs a stated revocation delay,
+invalidation mechanism or fresh check for sensitive
+
+00:02:41.882 --> 00:02:42.387
+actions.
+
+00:02:42.387 --> 00:02:48.339
+This makes the authentication service a consistency
+and availability dependency as well as a
+
+00:02:48.339 --> 00:02:49.568
+security component.
+
+00:02:49.568 --> 00:02:55.714
+A request log should record useful operational
+identifiers without retaining the bearer secret.
+
+00:02:55.714 --> 00:03:00.501
+Explain what a stolen session permits and how that
+access eventually ends.

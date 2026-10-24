@@ -1,53 +1,184 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:06.386
-A document store can keep a nested profile as one
-aggregate, with a configured shard key controlling
+00:00:00.000 --> 00:00:04.333
+Different storage models make different questions
+inexpensive.
 
-00:00:06.386 --> 00:00:12.260
-distribution A search engine serves another need:
-locating documents by terms and relevance.
+00:00:04.333 --> 00:00:11.043
+We will compare text retrieval with time-ordered
+sensor data and make the lookup steps explicit.
 
-00:00:12.260 --> 00:00:17.433
-Find the document-ID list for each normalized term
-and return their intersection.
+00:00:11.043 --> 00:00:17.613
+The useful choice follows the operation, including
+how derived structures are kept up to date.
 
-00:00:17.433 --> 00:00:23.196
-An application cache stores values that help
-construct responses, such as a leaderboard or
+00:00:17.613 --> 00:00:21.107
+A museum stores exhibit descriptions as documents.
 
-00:00:23.196 --> 00:00:29.279
-precomputed summary An HTTP reverse-proxy cache
-stores reusable responses at a different layer.
+00:00:21.107 --> 00:00:28.026
+For keyword search, an inverted index might map
+“bronze” to documents {4, 9, 12} and “river” to {9,
 
-00:00:29.279 --> 00:00:29.471
-No.
+00:00:28.026 --> 00:00:28.306
+15}.
 
-00:00:29.471 --> 00:00:35.682
-If it is designed as a rebuildable cache, the source
-records remain elsewhere and the leaderboard
+00:00:28.306 --> 00:00:32.816
+Their intersection returns document 9 for a query
+requiring both words.
 
-00:00:35.682 --> 00:00:36.835
-can be recomputed.
+00:00:32.816 --> 00:00:38.597
+This explains retrieval mechanics, but ranking and
+language handling need additional rules.
 
-00:00:36.835 --> 00:00:43.307
-A mounted network filesystem provides a file
-interface that existing applications can use Block
+00:00:38.597 --> 00:00:43.361
+Updating the document also requires updating its
+searchable representation.
 
-00:00:43.307 --> 00:00:49.848
-storage instead exposes volumes on which a
-filesystem may be built; object storage exposes
-named
+00:00:43.361 --> 00:00:49.205
+For temperature readings, a different design uses
+sensor_id and day as the partition key and
 
-00:00:49.848 --> 00:00:51.824
-objects through service APIs.
+00:00:49.205 --> 00:00:52.636
+observation_time as the within-partition ordering
+key.
 
-00:00:51.824 --> 00:00:52.914
-Not necessarily.
+00:00:52.636 --> 00:00:57.522
+This supports one sensor’s daily range query while
+bounding partition growth.
 
-00:00:52.914 --> 00:00:59.454
-It must check required file operations and semantics
-against the object API and adapt its access
+00:00:57.522 --> 00:01:01.901
+Searching every sensor for one interval may need
+another access path.
 
-00:00:59.454 --> 00:00:59.999
-pattern.
+00:01:01.901 --> 00:01:06.724
+A search index can lag its source, and a telemetry
+partition can become hot.
+
+00:01:06.724 --> 00:01:13.070
+Neither a document shape nor a key-value interface
+removes these workload and consistency questions.
+
+00:01:13.070 --> 00:01:16.988
+A cache is part of a data flow, not merely a faster
+machine.
+
+00:01:16.988 --> 00:01:22.147
+Explain where its values come from, how they become
+stale and how they recover.
+
+00:01:22.147 --> 00:01:28.481
+Our recreation-centre example separates a helpful
+display from an authoritative booking decision.
+
+00:01:28.481 --> 00:01:33.574
+A recreation centre shows a cached count of
+available places on its home page.
+
+00:01:33.574 --> 00:01:39.346
+The count can be briefly stale, but the booking
+operation checks the authoritative reservation
+
+00:01:39.346 --> 00:01:39.714
+store.
+
+00:01:39.714 --> 00:01:45.118
+This separates a fast informational view from the
+decision that commits scarce capacity.
+
+00:01:45.118 --> 00:01:50.828
+A time-to-live limits how long one cached value
+remains eligible; it does not make that value
+
+00:01:50.828 --> 00:01:52.363
+current at every instant.
+
+00:01:52.374 --> 00:01:58.655
+For a weekly activity ranking, a sorted-set
+abstraction can update one participant’s score
+without
+
+00:01:58.655 --> 00:02:00.514
+rewriting the entire ranking.
+
+00:02:00.514 --> 00:02:06.795
+Before adopting it, decide whether the ranking can
+be rebuilt from durable events and what happens
+
+00:02:06.795 --> 00:02:08.461
+after eviction or restart.
+
+00:02:08.461 --> 00:02:12.947
+Also plan how simultaneous cache misses avoid
+overwhelming the origin.
+
+00:02:12.974 --> 00:02:18.801
+A reverse-proxy cache of a whole public page sits at
+a different layer from these application-
+
+00:02:18.801 --> 00:02:22.025
+managed values, even when both reduce repeated work.
+
+00:02:22.074 --> 00:02:26.645
+Files, objects and blocks expose different
+operations to applications.
+
+00:02:26.645 --> 00:02:31.673
+Choose the interface by following a real workflow,
+including partial failure.
+
+00:02:31.673 --> 00:02:37.812
+A wildlife recording archive helps us connect
+storage selection with the responsibilities that
+
+00:02:37.812 --> 00:02:40.423
+appear between two independent services.
+
+00:02:40.423 --> 00:02:46.953
+A wildlife archive stores short audio recordings as
+objects and keeps their searchable metadata in a
+
+00:02:46.953 --> 00:02:47.541
+database.
+
+00:02:47.574 --> 00:02:53.802
+Clients request a recording by an object identifier
+rather than mounting the archive as a disk.
+
+00:02:53.802 --> 00:03:00.358
+A legacy analysis program that expects directories
+and file operations may instead need a filesystem
+
+00:03:00.358 --> 00:03:01.013
+interface.
+
+00:03:01.013 --> 00:03:07.569
+A block volume provides lower-level storage on which
+a filesystem can be created; it is not itself a
+
+00:03:07.569 --> 00:03:08.880
+shared file service.
+
+00:03:08.880 --> 00:03:12.907
+The recording and its metadata form a cross-system
+workflow.
+
+00:03:12.907 --> 00:03:19.351
+If an upload succeeds but the metadata write fails,
+the archive needs a cleanup or retry rule so
+
+00:03:19.351 --> 00:03:21.767
+abandoned objects do not accumulate.
+
+00:03:21.767 --> 00:03:27.271
+If metadata is published before upload completion,
+users may receive broken links.
+
+00:03:27.271 --> 00:03:30.358
+Draw these failure paths before adding stores.
+
+00:03:30.358 --> 00:03:36.735
+The final architecture should identify ownership,
+identifiers, access control, recovery and the
+
+00:03:36.735 --> 00:03:39.822
+reason each separate abstraction is necessary.

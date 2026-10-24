@@ -1,20 +1,57 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:05.575
-An explicit service contract allows teams to build
-clients and servers in parallel.
+00:00:00.000 --> 00:00:05.348
+The scheduling team supplies a mock API while the
+real service is under construction.
 
-00:00:05.575 --> 00:00:11.218
-Mocks help early work, and real integration tests
-check the assumptions they encode.
+00:00:05.348 --> 00:00:11.515
+The dashboard team can now build a booking screen,
+but an always-successful mock teaches the wrong
 
-00:00:11.218 --> 00:00:15.315
-A shared API can support web, mobile and desktop
-experiences.
+00:00:11.515 --> 00:00:12.270
+assumptions.
 
-00:00:15.315 --> 00:00:21.696
-Compare server rendering and SPAs as presentation
-choices, while keeping backend validation and
+00:00:12.270 --> 00:00:17.240
+Include unavailable slots, invalid input and delayed
+responses in the contract.
 
-00:00:21.696 --> 00:00:23.443
-access control consistent.
+00:00:17.240 --> 00:00:21.204
+Then run the same expectations against the real
+implementation.
+
+00:00:21.204 --> 00:00:27.680
+A mock accelerates collaboration because it makes
+assumptions executable; it does not prove that the
+
+00:00:27.680 --> 00:00:30.400
+dependency behaves that way in production.
+
+00:00:30.400 --> 00:00:35.840
+The same scheduling API can serve a browser
+dashboard and a technician’s mobile app.
+
+00:00:35.840 --> 00:00:42.317
+The browser may receive server-rendered HTML or
+construct its interface from API responses; a hybrid
+
+00:00:42.317 --> 00:00:43.418
+is also possible.
+
+00:00:43.418 --> 00:00:48.682
+In either case, the backend must enforce
+authorization and validate requested changes.
+
+00:00:48.682 --> 00:00:54.436
+Hiding an unavailable action in a button does not
+prevent a different client from sending that
+
+00:00:54.436 --> 00:00:54.926
+request.
+
+00:00:54.926 --> 00:01:00.741
+Review one complete workflow across both clients and
+check that resource identities, validation
+
+00:01:00.741 --> 00:01:05.699
+failures and permission rules mean the same thing on
+the shared service boundary.

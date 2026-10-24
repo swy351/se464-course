@@ -1,38 +1,117 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:04.817
-Read the case as a set of cooperating
-responsibilities and data rules.
+00:00:00.000 --> 00:00:05.378
+Use a hypothetical city history archive to practise
+reading a deployment diagram.
 
-00:00:04.817 --> 00:00:09.978
-Public pages, contributions and volunteer actions
-exercise different paths.
+00:00:05.378 --> 00:00:08.101
+A visitor requests a public exhibit page.
 
-00:00:09.978 --> 00:00:16.447
-Resource-oriented HTTP design can clarify an
-interface, but it does not supply access control.
+00:00:08.101 --> 00:00:14.741
+The application reads descriptive records from a
+relational database, renders the page, and includes
 
-00:00:16.447 --> 00:00:22.916
-Preserve schema integrity and identify external
-dependencies before deciding which part of the
+00:00:14.741 --> 00:00:17.729
+image URLs delivered through a media service.
 
-00:00:22.916 --> 00:00:25.531
-historical architecture should change.
+00:00:17.729 --> 00:00:24.170
+A curator uploading a replacement image follows a
+different path: authenticate the curator, check
 
-00:00:25.531 --> 00:00:30.709
-Object storage and a CDN separate media delivery
-from application processing.
+00:00:24.170 --> 00:00:28.287
+editing permission, store the object, and update its
+metadata.
 
-00:00:30.709 --> 00:00:37.165
-Thumbnails reduce payload for different displays,
-while caching can reduce repeated origin work.
+00:00:28.300 --> 00:00:34.005
+One diagram contains both paths, but their failure
+and permission requirements differ.
 
-00:00:37.165 --> 00:00:39.586
-Random names are not access control.
+00:00:34.005 --> 00:00:37.455
+Mark every crossing with the information it carries.
 
-00:00:39.586 --> 00:00:46.311
-The cost charts are historical context from 2020, so
-use them to understand tradeoffs rather than as
+00:00:37.455 --> 00:00:43.160
+The object store receives bytes, while the database
+receives identifiers, captions and
 
-00:00:46.311 --> 00:00:49.808
-current infrastructure prices or guaranteed savings.
+00:00:43.160 --> 00:00:44.089
+relationships.
+
+00:00:44.089 --> 00:00:49.197
+The browser receives a presentation rather than
+unrestricted database access.
+
+00:00:49.197 --> 00:00:55.698
+If image storage succeeds but the metadata update
+fails, an unreferenced object can remain; if the
+
+00:00:55.698 --> 00:00:59.679
+metadata points at a missing object, the public page
+breaks.
+
+00:00:59.700 --> 00:01:06.154
+This small example makes interfaces concrete and
+exposes coordination questions before introducing
+
+00:01:06.154 --> 00:01:07.010
+more servers.
+
+00:01:07.010 --> 00:01:13.530
+Naming an endpoint after a resource helps readers,
+but does not settle these consistency or access-
+
+00:01:13.530 --> 00:01:14.847
+control obligations.
+
+00:01:14.847 --> 00:01:20.685
+An archive has a two-megabyte photograph but
+displays a small preview in its search results.
+
+00:01:20.685 --> 00:01:26.903
+If one thousand searches each download the original,
+that is about two gigabytes of image transfer
+
+00:01:26.903 --> 00:01:28.490
+before protocol overhead.
+
+00:01:28.490 --> 00:01:34.264
+A forty-kilobyte preview reduces the same
+illustrative workload to roughly forty megabytes.
+
+00:01:34.264 --> 00:01:40.355
+Storing multiple representations spends some storage
+and processing to reduce repeated transfer.
+
+00:01:40.355 --> 00:01:46.256
+The relational record can identify each
+representation while object storage holds the bytes.
+
+00:01:46.256 --> 00:01:49.463
+Next distinguish a cache hit from an origin fetch.
+
+00:01:49.463 --> 00:01:55.685
+A media cache can reduce repeated origin work, but
+total cost still depends on the charging model
+
+00:01:55.685 --> 00:01:57.930
+for storage, requests and delivery.
+
+00:01:57.930 --> 00:02:04.023
+Build a worksheet with quantities first and insert
+current prices only when preparing an actual
+
+00:02:04.023 --> 00:02:04.600
+estimate.
+
+00:02:04.600 --> 00:02:10.687
+A historical cloud bill is evidence about one
+workload and configuration, not a promise for the
+
+00:02:10.687 --> 00:02:11.199
+archive.
+
+00:02:11.199 --> 00:02:17.606
+Private images also need a permission design: an
+unpredictable filename alone does not establish who
+
+00:02:17.606 --> 00:02:18.887
+may fetch an object.

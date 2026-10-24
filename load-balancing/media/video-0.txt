@@ -1,18 +1,14 @@
-One address, many workers
-Synthetic narration • SE464
+Load balancing
+Part 1 • Synthetic narration
 
-The client sees one service
+One service, many workers
 
-A load balancer presents one service interface to a cluster of workers. Imagine a course registration website. The browser sends a request to one hostname. Behind that address, a balancer chooses a worker, forwards the request, and returns the response. The browser does not need to know which worker handled it.
+A public archive adds three application workers behind one service address. With round robin, six incoming requests can be distributed two per worker. That sounds balanced until one request generates a large export while the others read a small record. Equal request counts do not imply equal work or equal completion times. A routing policy uses observable signals, and those signals are only approximations of the capacity each worker has available. Next ask whether workers are interchangeable. If an export’s progress exists only in worker A’s memory, sending a follow-up request to B may fail even though B is healthy. Durable progress in shared storage can allow replacement, but that storage now needs its own capacity and failure design. The balancer gives clients a stable entry point and can hide worker membership changes. It does not remove every dependency behind that entry point. Follow one request to storage and back before claiming that adding workers has multiplied end-to-end capacity.
 
-Equal counts ≠ equal work
+Related lecture: CS-310 Lecture 07 - Load Balancing at 3:15 — https://www.youtube.com/watch?v=HCboeU7OtJw&t=195s
 
-Round robin rotates through eligible workers. With nine requests and three workers, each gets three requests. But equal counts do not mean equal processing time. One request may return a small cached result; another may run an expensive query. A least connections policy uses active connections as a signal, but that signal is still only an approximation of work.
+Local routing: L4 and L7
 
-Interchangeable workers
+The archive serves metadata and large scans through the same HTTPS hostname. If routing must distinguish /records from /scans, some component must inspect HTTP information. An ordinary IP-and-port decision cannot see that distinction inside encrypted application traffic. An HTTP-aware reverse proxy can terminate TLS, inspect the path and select an appropriate worker pool. It may establish a second encrypted connection upstream; termination does not require leaving the internal hop unprotected. For a generic transport service, a layer-four balancer may be a better fit because it routes using connection information without interpreting HTTP resources. NAT is one implementation, not the definition of layer-four balancing. Likewise, a reverse proxy need not wait for an entire document before forwarding it: streaming and buffering depend on implementation and configuration. Compare designs using the features required by this workload, then benchmark realistic payloads, connections and security settings. Historical throughput examples should not become universal limits for either layer.
 
-Any worker should be able to serve the next request. If a shopping cart exists only in one worker’s memory, switching workers may appear to lose it. Store durable state outside individual workers, or explicitly design session affinity and its failure behavior. A stateless worker is easier to replace, but shared storage now needs its own capacity and availability plan.
-
-Choose the routing layer
-
-Layer four balancing uses transport information such as addresses and ports. An HTTP layer seven proxy can inspect paths and headers, terminate TLS, and route to different application pools. These features cost processing work. Actual throughput depends on the system and workload. Pause here: which layer would you choose to route slash images and slash checkout to different pools? An HTTP aware proxy is a natural choice.
+Related lecture: CS-310 Lecture 07 - Load Balancing at 13:10 — https://www.youtube.com/watch?v=HCboeU7OtJw&t=790s

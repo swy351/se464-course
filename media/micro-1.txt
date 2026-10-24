@@ -3,4 +3,7 @@ Part 2 • Synthetic narration
 
 Teams, mocks and multiple clients
 
-An explicit service contract allows teams to build clients and servers in parallel. Mocks help early work, and real integration tests check the assumptions they encode. A shared API can support web, mobile and desktop experiences. Compare server rendering and SPAs as presentation choices, while keeping backend validation and access control consistent.
+The scheduling team supplies a mock API while the real service is under construction. The dashboard team can now build a booking screen, but an always-successful mock teaches the wrong assumptions. Include unavailable slots, invalid input and delayed responses in the contract. Then run the same expectations against the real implementation. A mock accelerates collaboration because it makes assumptions executable; it does not prove that the dependency behaves that way in production. The same scheduling API can serve a browser dashboard and a technician’s mobile app. The browser may receive server-rendered HTML or construct its interface from API responses; a hybrid is also possible. In either case, the backend must enforce authorization and validate requested changes. Hiding an unavailable action in a button does not prevent a different client from sending that request. Review one complete workflow across both clients and check that resource identities, validation failures and permission rules mean the same thing on the shared service boundary.
+
+Related lecture: CS-310 Lecture 06 - Microservices at 25:40 — https://www.youtube.com/watch?v=ZCJBHMXs3-w&t=1540s
+Related lecture: CS-310 Lecture 06 - Microservices at 27:46 — https://www.youtube.com/watch?v=ZCJBHMXs3-w&t=1666s

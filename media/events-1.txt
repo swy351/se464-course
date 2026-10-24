@@ -3,7 +3,9 @@ Part 2 • Synthetic narration
 
 Delivery, ordering and poison messages
 
-Subscribers must plan for duplicates, failures and delayed delivery. An idempotent handler prevents repeated execution from creating an extra effect, but it does not make out-of-order changes safe. Include entity versions or process related events in an ordered partition when sequence matters. A priority queue changes which message runs first; it is not a substitute for preserving business-event order.
+A subscriber records an experiment-completed event and then sends a researcher a notification. If it crashes after sending but before recording progress, a retry can send the notification again. Repeated delivery and repeated business effects are different issues: a stable event identifier lets the handler recognize a prior effect only when the relevant state is recorded with an appropriate consistency rule. Simply labelling the handler idempotent does not establish that rule. Now deliver result version three before version two. Duplicate detection alone cannot prevent an old version from overwriting a newer result. Define ordering per experiment or reject obsolete updates using their version. When a malformed event repeatedly fails, bound retries and retain enough information for diagnosis and controlled replay. Monitor subscription age as well as message counts so a small set of stuck events is visible. These decisions belong to the consumer contract and broker configuration; a distributed delivery system does not offer one universal ordering or exactly-once guarantee for every downstream effect.
+
+Related lecture: CS-310 Lecture 16 - Asynchronous Processing at 50:30 — https://www.youtube.com/watch?v=ozVhE0psew4&t=3030s
 
 ROS as an architectural example
 

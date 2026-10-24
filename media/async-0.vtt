@@ -1,47 +1,115 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:06.432
-A synchronous request returns after the promised
-operation finishes; an asynchronous request can
+00:00:00.000 --> 00:00:04.133
+A researcher requests an export of a large
+experiment dataset.
 
-00:00:06.432 --> 00:00:10.519
-return once the system accepts responsibility for
-later work.
+00:00:04.133 --> 00:00:10.465
+Waiting for every file to be prepared inside the
+initial request could exceed a useful response
 
-00:00:10.519 --> 00:00:11.725
-Both can use HTTP.
+00:00:10.465 --> 00:00:11.065
+deadline.
 
-00:00:11.725 --> 00:00:16.616
-The important distinction is the contract, not
-whether a response exists.
+00:00:11.065 --> 00:00:17.397
+Instead, the service validates the request, records
+an export job and returns a job identifier.
 
-00:00:16.616 --> 00:00:22.781
-Sending an email, preparing a large download or
-provisioning a virtual machine can return an
+00:00:17.397 --> 00:00:22.862
+That response means the service accepted
+responsibility for attempting the export.
 
-00:00:22.781 --> 00:00:27.203
-operation identifier while the requested work
-continues elsewhere.
+00:00:22.900 --> 00:00:29.103
+It does not mean a downloadable archive already
+exists, so the user interface should display queued
 
-00:00:27.203 --> 00:00:32.525
-A queue lets a producer describe work and hand it to
-consumers that run later.
+00:00:29.103 --> 00:00:31.358
+or processing rather than completed.
 
-00:00:32.525 --> 00:00:39.008
-The message schema is an interface contract,
-including identifiers, required fields and version
+00:00:31.358 --> 00:00:35.994
+The client can later query the job record for
+success or a failure reason.
 
-00:00:39.008 --> 00:00:39.622
-behavior.
+00:00:35.994 --> 00:00:41.821
+A webhook is another option for a client with a
+reachable endpoint, but it introduces its own
 
-00:00:39.622 --> 00:00:46.241
-In the tweet example, one service accepts
-publication work, another expands it into feed
-updates,
+00:00:41.821 --> 00:00:43.951
+authentication and retry contract.
 
-00:00:46.241 --> 00:00:49.175
-and another handles optional notifications.
+00:00:44.000 --> 00:00:48.996
+A phone behind a changing network cannot simply be
+assumed to accept callbacks.
 
-00:00:49.175 --> 00:00:54.361
-This separates stages with different cost, latency
-and failure requirements.
+00:00:48.996 --> 00:00:54.372
+Include a terminal failure state so that accepted
+jobs do not appear pending forever.
+
+00:00:54.372 --> 00:01:00.064
+Trace a worker failure after acceptance and identify
+how another worker discovers the job.
+
+00:01:00.064 --> 00:01:05.377
+The shorter response time moves completion tracking
+into explicit application state.
+
+00:01:05.400 --> 00:01:09.695
+A document service places a preview-generation
+request on a queue.
+
+00:01:09.695 --> 00:01:15.746
+The message contains a job identifier, document
+identifier, desired representation and schema
+
+00:01:15.746 --> 00:01:16.267
+version.
+
+00:01:16.267 --> 00:01:22.644
+These fields are an API contract even though no
+synchronous response carries the finished preview.
+
+00:01:22.644 --> 00:01:28.240
+The worker must know which document version to
+process and where to record the result.
+
+00:01:28.240 --> 00:01:34.465
+A queue containing only an ambiguous instruction
+such as generate preview leaves important business
+
+00:01:34.465 --> 00:01:35.911
+decisions to guesswork.
+
+00:01:35.911 --> 00:01:41.381
+Consider a worker that stores the preview and
+crashes before acknowledging the message.
+
+00:01:41.381 --> 00:01:44.336
+Redelivery may cause the same job to run again.
+
+00:01:44.336 --> 00:01:50.497
+Use the stable job identifier and a suitable result-
+update rule so that repetition does not create
+
+00:01:50.497 --> 00:01:52.321
+conflicting visible outcomes.
+
+00:01:52.340 --> 00:01:58.119
+Acknowledgement timing should reflect the actual
+persistence boundary, not merely receipt into
+
+00:01:58.119 --> 00:01:58.549
+memory.
+
+00:01:58.549 --> 00:02:04.329
+Likewise, an in-process queue lost during a restart
+provides a different contract from durable
+
+00:02:04.329 --> 00:02:05.251
+broker storage.
+
+00:02:05.251 --> 00:02:11.276
+The architecture should state what survives each
+failure and which component owns recovery, rather
+
+00:02:11.276 --> 00:02:14.042
+than treating every queue icon as equivalent.

@@ -1,43 +1,116 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:04.870
-A ride arrival or an auction bid happens because
-another participant acts.
+00:00:00.000 --> 00:00:04.954
+A building maintenance app should alert a resident
+when a repair appointment changes.
 
-00:00:04.870 --> 00:00:10.201
-The recipient needs an update without repeatedly
-asking whether anything changed.
+00:00:04.954 --> 00:00:10.723
+The scheduling server knows the resident's account,
+but that knowledge does not give it a reachable
 
-00:00:10.201 --> 00:00:16.321
-Yet a phone is not an ordinary public server: its
-address changes, NAT and firewalls restrict
+00:00:10.723 --> 00:00:13.112
+network endpoint on the resident's phone.
 
-00:00:16.321 --> 00:00:20.138
-inbound connections, and the application may be
-suspended.
+00:00:13.112 --> 00:00:18.707
+The phone may change networks, sit behind address
+translation or have its application suspended.
 
-00:00:20.138 --> 00:00:26.456
-Email and SMS provide useful notification channels,
-but do not replace every in-app interaction.
+00:00:18.707 --> 00:00:25.034
+Treating the phone as an ordinary public HTTP server
+leaves those constraints unexplained, even if
 
-00:00:26.500 --> 00:00:32.643
-Mobile push services let an application backend
-address a registered app instance through platform
+00:00:25.034 --> 00:00:27.939
+the notification payload is only a few bytes.
 
-00:00:32.643 --> 00:00:33.583
-infrastructure.
+00:00:27.939 --> 00:00:34.007
+Instead, the device or platform establishes an
+outbound delivery path that the backend can use
 
-00:00:33.583 --> 00:00:39.037
-The app obtains a provider-issued identifier and
-sends it to its authenticated backend.
+00:00:34.007 --> 00:00:34.717
+indirectly.
 
-00:00:39.037 --> 00:00:45.180
-Later, the backend associates an event with the
-relevant installations and submits a notification.
+00:00:34.717 --> 00:00:39.365
+Now consider the phone being offline when the
+appointment changes twice.
 
-00:00:45.180 --> 00:00:51.009
-The operating system manages the delivery
-connection, avoiding a separate continuously active
+00:00:39.407 --> 00:00:45.804
+Decide whether to retain both changes, replace the
+first with the latest state, or simply notify the
 
-00:00:51.009 --> 00:00:53.705
-connection for every installed application.
+00:00:45.804 --> 00:00:46.763
+app to refresh.
+
+00:00:46.763 --> 00:00:51.945
+This is a product-level delivery policy, not a
+detail solved by opening a socket.
+
+00:00:51.945 --> 00:00:58.342
+Keep the authoritative appointment in durable
+storage so that reconnecting clients can recover
+their
+
+00:00:58.342 --> 00:01:01.732
+current state even when a notification never
+arrives.
+
+00:01:01.732 --> 00:01:05.019
+A library app user signs in on a phone and a tablet.
+
+00:01:05.019 --> 00:01:11.341
+Each installation registers for platform
+notifications and sends its current provider-issued
+routing
+
+00:01:11.341 --> 00:01:13.554
+token to the authenticated backend.
+
+00:01:13.554 --> 00:01:17.284
+The backend associates both installations with the
+account.
+
+00:01:17.284 --> 00:01:23.163
+When a reserved book becomes ready, the notification
+service resolves the account to eligible
+
+00:01:23.163 --> 00:01:25.945
+installations and submits delivery requests.
+
+00:01:25.945 --> 00:01:32.384
+The account identifies the person; the tokens
+identify destinations through the platform's
+delivery
+
+00:01:32.384 --> 00:01:33.035
+mechanism.
+
+00:01:33.035 --> 00:01:35.767
+Now uninstall and reinstall the phone app.
+
+00:01:35.767 --> 00:01:40.970
+Its routing information may change, while the
+person's account remains the same.
+
+00:01:40.970 --> 00:01:46.564
+Registration updates and invalid-token cleanup are
+therefore part of normal operation.
+
+00:01:46.564 --> 00:01:52.874
+Logging out also requires a policy that prevents the
+next device user from receiving the previous
+
+00:01:52.874 --> 00:01:54.760
+user's private notifications.
+
+00:01:54.760 --> 00:02:00.940
+Provider acceptance only says a delivery request
+entered that provider's process; it does not prove
+
+00:02:00.940 --> 00:02:03.062
+the message was displayed or read.
+
+00:02:03.062 --> 00:02:08.992
+A notification can prompt a fresh authorized read of
+the library record instead of carrying all
+
+00:02:08.992 --> 00:02:10.552
+sensitive details itself.

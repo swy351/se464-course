@@ -1,18 +1,15 @@
-CDNs, caching, and anycast
-Synthetic narration • SE464
+Load balancing
+Part 4 • Synthetic narration
 
-An edge can answer locally
+CDNs and anycast
 
-A content delivery network places caching proxies near users. The origin owns the original content. A fresh cache hit lets an edge answer without fetching that content again. A miss reaches the origin. Cache policy determines what may be stored and when a response can be reused.
+The archive publishes a scanned map under an immutable versioned URL. If 2,000 eligible map requests arrive per second and edge caches serve 92 percent as fresh hits, a simplified model sends about 160 fetches per second toward origin. This estimate excludes validation and other traffic, but it shows the source of the benefit: saved content answers repeated reads near users. A private account page is a different object and cannot safely share the same reuse policy. Anycast answers a different question: which network location receives traffic for an address advertised from several sites? Routing chooses a path using network policy and topology, not a guarantee of geographic nearness. A CDN can use anycast, DNS steering and caching together. Cache directives still determine whether an answer may be reused, and route changes still need handling for established connections. A private directive excludes shared-cache storage of the whole response; a long max-age does not override it. Distinguish traffic steering, content reuse and application correctness when reviewing an edge design.
 
-Private means private cache
+Related lecture: CS-310 Lecture 07 - Load Balancing at 35:42 — https://www.youtube.com/watch?v=HCboeU7OtJw&t=2142s
+Related lecture: CS-310 Lecture 07 - Load Balancing at 43:46 — https://www.youtube.com/watch?v=HCboeU7OtJw&t=2626s
 
-Read the whole Cache-Control policy. Public max-age sixty can permit shared caching for sixty seconds. Private max-age sixty permits a private browser cache, but excludes storage of the whole response in a shared CDN cache. No-cache can permit storage, but requires validation before reuse. No-store prohibits storage. Max-age zero makes a response immediately stale.
+Design review and self-check
 
-Anycast shares an address
+Design an archive service for the morning a newly digitized collection opens. Public scans can use versioned URLs and edge caching, while requests to reserve the last available research-room seat must reach application logic and authoritative storage. Draw DNS discovery, the edge, a regional entry point, workers and storage. Label where a read may be answered without contacting origin and where a write must be checked against current state. Now fail one worker during the surge and one region during a reservation. Explain the delay before health information changes, what happens to in-flight requests and which clients might still use cached DNS answers. A retry must not create two reservations, and a second worker must not allocate the same final seat concurrently. Those requirements need an explicit data and operation contract, not just another load balancer. A convincing design combines routing, capacity, freshness and recovery assumptions, then tests the failure cases that could violate them.
 
-Anycast uses routing announcements from multiple sites for the same address prefix. BGP selects a route according to network policy and topology. The selected site is not necessarily the geographically closest one. DNS steering and anycast operate at different points in the request path and can be used together.
-
-Routing is not data consistency
-
-Anycast is used for more than UDP DNS. Stateful connections need careful engineering because a route change can shift traffic to a site without the connection state. Likewise, caching and extra workers do not solve concurrent seat allocation in a registration service. Finish the unit by explaining which layer handles discovery, worker selection, caching, and correct updates to shared data.
+Related lecture: CS-310 Lecture 07 - Load Balancing at 50:03 — https://www.youtube.com/watch?v=HCboeU7OtJw&t=3003s

@@ -1,43 +1,74 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:04.382
-Subscribers must plan for duplicates, failures and
-delayed delivery.
+00:00:00.000 --> 00:00:05.926
+A subscriber records an experiment-completed event
+and then sends a researcher a notification.
 
-00:00:04.382 --> 00:00:10.568
-An idempotent handler prevents repeated execution
-from creating an extra effect, but it does not
+00:00:05.926 --> 00:00:12.168
+If it crashes after sending but before recording
+progress, a retry can send the notification again.
 
-00:00:10.568 --> 00:00:12.566
-make out-of-order changes safe.
+00:00:12.168 --> 00:00:18.472
+Repeated delivery and repeated business effects are
+different issues: a stable event identifier lets
 
-00:00:12.566 --> 00:00:18.752
-Include entity versions or process related events in
-an ordered partition when sequence matters.
+00:00:18.472 --> 00:00:24.588
+the handler recognize a prior effect only when the
+relevant state is recorded with an appropriate
 
-00:00:18.752 --> 00:00:25.067
-A priority queue changes which message runs first;
-it is not a substitute for preserving business-
+00:00:24.588 --> 00:00:25.659
+consistency rule.
 
-00:00:25.067 --> 00:00:25.840
-event order.
+00:00:25.700 --> 00:00:30.080
+Simply labelling the handler idempotent does not
+establish that rule.
 
-00:00:25.840 --> 00:00:30.632
+00:00:30.080 --> 00:00:33.381
+Now deliver result version three before version two.
+
+00:00:33.381 --> 00:00:38.967
+Duplicate detection alone cannot prevent an old
+version from overwriting a newer result.
+
+00:00:38.967 --> 00:00:43.919
+Define ordering per experiment or reject obsolete
+updates using their version.
+
+00:00:43.919 --> 00:00:50.140
+When a malformed event repeatedly fails, bound
+retries and retain enough information for diagnosis
+
+00:00:50.140 --> 00:00:51.536
+and controlled replay.
+
+00:00:51.536 --> 00:00:57.508
+Monitor subscription age as well as message counts
+so a small set of stuck events is visible.
+
+00:00:57.508 --> 00:01:03.672
+These decisions belong to the consumer contract and
+broker configuration; a distributed delivery
+
+00:01:03.672 --> 00:01:10.029
+system does not offer one universal ordering or
+exactly-once guarantee for every downstream effect.
+
+00:01:10.036 --> 00:01:14.828
 The robotics example organizes computation into
 nodes with typed messages.
 
-00:00:30.632 --> 00:00:36.913
+00:01:14.828 --> 00:01:21.109
 Topics carry streams such as sensor readings,
 services provide request-and-response interactions,
 
-00:00:36.913 --> 00:00:41.186
+00:01:21.109 --> 00:01:25.383
 and actions support longer goals with progress and a
 final result.
 
-00:00:41.186 --> 00:00:47.338
+00:01:25.383 --> 00:01:31.534
 These interfaces let sensing, planning, control and
 visualization evolve separately while still
 
-00:00:47.338 --> 00:00:53.813
+00:01:31.534 --> 00:01:38.009
 communicating through explicit data contracts suited
 to their interaction patterns and timing needs.

@@ -1,89 +1,117 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:04.333
-A load balancer presents one service interface to a
-cluster of workers.
+00:00:00.000 --> 00:00:04.939
+A public archive adds three application workers
+behind one service address.
 
-00:00:04.333 --> 00:00:06.652
-Imagine a course registration website.
+00:00:04.939 --> 00:00:09.813
+With round robin, six incoming requests can be
+distributed two per worker.
 
-00:00:06.652 --> 00:00:09.338
-The browser sends a request to one hostname.
+00:00:09.813 --> 00:00:15.938
+That sounds balanced until one request generates a
+large export while the others read a small
 
-00:00:09.338 --> 00:00:15.258
-Behind that address, a balancer chooses a worker,
-forwards the request, and returns the response.
+00:00:15.938 --> 00:00:16.399
+record.
 
-00:00:15.258 --> 00:00:18.797
-The browser does not need to know which worker
-handled it.
+00:00:16.399 --> 00:00:21.075
+Equal request counts do not imply equal work or
+equal completion times.
 
-00:00:18.800 --> 00:00:21.506
-Round robin rotates through eligible workers.
+00:00:21.100 --> 00:00:27.544
+A routing policy uses observable signals, and those
+signals are only approximations of the capacity
 
-00:00:21.506 --> 00:00:25.295
-With nine requests and three workers, each gets
-three requests.
+00:00:27.544 --> 00:00:29.236
+each worker has available.
 
-00:00:25.295 --> 00:00:28.362
-But equal counts do not mean equal processing time.
+00:00:29.236 --> 00:00:32.165
+Next ask whether workers are interchangeable.
 
-00:00:28.362 --> 00:00:33.233
-One request may return a small cached result;
-another may run an expensive query.
+00:00:32.165 --> 00:00:38.608
+If an export’s progress exists only in worker A’s
+memory, sending a follow-up request to B may fail
 
-00:00:33.233 --> 00:00:39.006
-A least connections policy uses active connections
-as a signal, but that signal is still only an
+00:00:38.608 --> 00:00:40.235
+even though B is healthy.
 
-00:00:39.006 --> 00:00:40.329
-approximation of work.
+00:00:40.235 --> 00:00:45.993
+Durable progress in shared storage can allow
+replacement, but that storage now needs its own
 
-00:00:40.333 --> 00:00:43.443
-Any worker should be able to serve the next request.
+00:00:45.993 --> 00:00:47.746
+capacity and failure design.
 
-00:00:43.443 --> 00:00:49.123
-If a shopping cart exists only in one worker’s
-memory, switching workers may appear to lose it.
+00:00:47.746 --> 00:00:53.191
+The balancer gives clients a stable entry point and
+can hide worker membership changes.
 
-00:00:49.123 --> 00:00:54.684
-Store durable state outside individual workers, or
-explicitly design session affinity and its
+00:00:53.191 --> 00:00:56.946
+It does not remove every dependency behind that
+entry point.
 
-00:00:54.684 --> 00:00:55.701
-failure behavior.
+00:00:56.946 --> 00:01:03.205
+Follow one request to storage and back before
+claiming that adding workers has multiplied end-to-
+end
 
-00:00:55.701 --> 00:01:01.082
-A stateless worker is easier to replace, but shared
-storage now needs its own capacity and
+00:01:03.205 --> 00:01:03.768
+capacity.
 
-00:01:01.082 --> 00:01:02.159
-availability plan.
+00:01:03.768 --> 00:01:09.139
+The archive serves metadata and large scans through
+the same HTTPS hostname.
 
-00:01:02.159 --> 00:01:06.848
-Layer four balancing uses transport information such
-as addresses and ports.
+00:01:09.139 --> 00:01:15.853
+If routing must distinguish /records from /scans,
+some component must inspect HTTP information.
 
-00:01:06.848 --> 00:01:12.648
-An HTTP layer seven proxy can inspect paths and
-headers, terminate TLS, and route to different
+00:01:15.853 --> 00:01:22.778
+An ordinary IP-and-port decision cannot see that
+distinction inside encrypted application traffic.
 
-00:01:12.648 --> 00:01:13.758
-application pools.
+00:01:22.778 --> 00:01:29.563
+An HTTP-aware reverse proxy can terminate TLS,
+inspect the path and select an appropriate worker
 
-00:01:13.758 --> 00:01:15.979
-These features cost processing work.
+00:01:29.563 --> 00:01:29.916
+pool.
 
-00:01:15.979 --> 00:01:19.250
-Actual throughput depends on the system and
-workload.
+00:01:29.916 --> 00:01:36.252
+It may establish a second encrypted connection
+upstream; termination does not require leaving the
 
-00:01:19.250 --> 00:01:25.049
-Pause here: which layer would you choose to route
-slash images and slash checkout to different
+00:01:36.252 --> 00:01:37.885
+internal hop unprotected.
 
-00:01:25.049 --> 00:01:25.419
-pools?
+00:01:37.885 --> 00:01:44.287
+For a generic transport service, a layer-four
+balancer may be a better fit because it routes using
 
-00:01:25.419 --> 00:01:27.887
-An HTTP aware proxy is a natural choice.
+00:01:44.287 --> 00:01:48.141
+connection information without interpreting HTTP
+resources.
+
+00:01:48.141 --> 00:01:52.713
+NAT is one implementation, not the definition of
+layer-four balancing.
+
+00:01:52.716 --> 00:01:59.023
+Likewise, a reverse proxy need not wait for an
+entire document before forwarding it: streaming and
+
+00:01:59.023 --> 00:02:02.434
+buffering depend on implementation and
+configuration.
+
+00:02:02.434 --> 00:02:08.612
+Compare designs using the features required by this
+workload, then benchmark realistic payloads,
+
+00:02:08.612 --> 00:02:10.800
+connections and security settings.
+
+00:02:10.800 --> 00:02:16.141
+Historical throughput examples should not become
+universal limits for either layer.

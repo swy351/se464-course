@@ -1,55 +1,180 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:06.194
-Think of a relational dataset as a graph: rows are
-vertices and references are edges Partitioning
+00:00:00.000 --> 00:00:06.433
+Data locality begins with the question a user asks,
+but it must also account for how facts change.
 
-00:00:06.194 --> 00:00:10.728
-tries to balance the data while cutting few
-frequently traversed edges.
+00:00:06.433 --> 00:00:12.866
+We will use campsite reservations to distinguish
+useful snapshots from duplicated information that
 
-00:00:10.728 --> 00:00:10.920
-No.
+00:00:12.866 --> 00:00:14.835
+becomes difficult to maintain.
 
-00:00:10.920 --> 00:00:16.858
-It can make profile reads local, but the rename now
-affects many copies or requires accepting
+00:00:14.835 --> 00:00:21.268
+A campsite booking page needs a reservation, its
+selected facilities and a short site description.
 
-00:00:16.858 --> 00:00:18.327
-temporary disagreement.
+00:00:21.300 --> 00:00:26.797
+Embedding a snapshot of the booked facilities can
+make that page a single aggregate read.
 
-00:00:18.327 --> 00:00:24.530
-A deterministic hash maps a key to a value in a
-fixed hash space Partition owners can divide that
+00:00:26.797 --> 00:00:32.911
+Keeping the current site description separately
+avoids rewriting thousands of reservations whenever
 
-00:00:24.530 --> 00:00:30.286
-space into ranges; a client or routing layer hashes
-a requested key and selects its owner.
+00:00:32.911 --> 00:00:34.393
+the description changes.
 
-00:00:30.286 --> 00:00:30.477
-No.
+00:00:34.393 --> 00:00:40.446
+The correct boundary depends on whether the page
+promises historical booking details or the latest
 
-00:00:30.477 --> 00:00:36.681
-All requests for that key still map to its owner or
-replica set unless the application introduces
+00:00:40.446 --> 00:00:41.805
+catalogue information.
 
-00:00:36.681 --> 00:00:39.302
-another distribution or caching strategy.
+00:00:41.805 --> 00:00:45.695
+Suppose 2,000 reservations contain a copied access
+instruction.
 
-00:00:39.327 --> 00:00:45.427
-Partitioning spreads different data across machines;
-replication stores multiple copies of each
+00:00:45.700 --> 00:00:51.627
+A correction now requires updating many copies or
+accepting mixed versions during propagation.
 
-00:00:45.427 --> 00:00:51.527
-partition Replication allows a system to keep a copy
-when a machine fails, but a change reaches
+00:00:51.627 --> 00:00:56.860
+By contrast, a historical price agreed at booking
+should usually remain a snapshot.
 
-00:00:51.527 --> 00:00:53.325
-replicas at different times.
+00:00:56.860 --> 00:01:02.977
+Denormalization is therefore a choice about update
+ownership and meaning, as well as query speed.
 
-00:00:53.325 --> 00:00:59.232
-Not while also remaining available for every
-request; they cannot coordinate the conflicting
+00:01:02.977 --> 00:01:09.156
+List each embedded field, its authoritative source
+and the rule for changing it before celebrating
 
-00:00:59.232 --> 00:01:01.223
-decisions across the partition.
+00:01:09.156 --> 00:01:10.543
+fewer network lookups.
+
+00:01:10.543 --> 00:01:14.281
+A hash gives a repeatable route from a key to a
+partition.
+
+00:01:14.281 --> 00:01:18.341
+It is a routing mechanism, not a proof of balanced
+performance.
+
+00:01:18.341 --> 00:01:23.626
+Let us trace one identifier and then test the
+assumptions behind the distribution.
+
+00:01:23.626 --> 00:01:29.748
+Consider a toy hash space with values zero through
+ninety-nine, divided into four equal ranges.
+
+00:01:29.748 --> 00:01:35.990
+A parcel identifier hashing to sixty-two is routed
+to the owner of the fifty-through-seventy-four
+
+00:01:35.990 --> 00:01:36.376
+range.
+
+00:01:36.376 --> 00:01:41.010
+The client needs the current ownership map as well
+as the hash function.
+
+00:01:41.010 --> 00:01:47.381
+When ownership changes, migration and routing must
+agree so requests do not silently read the wrong
+
+00:01:47.381 --> 00:01:47.767
+place.
+
+00:01:47.767 --> 00:01:52.336
+Evenly distributed identifiers do not imply evenly
+distributed traffic.
+
+00:01:52.348 --> 00:01:58.578
+If one parcel receives half the tracking requests,
+its owner can remain overloaded while other
+
+00:01:58.578 --> 00:01:59.638
+owners are idle.
+
+00:01:59.638 --> 00:02:04.675
+Adding machines does not split that individual key’s
+requests automatically.
+
+00:02:04.675 --> 00:02:11.103
+Similarly, hashes scatter nearby timestamps, so a
+query for all parcels created between two times
+
+00:02:11.103 --> 00:02:13.754
+cannot simply walk adjacent hash values.
+
+00:02:13.754 --> 00:02:19.454
+Separate point lookup, range lookup and hot-key
+mitigation when evaluating the design.
+
+00:02:19.454 --> 00:02:24.708
+Replication provides extra copies, but those copies
+may be unable to communicate.
+
+00:02:24.708 --> 00:02:30.806
+The architectural decision becomes concrete when we
+ask what the application may promise while
+
+00:02:30.806 --> 00:02:32.363
+communication is broken.
+
+00:02:32.363 --> 00:02:35.865
+Compare a rental commitment with a display
+preference.
+
+00:02:35.865 --> 00:02:40.212
+A tool-rental service keeps three copies of an
+availability record.
+
+00:02:40.212 --> 00:02:43.650
+A network break isolates one copy from the other
+two.
+
+00:02:43.654 --> 00:02:50.061
+If both sides independently confirm rental of the
+final drill, later reconciliation cannot make both
+
+00:02:50.061 --> 00:02:51.919
+promises physically possible.
+
+00:02:51.919 --> 00:02:58.262
+A design protecting that single-item invariant may
+require the isolated side to refuse or delay the
+
+00:02:58.262 --> 00:03:00.633
+booking while the majority continues.
+
+00:03:00.633 --> 00:03:06.976
+A less critical observation, such as a customer’s
+preferred display colour, may be accepted on both
+
+00:03:06.976 --> 00:03:08.706
+sides and reconciled later.
+
+00:03:08.754 --> 00:03:14.613
+This illustrates the CAP trade-off during a
+partition: linearizable behavior and a successful
+
+00:03:14.613 --> 00:03:19.212
+response to every request at non-failing nodes
+cannot both be guaranteed.
+
+00:03:19.212 --> 00:03:23.811
+It does not say replication is always unavailable or
+always inconsistent.
+
+00:03:23.811 --> 00:03:30.111
+State the operation, its invariant and the failure
+condition rather than assigning one slogan to the
+
+00:03:30.111 --> 00:03:31.308
+entire application.

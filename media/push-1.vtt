@@ -1,52 +1,117 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:06.424
-An active browser can open a WebSocket and exchange
-messages in both directions while the connection
+00:00:00.000 --> 00:00:04.754
+A workshop dashboard polls every ten seconds for a
+changed machine status.
 
-00:00:06.424 --> 00:00:07.323
-remains alive.
+00:00:04.754 --> 00:00:10.729
+With changes occurring at arbitrary times, the
+average wait until the next poll is about five
 
-00:00:07.323 --> 00:00:13.489
-Long polling instead leaves an HTTP request pending
-until data or a timeout arrives, then starts
+00:00:10.729 --> 00:00:12.913
+seconds, ignoring request latency.
 
-00:00:13.489 --> 00:00:14.517
-another request.
+00:00:12.913 --> 00:00:18.888
+Reducing the interval lowers that wait but increases
+the number of requests even when nothing
 
-00:00:14.517 --> 00:00:18.371
-Both permit an update to arrive without a fresh user
-action.
+00:00:18.888 --> 00:00:19.402
+changes.
 
-00:00:18.371 --> 00:00:24.217
-Their latency and operational behavior differ from
-repeatedly making short periodic polling
+00:00:19.402 --> 00:00:25.535
+A WebSocket keeps a bidirectional channel open,
+while long polling lets the server hold a request
 
-00:00:24.217 --> 00:00:24.795
-requests.
+00:00:25.535 --> 00:00:28.191
+until data or a timeout becomes available.
 
-00:00:24.800 --> 00:00:30.653
-A distributed notification service must find the
-worker holding each live client connection.
+00:00:28.191 --> 00:00:31.289
+The connection does not eliminate state recovery.
 
-00:00:30.653 --> 00:00:37.016
-Other backend services should send a logical user
-notification rather than guess the physical socket
+00:00:31.289 --> 00:00:37.611
+If a browser loses its network for thirty seconds,
+it may miss several transitions regardless of the
 
-00:00:37.016 --> 00:00:37.397
-owner.
+00:00:37.611 --> 00:00:39.002
+chosen live transport.
 
-00:00:37.397 --> 00:00:43.505
-A registry connects user and installation identities
-to provider destinations or live connection
+00:00:39.002 --> 00:00:45.094
+On reconnect, retrieve the current authoritative
+status or resume from a position supported by the
 
-00:00:43.505 --> 00:00:44.269
-identifiers.
+00:00:45.094 --> 00:00:46.399
+application protocol.
 
-00:00:44.269 --> 00:00:50.567
-This allows the notification service to serve
-multiple devices and browser tabs without
-duplicating
+00:00:46.399 --> 00:00:52.616
+Distinguish a dashboard that needs only the latest
+temperature from an audit screen that needs every
 
-00:00:50.567 --> 00:00:52.921
-routing logic across domain services.
+00:00:52.616 --> 00:00:53.299
+transition.
+
+00:00:53.299 --> 00:00:57.153
+That requirement determines how much history must be
+retained.
+
+00:00:57.153 --> 00:01:03.307
+Compare latency, idle connection resources and
+reconnect behaviour, rather than choosing a protocol
+
+00:01:03.307 --> 00:01:06.042
+solely because it is described as real time.
+
+00:01:06.042 --> 00:01:11.995
+An account has two browser tabs, one connected to
+notification worker A and another to worker B.
+
+00:01:11.995 --> 00:01:15.778
+An appointment service running elsewhere generates
+an update.
+
+00:01:15.778 --> 00:01:21.793
+Sending the update to an arbitrary notification
+worker is insufficient: only the worker holding a
+
+00:01:21.793 --> 00:01:24.459
+particular live connection can write to it.
+
+00:01:24.459 --> 00:01:30.350
+A registration directory maps the logical recipient
+to connection identifiers and their owners,
+
+00:01:30.350 --> 00:01:33.699
+allowing the notification layer to route to both
+tabs.
+
+00:01:33.742 --> 00:01:36.669
+Close one tab just after the directory lookup.
+
+00:01:36.669 --> 00:01:42.776
+The route can become stale between lookup and send,
+so lookup success cannot guarantee delivery.
+
+00:01:42.776 --> 00:01:48.374
+Clean up failed destinations and let reconnecting
+clients establish fresh registrations.
+
+00:01:48.374 --> 00:01:54.290
+Keep transport failures separate from the underlying
+appointment change, which remains stored
+
+00:01:54.290 --> 00:01:55.181
+independently.
+
+00:01:55.181 --> 00:02:01.479
+If the design promises recovery of missed updates,
+retain an appropriate event history or provide a
+
+00:02:01.479 --> 00:02:02.560
+fresh-state read.
+
+00:02:02.560 --> 00:02:08.054
+Trace a worker restart as well as a normal send;
+this reveals why connection ownership,
+
+00:02:08.054 --> 00:02:12.727
+authoritative data and notification progress are
+different kinds of state.

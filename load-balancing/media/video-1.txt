@@ -1,18 +1,8 @@
-Failures and deployments
-Synthetic narration • SE464
+Load balancing
+Part 2 • Synthetic narration
 
-Failure is not instantly visible
+Failures and safe deployments
 
-Suppose worker B crashes. Until a health check detects the failure, the balancer may still send it new work. A failed probe is evidence of a problem, not proof of a crash. Overload, a dependency, or the network can cause a timeout too. Production systems often use multiple observations to avoid rapidly adding and removing a worker.
+The archive runs four workers, each measured to handle 100 requests per second for a specified workload. At 280 requests per second, removing one worker leaves a nominal capacity of 300. That small margin may be inadequate once request costs vary or a dependency slows. A rolling deployment needs spare capacity as well as a sequence of replacement steps. Stop new assignments, allow existing work to drain within a deadline, deploy, and verify readiness before returning the worker. A failed health probe is evidence that the checked path did not respond acceptably; it is not proof of a process crash. Overload, network trouble or a dependency can produce the same observation. Failure thresholds reduce reactions to brief disturbances but delay removal, so some requests may fail before routing changes. Explain what clients may retry and with what limit. During a rolling update, old and new versions coexist, which makes API and storage compatibility part of deployment safety rather than an optional cleanup task.
 
-Drain before replacing
-
-For a rolling deployment, stop giving one worker new requests. Let existing work finish within a deadline. Deploy the new version, wait for readiness, then restore the worker and move to the next one. The remaining pool needs spare capacity. Old and new code coexist, so interfaces and database schema changes must remain compatible.
-
-A second pool
-
-A blue-green deployment prepares another pool and switches new traffic after verification. It consumes extra capacity. The switch does not magically move every existing connection. A rollback also requires compatible data changes. Ask what happens to a request that was accepted just before the traffic switch.
-
-Failure domains remain
-
-A healthy worker pool cannot compensate for a single failed entry point. Redundant balancers address that failure domain. A second region addresses a larger one. Retries need limits and backoff, because excessive retries can worsen overload. For operations such as payments, use idempotency so retrying a request does not repeat its effect.
+Related lecture: CS-310 Lecture 07 - Load Balancing at 8:53 — https://www.youtube.com/watch?v=HCboeU7OtJw&t=533s

@@ -3,12 +3,19 @@ Part 1 • Synthetic narration
 
 Why state moves into the database
 
-Moving session and application state out of a web process makes that process easier to duplicate The shared database now carries durable data and coordinates changes made by those copies. No. All copies may still wait on the same overloaded database or storage path.
+Adding another application server is useful only if application work is the limiting step. Let us follow a booking request through the shared data service and estimate its capacity before changing the architecture. A repair-booking service runs on six application servers. Each booking needs three database operations. If the database sustains 1,800 such operations per second, the idealized ceiling is 600 bookings per second, regardless of how many otherwise idle application servers are added. This estimate assumes equal operation costs and no competing workload; measurements must check those assumptions. Now suppose a frequently read parts catalogue fits in the database buffer cache. Repeated reads may avoid storage access, but writes, locks and network transfers still consume resources. Adding disks could improve storage throughput without fixing a CPU-bound query or a contended record. Separate durable storage, coordination and query execution when explaining why the database remains busy after the web tier scales.
+
+Related lecture: CS-310 Lecture 08 - Relational Databases at 5:09 — https://www.youtube.com/watch?v=CnuMUoJjaPo&t=309s
 
 Relational models and query execution
 
-A relational schema describes tables, columns and relationships A staff row can refer to one department, and a department can refer to one building. With the shown normalized schema, one department row changes; staff references retain the same department identifier.
+The relational model separates facts that have different owners and lifetimes. A useful design exercise is to reconstruct one screen from those facts, then ask both what it means and how much work it requires. A bicycle library stores Bicycle, Branch and Loan tables. Each bicycle refers to its current branch, and each loan refers to one bicycle and one borrower. Renaming a branch changes one branch record rather than every bicycle description. A loan-history page joins those records to display useful information without storing a duplicate branch name in every loan. For a query asking for one borrower’s active loans, the database can first identify a small set of matching loans and then look up their bicycles. Reading every bicycle before filtering could do much more work. The execution plan reveals the chosen access path; the schema alone does not guarantee it. Also decide whether the page should display the branch’s current name or preserve its historical name when the loan occurred.
+
+Related lecture: CS-310 Lecture 08 - Relational Databases at 36:04 — https://www.youtube.com/watch?v=CnuMUoJjaPo&t=2164s
+Related lecture: CS-310 Lecture 08 - Relational Databases at 74:15 — https://www.youtube.com/watch?v=CnuMUoJjaPo&t=4455s
 
 Indexes and their costs
 
-An index stores an additional access path to rows Without a suitable access path, a query may scan many rows to find a small result. No. It can increase write maintenance and storage cost without helping the queries that dominate the workload.
+Think of an index as a route through data designed for a particular question. We will choose one for a parcel service and then account for the extra work that the route creates. A parcel service frequently asks for a particular depot’s shipments created during the last hour. An ordered index on (depot_id, created_at) groups one depot’s entries and then narrows the time interval. A query for all depots during that hour may need a different plan because its predicate omits the leading column. The optimizer and data distribution determine the actual access path. Suppose that targeted query examines 240 index entries instead of scanning 800,000 shipment rows. That is a promising reduction in examined data, not a guaranteed latency ratio. Every inserted shipment must also update the index. Compare execution plans and measured response times before and after the change, including ingestion throughput, index size and unusually busy depots. An index is a maintained copy of ordering information, not free acceleration.
+
+Related lecture: CS-310 Lecture 08 - Relational Databases at 75:40 — https://www.youtube.com/watch?v=CnuMUoJjaPo&t=4540s

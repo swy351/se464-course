@@ -1,74 +1,55 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:03.083
-DNS maps a service hostname to an endpoint address.
+00:00:00.000 --> 00:00:04.577
+A resolver receives Region East with a 90-second TTL
+at time zero.
 
-00:00:03.083 --> 00:00:06.467
-A recursive resolver can reuse an answer from its
-cache.
+00:00:04.577 --> 00:00:09.640
+At time 20, the authoritative policy switches new
+answers to Region West.
 
-00:00:06.467 --> 00:00:10.819
-If it does not have one, it obtains an answer
-through the DNS hierarchy.
+00:00:09.640 --> 00:00:16.160
+Under the simplified ordinary-cache model, a lookup
+at time 50 can still receive East from the
 
-00:00:10.819 --> 00:00:16.380
-A global routing policy may return different
-regional addresses, after which a regional load
+00:00:16.160 --> 00:00:20.945
+resolver’s cache; the answer becomes eligible for
+refresh at time 90.
 
-00:00:16.380 --> 00:00:17.952
-balancer chooses a worker.
+00:00:20.945 --> 00:00:27.301
+Updating the authority changes future answers, not
+every previously distributed copy at the same
 
-00:00:17.952 --> 00:00:19.837
-Consider a simplified example.
+00:00:27.301 --> 00:00:27.830
+instant.
 
-00:00:19.837 --> 00:00:24.489
-At time zero, a resolver caches region A with a
-sixty second time to live.
+00:00:27.830 --> 00:00:33.987
+Existing connections add another layer: a client may
+continue using an established connection
 
-00:00:24.489 --> 00:00:28.323
-At ten seconds, the authoritative answer changes to
-region B.
+00:00:33.987 --> 00:00:36.635
+without repeating DNS for every request.
 
-00:00:28.323 --> 00:00:31.403
-Predict the result of a lookup at thirty seconds.
+00:00:36.635 --> 00:00:43.057
+Multiple clients may also share one resolver, so a
+single cached answer can direct a large group.
 
-00:00:31.403 --> 00:00:35.866
-The resolver still returns A, because its cached
-entry has not expired.
+00:00:43.057 --> 00:00:48.629
+Geographic steering often estimates location from
+the resolver or partial client-network
 
-00:00:35.885 --> 00:00:41.457
-At sixty seconds, the next lookup in this model
-refreshes the expired entry and discovers B.
+00:00:48.629 --> 00:00:52.554
+information, rather than knowing each user’s precise
+position.
 
-00:00:41.457 --> 00:00:47.089
-Real failover has additional delays: detecting the
-failure, application caching, and existing
+00:00:52.554 --> 00:00:56.163
+Treat DNS as a discovery mechanism with caching
+behavior.
 
-00:00:47.089 --> 00:00:47.816
-connections.
+00:00:56.163 --> 00:01:02.431
+Combine it with regional load balancing and an
+explicit data recovery strategy; changing a name-to-
 
-00:00:47.816 --> 00:00:53.509
-A lower time to live allows more frequent refreshes,
-but creates more DNS traffic and does not
-
-00:00:53.509 --> 00:00:55.023
-promise instant recovery.
-
-00:00:55.023 --> 00:01:00.881
-Geographic DNS can use the requesting resolver’s
-location, or sometimes partial client network
-
-00:01:00.881 --> 00:01:02.875
-information, to choose a region.
-
-00:01:02.875 --> 00:01:06.614
-That estimate may differ from the student’s actual
-location.
-
-00:01:06.614 --> 00:01:12.036
-Global distribution also needs regional spare
-capacity and a data replication strategy.
-
-00:01:12.036 --> 00:01:17.021
-DNS changes the endpoint a client discovers; it does
-not replicate the database.
+00:01:02.431 --> 00:01:07.306
+address answer does not by itself make another
+region ready to accept writes.

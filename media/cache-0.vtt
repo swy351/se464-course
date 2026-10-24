@@ -1,42 +1,111 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:03.089
-Ask where information survives between requests.
+00:00:00.000 --> 00:00:05.303
+A bicycle rental application remembers an unfinished
+booking in worker A’s memory.
 
-00:00:03.089 --> 00:00:07.338
-Stateful local workers need routing or state-sharing
-arrangements.
+00:00:05.303 --> 00:00:10.412
+The customer’s next request reaches worker B, which
+has never seen the booking.
 
-00:00:07.338 --> 00:00:12.294
-Stateless workers can be interchangeable because
-required state is elsewhere.
+00:00:10.412 --> 00:00:16.879
+Both workers run identical code, but they are not
+interchangeable for this interaction because their
 
-00:00:12.294 --> 00:00:18.601
-Do not confuse this with pure functions: a stateless
-request handler can read changing records and
+00:00:16.879 --> 00:00:18.754
+retained information differs.
 
-00:00:18.601 --> 00:00:19.567
-write new data.
+00:00:18.754 --> 00:00:24.833
+Calling the protocol HTTP does not remove that
+dependency: application state can exist above a
 
-00:00:19.567 --> 00:00:24.008
-The architecture still has state, even when workers
-do not retain it.
+00:00:24.833 --> 00:00:26.579
+stateless request protocol.
 
-00:00:24.008 --> 00:00:28.490
-Use the chess game to compare local memory with
-shared durable state.
+00:00:26.600 --> 00:00:32.240
+Identify the information needed for the next
+operation and locate its authoritative copy.
 
-00:00:28.490 --> 00:00:34.920
-Stateless workers make routing and replacement
-easier, but the database now carries correctness and
+00:00:32.240 --> 00:00:36.487
+A stateless worker may still read changing data and
+perform writes.
 
-00:00:34.920 --> 00:00:36.869
-coordination responsibilities.
+00:00:36.487 --> 00:00:42.824
+For example, it can accept a booking identifier,
+load that booking from shared storage and update it
 
-00:00:36.869 --> 00:00:40.311
-Cookies provide request-carried identity
-information.
+00:00:42.824 --> 00:00:43.205
+there.
 
-00:00:40.311 --> 00:00:46.482
-In each design, identify what is stored, who trusts
-it and what happens when a component fails.
+00:00:43.205 --> 00:00:49.035
+The worker does not need the customer’s previous
+requests to have visited that same process.
+
+00:00:49.035 --> 00:00:54.597
+This distinction separates deployment statelessness
+from a mathematical pure function.
+
+00:00:54.597 --> 00:00:59.059
+To test your design, replace the worker between
+consecutive requests.
+
+00:00:59.059 --> 00:01:05.332
+If another healthy worker can continue using the
+request and shared services, the application has
+
+00:01:05.332 --> 00:01:08.695
+avoided a hidden dependency on the original process.
+
+00:01:08.735 --> 00:01:14.663
+Move the bicycle booking into shared storage, and a
+replacement worker can retrieve it after a
+
+00:01:14.663 --> 00:01:15.167
+restart.
+
+00:01:15.167 --> 00:01:21.284
+That improves replaceability but exposes a second
+question: what if two workers reserve the final
+
+00:01:21.284 --> 00:01:22.609
+bicycle concurrently?
+
+00:01:22.609 --> 00:01:28.284
+If both read availability before either writes, each
+may believe the reservation is valid.
+
+00:01:28.284 --> 00:01:34.913
+Shared storage solves access to a common record; a
+suitable atomic operation or version check must
+
+00:01:34.913 --> 00:01:36.942
+also protect the booking rule.
+
+00:01:36.942 --> 00:01:42.894
+For example, worker A reads booking version 12,
+while worker B changes it to version 13.
+
+00:01:42.894 --> 00:01:49.591
+A conditional update based on version 12 should now
+fail rather than silently overwrite B’s change.
+
+00:01:49.591 --> 00:01:52.976
+The application can reload and explain the conflict.
+
+00:01:52.976 --> 00:01:59.420
+A session cookie can identify the customer whose
+request is being processed, but it does not itself
+
+00:01:59.420 --> 00:02:01.373
+enforce inventory correctness.
+
+00:02:01.373 --> 00:02:07.557
+Explain these responsibilities separately: the
+request carries identity or a session reference,
+
+00:02:07.557 --> 00:02:13.806
+shared storage retains durable state, and the update
+protocol decides which concurrent change is
+
+00:02:13.806 --> 00:02:14.392
+accepted.

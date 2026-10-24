@@ -19,3 +19,7 @@ GitHub Pages serves the root of the `main` branch. `.nojekyll` preserves the sta
 Content and practice activities were generated as course companions and should be checked for instructional use. Videos use a synthetic voice, not the instructor’s voice, and captions have approximate timing. Source notes explain corrections and coverage limits. Diagram-only source material was not exhaustively visually audited. Original PowerPoint files, private working files, and credentials are not included.
 
 Written exercise responses are not submitted or saved. Completion progress is stored locally in the reader’s browser. Each unit includes printable questions and separate worked-answer sheets.
+
+## Lecture companions
+
+[Lecture map](https://swy351.github.io/se464-course/lecture-guide.html). Original worked walkthroughs in 60 chapters across 15 units and 32 expanded narrated videos are informed by Steve Tarzia’s CS-310 lectures (Northwestern, Winter 2021). Related explanations have timestamped source links. English automatic captions were checked against official slides; original recordings and transcripts are not republished. Lecture 18 is optional background. Unit 1 retains its introduction-only scope.

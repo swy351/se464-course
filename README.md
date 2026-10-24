@@ -23,3 +23,5 @@ Written exercise responses are not submitted or saved. Completion progress is st
 ## Lecture companions
 
 [Lecture map](https://swy351.github.io/se464-course/lecture-guide.html). Original worked walkthroughs in 60 chapters across 15 units and 32 expanded narrated videos are informed by Steve Tarzia’s CS-310 lectures (Northwestern, Winter 2021). Related explanations have timestamped source links. English automatic captions were checked against official slides; original recordings and transcripts are not republished. Lecture 18 is optional background. Unit 1 retains its introduction-only scope.
+
+Teaching weeks and dates now follow the Fall 2026 course timetable. Unit numbers indicate learning order; historical slide filenames are retained as source references. Jeromy’s lectures and guest lectures are omitted.

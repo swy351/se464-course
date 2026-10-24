@@ -347,9 +347,7 @@
         "Checks current response and required reduction",
         "States stability and modeling limits"
       ]
-    }
-  ],
-  "queue8": [
+    },
     {
       "id": "queue8-p1",
       "type": "choice",

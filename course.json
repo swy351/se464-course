@@ -2824,8 +2824,8 @@
       "title": "Queueing networks and architectural performance",
       "shortTitle": "Queueing networks and architectural performance",
       "description": "Measure demand, utilization and response time with explicit queueing-model assumptions.",
-      "file": " [Week6] Architecture modeling 2.pptx",
-      "slideCount": 61,
+      "file": " [Week6] Architecture modeling 2.pptx + [Week8] Architecture modeling 2.pptx",
+      "slideCount": 122,
       "chapters": [
         {
           "title": "From execution cost to resource contention",
@@ -2912,151 +2912,18 @@
         {
           "question": "A stable processing stage completes 120 jobs/s with mean in-system time 80 ms. Its dashboard labels 9.6 as the mean number waiting. What is wrong with that label?",
           "answer": "Little’s law gives 120×.080=9.6 jobs inside the whole measured stage, including jobs receiving service. It is not the waiting-only population. Use waiting-only time for a waiting-queue population or subtract the measured mean number in service."
-        }
-      ],
-      "review": [
-        {
-          "slides": "1–61",
-          "issue": "Text extraction omits many formulas/diagrams.",
-          "correction": "All extracted text reviewed; diagram-only derivations and branch-edge associations require visual confirmation. Do not invent missing diagram details.",
-          "sources": []
         },
-        {
-          "slides": "30–34",
-          "issue": "Stable formulas omit boundary conditions; slide33 mixes tail and overflow language.",
-          "correction": "Require ρ<1, μ0=0. For infinite M/M/1, P(N≥n)=ρ^n. Finite capacity K needs its own blocking calculation and a definition of waiting slots versus total capacity.",
-          "sources": [
-            "https://live.ocw.mit.edu/courses/2-854-introduction-to-manufacturing-systems-fall-2016/5d3e9532c2ff6e156d48e41f9bd9576f_MIT2_854F16_Queueing.pdf"
-          ]
-        },
-        {
-          "slides": "47–50",
-          "issue": "CPU visits change 24→26; slide48 sum and slide50 rounding produce wrong totals.",
-          "correction": "Choose one coherent example. With V=(26,10,11), S=(.006,.01,.001), λ=3 gives R=.4474656134 and N=1.3423968401. At λ=6, R=2.6992773019 and N=16.1956638116. These are recomputed from the stated model, not measured results.",
-          "sources": []
-        },
-        {
-          "slides": "56",
-          "issue": "CPU .0311/(1−.0933) shown as .3430; total then wrong.",
-          "correction": "CPU contribution is .0343002096 s; disk 1.75 s; network .0103092784 s; system R=1.7946094879 s and N=5.3838284637.",
-          "sources": []
-        },
-        {
-          "slides": "24–26",
-          "issue": "Operational law requires consistent measurement scope.",
-          "correction": "Use N=X×R for the same boundary and appropriate long-run averages; no M/M/1 distribution assumption is needed.",
-          "sources": [
-            "https://web.mit.edu/urban_or_book/www/book/chapter4/4.4.html"
-          ]
-        },
-        {
-          "slides": "1–61",
-          "issue": "Near-duplicate version comparison.",
-          "correction": "Both have 61 slides. Exact extracted-text matches: slides 1–10,20–23,25–30,32–40,43–47,49–61 (47 slides). Differences: 11–19,24,31,41,42,48. Week8 slide11 moves metric determinants from Week6 slide18; Week6 11–17 shift to Week8 12–18; Week6 18 also adds metric labels. Slide19 is reworded; Week6 24 adds N=X*RT,31 adds P0=1−ρ,41 adds an aggregation note,42 adds “of each visit”. Week6 48 uses 26 CPU visits/78 throughput; Week8 uses 24/72 but leaves utilization .468 and downstream numbers unchanged. Recommend one canonical corrected queueing unit, with both source files mapped as versions; provide a separate index entry rather than making students repeat the lesson. Text comparison does not establish image/formula identity.",
-          "sources": []
-        }
-      ],
-      "exercise": {
-        "prompt": "Use twenty-six CPU visits, ten disk visits and eleven network visits with service times .006,.01,.001 seconds. Compare external rates three and six per second.",
-        "answer": "Demands are .156,.1,.011 seconds/request. Utilizations at three are .468,.3,.033 and at six .936,.6,.066. Summing D/(1−λD) gives .44747 s versus 2.69928 s; CPU is the modeled bottleneck."
-      },
-      "coverageNote": "These two source decks cover overlapping queueing material in the October 28–November 4 teaching block. Choose one as the primary lesson. The source review explains conflicting CPU visit counts and arithmetic; the lab states its own consistent assumptions.",
-      "schedule": "Week 8–9 · October 28; November 2 & 4"
-    },
-    {
-      "id": "queue8",
-      "label": "17",
-      "title": "Queueing networks — alternate slide version",
-      "shortTitle": "Queueing networks — alternate slide version",
-      "description": "Revisit the queueing model using the alternate deck, with consistent CPU visit counts and corrected arithmetic.",
-      "file": " [Week8] Architecture modeling 2.pptx",
-      "slideCount": 61,
-      "chapters": [
-        {
-          "title": "From execution cost to resource contention",
-          "slides": "1–10",
-          "paragraphs": [
-            "A software execution model estimates the resources a scenario demands without competition from other requests. A queueing model adds that competition. A service station contains waiting work and one or more servers, where a server might represent a processor, disk or network link rather than a physical computer. Residence time includes both waiting and service; service time measures the resource work alone.",
-            "Kendall notation records assumptions about arrivals, service times, server count, capacity, population and scheduling. In the slide example, total capacity twenty includes three jobs in service and seventeen waiting. State this convention explicitly because “buffer” is ambiguous. Model choices matter: bursty arrivals, finite populations and priority scheduling can produce different behavior even when average service demand is unchanged. A useful model is precise about its boundary and assumptions."
-          ],
-          "prediction": "Does a two-millisecond service demand imply a two-millisecond response at high load?",
-          "explanation": "No. Waiting behind other work adds residence time even if the service demand is unchanged.",
-          "narration": "Begin with the distinction between doing work and waiting for a resource. Execution models estimate demand; queueing models account for contention. Define the station boundary, number of servers and capacity convention before using a formula. The same average service time can yield very different response times when arrivals, scheduling or competing workloads change.",
-          "focus": "From execution cost to resource contention"
-        },
-        {
-          "title": "Measure throughput and apply operational laws",
-          "slides": "11–26",
-          "paragraphs": [
-            "An execution profile records arrivals, completions and busy intervals over a measurement period. For the supplied twenty-second observation, eight completions yield throughput 0.4 jobs per second and sixteen busy seconds yield utilization 0.8. Average service demand is two seconds per completed job under the accounting assumptions. These measurements describe different quantities; utilization is a fraction, throughput is a rate and residence time is a duration.",
-            "The utilization law connects throughput and service demand, U=X×S for a single service resource. Little’s law relates average jobs inside a boundary to throughput and average residence time, N=X×R. Use consistent boundaries and a stable observation regime; do not mix system throughput with a device queue length. The NFS exercise completes 10,800 requests in 1,800 seconds, giving six per second; three active requests imply average residence of half a second."
-          ],
-          "prediction": "A storage device is busy 60% of the time while completing 150 operations/s. A proposed index makes each request use three such operations instead of two. At the same request rate, what utilization do you predict if per-operation service cost is unchanged?",
-          "explanation": "The current request rate is 150/2=75 requests/s, and mean device service per operation is .60/150=.004 s. Three visits give 225 operations/s and utilization 225×.004=.90. The extra index may speed reads elsewhere while pushing this device close to saturation.",
-          "narration": "Compute each metric with its units attached. Eight completions over twenty seconds means 0.4 jobs per second, while sixteen busy seconds means eighty percent utilization. Operational laws connect these measurements when their boundaries agree. Little’s law uses average jobs, throughput and residence time; it is not restricted to exponential arrivals or service.",
-          "focus": "Measure throughput and apply operational laws"
-        },
-        {
-          "title": "Understand single and multiple server queues",
-          "slides": "27–34",
-          "paragraphs": [
-            "The M/M/1 model assumes Poisson arrivals, independent exponentially distributed service times and one server with an unbounded waiting room. In steady state it requires arrival rate λ below service rate μ. Its utilization is ρ=λ/μ, mean residence time is 1/(μ−λ), and mean jobs is ρ/(1−ρ). These expressions describe long-run averages under the model, not deterministic limits on individual requests.",
-            "Birth–death balance explains the geometric state distribution. At an empty system, departure rate is zero; at nonempty states it is μ. Multiple servers change departure capacity to min(n,m)μ and require a different waiting calculation such as Erlang C. Finite buffers change the model again: an infinite-queue tail probability is not automatically the exact blocking probability of a bounded system. Always define whether capacity includes the job being served."
-          ],
-          "prediction": "What happens to M/M/1 residence time as λ approaches μ from below?",
-          "explanation": "It grows without bound in the model; the stable formula cannot be used at or above capacity.",
-          "narration": "M/M/1 provides a simple explanation for sharply increasing delay near saturation. Its assumptions and stability condition are part of the result. Birth–death balance gives state probabilities, while additional servers or finite buffers require changed calculations. Distinguish average delay, queue-tail probability and actual blocking rather than treating them as interchangeable measures of performance.",
-          "focus": "Understand single and multiple server queues"
-        },
-        {
-          "title": "Build an open queueing network",
-          "slides": "35–50",
-          "paragraphs": [
-            "An open network receives external requests, routes them among resources and eventually releases them. A request may visit a device repeatedly. If external arrival rate is λ and average visits are V, device throughput is λV. Multiplying by service time per visit gives utilization. Total demand D=VS separates how often a resource is used from the cost of each use.",
-            "Under the simplified single-server station assumptions, each device contributes D/(1−λD) to request response time. Sum these contributions using consistent per-request accounting, and calculate average system population as λR. The ATM example exposes nonlinear scaling: doubling arrival rate increases CPU utilization from 0.468 to 0.936 when CPU visits are twenty-six. Corrected response rises from about 0.447 seconds to 2.699 seconds, rather than simply doubling. The source arithmetic needs repair before reuse."
-          ],
-          "prediction": "At two transactions/s, 4.5 disk visits per transaction and 20 ms per visit, what are disk throughput and utilization?",
-          "explanation": "Disk throughput is 9 I/O/s; utilization is 9×0.02=0.18, or 18%.",
-          "narration": "Trace requests through resources and count visits. Device throughput differs from external request throughput when a request visits repeatedly. Convert visits and service time into demand, then calculate utilization and response under the chosen model. The ATM example shows why doubling arrivals near a bottleneck can increase delay much more than twofold.",
-          "focus": "Build an open queueing network"
-        },
-        {
-          "title": "Closed populations and model construction",
-          "slides": "51–58",
-          "paragraphs": [
-            "A closed model keeps a fixed population circulating through the modeled workload. Interactive users alternate between thinking and requesting service; their next request depends on completing the previous cycle. An open model instead specifies arrivals from outside. Mixed models can contain both classes. Choosing the workload model is a behavioral decision, not a cosmetic change in how the same diagram is drawn.",
-            "To derive a queueing model from execution results, identify resource stations, connect their routes, choose the workload population or arrival rate and estimate service demand. Preserve whether quantities are per visit or per request. Check sensitivity to uncertain inputs and report average-model limitations. In the authorization example, CPU demand 0.0311 seconds and utilization 0.0933 give a CPU response contribution near 0.0343 seconds, exposing the source’s factor-of-ten error before computing the system total."
-          ],
-          "prediction": "Does a fixed group of users who wait for each response generate a constant external arrival rate independently of delay?",
-          "explanation": "No. Their request rate changes with response and think times; a closed interactive model captures that coupling.",
-          "narration": "Choose open, closed or mixed workload behavior before solving the network. Fixed users with think time differ from independent external arrivals. Map execution demands onto stations and keep per-visit and per-request quantities distinct. Then vary uncertain parameters, identify the limiting resource and communicate what an average-value model does not predict about bursts or tail latency.",
-          "focus": "Closed populations and model construction"
-        },
-        {
-          "title": "End-to-end ATM modeling workshop",
-          "slides": "59–61",
-          "paragraphs": [
-            "The processTransaction exercise combines execution-graph analysis with resource contention. First compute each operation’s resource demand from its software requests and the overhead matrix. A server action, database access and message can each consume several hardware resources, so a database operation is not merely one unit of disk time. Reduce sequential steps and probability-weighted alternatives to a per-request resource-demand vector.",
-            "Next apply the supplied ten-jobs-per-second workload and check every device utilization before calculating delays. If any modeled station reaches or exceeds capacity, report that the steady-state formula is inapplicable rather than displaying a negative response. The extracted text includes an unfinished worked solution and does not fully establish which branch probability labels attach to which nodes. Verify the diagram or explicitly state the assumed mapping before producing numerical answers."
-          ],
-          "prediction": "If the reduced disk demand is 0.12 seconds/request at ten requests/s, can the single-server stable formula be applied?",
-          "explanation": "No. Utilization would be 1.2; the assumed single disk station cannot sustain the offered workload.",
-          "narration": "This workshop connects the two performance-modeling units. Convert operation requests through the overhead matrix, reduce the execution graph and obtain demand at each device. Apply arrival intensity only after that step. Check stability first, and do not hide ambiguous branch labels: state the mapping you use or obtain it from the original diagram.",
-          "focus": "End-to-end ATM modeling workshop"
-        }
-      ],
-      "quiz": [
         {
           "question": "For a stable M/M/1 stage with 40 jobs/s and mean service 15 ms, a teammate claims mean residence is also 15 ms. Calculate the missing waiting contribution.",
           "answer": "Utilization is .6 and residence is .015/(1−.6)=.0375 s=37.5 ms. Mean waiting is 37.5−15=22.5 ms. Service time alone excludes queueing delay."
         },
         {
-          "question": "Why cannot device throughputs simply be added to obtain external throughput?",
-          "answer": "Each request may visit multiple devices or repeat visits; adding device completions double-counts request work."
-        },
-        {
           "question": "Twelve interactive users each wait two seconds for a response, then think for four seconds before submitting again. With one outstanding request per user and a stable cycle, what throughput is implied?",
           "answer": "X=N/(R+Z)=12/(2+4)=2 requests/s. Only XR=4 users on average are inside the request-processing system; the other eight are thinking. Do not use all twelve as the in-system population with response time alone."
+        },
+        {
+          "question": "A storage device is busy 60% of the time while completing 150 operations/s. A proposed index makes each request use three such operations instead of two. At the same request rate, what utilization do you predict if per-operation service cost is unchanged?",
+          "answer": "The current request rate is 150/2=75 requests/s, and mean device service per operation is .60/150=.004 s. Three visits give 225 operations/s and utilization 225×.004=.90. The extra index may speed reads elsewhere while pushing this device close to saturation."
         }
       ],
       "review": [
@@ -3097,7 +2964,7 @@
         {
           "slides": "1–61",
           "issue": "Near-duplicate version comparison.",
-          "correction": "Both have 61 slides. Exact extracted-text matches: slides 1–10,20–23,25–30,32–40,43–47,49–61 (47 slides). Differences: 11–19,24,31,41,42,48. Week8 slide11 moves metric determinants from Week6 slide18; Week6 11–17 shift to Week8 12–18; Week6 18 also adds metric labels. Slide19 is reworded; Week6 24 adds N=X*RT,31 adds P0=1−ρ,41 adds an aggregation note,42 adds “of each visit”. Week6 48 uses 26 CPU visits/78 throughput; Week8 uses 24/72 but leaves utilization .468 and downstream numbers unchanged. Recommend one canonical corrected queueing unit, with both source files mapped as versions; provide a separate index entry rather than making students repeat the lesson. Text comparison does not establish image/formula identity.",
+          "correction": "Both have 61 slides. Exact extracted-text matches: slides 1–10,20–23,25–30,32–40,43–47,49–61 (47 slides). Differences: 11–19,24,31,41,42,48. Week8 slide11 moves metric determinants from Week6 slide18; Week6 11–17 shift to Week8 12–18; Week6 18 also adds metric labels. Slide19 is reworded; Week6 24 adds N=X*RT,31 adds P0=1−ρ,41 adds an aggregation note,42 adds “of each visit”. Week6 48 uses 26 CPU visits/78 throughput; Week8 uses 24/72 but leaves utilization .468 and downstream numbers unchanged. Both source versions are consolidated in this unit. Chapter ranges apply to both decks; text comparison does not establish image/formula identity.",
           "sources": []
         },
         {
@@ -3111,7 +2978,9 @@
         "prompt": "Use twenty-six CPU visits, ten disk visits and eleven network visits with service times .006,.01,.001 seconds. Compare external rates three and six per second.",
         "answer": "Demands are .156,.1,.011 seconds/request. Utilizations at three are .468,.3,.033 and at six .936,.6,.066. Summing D/(1−λD) gives .44747 s versus 2.69928 s; CPU is the modeled bottleneck."
       },
-      "coverageNote": "These two source decks cover overlapping queueing material in the October 28–November 4 teaching block. Choose one as the primary lesson. The source review explains conflicting CPU visit counts and arithmetic; the lab states its own consistent assumptions.",
+      "coverageNote": "Merged from the Week 6 and Week 8 Architecture modeling 2 decks (61 slides each). Study these six chapters once. Both source versions share the chapter ranges below; the corrected worked example uses 26 CPU visits. Two labs and six original exercises retain the distinct activities from both former units.",
+      "practiceCount": 6,
+      "labCount": 2,
       "schedule": "Week 8–9 · October 28; November 2 & 4"
     },
     {
@@ -3291,12 +3160,12 @@
         }
       ],
       "coverageNote": "Based on the instructor-provided recording dated 24 November 2025; teaching dates follow the Fall 2026 schedule. Recording time ranges are approximate. Notes, exercises and synthetic narrated mini-lessons are newly authored companions. The original recording is not bundled. Biography, course administration and unrelated discussion are omitted.",
-      "label": "18",
+      "label": "17",
       "schedule": "Week 10 · November 9"
     },
     {
       "id": "security",
-      "label": "19",
+      "label": "18",
       "title": "Security: Trust, Identity and Access",
       "shortTitle": "Security: Trust, Identity and Access",
       "description": "Define trust boundaries, protect credentials, and separate authentication from authorization.",
@@ -3537,7 +3406,7 @@
     },
     {
       "id": "twitter",
-      "label": "20",
+      "label": "19",
       "title": "Design exercise: feeds, fan-out and locality",
       "shortTitle": "Design exercise: feeds, fan-out and locality",
       "description": "Compare read-time and write-time feed assembly, partitioning and celebrity fan-out.",
@@ -3831,12 +3700,12 @@
         }
       ],
       "coverageNote": "Based on the instructor-provided recording dated 20 October 2025; teaching dates follow the Fall 2026 schedule. Recording time ranges are approximate. Notes, exercises and synthetic narrated mini-lessons are newly authored companions. The original recording is not bundled. Biography, course administration and unrelated discussion are omitted.",
-      "label": "21",
+      "label": "20",
       "schedule": "Week 11 · November 18"
     },
     {
       "id": "secure",
-      "label": "22",
+      "label": "21",
       "title": "Secure Microservices: Boundaries, Tokens and Response",
       "shortTitle": "Secure Microservices: Boundaries, Tokens and Response",
       "description": "Protect service boundaries with verified identities, scoped access, isolation and incident response.",
@@ -4032,7 +3901,7 @@
     },
     {
       "id": "pushcase",
-      "label": "23",
+      "label": "22",
       "title": "Case study: Uber’s real-time push platform",
       "shortTitle": "Case study: Uber’s real-time push platform",
       "description": "Study a historical push platform through delivery priorities, expiry and connection ownership.",
@@ -4136,7 +4005,7 @@
     },
     {
       "id": "styles",
-      "label": "24",
+      "label": "23",
       "title": "Architecture styles and their tradeoffs",
       "shortTitle": "Architecture styles and their tradeoffs",
       "description": "Compare repositories, pipelines, layers, interpreters, control loops and peer-to-peer systems.",
@@ -4313,7 +4182,7 @@
     },
     {
       "id": "async",
-      "label": "25",
+      "label": "24",
       "title": "Asynchronous processing and message queues",
       "shortTitle": "Asynchronous processing and message queues",
       "description": "Separate acceptance from completion and design queue-based work for retries and backpressure.",
@@ -4487,7 +4356,7 @@
     },
     {
       "id": "events",
-      "label": "26",
+      "label": "25",
       "title": "Implicit invocation, pub/sub and event-driven systems",
       "shortTitle": "Implicit invocation, pub/sub and event-driven systems",
       "description": "Design event subscriptions, brokered delivery and recovery, then examine the ROS example.",
@@ -4631,7 +4500,7 @@
     },
     {
       "id": "streaming",
-      "label": "27",
+      "label": "26",
       "title": "Batch, streaming and two leader–follower patterns",
       "shortTitle": "Batch, streaming and two leader–follower patterns",
       "description": "Compare batch and streaming computation, thread handoff and replicated-log leadership.",
@@ -4916,8 +4785,7 @@
       "topic": "Architecture modeling and queueing",
       "units": [
         "modeling",
-        "queue6",
-        "queue8"
+        "queue6"
       ]
     },
     {

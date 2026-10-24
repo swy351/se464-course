@@ -1,0 +1,68 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:06.286
+Architecture includes consequential decisions,
+especially those that are difficult to reverse and
+
+00:00:06.286 --> 00:00:07.842
+strongly affect quality.
+
+00:00:07.842 --> 00:00:12.702
+A box diagram is useful, but ask why the boundaries
+and dependencies exist.
+
+00:00:12.702 --> 00:00:19.118
+For an alerting service, durable acknowledgments and
+a working recovery path may matter more than a
+
+00:00:19.118 --> 00:00:20.868
+fashionable component name.
+
+00:00:20.868 --> 00:00:23.655
+Always connect the decision to its context.
+
+00:00:23.700 --> 00:00:25.581
+Start with customer outcomes.
+
+00:00:25.581 --> 00:00:31.222
+The lecture’s observability pipeline must ingest
+data before it can alert on that data.
+
+00:00:31.222 --> 00:00:37.253
+Durable storage, service availability and ingestion-
+to-alert latency are different qualities.
+
+00:00:37.253 --> 00:00:43.673
+Preserving accepted data is valuable even when a
+dashboard is unavailable, but it does not make the
+
+00:00:43.673 --> 00:00:44.710
+outage harmless.
+
+00:00:44.710 --> 00:00:47.693
+Set priorities explicitly for the application.
+
+00:00:47.700 --> 00:00:51.180
+The historical outage illustrates a correlated
+failure.
+
+00:00:51.180 --> 00:00:56.052
+A networking update affected many machines through a
+shared change mechanism.
+
+00:00:56.052 --> 00:00:58.519
+Replication did not isolate that cause.
+
+00:00:58.519 --> 00:01:04.403
+Recovery then differed across environments because
+replacing a node and rebooting it preserve
+
+00:01:04.403 --> 00:01:05.416
+different state.
+
+00:01:05.416 --> 00:01:11.300
+Review the entire control and update path, and
+document what each recovery action destroys or
+
+00:01:11.300 --> 00:01:11.806
+retains.

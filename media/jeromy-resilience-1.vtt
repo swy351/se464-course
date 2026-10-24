@@ -1,0 +1,65 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:04.283
+Durability mechanisms matter only with a workable
+recovery path.
+
+00:00:04.283 --> 00:00:09.570
+Several persistence layers helped retain data, but
+queues have finite capacity.
+
+00:00:09.570 --> 00:00:11.511
+Backups need tested restores.
+
+00:00:11.511 --> 00:00:16.329
+Startup dependencies can form cycles that require a
+bootstrap mechanism.
+
+00:00:16.329 --> 00:00:21.482
+Rehearse a cold recovery so the first attempt is not
+under incident pressure.
+
+00:00:21.482 --> 00:00:26.769
+Do not mistake an accidental unupgraded component
+for a sound upgrade strategy.
+
+00:00:26.800 --> 00:00:29.331
+Recovery should restore customer value.
+
+00:00:29.331 --> 00:00:33.550
+A system with a backlog needs spare capacity beyond
+new arrivals.
+
+00:00:33.550 --> 00:00:39.976
+At one hundred arrivals per second and one hundred
+twenty completions per second, only twenty items
+
+00:00:39.976 --> 00:00:41.664
+per second drain old work.
+
+00:00:41.664 --> 00:00:45.623
+Prioritize urgent traffic and throttle backfill
+deliberately.
+
+00:00:45.623 --> 00:00:51.984
+Practice degraded operation and retain independent
+visibility when the main monitoring path fails.
+
+00:00:52.000 --> 00:00:56.415
+The final discussion connects AI-assisted
+development to quality.
+
+00:00:56.415 --> 00:01:01.712
+Generating code quickly does not prove that a team
+can maintain or operate it.
+
+00:01:01.712 --> 00:01:08.504
+For a lasting service, define security, reliability
+and change scenarios, inspect the implementation
+
+00:01:08.504 --> 00:01:09.930
+and collect evidence.
+
+00:01:09.930 --> 00:01:15.228
+A successful demo is one observation, not a complete
+architectural evaluation.

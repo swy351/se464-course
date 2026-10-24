@@ -196,8 +196,136 @@
       "schedule": "Week 1 · Introduction"
     },
     {
-      "id": "design",
+      "id": "jeromy-resilience",
+      "title": "Jeromy: architecture, resilience and customer value",
+      "shortTitle": "Jeromy · Resilience",
+      "description": "Connect architectural decisions to quality attributes, trace an outage through recovery dependencies, and design graceful degradation around customer value.",
+      "file": "Jemory_Sept15_2025.mp4",
+      "slideCount": 0,
+      "sourceType": "recording",
+      "sourceSummary": "65:58 source recording",
+      "recordingDate": "15 September 2025",
+      "chapters": [
+        {
+          "title": "Architecture is a set of consequential decisions",
+          "slides": "04:00–09:00",
+          "paragraphs": [
+            "Jeromy frames architecture around decisions that are difficult to change and strongly affect a system’s quality attributes. A component diagram helps describe a system, but architectural reasoning also explains why its boundaries, dependencies, storage and recovery mechanisms were chosen.",
+            "Whether a choice is architectural depends on context. A language choice may deeply affect latency, maintainability or hiring for a long-lived system; for a disposable prototype its consequences may be smaller. Avoid declaring a technology universally architectural without identifying the quality impact and cost of reversal.",
+            "For a new campus alerting service, ask which decisions determine whether acknowledged alerts survive a crash, whether operators can diagnose a failure, and whether a new delivery channel can be added. These questions connect the opening lecture to later requirements, database, microservices and QODA units."
+          ],
+          "prediction": "Is a language choice always an architectural decision?",
+          "explanation": "Its importance depends on how strongly it affects relevant qualities and how costly it is to reverse in the particular system.",
+          "narration": "Architecture includes consequential decisions, especially those that are difficult to reverse and strongly affect quality. A box diagram is useful, but ask why the boundaries and dependencies exist. For an alerting service, durable acknowledgments and a working recovery path may matter more than a fashionable component name. Always connect the decision to its context.",
+          "focus": "Architecture is a set of consequential decisions. Read the explanation, predict the outcome, then apply it."
+        },
+        {
+          "title": "Start with the customer’s quality priorities",
+          "slides": "10:00–19:00",
+          "paragraphs": [
+            "The lecture’s simplified observability pipeline ingests telemetry, persists it, processes and indexes it, and supports alerts and queries. Those functions depend on one another: an alert cannot be trustworthy if the relevant data was never ingested.",
+            "In the historical Datadog example, durability is central to customer trust. Availability priorities include preserving ingestion and monitoring before less urgent query behavior. Another important measure is ingestion-to-use latency, including the time until data can support an alert. This ordering belongs to that business context, not every application.",
+            "A quality requirement should state which user outcome it protects. For a campus safety system, preserving an accepted urgent alert and delivering it on time might outrank historical report generation. State what may be delayed, what may be dropped, and what must not be lost. Apply authorization and data-retention constraints as part of the design."
+          ],
+          "prediction": "If a dashboard is unavailable but accepted data is durably retained, are availability and durability identical outcomes?",
+          "explanation": "No. The service can retain data while failing to provide timely access or alerts. Measure both properties and explain the user consequences.",
+          "narration": "Start with customer outcomes. The lecture’s observability pipeline must ingest data before it can alert on that data. Durable storage, service availability and ingestion-to-alert latency are different qualities. Preserving accepted data is valuable even when a dashboard is unavailable, but it does not make the outage harmless. Set priorities explicitly for the application.",
+          "focus": "Start with the customer’s quality priorities. Read the explanation, predict the outcome, then apply it."
+        },
+        {
+          "title": "Trace a correlated failure across the system",
+          "slides": "19:00–30:00",
+          "paragraphs": [
+            "Jeromy describes the March 2023 Datadog outage as a historical case study. An unattended operating-system update restarted networking software and disrupted routing on many nodes. A change outside the ordinary staged rollout path crossed otherwise separate deployment boundaries.",
+            "The lesson is about correlated causes. Multiple machines, regions or cloud providers do not guarantee independence when a shared update mechanism can affect them together. Include operating-system packages, configuration, identity, networking and management services in the dependency and change-control review.",
+            "Recovery behavior also differed across cloud environments in the case described. Replacing a machine and rebooting a machine can have different consequences for local state. Treat these as historical observations from the recording, not guarantees about current cloud-provider behavior. A recovery plan must specify what survives each action and how service state is reconstructed."
+          ],
+          "prediction": "Can a geographically replicated system still have one broad failure mechanism?",
+          "explanation": "Yes. A shared configuration, update, credential or control-plane dependency can fail across regions. Geographic diversity protects only against the failure classes it actually separates.",
+          "narration": "The historical outage illustrates a correlated failure. A networking update affected many machines through a shared change mechanism. Replication did not isolate that cause. Recovery then differed across environments because replacing a node and rebooting it preserve different state. Review the entire control and update path, and document what each recovery action destroys or retains.",
+          "focus": "Trace a correlated failure across the system. Read the explanation, predict the outcome, then apply it."
+        },
+        {
+          "title": "Durability, bootstrap dependencies and tested restoration",
+          "slides": "28:00–42:00",
+          "paragraphs": [
+            "Multiple persistence stages helped preserve data in the case: client-side buffering, local journals and durable messaging provided different opportunities for recovery. Buffers still need capacity and a policy for sustained downstream failure. A persistent queue is not an infinite sink.",
+            "One protective circumstance was that many messaging nodes did not share the affected operating-system version. Jeromy explicitly cautions against treating delayed upgrades as the lesson. The useful questions concern failure-domain diversity, safe update procedures and tested recovery, not avoiding security maintenance.",
+            "Startup dependencies can form cycles even when normal operation seems healthy. If service A needs B to start and B needs A, restoring both from zero may require an independent bootstrap path. Identify such cycles in advance, document the minimal recovery set, and rehearse it.",
+            "A stored backup is not proof of recoverability. Test restoration into the environment that will exist after the failure, measure recovery time, and verify the resulting data. The case also contrasts independently recoverable shards with systems that need enough cooperating members before serving; actual behavior depends on the design and failure assumptions."
+          ],
+          "prediction": "A team has daily backups but has never restored them. What is missing?",
+          "explanation": "Evidence that the restore process works with available keys, dependencies, capacity and state. Rehearse restoration and validate the result and recovery time.",
+          "narration": "Durability mechanisms matter only with a workable recovery path. Several persistence layers helped retain data, but queues have finite capacity. Backups need tested restores. Startup dependencies can form cycles that require a bootstrap mechanism. Rehearse a cold recovery so the first attempt is not under incident pressure. Do not mistake an accidental unupgraded component for a sound upgrade strategy.",
+          "focus": "Durability, bootstrap dependencies and tested restoration. Read the explanation, predict the outcome, then apply it."
+        },
+        {
+          "title": "Recover customer value, not just machine count",
+          "slides": "39:00–52:00",
+          "paragraphs": [
+            "A fleet can regain machines before customers regain useful service. Dependencies, backlog and competing work can make recovery uneven. The lecture emphasizes graceful degradation: as capacity falls, preserve the most valuable outcomes and relax lower-priority service where the requirements permit it.",
+            "Self-monitoring can also fail with the monitored system. Keep independent signals and operational access for diagnosing an outage. Manual procedures are useful only when practiced; a recovery runbook should identify its dependencies and how it is tested.",
+            "New teaching calculation: incoming work is 100 items/second, recovered capacity is 120, and a durable backlog contains 6,000 items. Only 20 items/second remain for old work, so ideal drainage takes 300 seconds. At capacity 100 the backlog does not drain. This fluid model omits retries, variation and downstream bottlenecks; real recovery needs measurement.",
+            "Define priority classes, throttle backfill, and avoid overwhelming control services during mass provisioning. Exercise capacity loss in a controlled game day and measure end-to-end customer outcomes. Do not assume a universal percentage of remaining capacity guarantees useful service."
+          ],
+          "prediction": "After machines return, why might service recovery still be slow?",
+          "explanation": "Live arrivals, retries and stored backlog compete for limited resources; some dependent services may still be unavailable. Measure useful completed operations and backlog drainage, not only node count.",
+          "narration": "Recovery should restore customer value. A system with a backlog needs spare capacity beyond new arrivals. At one hundred arrivals per second and one hundred twenty completions per second, only twenty items per second drain old work. Prioritize urgent traffic and throttle backfill deliberately. Practice degraded operation and retain independent visibility when the main monitoring path fails.",
+          "focus": "Recover customer value, not just machine count. Read the explanation, predict the outcome, then apply it."
+        },
+        {
+          "title": "Apply quality thinking to AI-assisted development",
+          "slides": "52:00–65:40",
+          "paragraphs": [
+            "The recording ends with a discussion of AI-assisted software development. Its architectural connection is long-term maintainability: rapidly producing code does not by itself show that a team can understand, operate, secure or change the result.",
+            "Treat the lecture’s tool usage and industry predictions as a 2025 discussion rather than current adoption statistics. The durable question is whether the resulting software meets explicit quality scenarios. A disposable personal prototype and a long-lived production service have different consequences if no one understands the implementation.",
+            "New exercise: an AI-generated incident dashboard works for a demonstration. Before deploying it as a lasting service, specify authorization, safe handling of untrusted input, failure behavior, diagnostic visibility and changeability. Review the implementation, test the relevant scenarios, and assign ownership for maintenance. Generated output still requires engineering evidence."
+          ],
+          "prediction": "A generated application works in a demo. What architectural questions remain?",
+          "explanation": "Whether it remains correct, secure, diagnosable, operable and maintainable under the intended workloads, failures and future changes. A demo demonstrates only the behavior exercised.",
+          "narration": "The final discussion connects AI-assisted development to quality. Generating code quickly does not prove that a team can maintain or operate it. For a lasting service, define security, reliability and change scenarios, inspect the implementation and collect evidence. A successful demo is one observation, not a complete architectural evaluation.",
+          "focus": "Apply quality thinking to AI-assisted development. Read the explanation, predict the outcome, then apply it."
+        }
+      ],
+      "quiz": [
+        {
+          "question": "Why can many replicas fail together?",
+          "answer": "They may share an update mechanism, control plane, dependency or configuration. Review correlated causes rather than counting replicas alone."
+        },
+        {
+          "question": "How does durability differ from timely recovery?",
+          "answer": "Durability preserves accepted state; recovery also requires capacity, working dependencies and tested reconstruction. Stored work may remain unavailable or delayed."
+        },
+        {
+          "question": "What should a game day measure?",
+          "answer": "Customer-visible outcomes, recovery time, data integrity, backlog behavior and the usability of diagnostic and manual recovery paths under stated failures."
+        }
+      ],
+      "exercise": {
+        "prompt": "Design a degraded-operation and restoration plan for a campus alerting pipeline. Identify three correlated dependencies, separate urgent delivery from historical reporting, and define a cold-start rehearsal with measurable success criteria.",
+        "answer": "State acknowledgment and loss semantics, buffer limits, priority policies, bootstrap dependencies and independent monitoring. Measure useful alert delivery and backlog drainage, and verify restoration. Explain tradeoffs and the conditions under which the plan cannot meet its goals."
+      },
+      "review": [
+        {
+          "slides": "19:00–52:00",
+          "issue": "The recording describes a historical outage and deployment-specific behavior.",
+          "correction": "Do not generalize its provider observations into current guarantees or treat delayed updates as a recommended defense.",
+          "sources": []
+        },
+        {
+          "slides": "52:00–65:40",
+          "issue": "AI tool preferences and adoption comments reflect the 2025 discussion.",
+          "correction": "The unit retains the architectural questions about evidence, maintainability and quality; it does not repeat adoption figures as current facts.",
+          "sources": []
+        }
+      ],
+      "coverageNote": "Based on the instructor-provided recording dated 15 September 2025; teaching dates follow the Fall 2026 schedule. Recording time ranges are approximate. Notes, exercises and synthetic narrated mini-lessons are newly authored companions. The original recording is not bundled. Biography, course administration and unrelated discussion are omitted.",
       "label": "02",
+      "schedule": "Week 2 · September 14"
+    },
+    {
+      "id": "design",
+      "label": "03",
       "title": "UML, design principles & SOLID",
       "shortTitle": "UML & SOLID",
       "description": "Read class relationships, reason about contracts, and use cohesion, composition, and abstractions to support change.",
@@ -365,7 +493,7 @@
     },
     {
       "id": "nfr",
-      "label": "03",
+      "label": "04",
       "title": "Requirements & quality attributes",
       "shortTitle": "Requirements & quality",
       "description": "Translate stakeholder concerns into clear requirements and measurable quality scenarios that guide design.",
@@ -493,7 +621,7 @@
     },
     {
       "id": "scaling",
-      "label": "04",
+      "label": "05",
       "title": "Scalability, services & HTTP",
       "shortTitle": "Scalability & HTTP",
       "description": "Move from a program to a concurrent service, identify resource limits, and trace an HTTP request through a web application.",
@@ -685,7 +813,7 @@
     },
     {
       "id": "cache",
-      "label": "05",
+      "label": "06",
       "title": "Stateless services, proxies & caches",
       "shortTitle": "State, proxies & caches",
       "description": "Make worker state explicit, understand intermediary roles, and reason about cache hits, eviction, and stale data.",
@@ -891,7 +1019,7 @@
     },
     {
       "id": "db1",
-      "label": "06",
+      "label": "07",
       "title": "Relational databases & scaling",
       "shortTitle": "Relational DB scaling",
       "description": "Connect storage, schemas, indexes, read replication, and sharding to the queries a service needs to execute.",
@@ -1126,7 +1254,7 @@
     },
     {
       "id": "db2",
-      "label": "07",
+      "label": "08",
       "title": "Distributed data & consistency",
       "shortTitle": "Distributed data",
       "description": "Follow keys through a distributed store and reason about replication, partitions, consistency, and quorum availability.",
@@ -1404,7 +1532,7 @@
     },
     {
       "id": "choosing",
-      "label": "08",
+      "label": "09",
       "title": "Choosing a data store",
       "shortTitle": "Choosing a data store",
       "description": "Choose storage by workload and correctness requirements, from transactions to analytics, search, documents, and objects.",
@@ -1671,7 +1799,7 @@
     },
     {
       "id": "rest",
-      "label": "09",
+      "label": "10",
       "title": "REST APIs & serialization",
       "shortTitle": "REST & serialization",
       "description": "Design resource operations with clear retry semantics, and turn data structures into valid network representations.",
@@ -1884,7 +2012,7 @@
     },
     {
       "id": "micro",
-      "label": "10",
+      "label": "11",
       "title": "Microservices & client architectures",
       "shortTitle": "Microservices",
       "description": "Compare a modular monolith with independently deployed services, accounting for contracts, failures, and team coordination.",
@@ -2045,7 +2173,7 @@
     },
     {
       "id": "load-balancing",
-      "label": "11",
+      "label": "12",
       "title": "Load balancing",
       "shortTitle": "Load balancing",
       "description": "Trace requests through local balancers, safe deployments, DNS, CDNs, and anycast.",
@@ -2225,7 +2353,7 @@
     },
     {
       "id": "basic",
-      "label": "12",
+      "label": "13",
       "title": "A scalable publishing system: the NGVM case",
       "shortTitle": "A scalable publishing system: the NGVM case",
       "description": "Evaluate a historical publishing-system design through caching, storage, cost and scaling tradeoffs.",
@@ -2408,7 +2536,7 @@
     },
     {
       "id": "push",
-      "label": "13",
+      "label": "14",
       "title": "Push notifications and connected clients",
       "shortTitle": "Push notifications and connected clients",
       "description": "Connect devices, choose a delivery channel, and route notifications across changing connections.",
@@ -2582,7 +2710,7 @@
     },
     {
       "id": "modeling",
-      "label": "14",
+      "label": "15",
       "title": "Model architecture and estimate execution cost",
       "shortTitle": "Model architecture and estimate execution cost",
       "description": "Use architectural views and execution graphs to estimate software cost before implementation.",
@@ -2692,7 +2820,7 @@
     },
     {
       "id": "queue6",
-      "label": "15",
+      "label": "16",
       "title": "Queueing networks and architectural performance",
       "shortTitle": "Queueing networks and architectural performance",
       "description": "Measure demand, utilization and response time with explicit queueing-model assumptions.",
@@ -2837,7 +2965,7 @@
     },
     {
       "id": "queue8",
-      "label": "16",
+      "label": "17",
       "title": "Queueing networks — alternate slide version",
       "shortTitle": "Queueing networks — alternate slide version",
       "description": "Revisit the queueing model using the alternate deck, with consistent CPU visit counts and corrected arithmetic.",
@@ -2987,8 +3115,188 @@
       "schedule": "Week 8–9 · October 28; November 2 & 4"
     },
     {
+      "id": "jeromy-evaluation",
+      "title": "Jeromy: Quality-Oriented Decision Analysis (QODA)",
+      "shortTitle": "Jeromy · QODA & technical debt",
+      "description": "Build a quality tree, prioritize with rank-order-centroid weights, assess alternatives, and defend a decision with evidence and sensitivity analysis.",
+      "file": "Jeromy_lecture_2_Nov24_2025.mp4",
+      "slideCount": 0,
+      "sourceType": "recording",
+      "sourceSummary": "65:52 source recording",
+      "recordingDate": "24 November 2025",
+      "chapters": [
+        {
+          "title": "1. Define the decision and its business context",
+          "slides": "00:00–20:00",
+          "paragraphs": [
+            "Quality-Oriented Decision Analysis (QODA) is Jeromy’s lightweight method for making architectural decisions informed, shared and durable, while allowing deliberate revision. A technology choice becomes an architectural decision when it commits a system to consequential tradeoffs. Jeromy’s approach begins by making the context explicit: whose problem is being solved, what outcomes matter, which constraints apply, and what future changes are plausible. A favorite product is not a substitute for this definition.",
+            "The lecture uses a data-querying example at Datadog, where diverse kinds of data and different storage systems make a unified query experience difficult. Keep that as the motivation for the method, rather than assuming any historical product comparison remains a current recommendation.",
+            "New worked example used throughout this unit: a campus information service must search course data, export records, survive worker failures, and integrate new data sources. Alternative A is a tailored service; B is a shared platform. Before comparing them, record stakeholders, workload, operating limits, and non-negotiable constraints. The example’s targets and scores are teaching assumptions."
+          ],
+          "prediction": "Two teams both want a “good platform.” Have they agreed on a decision criterion?",
+          "explanation": "No. They may value latency, incident recovery, development effort or cost differently. Name those priorities and the circumstances in which each matters before comparing products.",
+          "narration": "Jeromy’s decision method begins with business context. Write down the decision, the stakeholders, the workload and the constraints. In our new example, a campus service must search, export records, recover from failures and add new sources. A tailored service and a shared platform are alternatives, but neither is best without agreed criteria. Define what success means before looking at a score.",
+          "focus": "Define the decision and its business context. Read the explanation, predict the outcome, then apply it."
+        },
+        {
+          "title": "2. Turn quality goals into observable scenarios",
+          "slides": "20:00–31:30",
+          "paragraphs": [
+            "A scenario gives a quality claim a concrete meaning. The lecture uses context, stimulus and response: the conditions in force, the event that occurs, and the result the system must produce. Make the response measurable where possible. A scenario can concern normal execution, failure, or a development change.",
+            "Facilitate the process with stakeholders. Jeromy describes agreeing on context, inviting participants to brainstorm scenarios, refining vague statements, and then clustering the resulting scenarios into a quality tree. This bottom-up collection helps expose concerns that a preselected taxonomy or a product-led debate might miss.",
+            "For the campus example, Search means: at 200 requests/second on a specified representative dataset, a user issues a search and p95 latency is at most 250 ms during a defined test window. Export means: an authorized user requests 10,000 records and receives a complete export within eight seconds. Specify hardware, data size and concurrency in an actual evaluation.",
+            "Worker loss means: during a request, one serving worker terminates and the request completes correctly within two seconds. New source means: with the platform in production, the team integrates a new catalog source and produces a tested adapter within three engineer-days. These are new scenarios, not copied lecture questions. Check data correctness and authorization as well as timing.",
+            "Agree on how evidence will be collected for every scenario: a load test, a fault-injection experiment, a prototype integration, or a justified analysis. A threshold without a test context is not yet a reproducible requirement."
+          ],
+          "prediction": "“The system is extensible” is a scenario. True or false?",
+          "explanation": "False. State the change, starting context and measurable effort or outcome. For example, adding a specified source through a documented adapter within three engineer-days, with existing tests still passing.",
+          "narration": "Replace broad qualities with scenarios. State the context, the stimulus and the observable response. Search at a specified load, recovery after a worker failure, and adding a data source are different scenarios. Each needs its own evidence. Our campus example uses explicit targets, but those targets are assumptions for practice. In real work, negotiate them with stakeholders and define repeatable tests.",
+          "focus": "Turn quality goals into observable scenarios. Read the explanation, predict the outcome, then apply it."
+        },
+        {
+          "title": "3. Organize a quality tree",
+          "slides": "31:30–36:00",
+          "paragraphs": [
+            "A quality tree organizes the meaning of success. Its upper nodes are qualities such as performance, availability and maintainability. Lower nodes refine those qualities, and concrete scenarios sit at the leaves. The lecture’s larger tree also illustrates operational and reliability concerns; choose a tree suited to the system rather than treating one taxonomy as universal.",
+            "Our compact worked tree has Performance → Search and Export; Availability → Worker loss; Maintainability → New source. The two performance leaves make a tradeoff inside that branch visible. Availability and Maintainability each have one leaf in this teaching example.",
+            "Rank only children of the same parent. Ranking Availability against Performance is one conversation; ranking Search against Export is another. Do not mix a top-level quality with a scenario several levels below it. Record the rationale for each ordering and involve the people who bear the consequences.",
+            "Check coverage before calculating. Missing a security requirement or representing latency with many near-duplicate scenarios can distort the decision. Mandatory requirements should be recorded explicitly. A high weighted total cannot justify violating a requirement that stakeholders have declared non-negotiable.",
+            "Delay advocacy for particular solutions until the criteria and priorities are established. QODA borrows scenario thinking from ATAM, but the lecture presents it as a lightweight decision exercise, not as a complete execution of ATAM."
+          ],
+          "prediction": "If Performance has ten leaves and Availability has one, must Performance receive ten times the weight?",
+          "explanation": "No. The top-level allocation is determined by sibling priorities. Leaf weights subdivide their parent’s allocation. Carefully avoid redundant leaves that double-count the same concern.",
+          "narration": "Organize the scenarios in a quality tree. In our example, Performance contains Search and Export, while Availability and Maintainability each have one scenario. Rank siblings at each node. The number of leaves does not automatically determine a quality’s total weight. Check the tree for missing concerns and duplicates before calculating anything.",
+          "focus": "Organize a quality tree. Read the explanation, predict the outcome, then apply it.",
+          "figure": {
+            "src": "media/qoda-tree.svg",
+            "alt": "QODA worked quality tree with sibling ranks and multiplied leaf weights"
+          }
+        },
+        {
+          "title": "4. Convert rankings to ROC weights",
+          "slides": "36:00–40:00",
+          "paragraphs": [
+            "Jeromy uses rank-order-centroid, abbreviated ROC, to turn an ordered set of siblings into weights. For N children and rank k, where 1 is highest priority, w(k) = (1/N) × Σ from i=k to N of (1/i). Each sibling set receives positive weights that sum to one. This is a rule for translating an ordering, not a measurement of how many times one stakeholder value exceeds another.",
+            "With three ranked qualities, w(1) = (1 + 1/2 + 1/3)/3 = 11/18 ≈ 0.6111; w(2) = (1/2 + 1/3)/3 = 5/18 ≈ 0.2778; and w(3) = (1/3)/3 = 1/9 ≈ 0.1111. If Performance ranks first, Availability second and Maintainability third, assign those values respectively.",
+            "For two siblings the weights are 0.75 and 0.25. Thus Search above Export receives 0.75 and 0.25 within Performance. A node with one child gives it weight 1. Compute weights independently at every branching node; do not reuse the three-child numbers for a two-child branch.",
+            "The lecture uses stack rankings. If stakeholders cannot agree on an ordering, capture the disagreement and compare alternative rankings. Do not silently invent a tie-breaking convention or claim that the resulting decimal values remove subjective judgment."
+          ],
+          "prediction": "Are the ROC weights for three siblings 0.5, 0.3 and 0.2?",
+          "explanation": "No. They are 11/18, 5/18 and 1/9, approximately 0.6111, 0.2778 and 0.1111. Apply the stated formula rather than substituting intuitive percentages.",
+          "narration": "ROC translates a ranking into weights. For three siblings, the weights are eleven eighteenths, five eighteenths and one ninth. For two siblings they are three quarters and one quarter. These numbers sum to one within each sibling group. Use the formula at each node and keep full precision until displaying the result. The rankings still express human judgment.",
+          "focus": "Convert rankings to ROC weights. Read the explanation, predict the outcome, then apply it."
+        },
+        {
+          "title": "5. Multiply weights down each path",
+          "slides": "39:00–42:30",
+          "paragraphs": [
+            "The combined weight of a scenario is the product of all local weights on its root-to-leaf path. Do not add the weights. The parent allocates a share of the total, and each descendant allocates a share of that share.",
+            "Using the worked tree: Search = (11/18) × (3/4) = 11/24 ≈ 0.4583. Export = (11/18) × (1/4) = 11/72 ≈ 0.1528. Worker loss = (5/18) × 1 ≈ 0.2778. New source = (1/9) × 1 ≈ 0.1111. The four leaf weights sum to one, and the two performance leaves sum to 11/18.",
+            "A deeper tree works the same way. If a Performance → Latency branch has local weight 0.6111 and a particular latency scenario has local weight 0.75, multiply those by the top-level Performance weight as well. Omitting an intermediate level changes the meaning of the allocation.",
+            "Useful checks are local sibling sums, complete path products and the total over all leaves. If the model includes branches with no assessed scenarios, disclose the uncovered weight. Do not silently renormalize the covered leaves and pretend the original decision criteria were fully evaluated."
+          ],
+          "prediction": "Search has a 0.6111 parent weight and a 0.75 local weight. Is its total weight 1.3611?",
+          "explanation": "No. Multiply: approximately 0.4583. Addition would not preserve the parent’s allocation and could produce a total above one.",
+          "narration": "A scenario’s combined weight is the product along its path. Search receives eleven eighteenths times three quarters, or about zero point four five eight three. Export receives about zero point one five two eight. The other leaves receive zero point two seven seven eight and zero point one one one one. The complete leaf weights sum to one.",
+          "focus": "Multiply weights down each path. Read the explanation, predict the outcome, then apply it."
+        },
+        {
+          "title": "6. Assess alternatives and calculate the weighted score",
+          "slides": "42:30–51:30",
+          "paragraphs": [
+            "For each alternative–scenario pair, assess how well the design satisfies that scenario. Jeromy illustrates Poor, Fair, Good and Excellent mapped to 0, 1, 2 and 3. Define consistent anchors and record evidence. For a timing target, Good might mean the agreed target is demonstrated; other ratings need equally explicit meanings. A prototype result, an analysis and an untested assertion do not offer the same confidence.",
+            "New hypothetical score matrix, ordered Search / Export / Worker loss / New source: A = [3, 2, 1, 0]; B = [1, 2, 3, 3]. These ratings are invented for the exercise and are not assessments of real products. The total is Σ(scenario weight × rating). A = 0.4583×3 + 0.1528×2 + 0.2778×1 + 0.1111×0 ≈ 1.9583. B ≈ 1.9306, using unrounded weights.",
+            "A leads by only about 0.0278 on the 0–3 scale. That small difference should prompt investigation of uncertain ratings rather than a claim of scientific certainty. The model assumes the rating numbers can be used additively; it makes tradeoffs inspectable but does not establish objective utility.",
+            "Missing evidence is not the same as Poor. Leave an unknown visible and gather evidence before presenting a complete ranking. Also test hard constraints separately: if Worker loss must score at least Good, A is ineligible in this example even though it has the higher unconstrained weighted total.",
+            "The lecture deliberately uses four rating categories with no neutral midpoint. The lab’s Unknown state is an added evidence-tracking safeguard, not a fifth numeric rating in Jeromy’s scale. Gather evidence before replacing it with a supported assessment."
+          ],
+          "prediction": "Alternative A has the largest weighted score but fails a mandatory recovery requirement. Should it automatically win?",
+          "explanation": "No. Apply the mandatory requirement as a feasibility check. Weighted scores support tradeoffs among eligible choices; they do not override a declared hard constraint.",
+          "narration": "Score every alternative against the same scenarios, using shared rating anchors and evidence. Multiply each rating by its leaf weight and add. In our invented example, A scores about one point nine five eight three and B about one point nine three zero six. The difference is tiny. Unknown evidence must remain visible, and mandatory requirements must be checked separately.",
+          "focus": "Assess alternatives and calculate the weighted score. Read the explanation, predict the outcome, then apply it."
+        },
+        {
+          "title": "7. Test sensitivity and revisit the decision",
+          "slides": "51:30–55:00",
+          "paragraphs": [
+            "Change an assumption deliberately and recalculate. If Availability becomes first and Performance second, with Maintainability still third, the top-level weights become 0.6111 for Availability, 0.2778 for Performance and 0.1111 for Maintainability. Search and Export keep their local ordering but receive smaller combined shares.",
+            "Under that new ordering, the same score matrix gives A ≈ 1.3750 and B ≈ 2.5139. The preferred alternative changes because stakeholder priorities changed, not because the arithmetic was inconsistent. Explain that causal chain in a recommendation.",
+            "Also vary uncertain ratings. In the original ordering, reducing A’s Search rating from 3 to 2 lowers its total by about 0.4583, easily reversing the narrow lead. This identifies where a prototype or benchmark may be valuable. Sensitivity analysis asks whether the conclusion survives plausible changes, not how to tune the inputs until a favorite wins.",
+            "The lecture emphasizes revisiting the framework during planning cycles as business priorities and technologies change. Retain the scenarios, rankings, evidence and rationale so the team can update the decision without reconstructing every discussion. Add new alternatives or scenarios when justified."
+          ],
+          "prediction": "The ranking changes after stakeholders prioritize recovery. Does that prove the method is broken?",
+          "explanation": "No. A preference-sensitive method should respond to a real priority change. Report which assumption changed and whether uncertainty makes the recommendation fragile.",
+          "narration": "A useful decision model can be challenged. Move Availability above Performance and our shared platform becomes the stronger option. Reduce a weakly supported rating and the original narrow lead may disappear. This tells the team what to test and which stakeholder assumptions matter. Revisit the framework during planning cycles, keeping the rationale and evidence.",
+          "focus": "Test sensitivity and revisit the decision. Read the explanation, predict the outcome, then apply it."
+        },
+        {
+          "title": "8. Understand technical debt as a quality gap",
+          "slides": "55:50–65:20",
+          "paragraphs": [
+            "Jeromy extends the same framework to technical debt. A deliberate shortcut can buy delivery time by accepting lower quality in specific scenarios. The time saved is the benefit obtained; the obligation is the gap between the desired and actual quality of the system. Repayment effort need not equal the effort initially saved.",
+            "New example: a team ships a fixed-format importer in two weeks instead of spending six weeks on a general adapter framework. It gains four weeks now, but the actual system performs poorly on a future “add a source” scenario. Later integrations, changed code and new requirements may make closing that gap more or less expensive than four weeks.",
+            "Compare the actual design and a desired design against the same current scenario tree. Inspect weighted per-scenario gaps to locate the important deficiencies, then estimate the work and risk of addressing them. Do not confuse a quality-score difference with engineer-days; the score helps prioritize investigation, while the effort estimate comes from engineering analysis.",
+            "The target can change over time. If new-source integration becomes central to the business, its quality gap matters more. If the system is retired, that particular investment may no longer have value. Document the shortcut, affected scenarios, intended benefit, current consequences, and a review trigger. The lecture does not establish a fixed interest-rate formula for technical debt."
+          ],
+          "prediction": "The team saved four weeks by taking a shortcut. Does repayment necessarily require four weeks?",
+          "explanation": "No. What remains is a quality gap, and the system and its requirements may change. Estimate the current effort to close the relevant gap rather than equating it with the original time saving.",
+          "narration": "QODA also gives technical debt a concrete meaning. A shortcut buys time by accepting a quality gap. The time saved is not necessarily the future repayment effort. Compare the actual and desired designs against current scenarios, identify the important gaps and estimate the engineering work to close them. Revisit the target as business needs change. A weighted quality gap is not a unit of developer time.",
+          "focus": "Understand technical debt as a quality gap. Read the explanation, predict the outcome, then apply it."
+        },
+        {
+          "title": "9. Produce a decision record another team can audit",
+          "slides": "Method synthesis; source 00:00–55:00",
+          "paragraphs": [
+            "Your deliverable is a defensible decision record: decision and context; stakeholders and hard constraints; quality tree; concrete scenarios; sibling rankings and rationales; ROC calculations and path products; alternative-by-scenario ratings with evidence; weighted comparison; sensitivity checks; recommendation and review triggers.",
+            "Use the interactive lab to reproduce the worked example. First predict the winner, then calculate. Change the top-level order, test an unknown rating, and activate the hard recovery constraint. For each change, write one sentence explaining why the recommendation changes or why the comparison becomes incomplete.",
+            "Independent exercise: evaluate two notification architectures for a campus safety service. Create your own contexts, stimuli and responses for urgent delivery, failure behavior, and adding a new channel. Use at least one two-level branch, compute ROC path weights, and compare two alternatives using stated hypothetical evidence. Do not reuse the Search/Export scores as if they were measurements.",
+            "Mastery means explaining the reasoning behind every cell. A correct spreadsheet with vague scenarios, hidden missing evidence or post-hoc priorities is not a sound architectural evaluation. A strong answer makes disagreement visible and proposes the next experiment that could change the decision."
+          ],
+          "prediction": "What should a reviewer be able to reconstruct from your final score?",
+          "explanation": "The scenario definitions, tree paths, sibling rankings, weight calculations, rating evidence, constraints and sensitivity checks. A total without this trail is not an adequate decision record.",
+          "narration": "Finish with a decision record that another team can audit. Include the context, quality tree, scenarios, rankings, path weights, evidence, scores and sensitivity checks. Use the lab to reproduce and challenge the example. Then apply the method to a new notification service. The goal is a transparent, revisable argument, not merely a winning number.",
+          "focus": "Produce a decision record another team can audit. Read the explanation, predict the outcome, then apply it."
+        }
+      ],
+      "quiz": [
+        {
+          "question": "What are the three parts of a quality scenario?",
+          "answer": "Context, stimulus and response. Make the response observable and specify enough workload and environment detail to support a meaningful assessment."
+        },
+        {
+          "question": "How do local ROC weights become scenario weights?",
+          "answer": "Compute ROC weights among siblings at each node, then multiply the local weights along each root-to-leaf path. Check sibling sums and complete leaf coverage."
+        },
+        {
+          "question": "Why is a weighted winner not automatically the final choice?",
+          "answer": "The ranking depends on priorities, rating anchors, evidence and additive-model assumptions. Missing evidence, mandatory constraints and sensitivity may require further work or exclude a candidate."
+        }
+      ],
+      "exercise": {
+        "prompt": "Create a quality tree and evaluate two architectures for campus safety notifications. Include one hard constraint, four scenarios, a complete ROC calculation, evidence-backed or explicitly hypothetical ratings, and one priority-change analysis.",
+        "answer": "An adequate response defines stakeholders and testable scenarios; ranks siblings; computes local weights and path products; assesses identical scenarios for both candidates; distinguishes unknowns and hard constraints; calculates totals; and explains the effect of a plausible change. Alternative designs are acceptable when the reasoning and evidence are explicit."
+      },
+      "review": [
+        {
+          "slides": "36:00–42:30",
+          "issue": "ROC weights are a ranking-to-weight convention, not measurements of stakeholder value.",
+          "correction": "Use the exact formula, multiply path weights, retain precision, and disclose ranking disagreements.",
+          "sources": []
+        },
+        {
+          "slides": "42:30–55:00",
+          "issue": "The historical technology comparison should not be treated as a current product benchmark.",
+          "correction": "The campus example uses new hypothetical scores; hard constraints, unknown evidence and sensitivity are explicit teaching extensions.",
+          "sources": []
+        }
+      ],
+      "coverageNote": "Based on the instructor-provided recording dated 24 November 2025; teaching dates follow the Fall 2026 schedule. Recording time ranges are approximate. Notes, exercises and synthetic narrated mini-lessons are newly authored companions. The original recording is not bundled. Biography, course administration and unrelated discussion are omitted.",
+      "label": "18",
+      "schedule": "Week 10 · November 9"
+    },
+    {
       "id": "security",
-      "label": "17",
+      "label": "19",
       "title": "Security: Trust, Identity and Access",
       "shortTitle": "Security: Trust, Identity and Access",
       "description": "Define trust boundaries, protect credentials, and separate authentication from authorization.",
@@ -3229,7 +3537,7 @@
     },
     {
       "id": "twitter",
-      "label": "18",
+      "label": "20",
       "title": "Design exercise: feeds, fan-out and locality",
       "shortTitle": "Design exercise: feeds, fan-out and locality",
       "description": "Compare read-time and write-time feed assembly, partitioning and celebrity fan-out.",
@@ -3395,8 +3703,140 @@
       ]
     },
     {
+      "id": "lizhi-performance",
+      "title": "Lizhi Liao: from local measurements to system performance",
+      "shortTitle": "Lizhi · Performance modeling",
+      "description": "Combine local performance evidence with architectural models, trace shared-resource contention, and evaluate capacity and asynchronous-design alternatives.",
+      "file": "Lizhi_Liao_2025_10_20.mp4",
+      "slideCount": 0,
+      "sourceType": "recording",
+      "sourceSummary": "59:11 source recording",
+      "recordingDate": "20 October 2025",
+      "chapters": [
+        {
+          "title": "Why local performance is not end-to-end performance",
+          "slides": "00:00–17:30",
+          "paragraphs": [
+            "A performance regression is a deterioration in a relevant performance measure after a change. Functional tests can still pass. Lizhi contrasts expensive whole-system tests with small-scale tests that provide earlier, more localized feedback, and asks how to combine their strengths.",
+            "Local execution time alone does not determine user-visible response time. In a new fork-and-join example, two independent branches take 40 ms and 12 ms and then join. If the short branch rises to 18 ms, the ideal parallel portion still takes 40 ms. This simplified example assumes no shared-resource contention or other path changes.",
+            "Workload mix can also change the importance of a component. A path used by a small fraction of requests may become important when that fraction grows. An architectural model represents call paths, synchronization, resource sharing and workload so the local measurements can be interpreted in context.",
+            "The model alone is not sufficient either: a coarse subsystem model can miss a changed function’s service demand. The lecture therefore connects fine-grained performance observations to the broader architectural model."
+          ],
+          "prediction": "Does a 50% increase in one function’s time imply 50% worse end-to-end response?",
+          "explanation": "No. Frequency, critical-path position, parallel execution, shared resources and workload determine how the change propagates. Measure and model those relationships.",
+          "narration": "A local slowdown is evidence, not an end-to-end forecast. A shorter parallel branch can slow without changing the join time, while a heavily used shared resource can amplify a small change. Lizhi’s approach combines early local measurements with an architectural model so we can reason about workload, paths and contention.",
+          "focus": "Why local performance is not end-to-end performance. Read the explanation, predict the outcome, then apply it."
+        },
+        {
+          "title": "Measure deviations with repeated, comparable experiments",
+          "slides": "17:30–21:00",
+          "paragraphs": [
+            "The first step runs small-scale tests on original and changed code and collects local performance observations. Keep the inputs, environment and measurement boundaries comparable. Repetition matters because timing varies with operating-system activity, competing processes, warmup and other effects.",
+            "The displayed method compares distributions using a Mann–Whitney U test and Cliff’s delta, then uses the mean difference as a performance-deviation quantity. Statistical evidence and effect size answer different questions; neither should be replaced by a single noisy timing run. The slide illustrates repeated runs, not a universal sample size requirement.",
+            "When teaching or applying the method, report the measurement protocol, distributions, effect direction and magnitude, thresholds and uncertainty. A small p-value is not the size of a slowdown, and a local distribution difference does not by itself establish a user-visible regression.",
+            "New scenario: an updated serializer is consistently slower in isolated tests, but its inputs are larger than the baseline’s. Correct the comparison before attributing the difference to code. Comparable workload is part of the evidence, not an optional detail."
+          ],
+          "prediction": "A statistically detectable timing difference is automatically a serious production problem. True or false?",
+          "explanation": "False. Consider effect size, measurement conditions, the modeled execution path and workload, and the relevant user requirement.",
+          "narration": "Measure original and updated code under comparable conditions and repeat the runs. The lecture combines a distribution test, Cliff’s delta and a mean difference. Statistical evidence does not tell us the whole-system consequence. Keep the protocol and uncertainty visible, and avoid calling a noisy or mismatched experiment a regression.",
+          "focus": "Measure deviations with repeated, comparable experiments. Read the explanation, predict the outcome, then apply it."
+        },
+        {
+          "title": "Map code-level changes into an architectural model",
+          "slides": "21:00–25:00",
+          "paragraphs": [
+            "The next step maps local deviations to the higher-level modeled activities. The lecture illustrates structural matching using maximum common subgraph analysis, followed by propagation up the relevant call structure so the affected architectural service-demand parameters can be updated.",
+            "A mapping must preserve the meaning and units of the measurement. A function’s elapsed time may include waiting or downstream calls; it is not automatically an independent CPU service demand. Record call frequency and nesting so the same cost is not counted once in a parent measurement and again in its child.",
+            "Keep original and updated model versions. Change parameters supported by the local evidence and preserve other assumptions unless the code or architecture changed them. Then evaluate both models under relevant workloads and compare the resulting performance distributions.",
+            "The approach is useful for prioritizing costly system tests, but a model is only as credible as its structure, mapping, parameters and workload. Validate the baseline and use independent measurements to check predictions. The experimental results shown for TeaStore and TrainTicket are evidence for those studied cases, not a universal no-false-alarm guarantee."
+          ],
+          "prediction": "Can you add a function’s entire elapsed time to its parent’s demand without further analysis?",
+          "explanation": "Not safely. The parent may already include the child’s time or waiting. Establish measurement boundaries, call counts, resource meaning and a mapping that avoids double counting.",
+          "narration": "Map the local deviation to the modeled activity before updating a parameter. The lecture illustrates graph matching and propagation through the call structure. Keep units and measurement boundaries clear, and avoid double counting nested work. Compare original and changed models across workloads, then validate predictions independently. Experimental success in selected systems is not a universal guarantee.",
+          "focus": "Map code-level changes into an architectural model. Read the explanation, predict the outcome, then apply it."
+        },
+        {
+          "title": "Read the QPN model: activities share resources",
+          "slides": "29:00–41:00",
+          "paragraphs": [
+            "The demonstration uses QPME, the Queueing Petri Net Modeling Environment. Request paths move through modeled activities and transitions. Queues provide resource contention, while the model can represent different request classes and routing through the system.",
+            "An important clarification in the recording is that each visible green place is not necessarily an independent hardware resource. Several places can reference the same underlying queue. In the demonstrated naming scheme, the prefix identifies the resource queue. Different request paths can therefore compete for the same web or authentication resource.",
+            "For each shared queue, inspect scheduling discipline, number of servers and service-time assumptions. For each request class, inspect routing, visits and synchronization. Counting diagram nodes as independent servers would understate contention and produce misleading predictions.",
+            "Follow one request from entry to completion. For an add-to-cart operation, identify which modeled activities use the same resource and which downstream work the caller waits for. Write a small activity-to-resource table before changing the model. The point is to understand the semantics behind the diagram, not memorize its colors."
+          ],
+          "prediction": "Two places on different request paths both use the WebUI queue. Do they run on independent capacity?",
+          "explanation": "No. They share the modeled queue’s capacity unless the model explicitly assigns separate resources. Distinct places can compete at one resource.",
+          "narration": "In the demonstration, several visible places share the same underlying queue. Do not count every green node as a separate server. Trace one request and identify its resource mappings, scheduling, server count and service demand. Shared queues explain why different request classes can interfere even when their diagram paths look separate.",
+          "focus": "Read the QPN model: activities share resources. Read the explanation, predict the outcome, then apply it."
+        },
+        {
+          "title": "Use simulation for capacity and architecture experiments",
+          "slides": "41:00–56:00",
+          "paragraphs": [
+            "The demo first adds capacity to a highly utilized web resource, then explores moving work into a separate cart service with asynchronous interaction. These are different changes: adding a server changes resource capacity; changing the interaction can change the user’s waiting path and where work contends.",
+            "Inspect throughput, utilization, population and residence time as well as end-to-end response. A substantial response-time improvement can occur near saturation even when utilization changes more modestly. Conversely, a quick acknowledgment may leave substantial background work running.",
+            "Preserve completion semantics when comparing synchronous and asynchronous designs. Does the response mean the cart update is durable, accepted for later processing, or fully completed? A shorter response is not equivalent behavior if the user-visible contract changed. Also model retries, ordering, failures and backpressure where they matter.",
+            "Distinguish uncertainty in a simulation estimate from a latency percentile. A 95% confidence interval for a mean is not p95 request latency. The recording shows simulation output; interpret the reported statistic according to its definition, and avoid transferring its example numbers to a real deployment."
+          ],
+          "prediction": "Moving work off the response path lowers acknowledgment time. Has the total work necessarily decreased?",
+          "explanation": "No. The work may continue elsewhere, with similar utilization or new contention. Compare the same completion semantics and inspect downstream capacity and failure behavior.",
+          "narration": "A capacity change and an asynchronous redesign answer different questions. More servers can reduce queueing; moving work off the response path can reduce waiting without removing the work. Compare throughput, utilization and completion semantics. Also distinguish a confidence interval for a simulation estimate from a percentile of request latency.",
+          "focus": "Use simulation for capacity and architecture experiments. Read the explanation, predict the outcome, then apply it."
+        },
+        {
+          "title": "Make a prediction and test its limits",
+          "slides": "Companion synthesis; source 00:00–58:00",
+          "paragraphs": [
+            "The interactive lab is a deliberately smaller model than the lecture’s QPN demonstration. It assumes one M/M/1 queue: Poisson arrivals, independent exponential service times, one server, an unbounded queue and steady state. With service demand S seconds and arrival rate λ per second, utilization is ρ = λS and mean response is R = S/(1−ρ), only when ρ < 1.",
+            "New worked example: λ = 75 requests/second and S = 8 ms gives ρ = 0.60 and R = 20 ms. Increasing S to 10 ms gives ρ = 0.75 and R = 40 ms. A 25% increase in local demand doubles the model’s mean response. At λS ≥ 1 the model has no finite steady-state mean; reporting a negative response from the formula would be an error.",
+            "Use this calculation to explain amplification, not to claim every request follows an exponential distribution. A real model may need multiple resources, several visits, parallel branches, finite queues and distinct workload classes. Revalidate after an architectural change.",
+            "A reviewable analysis records the baseline measurements, local change, mapping, model assumptions, workload, prediction and validation error. Keep calibration evidence separate from validation evidence. Recommend a measurement or experiment that would most reduce uncertainty in the decision."
+          ],
+          "prediction": "Why is R = S/(1−λS) invalid as a finite steady-state estimate when λS reaches one?",
+          "explanation": "Arrivals consume all or more of the service capacity. The assumed queue has no stable finite mean response; the algebra is not a valid continuation beyond the stability condition.",
+          "narration": "Our small lab illustrates queueing amplification. At seventy-five requests per second, changing mean service from eight to ten milliseconds changes predicted mean response from twenty to forty milliseconds. This relies on explicit single-server assumptions. Use it to understand the mechanism, then build and validate a model appropriate to the real system.",
+          "focus": "Make a prediction and test its limits. Read the explanation, predict the outcome, then apply it."
+        }
+      ],
+      "quiz": [
+        {
+          "question": "Why combine small-scale tests with an architectural model?",
+          "answer": "Local tests expose fine-grained changes early; a system model represents paths, workloads and shared resources that determine end-to-end impact."
+        },
+        {
+          "question": "What is the difference between a QPN place and a resource queue?",
+          "answer": "A place represents part of the modeled execution; multiple places can use a shared underlying queue and compete for its capacity. Inspect mappings rather than counting visible nodes as servers."
+        },
+        {
+          "question": "Why can asynchronous acknowledgment mislead a performance comparison?",
+          "answer": "It may measure acceptance rather than completion. Work, contention and failure handling remain, so compare equivalent semantics and inspect background throughput and delay."
+        }
+      ],
+      "exercise": {
+        "prompt": "Plan a regression investigation for a campus search-and-export service. Identify local tests, a request-to-resource mapping, two workload mixes, an original and changed model, and an independent validation experiment. Explain what your model can and cannot predict.",
+        "answer": "Use repeatable comparable measurements, statistical and effect-size evidence, justified service-demand updates and explicit resource sharing. Compare equivalent completion semantics under stated workloads, record uncertainty, and check predictions against independent system observations. Avoid double counting and treating model output as measured production truth."
+      },
+      "review": [
+        {
+          "slides": "19:00–28:30",
+          "issue": "Reported experimental success is specific to the studied benchmarks and regressions.",
+          "correction": "Keep effect size, workload, mapping and validation assumptions explicit; do not promise zero false alarms for arbitrary systems.",
+          "sources": []
+        },
+        {
+          "slides": "33:00–56:00",
+          "issue": "Visible places can share a resource queue, and uncertainty intervals are not latency percentiles.",
+          "correction": "Inspect resource mappings and statistic definitions. The M/M/1 lab is a new simplified companion, not a reproduction of the QPN simulator.",
+          "sources": []
+        }
+      ],
+      "coverageNote": "Based on the instructor-provided recording dated 20 October 2025; teaching dates follow the Fall 2026 schedule. Recording time ranges are approximate. Notes, exercises and synthetic narrated mini-lessons are newly authored companions. The original recording is not bundled. Biography, course administration and unrelated discussion are omitted.",
+      "label": "21",
+      "schedule": "Week 11 · November 18"
+    },
+    {
       "id": "secure",
-      "label": "19",
+      "label": "22",
       "title": "Secure Microservices: Boundaries, Tokens and Response",
       "shortTitle": "Secure Microservices: Boundaries, Tokens and Response",
       "description": "Protect service boundaries with verified identities, scoped access, isolation and incident response.",
@@ -3592,7 +4032,7 @@
     },
     {
       "id": "pushcase",
-      "label": "20",
+      "label": "23",
       "title": "Case study: Uber’s real-time push platform",
       "shortTitle": "Case study: Uber’s real-time push platform",
       "description": "Study a historical push platform through delivery priorities, expiry and connection ownership.",
@@ -3696,7 +4136,7 @@
     },
     {
       "id": "styles",
-      "label": "21",
+      "label": "24",
       "title": "Architecture styles and their tradeoffs",
       "shortTitle": "Architecture styles and their tradeoffs",
       "description": "Compare repositories, pipelines, layers, interpreters, control loops and peer-to-peer systems.",
@@ -3873,7 +4313,7 @@
     },
     {
       "id": "async",
-      "label": "22",
+      "label": "25",
       "title": "Asynchronous processing and message queues",
       "shortTitle": "Asynchronous processing and message queues",
       "description": "Separate acceptance from completion and design queue-based work for retries and backpressure.",
@@ -4047,7 +4487,7 @@
     },
     {
       "id": "events",
-      "label": "23",
+      "label": "26",
       "title": "Implicit invocation, pub/sub and event-driven systems",
       "shortTitle": "Implicit invocation, pub/sub and event-driven systems",
       "description": "Design event subscriptions, brokered delivery and recovery, then examine the ROS example.",
@@ -4191,7 +4631,7 @@
     },
     {
       "id": "streaming",
-      "label": "24",
+      "label": "27",
       "title": "Batch, streaming and two leader–follower patterns",
       "shortTitle": "Batch, streaming and two leader–follower patterns",
       "description": "Compare batch and streaming computation, thread handoff and replicated-log leadership.",
@@ -4382,6 +4822,14 @@
     },
     {
       "week": "2",
+      "date": "September 14",
+      "topic": "Jeromy: architecture, resilience and business impact",
+      "units": [
+        "jeromy-resilience"
+      ]
+    },
+    {
+      "week": "2",
       "date": "September 16",
       "topic": "Design principles, UML, design patterns, architecture and NFP",
       "units": [
@@ -4474,6 +4922,14 @@
     },
     {
       "week": "10",
+      "date": "November 9",
+      "topic": "Jeromy: Quality-Oriented Decision Analysis (QODA)",
+      "units": [
+        "jeromy-evaluation"
+      ]
+    },
+    {
+      "week": "10",
       "date": "November 11",
       "topic": "Security and authentication",
       "units": [
@@ -4486,6 +4942,14 @@
       "topic": "Twitter case study",
       "units": [
         "twitter"
+      ]
+    },
+    {
+      "week": "11",
+      "date": "November 18",
+      "topic": "Lizhi Liao: performance modeling and regression prediction",
+      "units": [
+        "lizhi-performance"
       ]
     },
     {

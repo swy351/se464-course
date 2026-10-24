@@ -1,0 +1,14 @@
+Jeromy: architecture, resilience and customer value
+Part 1 • Synthetic narration
+
+Architecture is a set of consequential decisions
+
+Architecture includes consequential decisions, especially those that are difficult to reverse and strongly affect quality. A box diagram is useful, but ask why the boundaries and dependencies exist. For an alerting service, durable acknowledgments and a working recovery path may matter more than a fashionable component name. Always connect the decision to its context.
+
+Start with the customer’s quality priorities
+
+Start with customer outcomes. The lecture’s observability pipeline must ingest data before it can alert on that data. Durable storage, service availability and ingestion-to-alert latency are different qualities. Preserving accepted data is valuable even when a dashboard is unavailable, but it does not make the outage harmless. Set priorities explicitly for the application.
+
+Trace a correlated failure across the system
+
+The historical outage illustrates a correlated failure. A networking update affected many machines through a shared change mechanism. Replication did not isolate that cause. Recovery then differed across environments because replacing a node and rebooting it preserve different state. Review the entire control and update path, and document what each recovery action destroys or retains.

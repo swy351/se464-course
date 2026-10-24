@@ -1,0 +1,111 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:03.591
+Jeromy’s decision method begins with business
+context.
+
+00:00:03.591 --> 00:00:08.645
+Write down the decision, the stakeholders, the
+workload and the constraints.
+
+00:00:08.645 --> 00:00:15.229
+In our new example, a campus service must search,
+export records, recover from failures and add new
+
+00:00:15.229 --> 00:00:15.761
+sources.
+
+00:00:15.761 --> 00:00:21.945
+A tailored service and a shared platform are
+alternatives, but neither is best without agreed
+
+00:00:21.945 --> 00:00:22.544
+criteria.
+
+00:00:22.544 --> 00:00:26.002
+Define what success means before looking at a score.
+
+00:00:26.002 --> 00:00:28.688
+Replace broad qualities with scenarios.
+
+00:00:28.688 --> 00:00:32.821
+State the context, the stimulus and the observable
+response.
+
+00:00:32.821 --> 00:00:39.640
+Search at a specified load, recovery after a worker
+failure, and adding a data source are different
+
+00:00:39.640 --> 00:00:40.328
+scenarios.
+
+00:00:40.328 --> 00:00:42.257
+Each needs its own evidence.
+
+00:00:42.257 --> 00:00:48.387
+Our campus example uses explicit targets, but those
+targets are assumptions for practice.
+
+00:00:48.387 --> 00:00:53.553
+In real work, negotiate them with stakeholders and
+define repeatable tests.
+
+00:00:53.602 --> 00:00:56.241
+Organize the scenarios in a quality tree.
+
+00:00:56.241 --> 00:01:02.614
+In our example, Performance contains Search and
+Export, while Availability and Maintainability each
+
+00:01:02.614 --> 00:01:03.773
+have one scenario.
+
+00:01:03.773 --> 00:01:05.511
+Rank siblings at each node.
+
+00:01:05.511 --> 00:01:10.596
+The number of leaves does not automatically
+determine a quality’s total weight.
+
+00:01:10.596 --> 00:01:15.682
+Check the tree for missing concerns and duplicates
+before calculating anything.
+
+00:01:15.702 --> 00:01:18.093
+ROC translates a ranking into weights.
+
+00:01:18.093 --> 00:01:23.568
+For three siblings, the weights are eleven
+eighteenths, five eighteenths and one ninth.
+
+00:01:23.568 --> 00:01:27.155
+For two siblings they are three quarters and one
+quarter.
+
+00:01:27.155 --> 00:01:30.365
+These numbers sum to one within each sibling group.
+
+00:01:30.365 --> 00:01:35.463
+Use the formula at each node and keep full precision
+until displaying the result.
+
+00:01:35.463 --> 00:01:38.106
+The rankings still express human judgment.
+
+00:01:38.106 --> 00:01:41.870
+A scenario’s combined weight is the product along
+its path.
+
+00:01:41.870 --> 00:01:48.185
+Search receives eleven eighteenths times three
+quarters, or about zero point four five eight three.
+
+00:01:48.185 --> 00:01:51.502
+Export receives about zero point one five two eight.
+
+00:01:51.502 --> 00:01:57.180
+The other leaves receive zero point two seven seven
+eight and zero point one one one one.
+
+00:01:57.180 --> 00:01:59.540
+The complete leaf weights sum to one.

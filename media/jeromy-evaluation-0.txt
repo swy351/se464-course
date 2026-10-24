@@ -1,0 +1,22 @@
+Jeromy: Quality-Oriented Decision Analysis (QODA)
+Part 1 • Synthetic narration
+
+1. Define the decision and its business context
+
+Jeromy’s decision method begins with business context. Write down the decision, the stakeholders, the workload and the constraints. In our new example, a campus service must search, export records, recover from failures and add new sources. A tailored service and a shared platform are alternatives, but neither is best without agreed criteria. Define what success means before looking at a score.
+
+2. Turn quality goals into observable scenarios
+
+Replace broad qualities with scenarios. State the context, the stimulus and the observable response. Search at a specified load, recovery after a worker failure, and adding a data source are different scenarios. Each needs its own evidence. Our campus example uses explicit targets, but those targets are assumptions for practice. In real work, negotiate them with stakeholders and define repeatable tests.
+
+3. Organize a quality tree
+
+Organize the scenarios in a quality tree. In our example, Performance contains Search and Export, while Availability and Maintainability each have one scenario. Rank siblings at each node. The number of leaves does not automatically determine a quality’s total weight. Check the tree for missing concerns and duplicates before calculating anything.
+
+4. Convert rankings to ROC weights
+
+ROC translates a ranking into weights. For three siblings, the weights are eleven eighteenths, five eighteenths and one ninth. For two siblings they are three quarters and one quarter. These numbers sum to one within each sibling group. Use the formula at each node and keep full precision until displaying the result. The rankings still express human judgment.
+
+5. Multiply weights down each path
+
+A scenario’s combined weight is the product along its path. Search receives eleven eighteenths times three quarters, or about zero point four five eight three. Export receives about zero point one five two eight. The other leaves receive zero point two seven seven eight and zero point one one one one. The complete leaf weights sum to one.

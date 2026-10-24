@@ -1,0 +1,86 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:05.974
+Score every alternative against the same scenarios,
+using shared rating anchors and evidence.
+
+00:00:05.974 --> 00:00:09.058
+Multiply each rating by its leaf weight and add.
+
+00:00:09.058 --> 00:00:15.353
+In our invented example, A scores about one point
+nine five eight three and B about one point nine
+
+00:00:15.353 --> 00:00:16.316
+three zero six.
+
+00:00:16.316 --> 00:00:17.794
+The difference is tiny.
+
+00:00:17.794 --> 00:00:23.704
+Unknown evidence must remain visible, and mandatory
+requirements must be checked separately.
+
+00:00:23.704 --> 00:00:26.307
+A useful decision model can be challenged.
+
+00:00:26.307 --> 00:00:31.762
+Move Availability above Performance and our shared
+platform becomes the stronger option.
+
+00:00:31.762 --> 00:00:36.472
+Reduce a weakly supported rating and the original
+narrow lead may disappear.
+
+00:00:36.472 --> 00:00:41.059
+This tells the team what to test and which
+stakeholder assumptions matter.
+
+00:00:41.059 --> 00:00:46.079
+Revisit the framework during planning cycles,
+keeping the rationale and evidence.
+
+00:00:46.104 --> 00:00:49.381
+QODA also gives technical debt a concrete meaning.
+
+00:00:49.381 --> 00:00:52.527
+A shortcut buys time by accepting a quality gap.
+
+00:00:52.527 --> 00:00:56.591
+The time saved is not necessarily the future
+repayment effort.
+
+00:00:56.591 --> 00:01:02.949
+Compare the actual and desired designs against
+current scenarios, identify the important gaps and
+
+00:01:02.949 --> 00:01:05.833
+estimate the engineering work to close them.
+
+00:01:05.833 --> 00:01:08.717
+Revisit the target as business needs change.
+
+00:01:08.717 --> 00:01:12.322
+A weighted quality gap is not a unit of developer
+time.
+
+00:01:12.322 --> 00:01:16.398
+Finish with a decision record that another team can
+audit.
+
+00:01:16.398 --> 00:01:22.724
+Include the context, quality tree, scenarios,
+rankings, path weights, evidence, scores and
+
+00:01:22.724 --> 00:01:24.059
+sensitivity checks.
+
+00:01:24.059 --> 00:01:27.644
+Use the lab to reproduce and challenge the example.
+
+00:01:27.644 --> 00:01:31.299
+Then apply the method to a new notification service.
+
+00:01:31.299 --> 00:01:36.570
+The goal is a transparent, revisable argument, not
+merely a winning number.

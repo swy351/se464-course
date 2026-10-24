@@ -1,0 +1,14 @@
+Jeromy: architecture, resilience and customer value
+Part 2 • Synthetic narration
+
+Durability, bootstrap dependencies and tested restoration
+
+Durability mechanisms matter only with a workable recovery path. Several persistence layers helped retain data, but queues have finite capacity. Backups need tested restores. Startup dependencies can form cycles that require a bootstrap mechanism. Rehearse a cold recovery so the first attempt is not under incident pressure. Do not mistake an accidental unupgraded component for a sound upgrade strategy.
+
+Recover customer value, not just machine count
+
+Recovery should restore customer value. A system with a backlog needs spare capacity beyond new arrivals. At one hundred arrivals per second and one hundred twenty completions per second, only twenty items per second drain old work. Prioritize urgent traffic and throttle backfill deliberately. Practice degraded operation and retain independent visibility when the main monitoring path fails.
+
+Apply quality thinking to AI-assisted development
+
+The final discussion connects AI-assisted development to quality. Generating code quickly does not prove that a team can maintain or operate it. For a lasting service, define security, reliability and change scenarios, inspect the implementation and collect evidence. A successful demo is one observation, not a complete architectural evaluation.

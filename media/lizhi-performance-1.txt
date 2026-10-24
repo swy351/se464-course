@@ -1,0 +1,14 @@
+Lizhi Liao: from local measurements to system performance
+Part 2 • Synthetic narration
+
+Read the QPN model: activities share resources
+
+In the demonstration, several visible places share the same underlying queue. Do not count every green node as a separate server. Trace one request and identify its resource mappings, scheduling, server count and service demand. Shared queues explain why different request classes can interfere even when their diagram paths look separate.
+
+Use simulation for capacity and architecture experiments
+
+A capacity change and an asynchronous redesign answer different questions. More servers can reduce queueing; moving work off the response path can reduce waiting without removing the work. Compare throughput, utilization and completion semantics. Also distinguish a confidence interval for a simulation estimate from a percentile of request latency.
+
+Make a prediction and test its limits
+
+Our small lab illustrates queueing amplification. At seventy-five requests per second, changing mean service from eight to ten milliseconds changes predicted mean response from twenty to forty milliseconds. This relies on explicit single-server assumptions. Use it to understand the mechanism, then build and validate a model appropriate to the real system.

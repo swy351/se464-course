@@ -1,0 +1,14 @@
+Lizhi Liao: from local measurements to system performance
+Part 1 • Synthetic narration
+
+Why local performance is not end-to-end performance
+
+A local slowdown is evidence, not an end-to-end forecast. A shorter parallel branch can slow without changing the join time, while a heavily used shared resource can amplify a small change. Lizhi’s approach combines early local measurements with an architectural model so we can reason about workload, paths and contention.
+
+Measure deviations with repeated, comparable experiments
+
+Measure original and updated code under comparable conditions and repeat the runs. The lecture combines a distribution test, Cliff’s delta and a mean difference. Statistical evidence does not tell us the whole-system consequence. Keep the protocol and uncertainty visible, and avoid calling a noisy or mismatched experiment a regression.
+
+Map code-level changes into an architectural model
+
+Map the local deviation to the modeled activity before updating a parameter. The lecture illustrates graph matching and propagation through the call structure. Keep units and measurement boundaries clear, and avoid double counting nested work. Compare original and changed models across workloads, then validate predictions independently. Experimental success in selected systems is not a universal guarantee.

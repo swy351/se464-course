@@ -1,0 +1,18 @@
+Jeromy: Quality-Oriented Decision Analysis (QODA)
+Part 2 • Synthetic narration
+
+6. Assess alternatives and calculate the weighted score
+
+Score every alternative against the same scenarios, using shared rating anchors and evidence. Multiply each rating by its leaf weight and add. In our invented example, A scores about one point nine five eight three and B about one point nine three zero six. The difference is tiny. Unknown evidence must remain visible, and mandatory requirements must be checked separately.
+
+7. Test sensitivity and revisit the decision
+
+A useful decision model can be challenged. Move Availability above Performance and our shared platform becomes the stronger option. Reduce a weakly supported rating and the original narrow lead may disappear. This tells the team what to test and which stakeholder assumptions matter. Revisit the framework during planning cycles, keeping the rationale and evidence.
+
+8. Understand technical debt as a quality gap
+
+QODA also gives technical debt a concrete meaning. A shortcut buys time by accepting a quality gap. The time saved is not necessarily the future repayment effort. Compare the actual and desired designs against current scenarios, identify the important gaps and estimate the engineering work to close them. Revisit the target as business needs change. A weighted quality gap is not a unit of developer time.
+
+9. Produce a decision record another team can audit
+
+Finish with a decision record that another team can audit. Include the context, quality tree, scenarios, rankings, path weights, evidence, scores and sensitivity checks. Use the lab to reproduce and challenge the example. Then apply the method to a new notification service. The goal is a transparent, revisable argument, not merely a winning number.

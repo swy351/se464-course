@@ -1,0 +1,60 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:04.916
+In the demonstration, several visible places share
+the same underlying queue.
+
+00:00:04.916 --> 00:00:08.172
+Do not count every green node as a separate server.
+
+00:00:08.172 --> 00:00:14.429
+Trace one request and identify its resource
+mappings, scheduling, server count and service
+demand.
+
+00:00:14.429 --> 00:00:20.814
+Shared queues explain why different request classes
+can interfere even when their diagram paths look
+
+00:00:20.814 --> 00:00:21.389
+separate.
+
+00:00:21.400 --> 00:00:26.152
+A capacity change and an asynchronous redesign
+answer different questions.
+
+00:00:26.152 --> 00:00:32.188
+More servers can reduce queueing; moving work off
+the response path can reduce waiting without
+
+00:00:32.188 --> 00:00:33.344
+removing the work.
+
+00:00:33.344 --> 00:00:37.004
+Compare throughput, utilization and completion
+semantics.
+
+00:00:37.004 --> 00:00:42.976
+Also distinguish a confidence interval for a
+simulation estimate from a percentile of request
+
+00:00:42.976 --> 00:00:43.489
+latency.
+
+00:00:43.500 --> 00:00:46.577
+Our small lab illustrates queueing amplification.
+
+00:00:46.577 --> 00:00:52.668
+At seventy-five requests per second, changing mean
+service from eight to ten milliseconds changes
+
+00:00:52.668 --> 00:00:56.310
+predicted mean response from twenty to forty
+milliseconds.
+
+00:00:56.310 --> 00:00:59.449
+This relies on explicit single-server assumptions.
+
+00:00:59.449 --> 00:01:05.666
+Use it to understand the mechanism, then build and
+validate a model appropriate to the real system.

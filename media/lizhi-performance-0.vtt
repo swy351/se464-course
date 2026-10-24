@@ -1,0 +1,58 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:03.680
+A local slowdown is evidence, not an end-to-end
+forecast.
+
+00:00:03.680 --> 00:00:09.748
+A shorter parallel branch can slow without changing
+the join time, while a heavily used shared
+
+00:00:09.748 --> 00:00:12.072
+resource can amplify a small change.
+
+00:00:12.072 --> 00:00:18.205
+Lizhi’s approach combines early local measurements
+with an architectural model so we can reason
+
+00:00:18.205 --> 00:00:20.594
+about workload, paths and contention.
+
+00:00:20.600 --> 00:00:25.831
+Measure original and updated code under comparable
+conditions and repeat the runs.
+
+00:00:25.831 --> 00:00:30.807
+The lecture combines a distribution test, Cliff’s
+delta and a mean difference.
+
+00:00:30.807 --> 00:00:35.081
+Statistical evidence does not tell us the whole-
+system consequence.
+
+00:00:35.081 --> 00:00:41.142
+Keep the protocol and uncertainty visible, and avoid
+calling a noisy or mismatched experiment a
+
+00:00:41.142 --> 00:00:41.844
+regression.
+
+00:00:41.844 --> 00:00:46.654
+Map the local deviation to the modeled activity
+before updating a parameter.
+
+00:00:46.654 --> 00:00:51.844
+The lecture illustrates graph matching and
+propagation through the call structure.
+
+00:00:51.844 --> 00:00:57.097
+Keep units and measurement boundaries clear, and
+avoid double counting nested work.
+
+00:00:57.097 --> 00:01:03.046
+Compare original and changed models across
+workloads, then validate predictions independently.
+
+00:01:03.046 --> 00:01:07.476
+Experimental success in selected systems is not a
+universal guarantee.

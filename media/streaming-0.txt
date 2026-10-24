@@ -5,13 +5,11 @@ Distributed aggregates and data movement
 
 A sensor analysis job estimates the average reading across two partitions. One holds ten readings averaging twenty, and the other holds ninety readings averaging forty. Averaging the two local averages gives thirty, but the correct global mean is thirty-eight. Each worker must return both a sum and a count: two hundred plus three thousand six hundred, divided by one hundred. The summary must preserve the information needed to combine unequal partitions correctly. Compare that with finding the global minimum: each worker needs to send only its local minimum. The amount and meaning of intermediate data depend on the operation. Sending all raw readings to one coordinator may be correct, but can destroy the benefit of distributing the work. Design the summary, estimate transfer volume and then identify where combination happens. Some calculations require multiple communication rounds or richer intermediate state. More workers reduce only the parallel portion of the cost; data movement and coordination still need an explicit place in the performance model.
 
-Related lecture: CS-310 Lecture 19 - Distributed Computing at 10:35 — https://www.youtube.com/watch?v=7w6kNDf7DB0&t=635s
 
 MapReduce and finite batch jobs
 
 A transport agency wants total delay minutes by route from a finite day of trip records. Each mapper emits the route identifier and that trip's delay. The shuffle groups values by route, and each reducer sums its group. The programmer specifies meaningful transformations while the framework arranges tasks and intermediate movement. Following one route through those stages makes the key's role concrete: it determines which records must meet for aggregation. If one route has most of the trips, its reducer may dominate completion time even when other reducers finish early. Local combining can reduce transfer for a sum, but the design still needs to account for skew and recovery. A framework that retains reusable intermediate datasets in memory can help repeated analyses, while its lineage or persistence rules determine recovery after lost state. These are bounded batch computations. They do not by themselves specify event-time windows or handling of an endless stream, so keep those separate requirements visible when comparing batch and streaming architectures.
 
-Related lecture: CS-310 Lecture 19 - Distributed Computing at 29:28 — https://www.youtube.com/watch?v=7w6kNDf7DB0&t=1768s
 
 Continuous streams and state
 

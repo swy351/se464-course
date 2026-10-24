@@ -643,15 +643,6 @@
             "paragraphs": [
               "A museum catalogue runs a fast image lookup in isolation. During a school booking event, however, 600 visitors arrive together and compete for the same database connections. The lookup algorithm has not changed, but its operating conditions have. A service must keep accepting work over time, share finite resources among requests, and respond acceptably while arrivals overlap. A successful single-user demonstration therefore does not establish service capacity.",
               "Begin the capacity discussion with a workload: which operations arrive, how often, and with what acceptable latency and error rate? Suppose browsing costs much less than exporting a collection. Two tests at 200 requests per second can produce very different results if their operation mixes differ. Record both completed throughput and response-time distributions, including slow requests. Then increase arrivals until waiting or errors rise. This experiment distinguishes an audience-size claim from evidence that the architecture can support a particular demand."
-            ],
-            "sources": [
-              {
-                "lecture": 1,
-                "title": "CS-310 Lecture 01 - Types of Scaling",
-                "url": "https://www.youtube.com/watch?v=XNCahxAk7og&t=625s",
-                "time": "10:25",
-                "idea": "Move from algorithm input size to a service handling concurrent requests."
-              }
             ]
           }
         },
@@ -670,15 +661,6 @@
             "paragraphs": [
               "The museum first considers a larger machine and then a second application replica. If image processing consumes all available CPU, more cores may help when the work can run in parallel. If every request waits on the same database lock, another application machine can simply create more waiting. Vertical and horizontal scaling are changes to resource allocation; whether either helps depends on the resource or coordination point currently limiting useful work.",
               "Consider a worker that spends 10 milliseconds computing and 40 milliseconds waiting for a remote response. On one core, another request can use CPU during that wait, so concurrency can improve utilization without making the first computation faster. This is not a promise of a fivefold speedup: network limits, scheduling and shared dependencies still matter. Before choosing larger machines or additional replicas, measure CPU use, waiting time and contention. After changing capacity, repeat the same workload test to see whether the bottleneck moved elsewhere."
-            ],
-            "sources": [
-              {
-                "lecture": 1,
-                "title": "CS-310 Lecture 01 - Types of Scaling",
-                "url": "https://www.youtube.com/watch?v=XNCahxAk7og&t=1314s",
-                "time": "21:54",
-                "idea": "Contrast larger machines with additional machines and explain overlapping IO waits."
-              }
             ]
           }
         },
@@ -697,15 +679,6 @@
             "paragraphs": [
               "Follow a catalogue request through an arrival queue, application handling and a response. When all workers are busy, another request waits rather than receiving an immediate worker. If arrivals remain faster than completions, the queue grows. A bigger queue may absorb a short burst, but it does not create processing capacity. Bounded queues make overload explicit and let the service reject or defer work instead of allowing unlimited memory growth and increasingly late answers.",
               "The client sends an HTTP method, target and fields, with optional content; the service returns a status, fields and optional content. A framework translates that contract into application calls and manages network activity. It might use threads, processes or asynchronous handlers. Those choices affect how waits are managed, but they do not change the meaning of GET or a response status. In a design review, draw both the public request contract and the internal queues: one explains interoperability, while the other explains what users experience during a burst."
-            ],
-            "sources": [
-              {
-                "lecture": 2,
-                "title": "CS-310 Lecture 02 - HTTP and Web Servers",
-                "url": "https://www.youtube.com/watch?v=Mw_Ks6F_eWs&t=329s",
-                "time": "5:29",
-                "idea": "Use a request queue, worker computation and response queue to expose coordination."
-              }
             ]
           }
         },
@@ -724,15 +697,6 @@
             "paragraphs": [
               "Apply the chapter’s rendering pipeline to a different service: a museum collection page. A browser requests an exhibit; the application reads its description from durable storage, formats the description, adds navigation and returns HTML. The database owns saved content, while the application constructs a representation for a reader. Labelling these responsibilities makes the architecture diagram useful: each arrow should identify a request or data transfer, rather than simply connecting boxes.",
               "Now compare two visitors reading the same exhibit. They can share the description and public image, but one visitor’s private saved-list indicator must not become the other visitor’s answer. This observation identifies possible reuse boundaries before choosing a cache. Trace a second request after an exhibit description changes, and explain which component must observe that update. The point of the historical diagram is this method of reasoning about repeated computation, durable state and personalized output; its component names are not a prescription for a modern deployment."
-            ],
-            "sources": [
-              {
-                "lecture": 2,
-                "title": "CS-310 Lecture 02 - HTTP and Web Servers",
-                "url": "https://www.youtube.com/watch?v=Mw_Ks6F_eWs&t=1606s",
-                "time": "26:46",
-                "idea": "Walk through retrieving durable text, rendering HTML and adding personalized output."
-              }
             ]
           }
         }
@@ -796,20 +760,7 @@
         "answer": "Two workers cap ideal throughput at 10; four workers move the cap to the database at 12. At a steady arrival rate of 15, the queue continues to grow. Measure throughput, tail latency, errors, CPU, database wait time, and query costs under a reproducible workload. Consider reducing database work and controlling admission before adding further workers."
       },
       "schedule": "Week 3 · September 21 & 23",
-      "lectureEnhanced": true,
-      "lectureSummary": "Connect service workload, resource bottlenecks, concurrency and an end-to-end request with a new museum collection example.",
-      "lectureSources": [
-        {
-          "number": 1,
-          "title": "CS-310 Lecture 01 - Types of Scaling",
-          "url": "https://www.youtube.com/watch?v=XNCahxAk7og"
-        },
-        {
-          "number": 2,
-          "title": "CS-310 Lecture 02 - HTTP and Web Servers",
-          "url": "https://www.youtube.com/watch?v=Mw_Ks6F_eWs"
-        }
-      ]
+      "lectureEnhanced": true
     },
     {
       "id": "cache",
@@ -835,15 +786,6 @@
             "paragraphs": [
               "A bicycle rental application remembers an unfinished booking in worker A’s memory. The customer’s next request reaches worker B, which has never seen the booking. Both workers run identical code, but they are not interchangeable for this interaction because their retained information differs. Calling the protocol HTTP does not remove that dependency: application state can exist above a stateless request protocol. Identify the information needed for the next operation and locate its authoritative copy.",
               "A stateless worker may still read changing data and perform writes. For example, it can accept a booking identifier, load that booking from shared storage and update it there. The worker does not need the customer’s previous requests to have visited that same process. This distinction separates deployment statelessness from a mathematical pure function. To test your design, replace the worker between consecutive requests. If another healthy worker can continue using the request and shared services, the application has avoided a hidden dependency on the original process."
-            ],
-            "sources": [
-              {
-                "lecture": 3,
-                "title": "CS-310 Lecture 03 - Stateless Services",
-                "url": "https://www.youtube.com/watch?v=XnFsxRDnthg&t=143s",
-                "time": "2:23",
-                "idea": "Ask whether different workers retain different information from previous requests."
-              }
             ]
           }
         },
@@ -862,15 +804,6 @@
             "paragraphs": [
               "Move the bicycle booking into shared storage, and a replacement worker can retrieve it after a restart. That improves replaceability but exposes a second question: what if two workers reserve the final bicycle concurrently? If both read availability before either writes, each may believe the reservation is valid. Shared storage solves access to a common record; a suitable atomic operation or version check must also protect the booking rule.",
               "For example, worker A reads booking version 12, while worker B changes it to version 13. A conditional update based on version 12 should now fail rather than silently overwrite B’s change. The application can reload and explain the conflict. A session cookie can identify the customer whose request is being processed, but it does not itself enforce inventory correctness. Explain these responsibilities separately: the request carries identity or a session reference, shared storage retains durable state, and the update protocol decides which concurrent change is accepted."
-            ],
-            "sources": [
-              {
-                "lecture": 3,
-                "title": "CS-310 Lecture 03 - Stateless Services",
-                "url": "https://www.youtube.com/watch?v=XnFsxRDnthg&t=1445s",
-                "time": "24:05",
-                "idea": "Separate shared system state from replaceable application request handlers."
-              }
             ]
           }
         },
@@ -889,22 +822,6 @@
             "paragraphs": [
               "Trace a cache with room for two exhibit descriptions through accesses A, B, A, C, B. A and B initially miss and fill the cache. The second A is a hit and makes A the most recently used entry. C then misses and evicts B under least recently used eviction. The final B misses and evicts A. Only one of these five accesses hits, showing that a cache’s benefit depends on access order and capacity, not merely on its existence.",
               "In a managed cache design, application code performs this lookup and fill around storage access. With a caching proxy, the client uses its normal request interface while the intermediary manages eligible reuse. Both still need a valid key and freshness policy. A load-balancing proxy performs a different decision: which backend should receive work that must be forwarded? One component may implement both roles, but a diagram should make clear whether it is selecting a worker, serving saved content, or doing both."
-            ],
-            "sources": [
-              {
-                "lecture": 4,
-                "title": "CS-310 Lecture 04 - Proxies and Caches",
-                "url": "https://www.youtube.com/watch?v=jqR8GJIq1Kc&t=124s",
-                "time": "2:04",
-                "idea": "Explain proxy forwarding before adding saved responses and cache management."
-              },
-              {
-                "lecture": 4,
-                "title": "CS-310 Lecture 04 - Proxies and Caches",
-                "url": "https://www.youtube.com/watch?v=jqR8GJIq1Kc&t=822s",
-                "time": "13:42",
-                "idea": "Connect eviction choice to recent access patterns; distinguish managed and transparent caches."
-              }
             ]
           }
         },
@@ -923,22 +840,6 @@
             "paragraphs": [
               "Suppose an exhibit launch receives 800 eligible reads each second and the measured cache hit ratio is 85 percent. Under a simple model with one backing read per miss and no revalidation traffic, only 120 reads per second reach the backing service. This gain follows from repeated demand for reusable content. If requests become personalized or spread across many rarely repeated items, the same cache may achieve a much lower hit ratio.",
               "Freshness is a separate decision. A public exhibit description might tolerate a short stale interval, while a reservation confirmation needs a different policy. Versioned image names let old and new images coexist without changing an existing cache entry. For mutable responses, distinguish expiration, validation and storage prohibition. No-cache can allow storage but requires successful validation before reuse; no-store forbids storage. A private response cannot become a shared-cache answer simply because it has a long freshness lifetime. Always explain whose requests are allowed to reuse an entry."
-            ],
-            "sources": [
-              {
-                "lecture": 4,
-                "title": "CS-310 Lecture 04 - Proxies and Caches",
-                "url": "https://www.youtube.com/watch?v=jqR8GJIq1Kc&t=1161s",
-                "time": "19:21",
-                "idea": "Explain why a popular subset can cover much of a skewed workload."
-              },
-              {
-                "lecture": 4,
-                "title": "CS-310 Lecture 04 - Proxies and Caches",
-                "url": "https://www.youtube.com/watch?v=jqR8GJIq1Kc&t=1549s",
-                "time": "25:49",
-                "idea": "Compare cache expiration with versioned immutable data."
-              }
             ]
           }
         }
@@ -1002,20 +903,7 @@
         "answer": "Cache public responses only when their freshness and variation rules allow it. Keep personalized results out of shared caches unless a carefully designed private partitioning scheme permits it. Define TTL, validation, or invalidation for updated course content. Versioned immutable assets simplify cache reuse. Include cache keys, user identity, and stale-content tolerance in the design."
       },
       "schedule": "Week 3 · September 21 & 23",
-      "lectureEnhanced": true,
-      "lectureSummary": "Add explicit state-location reasoning, concurrent updates, a worked cache access trace and distinct freshness policies.",
-      "lectureSources": [
-        {
-          "number": 3,
-          "title": "CS-310 Lecture 03 - Stateless Services",
-          "url": "https://www.youtube.com/watch?v=XnFsxRDnthg"
-        },
-        {
-          "number": 4,
-          "title": "CS-310 Lecture 04 - Proxies and Caches",
-          "url": "https://www.youtube.com/watch?v=jqR8GJIq1Kc"
-        }
-      ]
+      "lectureEnhanced": true
     },
     {
       "id": "db1",
@@ -1041,15 +929,6 @@
             "paragraphs": [
               "A repair-booking service runs on six application servers. Each booking needs three database operations. If the database sustains 1,800 such operations per second, the idealized ceiling is 600 bookings per second, regardless of how many otherwise idle application servers are added. This estimate assumes equal operation costs and no competing workload; measurements must check those assumptions.",
               "Now suppose a frequently read parts catalogue fits in the database buffer cache. Repeated reads may avoid storage access, but writes, locks and network transfers still consume resources. Adding disks could improve storage throughput without fixing a CPU-bound query or a contended record. Separate durable storage, coordination and query execution when explaining why the database remains busy after the web tier scales."
-            ],
-            "sources": [
-              {
-                "lecture": 8,
-                "title": "CS-310 Lecture 08 - Relational Databases",
-                "url": "https://www.youtube.com/watch?v=CnuMUoJjaPo&t=309s",
-                "time": "5:09",
-                "idea": "A shared database provides coordination and persistence for replicated application services."
-              }
             ]
           }
         },
@@ -1068,22 +947,6 @@
             "paragraphs": [
               "A bicycle library stores Bicycle, Branch and Loan tables. Each bicycle refers to its current branch, and each loan refers to one bicycle and one borrower. Renaming a branch changes one branch record rather than every bicycle description. A loan-history page joins those records to display useful information without storing a duplicate branch name in every loan.",
               "For a query asking for one borrower’s active loans, the database can first identify a small set of matching loans and then look up their bicycles. Reading every bicycle before filtering could do much more work. The execution plan reveals the chosen access path; the schema alone does not guarantee it. Also decide whether the page should display the branch’s current name or preserve its historical name when the loan occurred."
-            ],
-            "sources": [
-              {
-                "lecture": 8,
-                "title": "CS-310 Lecture 08 - Relational Databases",
-                "url": "https://www.youtube.com/watch?v=CnuMUoJjaPo&t=2164s",
-                "time": "36:04",
-                "idea": "Rows reference shared facts through foreign keys."
-              },
-              {
-                "lecture": 8,
-                "title": "CS-310 Lecture 08 - Relational Databases",
-                "url": "https://www.youtube.com/watch?v=CnuMUoJjaPo&t=4455s",
-                "time": "74:15",
-                "idea": "Inspect query execution plans to understand access order and indexes."
-              }
             ]
           }
         },
@@ -1102,15 +965,6 @@
             "paragraphs": [
               "A parcel service frequently asks for a particular depot’s shipments created during the last hour. An ordered index on (depot_id, created_at) groups one depot’s entries and then narrows the time interval. A query for all depots during that hour may need a different plan because its predicate omits the leading column. The optimizer and data distribution determine the actual access path.",
               "Suppose that targeted query examines 240 index entries instead of scanning 800,000 shipment rows. That is a promising reduction in examined data, not a guaranteed latency ratio. Every inserted shipment must also update the index. Compare execution plans and measured response times before and after the change, including ingestion throughput, index size and unusually busy depots. An index is a maintained copy of ordering information, not free acceleration."
-            ],
-            "sources": [
-              {
-                "lecture": 8,
-                "title": "CS-310 Lecture 08 - Relational Databases",
-                "url": "https://www.youtube.com/watch?v=CnuMUoJjaPo&t=4540s",
-                "time": "75:40",
-                "idea": "Indexes improve access but require storage and maintenance on writes."
-              }
             ]
           }
         },
@@ -1129,22 +983,6 @@
             "paragraphs": [
               "A tutoring service updates a student’s appointment time on the primary database. A replica that has not yet applied the change still returns the old time. The write can have succeeded even though an immediately refreshed page looks unchanged. Historical appointment reports may tolerate this delay; the confirmation shown to the student should follow a path that satisfies the promised freshness.",
               "Imagine one primary handling 400 writes and 3,000 reads per second. Moving 2,400 eligible reads to three replicas leaves roughly 600 reads on the primary, but each replica must still apply the write stream. This is a workload sketch, not a capacity guarantee. If the primary fails, promoting a standby requires establishing a single writer and understanding which acknowledged writes it contains. A timeout alone does not establish that the previous writer has stopped."
-            ],
-            "sources": [
-              {
-                "lecture": 9,
-                "title": "CS-310 Lecture 09 - SQL Database Scaling",
-                "url": "https://www.youtube.com/watch?v=Ajy7C9-UIus&t=1001s",
-                "time": "16:41",
-                "idea": "Read replicas copy data while writes stay on the primary."
-              },
-              {
-                "lecture": 9,
-                "title": "CS-310 Lecture 09 - SQL Database Scaling",
-                "url": "https://www.youtube.com/watch?v=Ajy7C9-UIus&t=2078s",
-                "time": "34:38",
-                "idea": "A standby can replace a failed primary; implementation is not trivial."
-              }
             ]
           }
         },
@@ -1163,15 +1001,6 @@
             "paragraphs": [
               "A maintenance platform shards equipment records by customer. Fetching one customer’s inspection history stays on a single shard, while a report across all customers contacts several shards and merges their results. Placing customers evenly by count can still overload a shard containing a huge customer; traffic and record size matter as well as the routing rule.",
               "In a simplified balanced model, eight shards each provide 500 equal-cost operations per second. Requests touching one shard have an upper bound near 4,000 requests per second. If each request touches four shards, the bound drops to about 1,000. If it touches all eight, it drops to 500. Parallel requests may finish sooner than serial requests, but each still consumes cluster work. Cross-shard updates additionally need an explicit atomicity or reconciliation strategy."
-            ],
-            "sources": [
-              {
-                "lecture": 9,
-                "title": "CS-310 Lecture 09 - SQL Database Scaling",
-                "url": "https://www.youtube.com/watch?v=Ajy7C9-UIus&t=2920s",
-                "time": "48:40",
-                "idea": "Requests touching k nodes consume k nodes of work; all-node fan-out removes ideal throughput scaling."
-              }
             ]
           }
         }
@@ -1237,20 +1066,7 @@
         "answer": "A user’s own posts can be located in one shard and filtered with a suitable index. Friends may span many shards, requiring parallel queries and a merge of candidate results. The shard key trades locality against balance. Read replicas share read load but may lag and do not inherently distribute writes or increase per-replica data capacity."
       },
       "schedule": "Week 4 · September 28",
-      "lectureEnhanced": true,
-      "lectureSummary": "Adds original capacity, schema, index, replica and sharding examples, with measured-workload assumptions.",
-      "lectureSources": [
-        {
-          "number": 8,
-          "title": "CS-310 Lecture 08 - Relational Databases",
-          "url": "https://www.youtube.com/watch?v=CnuMUoJjaPo"
-        },
-        {
-          "number": 9,
-          "title": "CS-310 Lecture 09 - SQL Database Scaling",
-          "url": "https://www.youtube.com/watch?v=Ajy7C9-UIus"
-        }
-      ]
+      "lectureEnhanced": true
     },
     {
       "id": "db2",
@@ -1276,22 +1092,6 @@
             "paragraphs": [
               "A campsite booking page needs a reservation, its selected facilities and a short site description. Embedding a snapshot of the booked facilities can make that page a single aggregate read. Keeping the current site description separately avoids rewriting thousands of reservations whenever the description changes. The correct boundary depends on whether the page promises historical booking details or the latest catalogue information.",
               "Suppose 2,000 reservations contain a copied access instruction. A correction now requires updating many copies or accepting mixed versions during propagation. By contrast, a historical price agreed at booking should usually remain a snapshot. Denormalization is therefore a choice about update ownership and meaning, as well as query speed. List each embedded field, its authoritative source and the rule for changing it before celebrating fewer network lookups."
-            ],
-            "sources": [
-              {
-                "lecture": 13,
-                "title": "CS-310 Lecture 13 - Distributed NoSQL Databases",
-                "url": "https://www.youtube.com/watch?v=t-99_cPL1O8&t=342s",
-                "time": "5:42",
-                "idea": "Partition references so common reads avoid crossing machines."
-              },
-              {
-                "lecture": 13,
-                "title": "CS-310 Lecture 13 - Distributed NoSQL Databases",
-                "url": "https://www.youtube.com/watch?v=t-99_cPL1O8&t=772s",
-                "time": "12:52",
-                "idea": "Denormalization duplicates related facts to obtain locality."
-              }
             ]
           }
         },
@@ -1310,15 +1110,6 @@
             "paragraphs": [
               "Consider a toy hash space with values zero through ninety-nine, divided into four equal ranges. A parcel identifier hashing to sixty-two is routed to the owner of the fifty-through-seventy-four range. The client needs the current ownership map as well as the hash function. When ownership changes, migration and routing must agree so requests do not silently read the wrong place.",
               "Evenly distributed identifiers do not imply evenly distributed traffic. If one parcel receives half the tracking requests, its owner can remain overloaded while other owners are idle. Adding machines does not split that individual key’s requests automatically. Similarly, hashes scatter nearby timestamps, so a query for all parcels created between two times cannot simply walk adjacent hash values. Separate point lookup, range lookup and hot-key mitigation when evaluating the design."
-            ],
-            "sources": [
-              {
-                "lecture": 13,
-                "title": "CS-310 Lecture 13 - Distributed NoSQL Databases",
-                "url": "https://www.youtube.com/watch?v=t-99_cPL1O8&t=1491s",
-                "time": "24:51",
-                "idea": "Clients compute a hash and use the range ownership map to route directly."
-              }
             ]
           }
         },
@@ -1337,15 +1128,6 @@
             "paragraphs": [
               "A tool-rental service keeps three copies of an availability record. A network break isolates one copy from the other two. If both sides independently confirm rental of the final drill, later reconciliation cannot make both promises physically possible. A design protecting that single-item invariant may require the isolated side to refuse or delay the booking while the majority continues.",
               "A less critical observation, such as a customer’s preferred display colour, may be accepted on both sides and reconciled later. This illustrates the CAP trade-off during a partition: linearizable behavior and a successful response to every request at non-failing nodes cannot both be guaranteed. It does not say replication is always unavailable or always inconsistent. State the operation, its invariant and the failure condition rather than assigning one slogan to the entire application."
-            ],
-            "sources": [
-              {
-                "lecture": 14,
-                "title": "CS-310 Lecture 14 - Distributed DB Consistency",
-                "url": "https://www.youtube.com/watch?v=Vpq6TUY7v6I&t=831s",
-                "time": "13:51",
-                "idea": "When partitioned nodes cannot coordinate, behavior trades consistency against waiting."
-              }
             ]
           }
         },
@@ -1364,22 +1146,6 @@
             "paragraphs": [
               "A field technician saves inspection version twelve and then reads the report through another replica that has reached only version eleven. Returning eleven violates read-your-writes. Later, after the technician has seen version thirteen, returning twelve violates monotonic reads even if twelve includes the technician’s own earlier change. These guarantees protect different parts of the user’s experience.",
               "One design attaches a progress token to the session. A chosen replica serves the read only after reaching the required progress, or the request moves to a suitable replica. In this simplified single-record example the token can be a version; multi-partition systems need richer tracking. Pinning a session can reduce switches but does not by itself handle replica failure. Waiting a fixed number of milliseconds is also insufficient because replication delay is not bounded by that timer."
-            ],
-            "sources": [
-              {
-                "lecture": 14,
-                "title": "CS-310 Lecture 14 - Distributed DB Consistency",
-                "url": "https://www.youtube.com/watch?v=Vpq6TUY7v6I&t=1157s",
-                "time": "19:17",
-                "idea": "Client-centric guarantees distinguish monotonic reads, read-your-writes and monotonic writes."
-              },
-              {
-                "lecture": 14,
-                "title": "CS-310 Lecture 14 - Distributed DB Consistency",
-                "url": "https://www.youtube.com/watch?v=Vpq6TUY7v6I&t=780s",
-                "time": "13:00",
-                "idea": "A fixed wait cannot guarantee propagation when delay is unbounded."
-              }
             ]
           }
         },
@@ -1398,15 +1164,6 @@
             "paragraphs": [
               "A record has five designated replicas. A write waits for acknowledgements from three, and a read obtains responses from three. Every possible pair of those sets overlaps because three plus three exceeds five. If two replicas are unreachable, the remaining three can still supply the required responses, assuming they are mutually reachable and the protocol’s other conditions hold.",
               "Changing the policy to five write acknowledgements and one read response also creates overlap, but now one unavailable replica prevents writes. Neither arithmetic rule alone specifies how a reader handles different versions, concurrent writes or a write that reached some replicas before its client timed out. Those require protocol rules. Apply the calculation to the replica set for this record, not to the total number of machines in a large partitioned cluster."
-            ],
-            "sources": [
-              {
-                "lecture": 14,
-                "title": "CS-310 Lecture 14 - Distributed DB Consistency",
-                "url": "https://www.youtube.com/watch?v=Vpq6TUY7v6I&t=2241s",
-                "time": "37:21",
-                "idea": "Quorums wait for a required number of replica responses."
-              }
             ]
           }
         },
@@ -1425,15 +1182,6 @@
             "paragraphs": [
               "A depot changes a gate code from A to B. The update completes before a different operator begins a read. For a linearizable register with no intervening write, that read must return B. If the read overlapped the update, returning either value might be legal, depending on where the operations take effect within their execution intervals.",
               "Now let both operators remain on separate replicas. Each may see an internally sensible sequence while the second operator still reads A after the completed update. Preserving each client’s order does not enforce this cross-client real-time relationship. A linearizable read also cannot guarantee that a later, separate action uses current data: another write can occur between them. Protecting a combined business operation may require a suitable transaction or conditional update in addition to clear read semantics."
-            ],
-            "sources": [
-              {
-                "lecture": 14,
-                "title": "CS-310 Lecture 14 - Distributed DB Consistency",
-                "url": "https://www.youtube.com/watch?v=Vpq6TUY7v6I&t=3071s",
-                "time": "51:11",
-                "idea": "The lecture introduces histories and client-observed action order; this enhancement distinguishes that from the full real-time condition of linearizability."
-              }
             ]
           }
         }
@@ -1515,20 +1263,7 @@
         "answer": "Both choices satisfy R+W>N, so successful read and write quorums overlap in the simple fixed-replica model. With one unreachable replica, R=2,W=2 can still meet both quorums; R=1,W=3 can read but cannot complete its configured write quorum. Overlap alone is not a proof of linearizability. Discuss version ordering, concurrent writes, repair, and the failure assumptions."
       },
       "schedule": "Week 4–5 · September 30; October 5",
-      "lectureEnhanced": true,
-      "lectureSummary": "Adds original locality and consistency traces; separates CAP under partition, session guarantees, quorum intersection and linearizability.",
-      "lectureSources": [
-        {
-          "number": 13,
-          "title": "CS-310 Lecture 13 - Distributed NoSQL Databases",
-          "url": "https://www.youtube.com/watch?v=t-99_cPL1O8"
-        },
-        {
-          "number": 14,
-          "title": "CS-310 Lecture 14 - Distributed DB Consistency",
-          "url": "https://www.youtube.com/watch?v=Vpq6TUY7v6I"
-        }
-      ]
+      "lectureEnhanced": true
     },
     {
       "id": "choosing",
@@ -1554,15 +1289,6 @@
             "paragraphs": [
               "A community workshop needs to reserve machines, search project descriptions and serve tutorial photographs. Reservations must not overlap for the same machine. Search can tolerate a short indexing delay, while photographs are large immutable objects once published. These are three access patterns within one product; the shared user interface does not imply identical storage requirements.",
               "Begin with a relational reservation store and object storage for photographs, then evaluate whether its existing text-search capability is sufficient. A separate search service becomes worthwhile only when requirements justify its indexing pipeline and recovery work. Record expected request rates, acceptable staleness, atomic operations and who operates each component. A technically capable store may still be a poor choice if the team cannot back it up, diagnose failures or restore it within the required time."
-            ],
-            "sources": [
-              {
-                "lecture": 15,
-                "title": "CS-310 Lecture 15 - Choosing a Database",
-                "url": "https://www.youtube.com/watch?v=NS2Yr79fC7k&t=1356s",
-                "time": "22:36",
-                "idea": "Data abstractions and access patterns drive storage selection."
-              }
             ]
           }
         },
@@ -1581,15 +1307,6 @@
             "paragraphs": [
               "A makerspace has one spare projector. Two requests each read available_count equal to one and both attempt a booking. Wrapping each request’s statements in a transaction gives all-or-nothing changes, but does not by itself specify isolation strong enough to prevent both from making the same decision. The read-and-update interaction needs deliberate concurrency control.",
               "One approach conditionally decrements the count only when it is positive, checks whether exactly one row changed, and creates the reservation in the same transaction. The database’s supported atomic update semantics must ensure competing updates are evaluated safely. The losing request reports unavailability rather than inserting a booking. If creating the reservation fails, the decrement rolls back. Retried requests also need a way to recognize an already committed booking rather than silently creating a second one."
-            ],
-            "sources": [
-              {
-                "lecture": 15,
-                "title": "CS-310 Lecture 15 - Choosing a Database",
-                "url": "https://www.youtube.com/watch?v=NS2Yr79fC7k&t=476s",
-                "time": "7:56",
-                "idea": "The lecture motivates transactions with grouped changes; this enhancement explicitly distinguishes atomicity and concurrency control."
-              }
             ]
           }
         },
@@ -1608,15 +1325,6 @@
             "paragraphs": [
               "A delivery dashboard computes average journey time by district from 120 million events. It needs district, duration and date, but not the driver’s notes or the full delivery address. A column-oriented representation can read a smaller relevant subset and compress repeated values. The final result may contain only a few dozen rows, so aggregation near storage avoids transferring the entire event collection.",
               "The operational service instead checks and updates one delivery’s state repeatedly throughout the day. That is a different access pattern, even if both stores accept SQL. If analytics imports events every fifteen minutes, a dashboard can omit recent completed deliveries without either database being broken. Display the data’s freshness and use the operational source for decisions that require current state. Benchmark representative queries rather than assuming a storage layout makes every query faster."
-            ],
-            "sources": [
-              {
-                "lecture": 15,
-                "title": "CS-310 Lecture 15 - Choosing a Database",
-                "url": "https://www.youtube.com/watch?v=NS2Yr79fC7k&t=1749s",
-                "time": "29:09",
-                "idea": "Analytical copies may lag while supporting broad scans."
-              }
             ]
           }
         },
@@ -1635,15 +1343,6 @@
             "paragraphs": [
               "A museum stores exhibit descriptions as documents. For keyword search, an inverted index might map “bronze” to documents {4, 9, 12} and “river” to {9, 15}. Their intersection returns document 9 for a query requiring both words. This explains retrieval mechanics, but ranking and language handling need additional rules. Updating the document also requires updating its searchable representation.",
               "For temperature readings, a different design uses sensor_id and day as the partition key and observation_time as the within-partition ordering key. This supports one sensor’s daily range query while bounding partition growth. Searching every sensor for one interval may need another access path. A search index can lag its source, and a telemetry partition can become hot. Neither a document shape nor a key-value interface removes these workload and consistency questions."
-            ],
-            "sources": [
-              {
-                "lecture": 15,
-                "title": "CS-310 Lecture 15 - Choosing a Database",
-                "url": "https://www.youtube.com/watch?v=NS2Yr79fC7k&t=2054s",
-                "time": "34:14",
-                "idea": "An inverted index maps words to collections of document identifiers."
-              }
             ]
           }
         },
@@ -1662,15 +1361,6 @@
             "paragraphs": [
               "A recreation centre shows a cached count of available places on its home page. The count can be briefly stale, but the booking operation checks the authoritative reservation store. This separates a fast informational view from the decision that commits scarce capacity. A time-to-live limits how long one cached value remains eligible; it does not make that value current at every instant.",
               "For a weekly activity ranking, a sorted-set abstraction can update one participant’s score without rewriting the entire ranking. Before adopting it, decide whether the ranking can be rebuilt from durable events and what happens after eviction or restart. Also plan how simultaneous cache misses avoid overwhelming the origin. A reverse-proxy cache of a whole public page sits at a different layer from these application-managed values, even when both reduce repeated work."
-            ],
-            "sources": [
-              {
-                "lecture": 15,
-                "title": "CS-310 Lecture 15 - Choosing a Database",
-                "url": "https://www.youtube.com/watch?v=NS2Yr79fC7k&t=2504s",
-                "time": "41:44",
-                "idea": "In-memory stores offer operations on structured values and can serve cache roles."
-              }
             ]
           }
         },
@@ -1689,22 +1379,6 @@
             "paragraphs": [
               "A wildlife archive stores short audio recordings as objects and keeps their searchable metadata in a database. Clients request a recording by an object identifier rather than mounting the archive as a disk. A legacy analysis program that expects directories and file operations may instead need a filesystem interface. A block volume provides lower-level storage on which a filesystem can be created; it is not itself a shared file service.",
               "The recording and its metadata form a cross-system workflow. If an upload succeeds but the metadata write fails, the archive needs a cleanup or retry rule so abandoned objects do not accumulate. If metadata is published before upload completion, users may receive broken links. Draw these failure paths before adding stores. The final architecture should identify ownership, identifiers, access control, recovery and the reason each separate abstraction is necessary."
-            ],
-            "sources": [
-              {
-                "lecture": 15,
-                "title": "CS-310 Lecture 15 - Choosing a Database",
-                "url": "https://www.youtube.com/watch?v=NS2Yr79fC7k&t=3063s",
-                "time": "51:03",
-                "idea": "Mounted filesystems preserve a file interface."
-              },
-              {
-                "lecture": 15,
-                "title": "CS-310 Lecture 15 - Choosing a Database",
-                "url": "https://www.youtube.com/watch?v=NS2Yr79fC7k&t=3143s",
-                "time": "52:23",
-                "idea": "Cloud object stores expose network APIs and media delivery links."
-              }
             ]
           }
         }
@@ -1787,15 +1461,7 @@
         "answer": "Use a transactional source for enrolment invariants, object storage for large media, a search index for text retrieval, and an analytical store when broad scans justify one. These are workload-based candidates rather than mandatory products. Define authoritative ownership, change propagation, rebuildability, freshness, access control, and failure recovery for derived indexes and reports."
       },
       "schedule": "Week 5 · October 5",
-      "lectureEnhanced": true,
-      "lectureSummary": "Adds an operation-first selection narrative, safe concurrent reservation example, derived-index freshness and cross-store failure paths.",
-      "lectureSources": [
-        {
-          "number": 15,
-          "title": "CS-310 Lecture 15 - Choosing a Database",
-          "url": "https://www.youtube.com/watch?v=NS2Yr79fC7k"
-        }
-      ]
+      "lectureEnhanced": true
     },
     {
       "id": "rest",
@@ -1821,15 +1487,6 @@
             "paragraphs": [
               "A maintenance service exposes GET /tickets/731. A successful response includes a ticket identifier, a status and an estimated duration. The JSON shape alone is insufficient: clients need to know whether duration means minutes or seconds, whether a missing estimate is null or omitted, and what happens when a ticket is unavailable. An API contract therefore includes meaning and failure behavior as well as a syntactically valid example.",
               "Choose the method before inventing an endpoint name. A read should not close the ticket as a side effect. A replacement request to a known ticket target differs from submitting a new work request for the service to process. Document authorization failures and absent resources so clients can react appropriately. Use HTTPS for transport protection, and avoid placing access tokens in example query strings that might appear in logs. These decisions help separate an interoperable service boundary from a collection of loosely specified network calls."
-            ],
-            "sources": [
-              {
-                "lecture": 5,
-                "title": "CS-310 Lecture 05 - REST APIs and Data Serialization",
-                "url": "https://www.youtube.com/watch?v=2F4CYIqCdYo&t=939s",
-                "time": "15:39",
-                "idea": "Define inputs, actions and outputs as the service contract."
-              }
             ]
           }
         },
@@ -1848,15 +1505,6 @@
             "paragraphs": [
               "A client submits a repair request and loses its connection before receiving the response. It cannot tell whether the server committed the work. Retrying is therefore an uncertainty problem, not proof that the first attempt failed. A stable target helps: repeating a request to set ticket 731 to the same intended state can be designed to have the same intended effect as one attempt. That does not require identical response bytes or status codes.",
               "Contrast this with an operation that closes whichever ticket is currently oldest. After the first success, a retry could close a different ticket. The resource identity moves, so repetition changes the intended effect. Use an explicit ticket identifier for that operation. For creation through POST, define a deduplication mechanism if retries must not create another request. PUT and DELETE have idempotent method semantics; POST and PATCH are not generally guaranteed idempotent. The implementation must honor the chosen contract rather than relying on the method name to repair unsafe behavior."
-            ],
-            "sources": [
-              {
-                "lecture": 5,
-                "title": "CS-310 Lecture 05 - REST APIs and Data Serialization",
-                "url": "https://www.youtube.com/watch?v=2F4CYIqCdYo&t=979s",
-                "time": "16:19",
-                "idea": "Reason about repeated requests and the intended effect of PUT versus POST."
-              }
             ]
           }
         },
@@ -1875,15 +1523,6 @@
             "paragraphs": [
               "Two maintenance tickets refer to the same building, and that building record refers to its active tickets. Naively nesting the entire building inside each ticket duplicates data. Following the building’s ticket references recursively can also create an endless cycle. The in-memory structure is a graph, while ordinary nested JSON values form a tree. Serialization must decide how to represent identity and relationships instead of blindly walking every pointer.",
               "One representation emits building B9 once, emits tickets T1 and T2 once, and links each ticket with buildingId B9. The client resolves those identifiers using the agreed response structure or additional API requests. This reduces duplication but requires a rule for missing references and for when related objects become available. Also distinguish text length from byte length: a title containing accented characters can occupy more UTF-8 bytes than its character count. Schema choices, reference rules and encoding all belong to the data exchange contract."
-            ],
-            "sources": [
-              {
-                "lecture": 5,
-                "title": "CS-310 Lecture 05 - REST APIs and Data Serialization",
-                "url": "https://www.youtube.com/watch?v=2F4CYIqCdYo&t=2796s",
-                "time": "46:36",
-                "idea": "Expose duplicated objects and cycles when serializing reference graphs."
-              }
             ]
           }
         },
@@ -1902,15 +1541,6 @@
             "paragraphs": [
               "The maintenance team supports a browser dashboard and an internal batch client. It first lists requirements: available client libraries, message sizes, streaming needs, debugging tools and expected compatibility. A familiar HTTP and JSON interface may make integration easy, while a schema-driven binary representation may be useful for another workload. The decision should compare complete systems under realistic requests, not assume that a smaller encoded message automatically makes the service faster.",
               "Keep the design layers visible. REST describes architectural constraints, HTTP defines protocol semantics, and JSON or Protocol Buffers encode data. An RPC framework supplies another set of conventions and tools; binary serialization can still travel over HTTP, as in common gRPC deployments. Reusing HTTP infrastructure also means respecting its caching and retry rules. Before changing formats, measure where time is spent: if most latency is a database wait, saving a few bytes may have little effect. Select an interface that meets the operational and compatibility needs you actually have."
-            ],
-            "sources": [
-              {
-                "lecture": 5,
-                "title": "CS-310 Lecture 05 - REST APIs and Data Serialization",
-                "url": "https://www.youtube.com/watch?v=2F4CYIqCdYo&t=3120s",
-                "time": "52:00",
-                "idea": "Compare HTTP infrastructure reuse with complexity and representation tradeoffs."
-              }
             ]
           }
         }
@@ -2000,15 +1630,7 @@
         "answer": "Use stable identifiers or an idempotency key with a defined deduplication lifetime. PUT to a client-chosen stable resource can support retry-safe creation if the semantics fit; POST can also support application-level idempotency. DELETE a stable submission ID, not a moving “latest” target. Define authorization and conflicts. Validate JSON without trailing commas and distinguish protocol semantics from payload format."
       },
       "schedule": "Week 5 · October 7",
-      "lectureEnhanced": true,
-      "lectureSummary": "Add original repair-ticket API examples for contracts, retry uncertainty, graph serialization and protocol selection.",
-      "lectureSources": [
-        {
-          "number": 5,
-          "title": "CS-310 Lecture 05 - REST APIs and Data Serialization",
-          "url": "https://www.youtube.com/watch?v=2F4CYIqCdYo"
-        }
-      ]
+      "lectureEnhanced": true
     },
     {
       "id": "micro",
@@ -2034,15 +1656,6 @@
             "paragraphs": [
               "A repair platform contains ticketing, technician scheduling and customer notifications in one deployable application. Running four copies behind a load balancer creates four replicas of that application. It does not create four business services. Each replica can still execute all three responsibilities, and a release typically deploys the same application package. A database and cache outside that package do not, on their own, establish independent application boundaries.",
               "This arrangement can be useful for a small team: developers run one application locally, follow a request through one process and use a local database transaction for related changes. Trouble may appear when unrelated modules force coordinated releases or compete for very different resources. First ask whether clearer modules inside the application would address the problem. A network boundary adds deployment and failure concerns, so justify it using an observed need for independent change or operation rather than the visual appeal of additional boxes."
-            ],
-            "sources": [
-              {
-                "lecture": 6,
-                "title": "CS-310 Lecture 06 - Microservices",
-                "url": "https://www.youtube.com/watch?v=ZCJBHMXs3-w&t=270s",
-                "time": "4:30",
-                "idea": "Distinguish self-contained application replicas from decomposition into services."
-              }
             ]
           }
         },
@@ -2061,15 +1674,6 @@
             "paragraphs": [
               "Suppose technician scheduling becomes a separate service because its optimization workload and release cadence differ from ticket management. The boundary now has a contract: ticket management requests a slot, scheduling accepts or rejects it, and both agree on identifiers and outcomes. This can allow independent implementation, but independence is weakened if every schema change still forces both services to release together. A meaningful boundary contains change as well as code.",
               "Now scheduling accepts a slot but the reply is lost. Ticket management sees a timeout while scheduling has already changed state. A local rollback in ticket management cannot undo a remote commitment automatically. The design needs a way to discover the outcome, avoid duplicate reservations and recover from abandoned work. Trace this failure before celebrating a successful normal-path demo. Smaller services can make focused tests easier, while cross-service behavior requires contract tests, observability and explicit recovery policies. Compare these costs with the independence that motivated the split."
-            ],
-            "sources": [
-              {
-                "lecture": 6,
-                "title": "CS-310 Lecture 06 - Microservices",
-                "url": "https://www.youtube.com/watch?v=ZCJBHMXs3-w&t=1298s",
-                "time": "21:38",
-                "idea": "Explain why distributed responsibilities complicate all-or-nothing changes."
-              }
             ]
           }
         },
@@ -2088,22 +1692,6 @@
             "paragraphs": [
               "The scheduling team supplies a mock API while the real service is under construction. The dashboard team can now build a booking screen, but an always-successful mock teaches the wrong assumptions. Include unavailable slots, invalid input and delayed responses in the contract. Then run the same expectations against the real implementation. A mock accelerates collaboration because it makes assumptions executable; it does not prove that the dependency behaves that way in production.",
               "The same scheduling API can serve a browser dashboard and a technician’s mobile app. The browser may receive server-rendered HTML or construct its interface from API responses; a hybrid is also possible. In either case, the backend must enforce authorization and validate requested changes. Hiding an unavailable action in a button does not prevent a different client from sending that request. Review one complete workflow across both clients and check that resource identities, validation failures and permission rules mean the same thing on the shared service boundary."
-            ],
-            "sources": [
-              {
-                "lecture": 6,
-                "title": "CS-310 Lecture 06 - Microservices",
-                "url": "https://www.youtube.com/watch?v=ZCJBHMXs3-w&t=1540s",
-                "time": "25:40",
-                "idea": "Use a contract-obeying mock to let client work proceed before the dependency exists."
-              },
-              {
-                "lecture": 6,
-                "title": "CS-310 Lecture 06 - Microservices",
-                "url": "https://www.youtube.com/watch?v=ZCJBHMXs3-w&t=1666s",
-                "time": "27:46",
-                "idea": "Locate presentation logic in server-rendered versus browser-executed applications."
-              }
             ]
           }
         }
@@ -2161,15 +1749,7 @@
         "answer": "A modular monolith can keep local transactions and deployment simple while enforcing internal boundaries. Independent services may be justified by distinct ownership, scaling, or release needs, but require network contracts, observability, and partial-failure handling. Payment and registration coordination must be explicit. State team constraints and measure actual bottlenecks before treating distribution as an automatic improvement."
       },
       "schedule": "Week 7 · October 19",
-      "lectureEnhanced": true,
-      "lectureSummary": "Use a repair-service example to distinguish replication, decomposition, partial failure and faithful mock contracts.",
-      "lectureSources": [
-        {
-          "number": 6,
-          "title": "CS-310 Lecture 06 - Microservices",
-          "url": "https://www.youtube.com/watch?v=ZCJBHMXs3-w"
-        }
-      ]
+      "lectureEnhanced": true
     },
     {
       "id": "load-balancing",
@@ -2187,15 +1767,6 @@
             "paragraphs": [
               "A public archive adds three application workers behind one service address. With round robin, six incoming requests can be distributed two per worker. That sounds balanced until one request generates a large export while the others read a small record. Equal request counts do not imply equal work or equal completion times. A routing policy uses observable signals, and those signals are only approximations of the capacity each worker has available.",
               "Next ask whether workers are interchangeable. If an export’s progress exists only in worker A’s memory, sending a follow-up request to B may fail even though B is healthy. Durable progress in shared storage can allow replacement, but that storage now needs its own capacity and failure design. The balancer gives clients a stable entry point and can hide worker membership changes. It does not remove every dependency behind that entry point. Follow one request to storage and back before claiming that adding workers has multiplied end-to-end capacity."
-            ],
-            "sources": [
-              {
-                "lecture": 7,
-                "title": "CS-310 Lecture 07 - Load Balancing",
-                "url": "https://www.youtube.com/watch?v=HCboeU7OtJw&t=195s",
-                "time": "3:15",
-                "idea": "Give clients one entry point while forwarding work across interchangeable replicas."
-              }
             ]
           },
           "narration": "A public archive adds three application workers behind one service address. With round robin, six incoming requests can be distributed two per worker. That sounds balanced until one request generates a large export while the others read a small record. Equal request counts do not imply equal work or equal completion times. A routing policy uses observable signals, and those signals are only approximations of the capacity each worker has available. Next ask whether workers are interchangeable. If an export’s progress exists only in worker A’s memory, sending a follow-up request to B may fail even though B is healthy. Durable progress in shared storage can allow replacement, but that storage now needs its own capacity and failure design. The balancer gives clients a stable entry point and can hide worker membership changes. It does not remove every dependency behind that entry point. Follow one request to storage and back before claiming that adding workers has multiplied end-to-end capacity.",
@@ -2208,15 +1779,6 @@
             "paragraphs": [
               "The archive serves metadata and large scans through the same HTTPS hostname. If routing must distinguish /records from /scans, some component must inspect HTTP information. An ordinary IP-and-port decision cannot see that distinction inside encrypted application traffic. An HTTP-aware reverse proxy can terminate TLS, inspect the path and select an appropriate worker pool. It may establish a second encrypted connection upstream; termination does not require leaving the internal hop unprotected.",
               "For a generic transport service, a layer-four balancer may be a better fit because it routes using connection information without interpreting HTTP resources. NAT is one implementation, not the definition of layer-four balancing. Likewise, a reverse proxy need not wait for an entire document before forwarding it: streaming and buffering depend on implementation and configuration. Compare designs using the features required by this workload, then benchmark realistic payloads, connections and security settings. Historical throughput examples should not become universal limits for either layer."
-            ],
-            "sources": [
-              {
-                "lecture": 7,
-                "title": "CS-310 Lecture 07 - Load Balancing",
-                "url": "https://www.youtube.com/watch?v=HCboeU7OtJw&t=790s",
-                "time": "13:10",
-                "idea": "Contrast packet/connection-level selection with HTTP-aware reverse proxying."
-              }
             ]
           },
           "narration": "The archive serves metadata and large scans through the same HTTPS hostname. If routing must distinguish /records from /scans, some component must inspect HTTP information. An ordinary IP-and-port decision cannot see that distinction inside encrypted application traffic. An HTTP-aware reverse proxy can terminate TLS, inspect the path and select an appropriate worker pool. It may establish a second encrypted connection upstream; termination does not require leaving the internal hop unprotected. For a generic transport service, a layer-four balancer may be a better fit because it routes using connection information without interpreting HTTP resources. NAT is one implementation, not the definition of layer-four balancing. Likewise, a reverse proxy need not wait for an entire document before forwarding it: streaming and buffering depend on implementation and configuration. Compare designs using the features required by this workload, then benchmark realistic payloads, connections and security settings. Historical throughput examples should not become universal limits for either layer.",
@@ -2229,15 +1791,6 @@
             "paragraphs": [
               "The archive runs four workers, each measured to handle 100 requests per second for a specified workload. At 280 requests per second, removing one worker leaves a nominal capacity of 300. That small margin may be inadequate once request costs vary or a dependency slows. A rolling deployment needs spare capacity as well as a sequence of replacement steps. Stop new assignments, allow existing work to drain within a deadline, deploy, and verify readiness before returning the worker.",
               "A failed health probe is evidence that the checked path did not respond acceptably; it is not proof of a process crash. Overload, network trouble or a dependency can produce the same observation. Failure thresholds reduce reactions to brief disturbances but delay removal, so some requests may fail before routing changes. Explain what clients may retry and with what limit. During a rolling update, old and new versions coexist, which makes API and storage compatibility part of deployment safety rather than an optional cleanup task."
-            ],
-            "sources": [
-              {
-                "lecture": 7,
-                "title": "CS-310 Lecture 07 - Load Balancing",
-                "url": "https://www.youtube.com/watch?v=HCboeU7OtJw&t=533s",
-                "time": "8:53",
-                "idea": "Use observed health and deployment strategies to change worker eligibility."
-              }
             ]
           },
           "narration": "The archive runs four workers, each measured to handle 100 requests per second for a specified workload. At 280 requests per second, removing one worker leaves a nominal capacity of 300. That small margin may be inadequate once request costs vary or a dependency slows. A rolling deployment needs spare capacity as well as a sequence of replacement steps. Stop new assignments, allow existing work to drain within a deadline, deploy, and verify readiness before returning the worker. A failed health probe is evidence that the checked path did not respond acceptably; it is not proof of a process crash. Overload, network trouble or a dependency can produce the same observation. Failure thresholds reduce reactions to brief disturbances but delay removal, so some requests may fail before routing changes. Explain what clients may retry and with what limit. During a rolling update, old and new versions coexist, which makes API and storage compatibility part of deployment safety rather than an optional cleanup task.",
@@ -2250,15 +1803,6 @@
             "paragraphs": [
               "A resolver receives Region East with a 90-second TTL at time zero. At time 20, the authoritative policy switches new answers to Region West. Under the simplified ordinary-cache model, a lookup at time 50 can still receive East from the resolver’s cache; the answer becomes eligible for refresh at time 90. Updating the authority changes future answers, not every previously distributed copy at the same instant.",
               "Existing connections add another layer: a client may continue using an established connection without repeating DNS for every request. Multiple clients may also share one resolver, so a single cached answer can direct a large group. Geographic steering often estimates location from the resolver or partial client-network information, rather than knowing each user’s precise position. Treat DNS as a discovery mechanism with caching behavior. Combine it with regional load balancing and an explicit data recovery strategy; changing a name-to-address answer does not by itself make another region ready to accept writes."
-            ],
-            "sources": [
-              {
-                "lecture": 7,
-                "title": "CS-310 Lecture 07 - Load Balancing",
-                "url": "https://www.youtube.com/watch?v=HCboeU7OtJw&t=1415s",
-                "time": "23:35",
-                "idea": "Treat DNS as a distributed cached directory for service discovery."
-              }
             ]
           },
           "narration": "A resolver receives Region East with a 90-second TTL at time zero. At time 20, the authoritative policy switches new answers to Region West. Under the simplified ordinary-cache model, a lookup at time 50 can still receive East from the resolver’s cache; the answer becomes eligible for refresh at time 90. Updating the authority changes future answers, not every previously distributed copy at the same instant. Existing connections add another layer: a client may continue using an established connection without repeating DNS for every request. Multiple clients may also share one resolver, so a single cached answer can direct a large group. Geographic steering often estimates location from the resolver or partial client-network information, rather than knowing each user’s precise position. Treat DNS as a discovery mechanism with caching behavior. Combine it with regional load balancing and an explicit data recovery strategy; changing a name-to-address answer does not by itself make another region ready to accept writes.",
@@ -2271,22 +1815,6 @@
             "paragraphs": [
               "The archive publishes a scanned map under an immutable versioned URL. If 2,000 eligible map requests arrive per second and edge caches serve 92 percent as fresh hits, a simplified model sends about 160 fetches per second toward origin. This estimate excludes validation and other traffic, but it shows the source of the benefit: saved content answers repeated reads near users. A private account page is a different object and cannot safely share the same reuse policy.",
               "Anycast answers a different question: which network location receives traffic for an address advertised from several sites? Routing chooses a path using network policy and topology, not a guarantee of geographic nearness. A CDN can use anycast, DNS steering and caching together. Cache directives still determine whether an answer may be reused, and route changes still need handling for established connections. A private directive excludes shared-cache storage of the whole response; a long max-age does not override it. Distinguish traffic steering, content reuse and application correctness when reviewing an edge design."
-            ],
-            "sources": [
-              {
-                "lecture": 7,
-                "title": "CS-310 Lecture 07 - Load Balancing",
-                "url": "https://www.youtube.com/watch?v=HCboeU7OtJw&t=2142s",
-                "time": "35:42",
-                "idea": "Combine geographic traffic steering with caching proxies at the edge."
-              },
-              {
-                "lecture": 7,
-                "title": "CS-310 Lecture 07 - Load Balancing",
-                "url": "https://www.youtube.com/watch?v=HCboeU7OtJw&t=2626s",
-                "time": "43:46",
-                "idea": "Explain anycast as multiple locations advertising reachability to one address."
-              }
             ]
           },
           "narration": "The archive publishes a scanned map under an immutable versioned URL. If 2,000 eligible map requests arrive per second and edge caches serve 92 percent as fresh hits, a simplified model sends about 160 fetches per second toward origin. This estimate excludes validation and other traffic, but it shows the source of the benefit: saved content answers repeated reads near users. A private account page is a different object and cannot safely share the same reuse policy. Anycast answers a different question: which network location receives traffic for an address advertised from several sites? Routing chooses a path using network policy and topology, not a guarantee of geographic nearness. A CDN can use anycast, DNS steering and caching together. Cache directives still determine whether an answer may be reused, and route changes still need handling for established connections. A private directive excludes shared-cache storage of the whole response; a long max-age does not override it. Distinguish traffic steering, content reuse and application correctness when reviewing an edge design.",
@@ -2299,15 +1827,6 @@
             "paragraphs": [
               "Design an archive service for the morning a newly digitized collection opens. Public scans can use versioned URLs and edge caching, while requests to reserve the last available research-room seat must reach application logic and authoritative storage. Draw DNS discovery, the edge, a regional entry point, workers and storage. Label where a read may be answered without contacting origin and where a write must be checked against current state.",
               "Now fail one worker during the surge and one region during a reservation. Explain the delay before health information changes, what happens to in-flight requests and which clients might still use cached DNS answers. A retry must not create two reservations, and a second worker must not allocate the same final seat concurrently. Those requirements need an explicit data and operation contract, not just another load balancer. A convincing design combines routing, capacity, freshness and recovery assumptions, then tests the failure cases that could violate them."
-            ],
-            "sources": [
-              {
-                "lecture": 7,
-                "title": "CS-310 Lecture 07 - Load Balancing",
-                "url": "https://www.youtube.com/watch?v=HCboeU7OtJw&t=3003s",
-                "time": "50:03",
-                "idea": "Combine frontend discovery, local balancing and stateless clones while identifying storage as a remaining concern."
-              }
             ]
           },
           "narration": "Design an archive service for the morning a newly digitized collection opens. Public scans can use versioned URLs and edge caching, while requests to reserve the last available research-room seat must reach application logic and authoritative storage. Draw DNS discovery, the edge, a regional entry point, workers and storage. Label where a read may be answered without contacting origin and where a write must be checked against current state. Now fail one worker during the surge and one region during a reservation. Explain the delay before health information changes, what happens to in-flight requests and which clients might still use cached DNS answers. A retry must not create two reservations, and a second worker must not allocate the same final seat concurrently. Those requirements need an explicit data and operation contract, not just another load balancer. A convincing design combines routing, capacity, freshness and recovery assumptions, then tests the failure cases that could violate them.",
@@ -2341,15 +1860,7 @@
         }
       ],
       "schedule": "Week 7 · October 19",
-      "lectureEnhanced": true,
-      "lectureSummary": "Enrich all six standalone chapters with worked capacity, routing, deployment, DNS, edge-cache and integrated failure scenarios.",
-      "lectureSources": [
-        {
-          "number": 7,
-          "title": "CS-310 Lecture 07 - Load Balancing",
-          "url": "https://www.youtube.com/watch?v=HCboeU7OtJw"
-        }
-      ]
+      "lectureEnhanced": true
     },
     {
       "id": "basic",
@@ -2375,15 +1886,6 @@
             "paragraphs": [
               "Use a hypothetical city history archive to practise reading a deployment diagram. A visitor requests a public exhibit page. The application reads descriptive records from a relational database, renders the page, and includes image URLs delivered through a media service. A curator uploading a replacement image follows a different path: authenticate the curator, check editing permission, store the object, and update its metadata. One diagram contains both paths, but their failure and permission requirements differ.",
               "Mark every crossing with the information it carries. The object store receives bytes, while the database receives identifiers, captions and relationships. The browser receives a presentation rather than unrestricted database access. If image storage succeeds but the metadata update fails, an unreferenced object can remain; if the metadata points at a missing object, the public page breaks. This small example makes interfaces concrete and exposes coordination questions before introducing more servers. Naming an endpoint after a resource helps readers, but does not settle these consistency or access-control obligations."
-            ],
-            "sources": [
-              {
-                "lecture": 11,
-                "title": "CS-310 Lecture 11 - Basic Architecture Design",
-                "url": "https://www.youtube.com/watch?v=tHeqboKEG8c&t=274s",
-                "time": "4:34",
-                "idea": "Trace browser requests through application and storage dependencies"
-              }
             ]
           }
         },
@@ -2402,15 +1904,6 @@
             "paragraphs": [
               "An archive has a two-megabyte photograph but displays a small preview in its search results. If one thousand searches each download the original, that is about two gigabytes of image transfer before protocol overhead. A forty-kilobyte preview reduces the same illustrative workload to roughly forty megabytes. Storing multiple representations spends some storage and processing to reduce repeated transfer. The relational record can identify each representation while object storage holds the bytes.",
               "Next distinguish a cache hit from an origin fetch. A media cache can reduce repeated origin work, but total cost still depends on the charging model for storage, requests and delivery. Build a worksheet with quantities first and insert current prices only when preparing an actual estimate. A historical cloud bill is evidence about one workload and configuration, not a promise for the archive. Private images also need a permission design: an unpredictable filename alone does not establish who may fetch an object."
-            ],
-            "sources": [
-              {
-                "lecture": 11,
-                "title": "CS-310 Lecture 11 - Basic Architecture Design",
-                "url": "https://www.youtube.com/watch?v=tHeqboKEG8c&t=1606s",
-                "time": "26:46",
-                "idea": "Right-sized images avoid downloading full originals"
-              }
             ]
           }
         },
@@ -2429,15 +1922,6 @@
             "paragraphs": [
               "Suppose a public archive receives one thousand page requests per second. If a shared cache answers eighty percent, two hundred requests reach the application. If each remaining page needs three database reads, the uncached read workload is approximately six hundred reads per second. These are deliberately simplified assumptions, but they show why cache effectiveness must be applied before sizing the database. Adding application workers changes application capacity; it does not by itself change those six hundred reads.",
               "Classify the remaining requests before distributing them across replicas. A visitor reading an old exhibit may tolerate a short delay, while a curator checking an edit immediately after saving expects the new state. The first path can use a lagging replica if the product permits it; the second may require a primary read or another explicit consistency mechanism. A scalable diagram therefore needs routing rules as well as boxes. Measure the hit rate and query count under a representative mix rather than assuming every request benefits equally."
-            ],
-            "sources": [
-              {
-                "lecture": 11,
-                "title": "CS-310 Lecture 11 - Basic Architecture Design",
-                "url": "https://www.youtube.com/watch?v=tHeqboKEG8c&t=2387s",
-                "time": "39:47",
-                "idea": "Read replicas address the read-heavy workload"
-              }
             ]
           }
         },
@@ -2456,15 +1940,6 @@
             "paragraphs": [
               "An illustrative service records twenty-six million updates over a thirty-day month. Dividing by approximately 2.6 million seconds gives ten updates per second on average. That calculation is useful for checking magnitude, but it conceals timing. If a news event produces one hundred updates per second for several minutes, a system sized only for the average can accumulate a backlog or reject requests despite apparently modest monthly traffic.",
               "Also expand the meaning of an update. One user action may write a primary row, update indexes and append an audit record inside a transaction. Those actions do not map to a fixed number of physical disk operations because buffering, logging and storage behaviour intervene. Test the complete transaction with realistic data, contention and burst duration. Report latency and error rate alongside throughput. The decision to retain one primary should follow those measurements and consistency needs, rather than a direct comparison between user events and a device's advertised operations per second."
-            ],
-            "sources": [
-              {
-                "lecture": 11,
-                "title": "CS-310 Lecture 11 - Basic Architecture Design",
-                "url": "https://www.youtube.com/watch?v=tHeqboKEG8c&t=2664s",
-                "time": "44:24",
-                "idea": "Monthly event rates and multiple writes per action"
-              }
             ]
           }
         }
@@ -2524,15 +1999,7 @@
         "answer": "Public shared pages and media can use CDN caches; authenticated administration bypasses shared caches. Stateless app instances use load balancing. Eligible stale-tolerant reads use replicas, while immediate read-after-write uses an appropriate primary/consistency path. Invalidate or version edited cache entries and test peak workload before sizing."
       },
       "schedule": "Week 7 · October 21",
-      "lectureEnhanced": true,
-      "lectureSummary": "New original examples informed by selected English auto-caption passages and checked against lecture slides. Numerical workloads are illustrative. Recovery and safety qualifications retain the existing course treatment.",
-      "lectureSources": [
-        {
-          "number": 11,
-          "title": "CS-310 Lecture 11 - Basic Architecture Design",
-          "url": "https://www.youtube.com/watch?v=tHeqboKEG8c"
-        }
-      ]
+      "lectureEnhanced": true
     },
     {
       "id": "push",
@@ -2558,15 +2025,6 @@
             "paragraphs": [
               "A building maintenance app should alert a resident when a repair appointment changes. The scheduling server knows the resident's account, but that knowledge does not give it a reachable network endpoint on the resident's phone. The phone may change networks, sit behind address translation or have its application suspended. Treating the phone as an ordinary public HTTP server leaves those constraints unexplained, even if the notification payload is only a few bytes.",
               "Instead, the device or platform establishes an outbound delivery path that the backend can use indirectly. Now consider the phone being offline when the appointment changes twice. Decide whether to retain both changes, replace the first with the latest state, or simply notify the app to refresh. This is a product-level delivery policy, not a detail solved by opening a socket. Keep the authoritative appointment in durable storage so that reconnecting clients can recover their current state even when a notification never arrives."
-            ],
-            "sources": [
-              {
-                "lecture": 12,
-                "title": "CS-310 Lecture 12 - Push Notifications",
-                "url": "https://www.youtube.com/watch?v=8qdoQRDu-Cc&t=739s",
-                "time": "12:19",
-                "idea": "Private addressing and firewalls obstruct inbound client requests"
-              }
             ]
           }
         },
@@ -2585,15 +2043,6 @@
             "paragraphs": [
               "A library app user signs in on a phone and a tablet. Each installation registers for platform notifications and sends its current provider-issued routing token to the authenticated backend. The backend associates both installations with the account. When a reserved book becomes ready, the notification service resolves the account to eligible installations and submits delivery requests. The account identifies the person; the tokens identify destinations through the platform's delivery mechanism.",
               "Now uninstall and reinstall the phone app. Its routing information may change, while the person's account remains the same. Registration updates and invalid-token cleanup are therefore part of normal operation. Logging out also requires a policy that prevents the next device user from receiving the previous user's private notifications. Provider acceptance only says a delivery request entered that provider's process; it does not prove the message was displayed or read. A notification can prompt a fresh authorized read of the library record instead of carrying all sensitive details itself."
-            ],
-            "sources": [
-              {
-                "lecture": 12,
-                "title": "CS-310 Lecture 12 - Push Notifications",
-                "url": "https://www.youtube.com/watch?v=8qdoQRDu-Cc&t=1321s",
-                "time": "22:01",
-                "idea": "Register the provider identifier before subsequent delivery"
-              }
             ]
           }
         },
@@ -2612,15 +2061,6 @@
             "paragraphs": [
               "A workshop dashboard polls every ten seconds for a changed machine status. With changes occurring at arbitrary times, the average wait until the next poll is about five seconds, ignoring request latency. Reducing the interval lowers that wait but increases the number of requests even when nothing changes. A WebSocket keeps a bidirectional channel open, while long polling lets the server hold a request until data or a timeout becomes available.",
               "The connection does not eliminate state recovery. If a browser loses its network for thirty seconds, it may miss several transitions regardless of the chosen live transport. On reconnect, retrieve the current authoritative status or resume from a position supported by the application protocol. Distinguish a dashboard that needs only the latest temperature from an audit screen that needs every transition. That requirement determines how much history must be retained. Compare latency, idle connection resources and reconnect behaviour, rather than choosing a protocol solely because it is described as real time."
-            ],
-            "sources": [
-              {
-                "lecture": 12,
-                "title": "CS-310 Lecture 12 - Push Notifications",
-                "url": "https://www.youtube.com/watch?v=8qdoQRDu-Cc&t=1575s",
-                "time": "26:15",
-                "idea": "Long polling delays the response until data or timeout"
-              }
             ]
           }
         },
@@ -2639,15 +2079,6 @@
             "paragraphs": [
               "An account has two browser tabs, one connected to notification worker A and another to worker B. An appointment service running elsewhere generates an update. Sending the update to an arbitrary notification worker is insufficient: only the worker holding a particular live connection can write to it. A registration directory maps the logical recipient to connection identifiers and their owners, allowing the notification layer to route to both tabs.",
               "Close one tab just after the directory lookup. The route can become stale between lookup and send, so lookup success cannot guarantee delivery. Clean up failed destinations and let reconnecting clients establish fresh registrations. Keep transport failures separate from the underlying appointment change, which remains stored independently. If the design promises recovery of missed updates, retain an appropriate event history or provide a fresh-state read. Trace a worker restart as well as a normal send; this reveals why connection ownership, authoritative data and notification progress are different kinds of state."
-            ],
-            "sources": [
-              {
-                "lecture": 12,
-                "title": "CS-310 Lecture 12 - Push Notifications",
-                "url": "https://www.youtube.com/watch?v=8qdoQRDu-Cc&t=1832s",
-                "time": "30:32",
-                "idea": "Route to the specific owner of the client connection"
-              }
             ]
           }
         }
@@ -2698,15 +2129,7 @@
         "answer": "Maintain authorized per-user installation and connection records; send through mobile providers or owning WebSocket workers; use message IDs and expiry; clean stale registrations; clients fetch authoritative course status on reconnect."
       },
       "schedule": "Week 8 · October 26",
-      "lectureEnhanced": true,
-      "lectureSummary": "New original examples informed by selected English auto-caption passages and checked against lecture slides. Numerical workloads are illustrative. Recovery and safety qualifications retain the existing course treatment.",
-      "lectureSources": [
-        {
-          "number": 12,
-          "title": "CS-310 Lecture 12 - Push Notifications",
-          "url": "https://www.youtube.com/watch?v=8qdoQRDu-Cc"
-        }
-      ]
+      "lectureEnhanced": true
     },
     {
       "id": "modeling",
@@ -3211,15 +2634,6 @@
             "paragraphs": [
               "Imagine a laboratory booking service whose first implementation sends a password with every reservation request. Even over HTTPS, the reservation handler, diagnostic logs and downstream integrations may encounter that secret. Move password verification to a deliberate sign-in boundary, then issue a separate session credential for subsequent requests. This reduces repeated exposure of the long-lived password, although the session credential remains valuable to an attacker.",
               "Now inspect a different failure: the account database is copied. TLS cannot protect a database backup after it leaves the connection. Dedicated password hashing with a unique salt addresses this separate exposure by making offline guesses more costly. Neither mechanism substitutes for the other. Ask students to draw two attack paths, interception during transport and theft of stored verifiers, and label the protection on each path. The architectural lesson is to match a mechanism to the asset and threat it actually addresses."
-            ],
-            "sources": [
-              {
-                "lecture": 10,
-                "title": "CS-310 Lecture 10 - Authentication",
-                "url": "https://www.youtube.com/watch?v=i_zSNvPcatk&t=474s",
-                "time": "7:54",
-                "idea": "Repeated passwords reach application components and logs"
-              }
             ]
           }
         },
@@ -3238,15 +2652,6 @@
             "paragraphs": [
               "A volunteer signs in to a community archive and receives an opaque session identifier. Later, an image-editing request carries that identifier in a protected cookie or authorization header. The application looks up its associated account and expiry, then separately checks whether that account may edit this image. No account name supplied by the browser should override the identity established by the session lookup. Authentication and resource authorization are distinct steps in the trace.",
               "Suppose several application workers cache successful session checks for two minutes. Disabling the account in the central store does not instantly erase those cached decisions. The design needs a stated revocation delay, invalidation mechanism or fresh check for sensitive actions. This makes the authentication service a consistency and availability dependency as well as a security component. A request log should record useful operational identifiers without retaining the bearer secret. Explain what a stolen session permits and how that access eventually ends."
-            ],
-            "sources": [
-              {
-                "lecture": 10,
-                "title": "CS-310 Lecture 10 - Authentication",
-                "url": "https://www.youtube.com/watch?v=i_zSNvPcatk&t=565s",
-                "time": "9:25",
-                "idea": "Random session credentials replace passwords in later requests"
-              }
             ]
           }
         },
@@ -3394,15 +2799,7 @@
         "answer": "Place authorization before each grade read/write and bind it to course and student identifiers. Give students self-read, instructors course-scoped update, and backup read-only authority. Store password verifiers with a dedicated salted hashing scheme, use protected expiring sessions, and define logout/revocation behavior. Separate authentication from permission checks, minimize credential logging, and document how cached decisions and existing sessions react to role changes."
       },
       "schedule": "Week 10 · November 11",
-      "lectureEnhanced": true,
-      "lectureSummary": "New original examples informed by selected English auto-caption passages and checked against lecture slides. Numerical workloads are illustrative. Recovery and safety qualifications retain the existing course treatment.",
-      "lectureSources": [
-        {
-          "number": 10,
-          "title": "CS-310 Lecture 10 - Authentication",
-          "url": "https://www.youtube.com/watch?v=i_zSNvPcatk"
-        }
-      ]
+      "lectureEnhanced": true
     },
     {
       "id": "twitter",
@@ -3428,15 +2825,6 @@
             "paragraphs": [
               "Consider a hypothetical professional discussion service with tables for members, subscriptions and posts. A member following forty authors requests the newest twenty posts. A normalized design first finds the followed authors and retrieves their recent posts, then orders and limits the result. This can work well with suitable indexes and modest traffic. The architectural question is how much data and how many storage owners the request must touch as the workload changes.",
               "Now compare a member who follows four thousand authors spread across many partitions. The same logical query may require broader fan-out and merging, even though the returned page is still twenty posts. A small result does not imply a small amount of work. Measure feed-read frequency, author activity and partition fan-out before changing the model. Normalization makes canonical updates straightforward; it does not imply that every read is cheap. Conversely, the presence of a join alone does not prove the query is slow. The workload and access path provide the evidence."
-            ],
-            "sources": [
-              {
-                "lecture": 17,
-                "title": "CS-310 Lecture 17 - Twitter Design Exercise",
-                "url": "https://www.youtube.com/watch?v=lBsWD8hI-xQ&t=200s",
-                "time": "3:20",
-                "idea": "Join subscriptions, authors and posts to assemble a feed"
-              }
             ]
           }
         },
@@ -3455,15 +2843,6 @@
             "paragraphs": [
               "In the hypothetical discussion service, one author has eight hundred followers. Materializing an entry in every follower's feed turns one canonical post into as many as eight hundred derived updates. Readers benefit because their recent feed entries are already grouped by their own identifier. At ten such posts per second, this illustrative case creates up to eight thousand feed updates per second before retries or other work. Faster reads have purchased additional write amplification.",
               "Queue the derived updates so the posting request can acknowledge durable acceptance without waiting for every destination. Then define a freshness target for readers and measure the oldest unfinished publication work. Workers can process bounded follower batches and use stable post identifiers to avoid duplicate entries after retries. Keep the canonical post distinct from feed references so that deletion or moderation has an explicit path through derived state. Asynchrony changes when the work happens and who waits; it does not remove the work or automatically make all feeds current."
-            ],
-            "sources": [
-              {
-                "lecture": 17,
-                "title": "CS-310 Lecture 17 - Twitter Design Exercise",
-                "url": "https://www.youtube.com/watch?v=lBsWD8hI-xQ&t=682s",
-                "time": "11:22",
-                "idea": "Prebuilding feeds moves cost and duplication to publication"
-              }
             ]
           }
         },
@@ -3482,15 +2861,6 @@
             "paragraphs": [
               "Draw six members of a discussion service across three storage partitions. Give each member subscriptions to authors on both other partitions. Placing a member's subscription list beside that member helps discover followed authors locally, but it cannot also place every author's canonical posts beside every subscriber without copying them. Moving an author to satisfy one reader may make another reader's path less local. The small graph exposes the conflict before any large-scale benchmark.",
               "Compare three different copies. A replica preserves another copy of the same owned data for a defined availability or read-serving purpose. A materialized feed stores a reader-oriented representation of posts. A cache retains reusable results under a freshness policy. All consume resources, but their ownership and update rules differ. State which operation needs each copy and how stale it may become. Hashing member identifiers can spread ownership, yet it does not eliminate popular-author hotspots, cross-partition relationships or network transfer. Scaling claims must include those remaining costs and skewed workloads."
-            ],
-            "sources": [
-              {
-                "lecture": 17,
-                "title": "CS-310 Lecture 17 - Twitter Design Exercise",
-                "url": "https://www.youtube.com/watch?v=lBsWD8hI-xQ&t=1582s",
-                "time": "26:22",
-                "idea": "Crossing social relationships complicate partition locality"
-              }
             ]
           }
         },
@@ -3509,15 +2879,6 @@
             "paragraphs": [
               "An author in a hypothetical community has one hundred thousand followers, but only five thousand of them read during a short freshness window. Eagerly updating every feed pays for one hundred thousand destinations. Fetching the author's recent posts during those active readers' requests may do much less work, especially if results can be shared through a cache. These illustrative counts motivate a hybrid rather than a rule that every post must follow the same publication path.",
               "Precompute entries for ordinary authors and merge selected high-fan-out authors at read time. Choose the threshold using observed fan-out cost, active readership, freshness and cache behaviour, not a fixed celebrity label. The merge still needs stable ordering and pagination: a post appearing in both paths must not be shown twice, and deletion must affect both. The storage technology for the exceptional path is a separate decision. This is an architecture exercise about moving work between reads and writes, not a verified description of a current commercial social network."
-            ],
-            "sources": [
-              {
-                "lecture": 17,
-                "title": "CS-310 Lecture 17 - Twitter Design Exercise",
-                "url": "https://www.youtube.com/watch?v=lBsWD8hI-xQ&t=1928s",
-                "time": "32:08",
-                "idea": "Use a hybrid for the high-fan-out exception"
-              }
             ]
           }
         }
@@ -3561,15 +2922,7 @@
         "answer": "Precompute ordinary-author entries; merge campus-wide announcements on read or cache their recent list. Use canonical IDs, stable ordering and bounded pagination; resume fan-out from durable progress and make insertions idempotent; propagate visibility changes and measure freshness."
       },
       "schedule": "Week 11 · November 16",
-      "lectureEnhanced": true,
-      "lectureSummary": "New original examples informed by selected English auto-caption passages and checked against lecture slides. Numerical workloads are illustrative. Recovery and safety qualifications retain the existing course treatment.",
-      "lectureSources": [
-        {
-          "number": 17,
-          "title": "CS-310 Lecture 17 - Twitter Design Exercise",
-          "url": "https://www.youtube.com/watch?v=lBsWD8hI-xQ"
-        }
-      ]
+      "lectureEnhanced": true
     },
     {
       "id": "lizhi-performance",
@@ -4204,15 +3557,6 @@
             "paragraphs": [
               "A researcher requests an export of a large experiment dataset. Waiting for every file to be prepared inside the initial request could exceed a useful response deadline. Instead, the service validates the request, records an export job and returns a job identifier. That response means the service accepted responsibility for attempting the export. It does not mean a downloadable archive already exists, so the user interface should display queued or processing rather than completed.",
               "The client can later query the job record for success or a failure reason. A webhook is another option for a client with a reachable endpoint, but it introduces its own authentication and retry contract. A phone behind a changing network cannot simply be assumed to accept callbacks. Include a terminal failure state so that accepted jobs do not appear pending forever. Trace a worker failure after acceptance and identify how another worker discovers the job. The shorter response time moves completion tracking into explicit application state."
-            ],
-            "sources": [
-              {
-                "lecture": 16,
-                "title": "CS-310 Lecture 16 - Asynchronous Processing",
-                "url": "https://www.youtube.com/watch?v=ozVhE0psew4&t=305s",
-                "time": "5:05",
-                "idea": "Acknowledging acceptance differs from completing delivery"
-              }
             ]
           }
         },
@@ -4231,15 +3575,6 @@
             "paragraphs": [
               "A document service places a preview-generation request on a queue. The message contains a job identifier, document identifier, desired representation and schema version. These fields are an API contract even though no synchronous response carries the finished preview. The worker must know which document version to process and where to record the result. A queue containing only an ambiguous instruction such as generate preview leaves important business decisions to guesswork.",
               "Consider a worker that stores the preview and crashes before acknowledging the message. Redelivery may cause the same job to run again. Use the stable job identifier and a suitable result-update rule so that repetition does not create conflicting visible outcomes. Acknowledgement timing should reflect the actual persistence boundary, not merely receipt into memory. Likewise, an in-process queue lost during a restart provides a different contract from durable broker storage. The architecture should state what survives each failure and which component owns recovery, rather than treating every queue icon as equivalent."
-            ],
-            "sources": [
-              {
-                "lecture": 16,
-                "title": "CS-310 Lecture 16 - Asynchronous Processing",
-                "url": "https://www.youtube.com/watch?v=ozVhE0psew4&t=1329s",
-                "time": "22:09",
-                "idea": "Package deferred work into a message for a separate worker"
-              }
             ]
           }
         },
@@ -4258,15 +3593,6 @@
             "paragraphs": [
               "An image service accepts twenty uploads per second during a burst. Each preview worker completes five jobs per second under the assumed image mix. Two workers can process ten jobs per second, so the backlog grows by approximately ten jobs each second during that burst. Adding two more workers could match the arrival rate if shared storage and other dependencies have spare capacity. The queue exposes the difference between accepting work and providing enough capacity to finish it.",
               "Keep admission through the service API, where authorization, validation and workload limits belong, rather than letting public clients publish arbitrary broker messages. Producers and consumers can scale separately, but the queue itself and downstream storage still have limits. A larger queue changes how long work can wait; it does not increase processing throughput. Measure task duration by job type, since a thousand small previews may cost less than a few large ones. Scale against useful completion rate and queue age, and test whether adding workers shifts contention elsewhere."
-            ],
-            "sources": [
-              {
-                "lecture": 16,
-                "title": "CS-310 Lecture 16 - Asynchronous Processing",
-                "url": "https://www.youtube.com/watch?v=ozVhE0psew4&t=2151s",
-                "time": "35:51",
-                "idea": "Scale producers and consumers separately"
-              }
             ]
           }
         },
@@ -4285,15 +3611,6 @@
             "paragraphs": [
               "Suppose a report queue holds six hundred pending jobs and its workers finish ten jobs per second while new arrivals temporarily stop. A rough drain time is sixty seconds. If arrivals continue at eight jobs per second, the net drain rate is only two, stretching the estimate to five minutes. These simplified calculations explain why queue length alone is insufficient: arrival rate, service rate and the age of waiting work determine user experience.",
               "Set an admission policy before storage fills. Depending on the product, reject excess work, postpone low-priority jobs or coalesce requests that genuinely supersede one another. Recovery also needs ordering rules. Two changes to the same report configuration should not accidentally apply in reverse order merely because different workers finish at different times. A broker's guarantees depend on its configuration and partitioning, so define the scope of required order. Bounded retries and a visible failed-job state prevent one malformed message from consuming capacity indefinitely while legitimate work waits."
-            ],
-            "sources": [
-              {
-                "lecture": 16,
-                "title": "CS-310 Lecture 16 - Asynchronous Processing",
-                "url": "https://www.youtube.com/watch?v=ozVhE0psew4&t=2985s",
-                "time": "49:45",
-                "idea": "A full queue creates backpressure requiring monitoring"
-              }
             ]
           }
         }
@@ -4344,15 +3661,7 @@
         "answer": "Accept durably and return a job ID; workers claim jobs and write results idempotently; update status after durable output; retry transient errors with backoff and isolate poison jobs; expose status and optional authenticated notification; apply backpressure when backlog exceeds limits."
       },
       "schedule": "Week 13 · November 30",
-      "lectureEnhanced": true,
-      "lectureSummary": "New original examples informed by selected English auto-caption passages and checked against lecture slides. Numerical workloads are illustrative. Recovery and safety qualifications retain the existing course treatment.",
-      "lectureSources": [
-        {
-          "number": 16,
-          "title": "CS-310 Lecture 16 - Asynchronous Processing",
-          "url": "https://www.youtube.com/watch?v=ozVhE0psew4"
-        }
-      ]
+      "lectureEnhanced": true
     },
     {
       "id": "events",
@@ -4390,15 +3699,6 @@
             "paragraphs": [
               "A laboratory announces that an experiment has finished. The reporting service needs the result for a summary, and an audit service needs it for its own record. If both merely compete to remove one message from the same work queue, only one may receive each event. Independent reactions require separate subscription progress or an equivalent fan-out arrangement. Within the reporting subscription, multiple workers can share processing responsibility without changing the audit service's progress.",
               "The message still needs an explicit contract: experiment identifier, event identifier, schema version and enough context to retrieve or interpret the result. A broker can route messages, but cannot decide whether the reporting service needs a snapshot of the old result or may read its latest state. Draw the two subscriptions separately and fail one consumer. Explain which backlog grows and whether the other continues. This exercise connects asynchronous queue mechanisms to event-driven structure while keeping the distinction between an instruction to one worker and a fact announced to several consumers."
-            ],
-            "sources": [
-              {
-                "lecture": 16,
-                "title": "CS-310 Lecture 16 - Asynchronous Processing",
-                "url": "https://www.youtube.com/watch?v=ozVhE0psew4&t=2820s",
-                "time": "47:00",
-                "idea": "Retained messages let separate consumers progress independently"
-              }
             ]
           }
         },
@@ -4417,15 +3717,6 @@
             "paragraphs": [
               "A subscriber records an experiment-completed event and then sends a researcher a notification. If it crashes after sending but before recording progress, a retry can send the notification again. Repeated delivery and repeated business effects are different issues: a stable event identifier lets the handler recognize a prior effect only when the relevant state is recorded with an appropriate consistency rule. Simply labelling the handler idempotent does not establish that rule.",
               "Now deliver result version three before version two. Duplicate detection alone cannot prevent an old version from overwriting a newer result. Define ordering per experiment or reject obsolete updates using their version. When a malformed event repeatedly fails, bound retries and retain enough information for diagnosis and controlled replay. Monitor subscription age as well as message counts so a small set of stuck events is visible. These decisions belong to the consumer contract and broker configuration; a distributed delivery system does not offer one universal ordering or exactly-once guarantee for every downstream effect."
-            ],
-            "sources": [
-              {
-                "lecture": 16,
-                "title": "CS-310 Lecture 16 - Asynchronous Processing",
-                "url": "https://www.youtube.com/watch?v=ozVhE0psew4&t=3030s",
-                "time": "50:30",
-                "idea": "Delivery ordering requires explicit scope and assumptions"
-              }
             ]
           }
         },
@@ -4488,15 +3779,7 @@
         "answer": "Publish a versioned event with unique ID and course/student identifiers after durable enrolment. Use separate subscriptions; email deduplicates, analytics tracks progress, and the projection enforces entity order/version. Retry transient failures with limits; isolate an invalid schema message, alert, repair and replay safely."
       },
       "schedule": "Week 13 · November 30",
-      "lectureEnhanced": true,
-      "lectureSummary": "New original examples informed by selected English auto-caption passages and checked against lecture slides. Numerical workloads are illustrative. Recovery and safety qualifications retain the existing course treatment.",
-      "lectureSources": [
-        {
-          "number": 16,
-          "title": "CS-310 Lecture 16 - Asynchronous Processing",
-          "url": "https://www.youtube.com/watch?v=ozVhE0psew4"
-        }
-      ]
+      "lectureEnhanced": true
     },
     {
       "id": "streaming",
@@ -4522,15 +3805,6 @@
             "paragraphs": [
               "A sensor analysis job estimates the average reading across two partitions. One holds ten readings averaging twenty, and the other holds ninety readings averaging forty. Averaging the two local averages gives thirty, but the correct global mean is thirty-eight. Each worker must return both a sum and a count: two hundred plus three thousand six hundred, divided by one hundred. The summary must preserve the information needed to combine unequal partitions correctly.",
               "Compare that with finding the global minimum: each worker needs to send only its local minimum. The amount and meaning of intermediate data depend on the operation. Sending all raw readings to one coordinator may be correct, but can destroy the benefit of distributing the work. Design the summary, estimate transfer volume and then identify where combination happens. Some calculations require multiple communication rounds or richer intermediate state. More workers reduce only the parallel portion of the cost; data movement and coordination still need an explicit place in the performance model."
-            ],
-            "sources": [
-              {
-                "lecture": 19,
-                "title": "CS-310 Lecture 19 - Distributed Computing",
-                "url": "https://www.youtube.com/watch?v=7w6kNDf7DB0&t=635s",
-                "time": "10:35",
-                "idea": "Compute distributed means from sums and counts"
-              }
             ]
           }
         },
@@ -4549,15 +3823,6 @@
             "paragraphs": [
               "A transport agency wants total delay minutes by route from a finite day of trip records. Each mapper emits the route identifier and that trip's delay. The shuffle groups values by route, and each reducer sums its group. The programmer specifies meaningful transformations while the framework arranges tasks and intermediate movement. Following one route through those stages makes the key's role concrete: it determines which records must meet for aggregation.",
               "If one route has most of the trips, its reducer may dominate completion time even when other reducers finish early. Local combining can reduce transfer for a sum, but the design still needs to account for skew and recovery. A framework that retains reusable intermediate datasets in memory can help repeated analyses, while its lineage or persistence rules determine recovery after lost state. These are bounded batch computations. They do not by themselves specify event-time windows or handling of an endless stream, so keep those separate requirements visible when comparing batch and streaming architectures."
-            ],
-            "sources": [
-              {
-                "lecture": 19,
-                "title": "CS-310 Lecture 19 - Distributed Computing",
-                "url": "https://www.youtube.com/watch?v=7w6kNDf7DB0&t=1768s",
-                "time": "29:28",
-                "idea": "Shuffle groups intermediate keys and performs communication"
-              }
             ]
           }
         },
@@ -4669,15 +3934,7 @@
         "answer": "Run a bounded batch aggregation for the historical report and a stateful streaming projection for the dashboard. Partition events by an appropriate entity, define event-time/late-data handling, checkpoint progress and make outputs replay-safe. Broker partition leaders replicate logs; a local event-loop thread pool, if used, solves a different concurrency problem."
       },
       "schedule": "Week 13 · December 2",
-      "lectureEnhanced": true,
-      "lectureSummary": "New original examples informed by selected English auto-caption passages and checked against lecture slides. Numerical workloads are illustrative. Recovery and safety qualifications retain the existing course treatment.",
-      "lectureSources": [
-        {
-          "number": 19,
-          "title": "CS-310 Lecture 19 - Distributed Computing",
-          "url": "https://www.youtube.com/watch?v=7w6kNDf7DB0"
-        }
-      ]
+      "lectureEnhanced": true
     }
   ],
   "schedule": [

@@ -1,0 +1,1013 @@
+{
+  "introduction": [
+    {
+      "chapter": 1,
+      "title": "Why software needs architecture",
+      "start": 0,
+      "part": 1,
+      "path": "media/introduction-0"
+    },
+    {
+      "chapter": 2,
+      "title": "Systems, stakeholders, and decisions",
+      "start": 76.81,
+      "part": 1,
+      "path": "media/introduction-0"
+    },
+    {
+      "chapter": 3,
+      "title": "Intended and implemented architecture",
+      "start": 165.0,
+      "part": 1,
+      "path": "media/introduction-0"
+    },
+    {
+      "chapter": 4,
+      "title": "Views and meaningful diagrams",
+      "start": 0,
+      "part": 2,
+      "path": "media/introduction-1"
+    },
+    {
+      "chapter": 5,
+      "title": "Abstraction, reuse, and C4",
+      "start": 85.32,
+      "part": 2,
+      "path": "media/introduction-1"
+    },
+    {
+      "chapter": 6,
+      "title": "Patterns and architectural styles",
+      "start": 182.73,
+      "part": 2,
+      "path": "media/introduction-1"
+    }
+  ],
+  "jeromy-resilience": [
+    {
+      "chapter": 1,
+      "title": "Architecture is a set of consequential decisions",
+      "start": 0,
+      "part": 1,
+      "path": "media/jeromy-resilience-0"
+    },
+    {
+      "chapter": 2,
+      "title": "Start with the customer’s quality priorities",
+      "start": 64.94,
+      "part": 1,
+      "path": "media/jeromy-resilience-0"
+    },
+    {
+      "chapter": 3,
+      "title": "Trace a correlated failure across the system",
+      "start": 136.76,
+      "part": 1,
+      "path": "media/jeromy-resilience-0"
+    },
+    {
+      "chapter": 4,
+      "title": "Durability, bootstrap dependencies and tested restoration",
+      "start": 0,
+      "part": 2,
+      "path": "media/jeromy-resilience-1"
+    },
+    {
+      "chapter": 5,
+      "title": "Recover customer value, not just machine count",
+      "start": 87.25,
+      "part": 2,
+      "path": "media/jeromy-resilience-1"
+    },
+    {
+      "chapter": 6,
+      "title": "Apply quality thinking to AI-assisted development",
+      "start": 179.35,
+      "part": 2,
+      "path": "media/jeromy-resilience-1"
+    }
+  ],
+  "design": [
+    {
+      "chapter": 1,
+      "title": "Read and write class diagrams",
+      "start": 0,
+      "part": 1,
+      "path": "media/design-0"
+    },
+    {
+      "chapter": 2,
+      "title": "Patterns as reusable design knowledge",
+      "start": 71.73,
+      "part": 1,
+      "path": "media/design-0"
+    },
+    {
+      "chapter": 3,
+      "title": "Single responsibility and cohesion",
+      "start": 134.46,
+      "part": 1,
+      "path": "media/design-0"
+    },
+    {
+      "chapter": 4,
+      "title": "Design for extension",
+      "start": 0,
+      "part": 2,
+      "path": "media/design-1"
+    },
+    {
+      "chapter": 5,
+      "title": "Substitutability and contracts",
+      "start": 60.92,
+      "part": 2,
+      "path": "media/design-1"
+    },
+    {
+      "chapter": 6,
+      "title": "Client-focused interfaces and dependency inversion",
+      "start": 129.19,
+      "part": 2,
+      "path": "media/design-1"
+    }
+  ],
+  "nfr": [
+    {
+      "chapter": 1,
+      "title": "Discover the problem and its stakeholders",
+      "start": 0,
+      "part": 1,
+      "path": "media/nfr-0"
+    },
+    {
+      "chapter": 2,
+      "title": "Write specifications people can test",
+      "start": 64.02,
+      "part": 1,
+      "path": "media/nfr-0"
+    },
+    {
+      "chapter": 3,
+      "title": "Classify requirements and quality attributes",
+      "start": 134.19,
+      "part": 1,
+      "path": "media/nfr-0"
+    },
+    {
+      "chapter": 4,
+      "title": "Make quality measurable",
+      "start": 0,
+      "part": 2,
+      "path": "media/nfr-1"
+    },
+    {
+      "chapter": 5,
+      "title": "Optimize the system rather than isolated parts",
+      "start": 62.58,
+      "part": 2,
+      "path": "media/nfr-1"
+    }
+  ],
+  "scaling": [
+    {
+      "chapter": 1,
+      "title": "From programs to services",
+      "start": 0,
+      "part": 1,
+      "path": "media/scaling-0"
+    },
+    {
+      "chapter": 2,
+      "title": "Scaling up and scaling out",
+      "start": 82.11,
+      "part": 1,
+      "path": "media/scaling-0"
+    },
+    {
+      "chapter": 3,
+      "title": "Request processing and HTTP",
+      "start": 0,
+      "part": 2,
+      "path": "media/scaling-1"
+    },
+    {
+      "chapter": 4,
+      "title": "A Wikipedia request, end to end",
+      "start": 76.25,
+      "part": 2,
+      "path": "media/scaling-1"
+    }
+  ],
+  "cache": [
+    {
+      "chapter": 1,
+      "title": "Where does state live?",
+      "start": 0,
+      "part": 1,
+      "path": "media/cache-0"
+    },
+    {
+      "chapter": 2,
+      "title": "Stateless workers with stateful data",
+      "start": 84.0,
+      "part": 1,
+      "path": "media/cache-0"
+    },
+    {
+      "chapter": 3,
+      "title": "Proxies and cache hits",
+      "start": 0,
+      "part": 2,
+      "path": "media/cache-1"
+    },
+    {
+      "chapter": 4,
+      "title": "Popularity, freshness and HTTP caching",
+      "start": 77.75,
+      "part": 2,
+      "path": "media/cache-1"
+    }
+  ],
+  "db1": [
+    {
+      "chapter": 1,
+      "title": "Why state moves into the database",
+      "start": 0,
+      "part": 1,
+      "path": "media/db1-0"
+    },
+    {
+      "chapter": 2,
+      "title": "Relational models and query execution",
+      "start": 78.84,
+      "part": 1,
+      "path": "media/db1-0"
+    },
+    {
+      "chapter": 3,
+      "title": "Indexes and their costs",
+      "start": 161.11,
+      "part": 1,
+      "path": "media/db1-0"
+    },
+    {
+      "chapter": 4,
+      "title": "Read scaling and failover",
+      "start": 0,
+      "part": 2,
+      "path": "media/db1-1"
+    },
+    {
+      "chapter": 5,
+      "title": "Sharding and fan-out",
+      "start": 80.68,
+      "part": 2,
+      "path": "media/db1-1"
+    }
+  ],
+  "db2": [
+    {
+      "chapter": 1,
+      "title": "Data locality and denormalization",
+      "start": 0,
+      "part": 1,
+      "path": "media/db2-0"
+    },
+    {
+      "chapter": 2,
+      "title": "Hash partitioning",
+      "start": 82.27,
+      "part": 1,
+      "path": "media/db2-0"
+    },
+    {
+      "chapter": 3,
+      "title": "Replication and partitions",
+      "start": 161.66,
+      "part": 1,
+      "path": "media/db2-0"
+    },
+    {
+      "chapter": 4,
+      "title": "Session guarantees",
+      "start": 0,
+      "part": 2,
+      "path": "media/db2-1"
+    },
+    {
+      "chapter": 5,
+      "title": "Quorums and their limits",
+      "start": 73.49,
+      "part": 2,
+      "path": "media/db2-1"
+    },
+    {
+      "chapter": 6,
+      "title": "Stronger consistency and synthesis",
+      "start": 149.67,
+      "part": 2,
+      "path": "media/db2-1"
+    }
+  ],
+  "choosing": [
+    {
+      "chapter": 1,
+      "title": "Start with workload and invariants",
+      "start": 0,
+      "part": 1,
+      "path": "media/choosing-0"
+    },
+    {
+      "chapter": 2,
+      "title": "Transactions and concurrency",
+      "start": 88.37,
+      "part": 1,
+      "path": "media/choosing-0"
+    },
+    {
+      "chapter": 3,
+      "title": "Storage models and analytics",
+      "start": 169.86,
+      "part": 1,
+      "path": "media/choosing-0"
+    },
+    {
+      "chapter": 4,
+      "title": "Documents, search and wide-column stores",
+      "start": 0,
+      "part": 2,
+      "path": "media/choosing-1"
+    },
+    {
+      "chapter": 5,
+      "title": "Caches and memory data structures",
+      "start": 84.02,
+      "part": 2,
+      "path": "media/choosing-1"
+    },
+    {
+      "chapter": 6,
+      "title": "Files, objects and final selection",
+      "start": 163.89,
+      "part": 2,
+      "path": "media/choosing-1"
+    }
+  ],
+  "rest": [
+    {
+      "chapter": 1,
+      "title": "HTTP as an API contract",
+      "start": 0,
+      "part": 1,
+      "path": "media/rest-0"
+    },
+    {
+      "chapter": 2,
+      "title": "Retries and resource identity",
+      "start": 81.22,
+      "part": 1,
+      "path": "media/rest-0"
+    },
+    {
+      "chapter": 3,
+      "title": "Serialization and references",
+      "start": 0,
+      "part": 2,
+      "path": "media/rest-1"
+    },
+    {
+      "chapter": 4,
+      "title": "Choosing a protocol",
+      "start": 86.54,
+      "part": 2,
+      "path": "media/rest-1"
+    }
+  ],
+  "micro": [
+    {
+      "chapter": 1,
+      "title": "One deployable application",
+      "start": 0,
+      "part": 1,
+      "path": "media/micro-0"
+    },
+    {
+      "chapter": 2,
+      "title": "Choosing service boundaries",
+      "start": 91.46,
+      "part": 1,
+      "path": "media/micro-0"
+    },
+    {
+      "chapter": 3,
+      "title": "Teams, mocks and multiple clients",
+      "start": 0,
+      "part": 2,
+      "path": "media/micro-1"
+    }
+  ],
+  "load-balancing": [
+    {
+      "chapter": 1,
+      "title": "One service, many workers",
+      "start": 0,
+      "part": 1,
+      "path": "load-balancing/media/video-0"
+    },
+    {
+      "chapter": 2,
+      "title": "Local routing: L4 and L7",
+      "start": 83.04,
+      "part": 1,
+      "path": "load-balancing/media/video-0"
+    },
+    {
+      "chapter": 3,
+      "title": "Failures and safe deployments",
+      "start": 0,
+      "part": 2,
+      "path": "load-balancing/media/video-1"
+    },
+    {
+      "chapter": 4,
+      "title": "DNS and global discovery",
+      "start": 0,
+      "part": 3,
+      "path": "load-balancing/media/video-2"
+    },
+    {
+      "chapter": 5,
+      "title": "CDNs and anycast",
+      "start": 0,
+      "part": 4,
+      "path": "load-balancing/media/video-3"
+    },
+    {
+      "chapter": 6,
+      "title": "Design review and self-check",
+      "start": 85.66,
+      "part": 4,
+      "path": "load-balancing/media/video-3"
+    }
+  ],
+  "basic": [
+    {
+      "chapter": 1,
+      "title": "Read the case architecture and its interfaces",
+      "start": 0,
+      "part": 1,
+      "path": "media/basic-0"
+    },
+    {
+      "chapter": 2,
+      "title": "Place media, caching and operating cost in context",
+      "start": 85.18,
+      "part": 1,
+      "path": "media/basic-0"
+    },
+    {
+      "chapter": 3,
+      "title": "Scale the read path deliberately",
+      "start": 0,
+      "part": 2,
+      "path": "media/basic-1"
+    },
+    {
+      "chapter": 4,
+      "title": "Evaluate scaling claims with workload evidence",
+      "start": 81.23,
+      "part": 2,
+      "path": "media/basic-1"
+    }
+  ],
+  "push": [
+    {
+      "chapter": 1,
+      "title": "Why the server cannot simply call the phone",
+      "start": 0,
+      "part": 1,
+      "path": "media/push-0"
+    },
+    {
+      "chapter": 2,
+      "title": "Registration and mobile delivery",
+      "start": 83.4,
+      "part": 1,
+      "path": "media/push-0"
+    },
+    {
+      "chapter": 3,
+      "title": "WebSockets, long polling and alternatives",
+      "start": 0,
+      "part": 2,
+      "path": "media/push-1"
+    },
+    {
+      "chapter": 4,
+      "title": "Routing to the correct connection",
+      "start": 87.45,
+      "part": 2,
+      "path": "media/push-1"
+    }
+  ],
+  "modeling": [
+    {
+      "chapter": 1,
+      "title": "Choose what the architecture model must explain",
+      "start": 0,
+      "part": 1,
+      "path": "media/modeling-0"
+    },
+    {
+      "chapter": 2,
+      "title": "Estimate before committing to implementation",
+      "start": 64.71,
+      "part": 1,
+      "path": "media/modeling-0"
+    },
+    {
+      "chapter": 3,
+      "title": "Reduce execution graphs",
+      "start": 132.09,
+      "part": 1,
+      "path": "media/modeling-0"
+    },
+    {
+      "chapter": 4,
+      "title": "Translate software actions into resource demand",
+      "start": 0,
+      "part": 2,
+      "path": "media/modeling-1"
+    },
+    {
+      "chapter": 5,
+      "title": "Work through the ATM transaction scenario",
+      "start": 73.47,
+      "part": 2,
+      "path": "media/modeling-1"
+    }
+  ],
+  "queue6": [
+    {
+      "chapter": 1,
+      "title": "From execution cost to resource contention",
+      "start": 0,
+      "part": 1,
+      "path": "media/queue6-0"
+    },
+    {
+      "chapter": 2,
+      "title": "Measure throughput and apply operational laws",
+      "start": 64.59,
+      "part": 1,
+      "path": "media/queue6-0"
+    },
+    {
+      "chapter": 3,
+      "title": "Understand single and multiple server queues",
+      "start": 162.86,
+      "part": 1,
+      "path": "media/queue6-0"
+    },
+    {
+      "chapter": 4,
+      "title": "Build an open queueing network",
+      "start": 0,
+      "part": 2,
+      "path": "media/queue6-1"
+    },
+    {
+      "chapter": 5,
+      "title": "Closed populations and model construction",
+      "start": 76.17,
+      "part": 2,
+      "path": "media/queue6-1"
+    },
+    {
+      "chapter": 6,
+      "title": "End-to-end ATM modeling workshop",
+      "start": 149.35,
+      "part": 2,
+      "path": "media/queue6-1"
+    }
+  ],
+  "jeromy-evaluation": [
+    {
+      "chapter": 1,
+      "title": "1. Define the decision and its business context",
+      "start": 0,
+      "part": 1,
+      "path": "media/jeromy-evaluation-0"
+    },
+    {
+      "chapter": 2,
+      "title": "2. Turn quality goals into observable scenarios",
+      "start": 88.0,
+      "part": 1,
+      "path": "media/jeromy-evaluation-0"
+    },
+    {
+      "chapter": 3,
+      "title": "3. Organize a quality tree",
+      "start": 205.81,
+      "part": 1,
+      "path": "media/jeromy-evaluation-0"
+    },
+    {
+      "chapter": 4,
+      "title": "4. Convert rankings to ROC weights",
+      "start": 309.03,
+      "part": 1,
+      "path": "media/jeromy-evaluation-0"
+    },
+    {
+      "chapter": 5,
+      "title": "5. Multiply weights down each path",
+      "start": 425.02,
+      "part": 1,
+      "path": "media/jeromy-evaluation-0"
+    },
+    {
+      "chapter": 6,
+      "title": "6. Assess alternatives and calculate the weighted score",
+      "start": 0,
+      "part": 2,
+      "path": "media/jeromy-evaluation-1"
+    },
+    {
+      "chapter": 7,
+      "title": "7. Test sensitivity and revisit the decision",
+      "start": 127.82,
+      "part": 2,
+      "path": "media/jeromy-evaluation-1"
+    },
+    {
+      "chapter": 8,
+      "title": "8. Understand technical debt as a quality gap",
+      "start": 223.02,
+      "part": 2,
+      "path": "media/jeromy-evaluation-1"
+    },
+    {
+      "chapter": 9,
+      "title": "9. Produce a decision record another team can audit",
+      "start": 323.53,
+      "part": 2,
+      "path": "media/jeromy-evaluation-1"
+    }
+  ],
+  "security": [
+    {
+      "chapter": 1,
+      "title": "Policies, threats and the guard",
+      "start": 0,
+      "part": 1,
+      "path": "media/security-0"
+    },
+    {
+      "chapter": 2,
+      "title": "Security principles as architecture decisions",
+      "start": 91.49,
+      "part": 1,
+      "path": "media/security-0"
+    },
+    {
+      "chapter": 3,
+      "title": "Passwords, hashes and protected transport",
+      "start": 185.22,
+      "part": 1,
+      "path": "media/security-0"
+    },
+    {
+      "chapter": 4,
+      "title": "Sessions, cookies and phishing resistance",
+      "start": 278.27,
+      "part": 1,
+      "path": "media/security-0"
+    },
+    {
+      "chapter": 5,
+      "title": "Authorization: lists, capabilities and labels",
+      "start": 0,
+      "part": 2,
+      "path": "media/security-1"
+    },
+    {
+      "chapter": 6,
+      "title": "Impersonation, replay and trust",
+      "start": 91.09,
+      "part": 2,
+      "path": "media/security-1"
+    },
+    {
+      "chapter": 7,
+      "title": "Browser isolation and the patching lifecycle",
+      "start": 182.53,
+      "part": 2,
+      "path": "media/security-1"
+    }
+  ],
+  "twitter": [
+    {
+      "chapter": 1,
+      "title": "Start with normalized data and a read workload",
+      "start": 0,
+      "part": 1,
+      "path": "media/twitter-0"
+    },
+    {
+      "chapter": 2,
+      "title": "Materialized feeds and asynchronous publication",
+      "start": 80.19,
+      "part": 1,
+      "path": "media/twitter-0"
+    },
+    {
+      "chapter": 3,
+      "title": "Partitioning a social graph",
+      "start": 0,
+      "part": 2,
+      "path": "media/twitter-1"
+    },
+    {
+      "chapter": 4,
+      "title": "Hybrid feeds and the celebrity exception",
+      "start": 79.96,
+      "part": 2,
+      "path": "media/twitter-1"
+    }
+  ],
+  "lizhi-performance": [
+    {
+      "chapter": 1,
+      "title": "Why local performance is not end-to-end performance",
+      "start": 0,
+      "part": 1,
+      "path": "media/lizhi-performance-0"
+    },
+    {
+      "chapter": 2,
+      "title": "Measure deviations with repeated, comparable experiments",
+      "start": 85.31,
+      "part": 1,
+      "path": "media/lizhi-performance-0"
+    },
+    {
+      "chapter": 3,
+      "title": "Map code-level changes into an architectural model",
+      "start": 170.89,
+      "part": 1,
+      "path": "media/lizhi-performance-0"
+    },
+    {
+      "chapter": 4,
+      "title": "Read the QPN model: activities share resources",
+      "start": 0,
+      "part": 2,
+      "path": "media/lizhi-performance-1"
+    },
+    {
+      "chapter": 5,
+      "title": "Use simulation for capacity and architecture experiments",
+      "start": 84.85,
+      "part": 2,
+      "path": "media/lizhi-performance-1"
+    },
+    {
+      "chapter": 6,
+      "title": "Make a prediction and test its limits",
+      "start": 175.89,
+      "part": 2,
+      "path": "media/lizhi-performance-1"
+    }
+  ],
+  "secure": [
+    {
+      "chapter": 1,
+      "title": "Protect the exposed service boundary",
+      "start": 0,
+      "part": 1,
+      "path": "media/secure-0"
+    },
+    {
+      "chapter": 2,
+      "title": "Verify peers and protect channels",
+      "start": 69.56,
+      "part": 1,
+      "path": "media/secure-0"
+    },
+    {
+      "chapter": 3,
+      "title": "Contain compromise inside the cluster",
+      "start": 141.18,
+      "part": 1,
+      "path": "media/secure-0"
+    },
+    {
+      "chapter": 4,
+      "title": "Token trust, validation and revocation",
+      "start": 0,
+      "part": 2,
+      "path": "media/secure-1"
+    },
+    {
+      "chapter": 5,
+      "title": "Harden each service and its data paths",
+      "start": 74.11,
+      "part": 2,
+      "path": "media/secure-1"
+    },
+    {
+      "chapter": 6,
+      "title": "Practice incident response with bounded simulations",
+      "start": 152.2,
+      "part": 2,
+      "path": "media/secure-1"
+    }
+  ],
+  "pushcase": [
+    {
+      "chapter": 1,
+      "title": "From polling to separated responsibilities",
+      "start": 0,
+      "part": 1,
+      "path": "media/pushcase-0"
+    },
+    {
+      "chapter": 2,
+      "title": "Priority, expiry and resumable delivery",
+      "start": 61.27,
+      "part": 1,
+      "path": "media/pushcase-0"
+    },
+    {
+      "chapter": 3,
+      "title": "Scaling connection ownership",
+      "start": 0,
+      "part": 2,
+      "path": "media/pushcase-1"
+    },
+    {
+      "chapter": 4,
+      "title": "Protocol evolution and the reliability boundary",
+      "start": 60.16,
+      "part": 2,
+      "path": "media/pushcase-1"
+    }
+  ],
+  "styles": [
+    {
+      "chapter": 1,
+      "title": "Describe a style through its constraints",
+      "start": 0,
+      "part": 1,
+      "path": "media/styles-0"
+    },
+    {
+      "chapter": 2,
+      "title": "Repository and blackboard architectures",
+      "start": 63.83,
+      "part": 1,
+      "path": "media/styles-0"
+    },
+    {
+      "chapter": 3,
+      "title": "Pipes, filters and compiler hybrids",
+      "start": 131.6,
+      "part": 1,
+      "path": "media/styles-0"
+    },
+    {
+      "chapter": 4,
+      "title": "Objects and layers as boundaries",
+      "start": 197.28,
+      "part": 1,
+      "path": "media/styles-0"
+    },
+    {
+      "chapter": 5,
+      "title": "Interpreter and virtual-machine architectures",
+      "start": 0,
+      "part": 2,
+      "path": "media/styles-1"
+    },
+    {
+      "chapter": 6,
+      "title": "Control systems and feedback",
+      "start": 70.48,
+      "part": 2,
+      "path": "media/styles-1"
+    },
+    {
+      "chapter": 7,
+      "title": "Client–server responsibilities and remote calls",
+      "start": 134.59,
+      "part": 2,
+      "path": "media/styles-1"
+    },
+    {
+      "chapter": 8,
+      "title": "Peer-to-peer structure and practical hybrids",
+      "start": 201.41,
+      "part": 2,
+      "path": "media/styles-1"
+    }
+  ],
+  "async": [
+    {
+      "chapter": 1,
+      "title": "Accepted is different from completed",
+      "start": 0,
+      "part": 1,
+      "path": "media/async-0"
+    },
+    {
+      "chapter": 2,
+      "title": "Queues as durable work contracts",
+      "start": 85.81,
+      "part": 1,
+      "path": "media/async-0"
+    },
+    {
+      "chapter": 3,
+      "title": "Independent scaling and queue boundaries",
+      "start": 0,
+      "part": 2,
+      "path": "media/async-1"
+    },
+    {
+      "chapter": 4,
+      "title": "Backpressure, ordering and recovery",
+      "start": 87.37,
+      "part": 2,
+      "path": "media/async-1"
+    }
+  ],
+  "events": [
+    {
+      "chapter": 1,
+      "title": "From direct calls to implicit invocation",
+      "start": 0,
+      "part": 1,
+      "path": "media/events-0"
+    },
+    {
+      "chapter": 2,
+      "title": "Event-driven architecture and brokered fan-out",
+      "start": 90.4,
+      "part": 1,
+      "path": "media/events-0"
+    },
+    {
+      "chapter": 3,
+      "title": "Delivery, ordering and poison messages",
+      "start": 0,
+      "part": 2,
+      "path": "media/events-1"
+    },
+    {
+      "chapter": 4,
+      "title": "ROS as an architectural example",
+      "start": 90.63,
+      "part": 2,
+      "path": "media/events-1"
+    }
+  ],
+  "streaming": [
+    {
+      "chapter": 1,
+      "title": "Distributed aggregates and data movement",
+      "start": 0,
+      "part": 1,
+      "path": "media/streaming-0"
+    },
+    {
+      "chapter": 2,
+      "title": "MapReduce and finite batch jobs",
+      "start": 84.88,
+      "part": 1,
+      "path": "media/streaming-0"
+    },
+    {
+      "chapter": 3,
+      "title": "Continuous streams and state",
+      "start": 167.35,
+      "part": 1,
+      "path": "media/streaming-0"
+    },
+    {
+      "chapter": 4,
+      "title": "The thread-pool Leader/Followers pattern",
+      "start": 0,
+      "part": 2,
+      "path": "media/streaming-1"
+    },
+    {
+      "chapter": 5,
+      "title": "Kafka partition leaders and replicated logs",
+      "start": 85.25,
+      "part": 2,
+      "path": "media/streaming-1"
+    }
+  ]
+}

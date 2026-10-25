@@ -1,120 +1,132 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:03.914
-A museum catalogue runs a fast image lookup in
-isolation.
+00:00:00.000 --> 00:00:05.462
+Imagine a sorting program that reads one file,
+produces its answer, and exits. Its running
 
-00:00:03.914 --> 00:00:10.300
-During a school booking event, however, 600 visitors
-arrive together and compete for the same
+00:00:05.462 --> 00:00:10.863
+time can be studied as the input grows. Now
+expose that calculation as a network service.
 
-00:00:10.300 --> 00:00:11.742
-database connections.
+00:00:10.863 --> 00:00:16.204
+The process remains available, accepts requests
+from unrelated clients, and may still be
 
-00:00:11.742 --> 00:00:16.686
-The lookup algorithm has not changed, but its
-operating conditions have.
+00:00:16.204 --> 00:00:18.875
+working on one request when another arrives.
 
-00:00:16.686 --> 00:00:23.279
-A service must keep accepting work over time, share
-finite resources among requests, and respond
+00:00:19.000 --> 00:00:24.395
+The input size of an individual job is no longer
+the only source of growth: the arrival rate
 
-00:00:23.279 --> 00:00:25.613
-acceptably while arrivals overlap.
+00:00:24.395 --> 00:00:29.555
+and the overlap between jobs matter too. In the
+diagram, several clients feed one worker
 
-00:00:25.613 --> 00:00:31.104
-A successful single-user demonstration therefore
-does not establish service capacity.
+00:00:29.555 --> 00:00:34.950
+pool. Increasing the number of clients without
+increasing useful processing capacity creates
 
-00:00:31.104 --> 00:00:37.305
-Begin the capacity discussion with a workload: which
-operations arrive, how often, and with what
+00:00:34.950 --> 00:00:39.290
+waiting, even if every individual calculation
+uses an efficient algorithm.
 
-00:00:37.305 --> 00:00:39.501
-acceptable latency and error rate?
+00:00:39.500 --> 00:00:45.201
+Consider a service that completes 80 small
+lookups per second under a particular workload.
 
-00:00:39.501 --> 00:00:43.441
-Suppose browsing costs much less than exporting a
-collection.
+00:00:45.201 --> 00:00:50.649
+If arrivals rise to 100 per second for ten
+seconds, a simplified model accumulates 200
 
-00:00:43.441 --> 00:00:49.642
-Two tests at 200 requests per second can produce
-very different results if their operation mixes
+00:00:50.649 --> 00:00:56.349
+unfinished requests. When arrivals return to 60
+per second, the service has 20 completions
 
-00:00:49.642 --> 00:00:50.094
-differ.
+00:00:56.349 --> 00:01:01.607
+per second available to remove that backlog, so
+recovery takes another ten seconds.
 
-00:00:50.113 --> 00:00:55.797
-Record both completed throughput and response-time
-distributions, including slow requests.
+00:01:01.607 --> 00:01:06.968
+The queue is a temporary reservoir, not an extra
+processor. This example explains why a
 
-00:00:55.797 --> 00:00:59.082
-Then increase arrivals until waiting or errors rise.
+00:01:06.968 --> 00:01:12.268
+capacity claim must include more than registered
+users or a peak request count. Follow
 
-00:00:59.082 --> 00:01:05.397
-This experiment distinguishes an audience-size claim
-from evidence that the architecture can support
+00:01:12.268 --> 00:01:17.937
+arrivals, completions, waiting time, and errors
+together; otherwise an apparently successful
 
-00:01:05.397 --> 00:01:06.660
-a particular demand.
+00:01:17.937 --> 00:01:22.066
+service may merely be postponing the work until
+clients abandon it.
 
-00:01:06.660 --> 00:01:11.925
-The museum first considers a larger machine and then
-a second application replica.
+00:01:22.107 --> 00:01:27.399
+Suppose a service spends most of its time
+waiting for a file or a remote database. While
+one
 
-00:01:11.925 --> 00:01:17.833
-If image processing consumes all available CPU, more
-cores may help when the work can run in
+00:01:27.399 --> 00:01:32.461
+request is blocked, another request can use the
+processor. Several threads can therefore
 
-00:01:17.833 --> 00:01:18.411
-parallel.
+00:01:32.461 --> 00:01:35.740
+improve utilization even on a machine with only
+one core.
 
-00:01:18.411 --> 00:01:24.831
-If every request waits on the same database lock,
-another application machine can simply create more
+00:01:35.740 --> 00:01:41.314
+That does not mean the core executes several
+computations at the same instant: the operating
 
-00:01:24.831 --> 00:01:25.345
-waiting.
+00:01:41.314 --> 00:01:46.887
+system schedules runnable work while blocked
+work waits. In the illustration, request A uses
 
-00:01:25.360 --> 00:01:31.764
-Vertical and horizontal scaling are changes to
-resource allocation; whether either helps depends on
+00:01:46.887 --> 00:01:52.279
+the CPU, waits for storage, and resumes; request
+B occupies part of A's waiting interval.
 
-00:01:31.764 --> 00:01:36.033
-the resource or coordination point currently
-limiting useful work.
+00:01:52.279 --> 00:01:57.575
+If the work instead consists almost entirely of
+computation, overlapping threads cannot
 
-00:01:36.033 --> 00:01:42.243
-Consider a worker that spends 10 milliseconds
-computing and 40 milliseconds waiting for a remote
+00:01:57.575 --> 00:02:01.227
+manufacture additional execution capacity on
+that same core.
 
-00:01:42.243 --> 00:01:42.825
-response.
+00:02:01.279 --> 00:02:06.986
+Vertical scaling replaces or upgrades a machine
+with more useful resources: cores, memory,
 
-00:01:42.825 --> 00:01:49.099
-On one core, another request can use CPU during that
-wait, so concurrency can improve utilization
+00:02:06.986 --> 00:02:12.629
+storage bandwidth, or faster processors.
+Horizontal scaling adds machines and distributes
 
-00:01:49.099 --> 00:01:51.945
-without making the first computation faster.
+00:02:12.629 --> 00:02:18.336
+requests between them. Picture two application
+replicas that both query the same database.
 
-00:01:51.960 --> 00:01:58.335
-This is not a promise of a fivefold speedup: network
-limits, scheduling and shared dependencies
+00:02:18.336 --> 00:02:23.308
+Adding the second replica helps only while that
+database and the connecting network can
 
-00:01:58.335 --> 00:01:59.207
-still matter.
+00:02:23.308 --> 00:02:28.451
+support the extra work. If the database already
+limits completions, two application queues
 
-00:01:59.207 --> 00:02:05.178
-Before choosing larger machines or additional
-replicas, measure CPU use, waiting time and
+00:02:28.451 --> 00:02:33.709
+simply converge on the same narrow point. The
+figure contrasts extra execution capacity with
 
-00:02:05.178 --> 00:02:05.916
-contention.
+00:02:33.709 --> 00:02:35.481
+an unchanged shared dependency.
 
-00:02:05.916 --> 00:02:11.955
-After changing capacity, repeat the same workload
-test to see whether the bottleneck moved
+00:02:35.481 --> 00:02:40.494
+Diagnose the limiting resource first, change one
+capacity assumption, and repeat the same
 
-00:02:11.955 --> 00:02:12.626
-elsewhere.
+00:02:40.494 --> 00:02:44.775
+workload measurement to establish whether the
+bottleneck has actually moved.

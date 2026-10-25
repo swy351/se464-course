@@ -1,0 +1,32 @@
+[
+  {
+    "chapter": 1,
+    "title": "Protect the exposed service boundary",
+    "time": 0
+  },
+  {
+    "chapter": 1,
+    "title": "Protect the exposed service boundary",
+    "time": 24.9
+  },
+  {
+    "chapter": 2,
+    "title": "Verify peers and protect channels",
+    "time": 69.56
+  },
+  {
+    "chapter": 2,
+    "title": "Verify peers and protect channels",
+    "time": 98.07
+  },
+  {
+    "chapter": 3,
+    "title": "Contain compromise inside the cluster",
+    "time": 141.18
+  },
+  {
+    "chapter": 3,
+    "title": "Contain compromise inside the cluster",
+    "time": 168.4
+  }
+]

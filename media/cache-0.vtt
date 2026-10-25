@@ -1,111 +1,142 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:05.303
-A bicycle rental application remembers an unfinished
-booking in worker A’s memory.
+00:00:00.000 --> 00:00:04.920
+A useful way to discover state is to interrupt a
+conversation halfway through it and move
 
-00:00:05.303 --> 00:00:10.412
-The customer’s next request reaches worker B, which
-has never seen the booking.
+00:00:04.920 --> 00:00:09.950
+the next message to a fresh worker. Consider an
+email submission dialogue: earlier commands
 
-00:00:10.412 --> 00:00:16.879
-Both workers run identical code, but they are not
-interchangeable for this interaction because their
+00:00:09.950 --> 00:00:14.648
+establish the sender and recipients, while a
+later command supplies the message body.
 
-00:00:16.879 --> 00:00:18.754
-retained information differs.
+00:00:14.648 --> 00:00:20.090
+A worker that sees only the final body cannot
+reconstruct the complete operation. It needs
 
-00:00:18.754 --> 00:00:24.833
-Calling the protocol HTTP does not remove that
-dependency: application state can exist above a
+00:00:20.090 --> 00:00:25.592
+information retained from the earlier messages.
+The diagram shows these pieces accumulating
 
-00:00:24.833 --> 00:00:26.579
-stateless request protocol.
+00:00:25.592 --> 00:00:31.034
+in one conversation context. State is therefore
+not simply data in a database; it includes
 
-00:00:26.600 --> 00:00:32.240
-Identify the information needed for the next
-operation and locate its authoritative copy.
+00:00:31.034 --> 00:00:36.597
+any remembered information that later processing
+depends on, including process variables, an
 
-00:00:32.240 --> 00:00:36.487
-A stateless worker may still read changing data and
-perform writes.
+00:00:36.597 --> 00:00:40.769
+open connection's context, or a partially
+completed user interaction.
 
-00:00:36.487 --> 00:00:42.824
-For example, it can accept a booking identifier,
-load that booking from shared storage and update it
+00:00:40.769 --> 00:00:46.034
+HTTP requests are designed to carry the
+information needed to interpret each individual
 
-00:00:42.824 --> 00:00:43.205
-there.
+00:00:46.034 --> 00:00:51.480
+exchange, but an HTTP application can still
+introduce a dependency on a particular worker.
 
-00:00:43.205 --> 00:00:49.035
-The worker does not need the customer’s previous
-requests to have visited that same process.
+00:00:51.480 --> 00:00:55.534
+Imagine worker A storing an unfinished game only
+in its own memory.
 
-00:00:49.035 --> 00:00:54.597
-This distinction separates deployment statelessness
-from a mathematical pure function.
+00:00:55.769 --> 00:01:00.939
+The next request contains the game identifier
+but reaches worker B, whose dictionary has no
 
-00:00:54.597 --> 00:00:59.059
-To test your design, replace the worker between
-consecutive requests.
+00:01:00.939 --> 00:01:06.166
+corresponding entry. Identical code does not
+make these workers interchangeable because they
 
-00:00:59.059 --> 00:01:05.332
-If another healthy worker can continue using the
-request and shared services, the application has
+00:01:06.166 --> 00:01:11.336
+have different histories. The illustration
+follows the identifier to the wrong memory store
 
-00:01:05.332 --> 00:01:08.695
-avoided a hidden dependency on the original process.
+00:01:11.336 --> 00:01:13.381
+and exposes the missing information.
 
-00:01:08.735 --> 00:01:14.663
-Move the bicycle booking into shared storage, and a
-replacement worker can retrieve it after a
+00:01:13.381 --> 00:01:18.180
+Before adding replicas, ask whether another
+worker can complete the request using the
 
-00:01:14.663 --> 00:01:15.167
-restart.
+00:01:18.180 --> 00:01:23.093
+request itself and explicitly shared services,
+without consulting the original worker's
 
-00:01:15.167 --> 00:01:21.284
-That improves replaceability but exposes a second
-question: what if two workers reserve the final
+00:01:23.093 --> 00:01:23.997
+private history.
 
-00:01:21.284 --> 00:01:22.609
-bicycle concurrently?
+00:01:23.997 --> 00:01:29.214
+Start with a chess application that keeps a
+dictionary of active games inside one process.
 
-00:01:22.609 --> 00:01:28.284
-If both read availability before either writes, each
-may believe the reservation is valid.
+00:01:29.214 --> 00:01:34.489
+Cloning that process creates several independent
+dictionaries, so each game becomes tied to
 
-00:01:28.284 --> 00:01:34.913
-Shared storage solves access to a common record; a
-suitable atomic operation or version check must
+00:01:34.489 --> 00:01:39.533
+the worker holding it. Instead, put the
+authoritative game record in shared storage and
 
-00:01:34.913 --> 00:01:36.942
-also protect the booking rule.
+00:01:39.533 --> 00:01:41.794
+include its identifier in each request.
 
-00:01:36.942 --> 00:01:42.894
-For example, worker A reads booking version 12,
-while worker B changes it to version 13.
+00:01:41.997 --> 00:01:47.510
+A worker loads the board, validates the
+requested move, saves the result, and returns
+the
 
-00:01:42.894 --> 00:01:49.591
-A conditional update based on version 12 should now
-fail rather than silently overwrite B’s change.
+00:01:47.510 --> 00:01:52.962
+updated representation. A replacement worker can
+now continue after the original process
 
-00:01:49.591 --> 00:01:52.976
-The application can reload and explain the conflict.
+00:01:52.962 --> 00:01:58.662
+disappears. The diagram shows two
+interchangeable application workers converging
+on one game
 
-00:01:52.976 --> 00:01:59.420
-A session cookie can identify the customer whose
-request is being processed, but it does not itself
+00:01:58.662 --> 00:01:59.095
+record.
 
-00:01:59.420 --> 00:02:01.373
-enforce inventory correctness.
+00:01:59.095 --> 00:02:04.137
+We have removed a placement constraint from the
+application tier, but we have deliberately
 
-00:02:01.373 --> 00:02:07.557
-Explain these responsibilities separately: the
-request carries identity or a session reference,
+00:02:04.137 --> 00:02:08.618
+created a shared dependency that needs its own
+capacity and availability design.
 
-00:02:07.557 --> 00:02:13.806
-shared storage retains durable state, and the update
-protocol decides which concurrent change is
+00:02:08.618 --> 00:02:13.605
+Externalizing state does not automatically make
+concurrent updates correct. Suppose two
 
-00:02:13.806 --> 00:02:14.392
-accepted.
+00:02:13.605 --> 00:02:18.763
+requests both read game version twelve. The
+first valid move updates the record to version
+
+00:02:18.763 --> 00:02:23.922
+thirteen. If the second request blindly writes
+its earlier view, it can erase the accepted
+
+00:02:23.922 --> 00:02:26.444
+change or apply a move to an obsolete board.
+
+00:02:26.618 --> 00:02:31.547
+A conditional update that succeeds only while
+the version is still twelve lets exactly one
+
+00:02:31.547 --> 00:02:36.422
+of these competing updates win. The second
+request must reload and reconsider its action.
+
+00:02:36.422 --> 00:02:41.352
+The diagram marks the two reads and the rejected
+stale write; it makes clear that a common
+
+00:02:41.352 --> 00:02:45.295
+storage location and a correct update protocol
+solve different problems.

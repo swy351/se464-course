@@ -1,14 +1,26 @@
 Queueing networks and architectural performance
-Part 2 • Synthetic narration
+Illustrated lesson · Part 2 · Synthetic narration
 
-Build an open queueing network
+Build an open queueing network — Build an open queueing network
 
-Trace requests through resources and count visits. Device throughput differs from external request throughput when a request visits repeatedly. Convert visits and service time into demand, then calculate utilization and response under the chosen model. The ATM example shows why doubling arrivals near a bottleneck can increase delay much more than twofold.
+An open network receives external requests, routes them among resources and eventually releases them. A request may visit a device repeatedly. If external arrival rate is λ and average visits are V, device throughput is λV. Multiplying by service time per visit gives utilization. Total demand D=VS separates how often a resource is used from the cost of each use.
 
-Closed populations and model construction
+Build an open queueing network — Reason through the consequences
 
-Choose open, closed or mixed workload behavior before solving the network. Fixed users with think time differ from independent external arrivals. Map execution demands onto stations and keep per-visit and per-request quantities distinct. Then vary uncertain parameters, identify the limiting resource and communicate what an average-value model does not predict about bursts or tail latency.
+Under the simplified single-server station assumptions, each device contributes D/(1−λD) to request response time. Sum these contributions using consistent per-request accounting, and calculate average system population as λR. The ATM example exposes nonlinear scaling: doubling arrival rate increases CPU utilization from 0.468 to 0.936 when CPU visits are twenty-six. Corrected response rises from about 0.447 seconds to 2.699 seconds, rather than simply doubling. The source arithmetic needs repair before reuse. At two transactions/s, 4.5 disk visits per transaction and 20 ms per visit, what are disk throughput and utilization? Disk throughput is 9 I/O/s; utilization is 9×0.02=0.18, or 18%.
 
-End-to-end ATM modeling workshop
+Closed populations and model construction — Closed populations and model construction
 
-This workshop connects the two performance-modeling units. Convert operation requests through the overhead matrix, reduce the execution graph and obtain demand at each device. Apply arrival intensity only after that step. Check stability first, and do not hide ambiguous branch labels: state the mapping you use or obtain it from the original diagram.
+A closed model keeps a fixed population circulating through the modeled workload. Interactive users alternate between thinking and requesting service; their next request depends on completing the previous cycle. An open model instead specifies arrivals from outside. Mixed models can contain both classes. Choosing the workload model is a behavioral decision, not a cosmetic change in how the same diagram is drawn.
+
+Closed populations and model construction — Reason through the consequences
+
+To derive a queueing model from execution results, identify resource stations, connect their routes, choose the workload population or arrival rate and estimate service demand. Preserve whether quantities are per visit or per request. Check sensitivity to uncertain inputs and report average-model limitations. In the authorization example, CPU demand 0.0311 seconds and utilization 0.0933 give a CPU response contribution near 0.0343 seconds, exposing the source’s factor-of-ten error before computing the system total. Does a fixed group of users who wait for each response generate a constant external arrival rate independently of delay? No. Their request rate changes with response and think times; a closed interactive model captures that coupling.
+
+End-to-end ATM modeling workshop — End-to-end ATM modeling workshop
+
+The processTransaction exercise combines execution-graph analysis with resource contention. First compute each operation’s resource demand from its software requests and the overhead matrix. A server action, database access and message can each consume several hardware resources, so a database operation is not merely one unit of disk time. Reduce sequential steps and probability-weighted alternatives to a per-request resource-demand vector.
+
+End-to-end ATM modeling workshop — Reason through the consequences
+
+Next apply the supplied ten-jobs-per-second workload and check every device utilization before calculating delays. If any modeled station reaches or exceeds capacity, report that the steady-state formula is inapplicable rather than displaying a negative response. The extracted text includes an unfinished worked solution and does not fully establish which branch probability labels attach to which nodes. Verify the diagram or explicitly state the assumed mapping before producing numerical answers. If the reduced disk demand is 0.12 seconds/request at ten requests/s, can the single-server stable formula be applied? No. Utilization would be 1.2; the assumed single disk station cannot sustain the offered workload.

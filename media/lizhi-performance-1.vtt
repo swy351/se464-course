@@ -1,60 +1,227 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:04.916
-In the demonstration, several visible places share
-the same underlying queue.
+00:00:00.000 --> 00:00:05.295
+The demonstration uses QPME, the Queueing Petri
+Net Modeling Environment. Request paths move
 
-00:00:04.916 --> 00:00:08.172
-Do not count every green node as a separate server.
+00:00:05.295 --> 00:00:10.416
+through modeled activities and transitions.
+Queues provide resource contention, while the
 
-00:00:08.172 --> 00:00:14.429
-Trace one request and identify its resource
-mappings, scheduling, server count and service
-demand.
+00:00:10.416 --> 00:00:14.848
+model can represent different request classes
+and routing through the system.
 
-00:00:14.429 --> 00:00:20.814
-Shared queues explain why different request classes
-can interfere even when their diagram paths look
+00:00:15.000 --> 00:00:19.708
+An important clarification in the recording is
+that each visible green place is not
 
-00:00:20.814 --> 00:00:21.389
-separate.
+00:00:19.708 --> 00:00:24.416
+necessarily an independent hardware resource.
+Several places can reference the same
 
-00:00:21.400 --> 00:00:26.152
-A capacity change and an asynchronous redesign
-answer different questions.
+00:00:24.416 --> 00:00:29.352
+underlying queue. In the demonstrated naming
+scheme, the prefix identifies the resource
 
-00:00:26.152 --> 00:00:32.188
-More servers can reduce queueing; moving work off
-the response path can reduce waiting without
+00:00:29.352 --> 00:00:29.692
+queue.
 
-00:00:32.188 --> 00:00:33.344
-removing the work.
+00:00:29.692 --> 00:00:34.536
+Different request paths can therefore compete
+for the same web or authentication resource.
 
-00:00:33.344 --> 00:00:37.004
-Compare throughput, utilization and completion
-semantics.
+00:00:34.692 --> 00:00:39.861
+For each shared queue, inspect scheduling
+discipline, number of servers and service-time
 
-00:00:37.004 --> 00:00:42.976
-Also distinguish a confidence interval for a
-simulation estimate from a percentile of request
+00:00:39.861 --> 00:00:45.147
+assumptions. For each request class, inspect
+routing, visits and synchronization. Counting
 
-00:00:42.976 --> 00:00:43.489
-latency.
+00:00:45.147 --> 00:00:50.258
+diagram nodes as independent servers would
+understate contention and produce misleading
 
-00:00:43.500 --> 00:00:46.577
-Our small lab illustrates queueing amplification.
+00:00:50.258 --> 00:00:53.606
+predictions. Follow one request from entry to
+completion.
 
-00:00:46.577 --> 00:00:52.668
-At seventy-five requests per second, changing mean
-service from eight to ten milliseconds changes
+00:00:53.692 --> 00:00:58.913
+For an add-to-cart operation, identify which
+modeled activities use the same resource and
 
-00:00:52.668 --> 00:00:56.310
-predicted mean response from twenty to forty
-milliseconds.
+00:00:58.913 --> 00:01:04.252
+which downstream work the caller waits for.
+Write a small activity-to-resource table before
 
-00:00:56.310 --> 00:00:59.449
-This relies on explicit single-server assumptions.
+00:01:04.252 --> 00:01:09.181
+changing the model. The point is to understand
+the semantics behind the diagram, not
 
-00:00:59.449 --> 00:01:05.666
-Use it to understand the mechanism, then build and
-validate a model appropriate to the real system.
+00:01:09.181 --> 00:01:10.354
+memorize its colors.
+
+00:01:10.354 --> 00:01:15.720
+Two places on different request paths both use
+the WebUI queue. Do they run on independent
+
+00:01:15.720 --> 00:01:21.027
+capacity? No. They share the modeled queue’s
+capacity unless the model explicitly assigns
+
+00:01:21.027 --> 00:01:24.843
+separate resources. Distinct places can compete
+at one resource.
+
+00:01:24.854 --> 00:01:29.955
+The demo first adds capacity to a highly
+utilized web resource, then explores moving work
+
+00:01:29.955 --> 00:01:34.999
+into a separate cart service with asynchronous
+interaction. These are different changes:
+
+00:01:34.999 --> 00:01:40.100
+adding a server changes resource capacity;
+changing the interaction can change the user’s
+
+00:01:40.100 --> 00:01:42.221
+waiting path and where work contends.
+
+00:01:42.354 --> 00:01:47.363
+Inspect throughput, utilization, population and
+residence time as well as end-to-end
+
+00:01:47.363 --> 00:01:52.432
+response. A substantial response-time
+improvement can occur near saturation even when
+
+00:01:52.432 --> 00:01:57.858
+utilization changes more modestly. Conversely, a
+quick acknowledgment may leave substantial
+
+00:01:57.858 --> 00:01:59.289
+background work running.
+
+00:01:59.354 --> 00:02:04.756
+Preserve completion semantics when comparing
+synchronous and asynchronous designs. Does the
+
+00:02:04.756 --> 00:02:10.218
+response mean the cart update is durable,
+accepted for later processing, or fully
+completed?
+
+00:02:10.218 --> 00:02:15.442
+A shorter response is not equivalent behavior if
+the user-visible contract changed. Also
+
+00:02:15.442 --> 00:02:19.539
+model retries, ordering, failures and
+backpressure where they matter.
+
+00:02:19.539 --> 00:02:25.491
+Distinguish uncertainty in a simulation estimate
+from a latency percentile. A 95% confidence
+
+00:02:25.491 --> 00:02:31.055
+interval for a mean is not p95 request latency.
+The recording shows simulation output;
+
+00:02:31.055 --> 00:02:36.749
+interpret the reported statistic according to
+its definition, and avoid transferring its
+
+00:02:36.749 --> 00:02:39.143
+example numbers to a real deployment.
+
+00:02:39.143 --> 00:02:44.765
+Moving work off the response path lowers
+acknowledgment time. Has the total work
+necessarily
+
+00:02:44.765 --> 00:02:50.327
+decreased? No. The work may continue elsewhere,
+with similar utilization or new contention.
+
+00:02:50.327 --> 00:02:55.888
+Compare the same completion semantics and
+inspect downstream capacity and failure
+behavior.
+
+00:02:55.888 --> 00:03:02.735
+The interactive lab is a deliberately smaller
+model than the lecture’s QPN demonstration. It
+
+00:03:02.735 --> 00:03:09.060
+assumes one M/M/1 queue: Poisson arrivals,
+independent exponential service times, one
+
+00:03:09.060 --> 00:03:15.832
+server, an unbounded queue and steady state.
+With service demand S seconds and arrival rate
+
+00:03:15.832 --> 00:03:22.232
+λ per second, utilization is ρ = λS and mean
+response is R = S/(1−ρ), only when ρ < 1.
+
+00:03:22.388 --> 00:03:31.478
+New worked example: λ = 75 requests/second and S
+= 8 ms gives ρ = 0.60 and R = 20 ms.
+
+00:03:31.478 --> 00:03:41.102
+Increasing S to 10 ms gives ρ = 0.75 and R = 40
+ms. A 25% increase in local demand doubles
+
+00:03:41.102 --> 00:03:43.883
+the model’s mean response.
+
+00:03:43.888 --> 00:03:48.798
+At λS ≥ 1 the model has no finite steady-state
+mean; reporting a negative response from the
+
+00:03:48.798 --> 00:03:50.200
+formula would be an error.
+
+00:03:50.388 --> 00:03:55.837
+Use this calculation to explain amplification,
+not to claim every request follows an
+
+00:03:55.837 --> 00:04:01.805
+exponential distribution. A real model may need
+multiple resources, several visits, parallel
+
+00:04:01.805 --> 00:04:07.514
+branches, finite queues and distinct workload
+classes. Revalidate after an architectural
+
+00:04:07.514 --> 00:04:13.157
+change. A reviewable analysis records the
+baseline measurements, local change, mapping,
+
+00:04:13.157 --> 00:04:17.114
+model assumptions, workload, prediction and
+validation error.
+
+00:04:17.114 --> 00:04:22.380
+Keep calibration evidence separate from
+validation evidence. Recommend a measurement or
+
+00:04:22.380 --> 00:04:27.827
+experiment that would most reduce uncertainty in
+the decision. Why is R = S/(1−λS) invalid
+
+00:04:27.827 --> 00:04:33.274
+as a finite steady-state estimate when λS
+reaches one? Arrivals consume all or more of the
+
+00:04:33.274 --> 00:04:34.303
+service capacity.
+
+00:04:34.303 --> 00:04:39.126
+The assumed queue has no stable finite mean
+response; the algebra is not a valid
+
+00:04:39.126 --> 00:04:41.779
+continuation beyond the stability condition.

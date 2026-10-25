@@ -1,64 +1,179 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:04.625
-Begin with the distinction between doing work and
-waiting for a resource.
+00:00:00.000 --> 00:00:05.135
+A software execution model estimates the
+resources a scenario demands without competition
 
-00:00:04.625 --> 00:00:09.250
-Execution models estimate demand; queueing models
-account for contention.
+00:00:05.135 --> 00:00:10.154
+from other requests. A queueing model adds that
+competition. A service station contains
 
-00:00:09.250 --> 00:00:15.206
-Define the station boundary, number of servers and
-capacity convention before using a formula.
+00:00:10.154 --> 00:00:15.288
+waiting work and one or more servers, where a
+server might represent a processor, disk or
 
-00:00:15.206 --> 00:00:21.415
-The same average service time can yield very
-different response times when arrivals, scheduling
-or
+00:00:15.288 --> 00:00:17.884
+network link rather than a physical computer.
 
-00:00:21.415 --> 00:00:23.125
-competing workloads change.
+00:00:18.000 --> 00:00:23.108
+Residence time includes both waiting and
+service; service time measures the resource work
 
-00:00:23.125 --> 00:00:26.069
-Compute each metric with its units attached.
+00:00:23.108 --> 00:00:23.452
+alone.
 
-00:00:26.069 --> 00:00:32.557
-Eight completions over twenty seconds means 0.4 jobs
-per second, while sixteen busy seconds means
+00:00:23.500 --> 00:00:29.263
+Kendall notation records assumptions about
+arrivals, service times, server count, capacity,
 
-00:00:32.557 --> 00:00:34.363
-eighty percent utilization.
+00:00:29.263 --> 00:00:34.963
+population and scheduling. In the slide example,
+total capacity twenty includes three jobs
 
-00:00:34.363 --> 00:00:39.180
-Operational laws connect these measurements when
-their boundaries agree.
+00:00:34.963 --> 00:00:40.410
+in service and seventeen waiting. State this
+convention explicitly because “buffer” is
 
-00:00:39.180 --> 00:00:45.735
-Little’s law uses average jobs, throughput and
-residence time; it is not restricted to exponential
+00:00:40.410 --> 00:00:41.043
+ambiguous.
 
-00:00:45.735 --> 00:00:47.073
-arrivals or service.
+00:00:41.043 --> 00:00:46.107
+Model choices matter: bursty arrivals, finite
+populations and priority scheduling can
 
-00:00:47.073 --> 00:00:52.264
-M/M/1 provides a simple explanation for sharply
-increasing delay near saturation.
+00:00:46.107 --> 00:00:51.529
+produce different behavior even when average
+service demand is unchanged. A useful model is
 
-00:00:52.264 --> 00:00:56.301
-Its assumptions and stability condition are part of
-the result.
+00:00:51.529 --> 00:00:56.831
+precise about its boundary and assumptions. Does
+a two-millisecond service demand imply a
 
-00:00:56.301 --> 00:01:02.517
-Birth–death balance gives state probabilities, while
-additional servers or finite buffers require
+00:00:56.831 --> 00:00:59.095
+two-millisecond response at high load?
 
-00:01:02.517 --> 00:01:03.863
-changed calculations.
+00:00:59.095 --> 00:01:04.431
+No. Waiting behind other work adds residence
+time even if the service demand is unchanged.
 
-00:01:03.863 --> 00:01:10.143
-Distinguish average delay, queue-tail probability
-and actual blocking rather than treating them as
+00:01:04.595 --> 00:01:10.067
+An execution profile records arrivals,
+completions and busy intervals over a
+measurement
 
-00:01:10.143 --> 00:01:12.707
-interchangeable measures of performance.
+00:01:10.067 --> 00:01:15.663
+period. For the supplied twenty-second
+observation, eight completions yield throughput
+0.4
+
+00:01:15.663 --> 00:01:21.197
+jobs per second and sixteen busy seconds yield
+utilization 0.8. Average service demand is
+
+00:01:21.197 --> 00:01:25.115
+two seconds per completed job under the
+accounting assumptions.
+
+00:01:25.115 --> 00:01:30.191
+These measurements describe different
+quantities; utilization is a fraction,
+throughput is a
+
+00:01:30.191 --> 00:01:32.288
+rate and residence time is a duration.
+
+00:01:32.288 --> 00:01:37.797
+The utilization law connects throughput and
+service demand, U=X×S for a single service
+
+00:01:37.797 --> 00:01:43.369
+resource. Little’s law relates average jobs
+inside a boundary to throughput and average
+
+00:01:43.369 --> 00:01:49.263
+residence time, N=X×R. Use consistent boundaries
+and a stable observation regime; do not mix
+
+00:01:49.263 --> 00:01:52.145
+system throughput with a device queue length.
+
+00:01:52.288 --> 00:01:59.042
+The NFS exercise completes 10,800 requests in
+1,800 seconds, giving six per second; three
+
+00:01:59.042 --> 00:02:05.873
+active requests imply average residence of half
+a second. A single encoding device is busy
+
+00:02:05.873 --> 00:02:12.856
+40% of the time at 800 frames/s. A firmware
+change reduces mean service per frame to 0.3 ms.
+
+00:02:12.856 --> 00:02:21.101
+What mean service time did the measurements
+imply before the change, and what utilization is
+
+00:02:21.101 --> 00:02:28.719
+predicted afterward? Before: S=U/X=.40/800=.0005
+seconds, or 0.5 ms per frame. After:
+
+00:02:28.719 --> 00:02:36.696
+U=800×.0003=.24, or 24%, assuming the throughput
+and device boundary stay the same. Lower
+
+00:02:36.696 --> 00:02:42.611
+utilization alone does not establish an end-to-
+end latency target.
+
+00:02:42.856 --> 00:02:50.409
+The M/M/1 model assumes Poisson arrivals,
+independent exponentially distributed service
+
+00:02:50.409 --> 00:02:58.048
+times and one server with an unbounded waiting
+room. In steady state it requires arrival
+
+00:02:58.048 --> 00:03:05.862
+rate λ below service rate μ. Its utilization is
+ρ=λ/μ, mean residence time is 1/(μ−λ), and
+
+00:03:05.862 --> 00:03:07.685
+mean jobs is ρ/(1−ρ).
+
+00:03:07.856 --> 00:03:13.134
+These expressions describe long-run averages
+under the model, not deterministic limits on
+
+00:03:13.134 --> 00:03:14.321
+individual requests.
+
+00:03:14.356 --> 00:03:20.793
+Birth–death balance explains the geometric state
+distribution. At an empty system, departure
+
+00:03:20.793 --> 00:03:26.881
+rate is zero; at nonempty states it is μ.
+Multiple servers change departure capacity to
+
+00:03:26.881 --> 00:03:31.849
+min(n,m)μ and require a different waiting
+calculation such as Erlang C.
+
+00:03:31.856 --> 00:03:37.044
+Finite buffers change the model again: an
+infinite-queue tail probability is not
+
+00:03:37.044 --> 00:03:42.686
+automatically the exact blocking probability of
+a bounded system. Always define whether
+
+00:03:42.686 --> 00:03:48.652
+capacity includes the job being served. What
+happens to M/M/1 residence time as λ approaches
+
+00:03:48.652 --> 00:03:49.495
+μ from below?
+
+00:03:49.495 --> 00:03:54.740
+It grows without bound in the model; the stable
+formula cannot be used at or above capacity.

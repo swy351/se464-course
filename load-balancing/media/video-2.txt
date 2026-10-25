@@ -1,6 +1,10 @@
 Load balancing
-Part 3 • Synthetic narration
+Illustrated lesson · Part 3 · Synthetic narration
 
-DNS and global discovery
+DNS and global discovery — Discovery itself is distributed
 
-A resolver receives Region East with a 90-second TTL at time zero. At time 20, the authoritative policy switches new answers to Region West. Under the simplified ordinary-cache model, a lookup at time 50 can still receive East from the resolver’s cache; the answer becomes eligible for refresh at time 90. Updating the authority changes future answers, not every previously distributed copy at the same instant. Existing connections add another layer: a client may continue using an established connection without repeating DNS for every request. Multiple clients may also share one resolver, so a single cached answer can direct a large group. Geographic steering often estimates location from the resolver or partial client-network information, rather than knowing each user’s precise position. Treat DNS as a discovery mechanism with caching behavior. Combine it with regional load balancing and an explicit data recovery strategy; changing a name-to-address answer does not by itself make another region ready to accept writes.
+Before a client can contact a service, it often resolves a hostname to an address. DNS distributes this discovery work across a hierarchy and caches answers near clients, avoiding a single central lookup for every request. An authoritative service can provide different addresses to different resolvers or return several candidate addresses. The diagram separates a client's local resolver from the authority that supplies an answer when needed. Many clients may share one cached answer, so varying DNS responses does not imply perfectly even per-request load. After discovery, the client connects to the selected address; DNS is not necessarily consulted again for every application request on that connection.
+
+DNS and global discovery — Old DNS answers remain in use
+
+Caching makes a DNS change gradual rather than instantaneous. Suppose a resolver stores Region East at time zero with a ninety-second TTL. At time twenty, the authority begins returning Region West to new lookups. A client asking the same resolver at time fifty can still receive East under the ordinary cache model, because that cached answer has not expired. At time ninety, the resolver can refresh and obtain West. The diagram puts the authoritative change above the still-valid cached copy to explain the overlap. Existing connections and client behavior add further complications, so a TTL is not a promise that every user switches regions at precisely one moment.

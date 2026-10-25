@@ -1,68 +1,175 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:06.286
-Architecture includes consequential decisions,
-especially those that are difficult to reverse and
+00:00:00.000 --> 00:00:05.125
+Architecture centers on decisions that are
+difficult to change and strongly affect a
 
-00:00:06.286 --> 00:00:07.842
-strongly affect quality.
+00:00:05.125 --> 00:00:10.677
+system’s quality attributes. A component diagram
+helps describe a system, but architectural
 
-00:00:07.842 --> 00:00:12.702
-A box diagram is useful, but ask why the boundaries
-and dependencies exist.
+00:00:10.677 --> 00:00:16.107
+reasoning also explains why its boundaries,
+dependencies, storage and recovery mechanisms
 
-00:00:12.702 --> 00:00:19.118
-For an alerting service, durable acknowledgments and
-a working recovery path may matter more than a
+00:00:16.107 --> 00:00:16.839
+were chosen.
 
-00:00:19.118 --> 00:00:20.868
-fashionable component name.
+00:00:17.000 --> 00:00:22.445
+Whether a choice is architectural depends on
+context. A language choice may deeply affect
 
-00:00:20.868 --> 00:00:23.655
-Always connect the decision to its context.
+00:00:22.445 --> 00:00:27.952
+latency, maintainability or hiring for a long-
+lived system; for a disposable prototype its
 
-00:00:23.700 --> 00:00:25.581
-Start with customer outcomes.
+00:00:27.952 --> 00:00:33.519
+consequences may be smaller. Avoid declaring a
+technology universally architectural without
 
-00:00:25.581 --> 00:00:31.222
-The lecture’s observability pipeline must ingest
-data before it can alert on that data.
+00:00:33.519 --> 00:00:36.701
+identifying the quality impact and cost of
+reversal.
 
-00:00:31.222 --> 00:00:37.253
-Durable storage, service availability and ingestion-
-to-alert latency are different qualities.
+00:00:36.701 --> 00:00:42.189
+For a new campus alerting service, ask which
+decisions determine whether acknowledged alerts
 
-00:00:37.253 --> 00:00:43.673
-Preserving accepted data is valuable even when a
-dashboard is unavailable, but it does not make the
+00:00:42.189 --> 00:00:47.259
+survive a crash, whether operators can diagnose
+a failure, and whether a new delivery
 
-00:00:43.673 --> 00:00:44.710
-outage harmless.
+00:00:47.259 --> 00:00:52.509
+channel can be added. These questions connect
+the opening lecture to later requirements,
 
-00:00:44.710 --> 00:00:47.693
-Set priorities explicitly for the application.
+00:00:52.509 --> 00:00:54.835
+database, microservices and QODA units.
 
-00:00:47.700 --> 00:00:51.180
-The historical outage illustrates a correlated
-failure.
+00:00:54.835 --> 00:00:59.579
+Is a language choice always an architectural
+decision? Its importance depends on how
 
-00:00:51.180 --> 00:00:56.052
-A networking update affected many machines through a
-shared change mechanism.
+00:00:59.579 --> 00:01:04.549
+strongly it affects relevant qualities and how
+costly it is to reverse in the particular
 
-00:00:56.052 --> 00:00:58.519
-Replication did not isolate that cause.
+00:01:04.549 --> 00:01:04.945
+system.
 
-00:00:58.519 --> 00:01:04.403
-Recovery then differed across environments because
-replacing a node and rebooting it preserve
+00:01:04.945 --> 00:01:10.207
+The example’s simplified observability pipeline
+ingests telemetry, persists it, processes
 
-00:01:04.403 --> 00:01:05.416
-different state.
+00:01:10.207 --> 00:01:15.528
+and indexes it, and supports alerts and queries.
+Those functions depend on one another: an
 
-00:01:05.416 --> 00:01:11.300
-Review the entire control and update path, and
-document what each recovery action destroys or
+00:01:15.528 --> 00:01:19.548
+alert cannot be trustworthy if the relevant data
+was never ingested.
 
-00:01:11.300 --> 00:01:11.806
-retains.
+00:01:19.548 --> 00:01:24.829
+In the historical Datadog example, durability is
+central to customer trust. Availability
+
+00:01:24.829 --> 00:01:30.169
+priorities include preserving ingestion and
+monitoring before less urgent query behavior.
+
+00:01:30.169 --> 00:01:35.450
+Another important measure is ingestion-to-use
+latency, including the time until data can
+
+00:01:35.450 --> 00:01:40.730
+support an alert. This ordering belongs to that
+business context, not every application.
+
+00:01:40.730 --> 00:01:45.708
+A quality requirement should state which user
+outcome it protects. For a campus safety
+
+00:01:45.708 --> 00:01:50.512
+system, preserving an accepted urgent alert and
+delivering it on time might outrank
+
+00:01:50.512 --> 00:01:55.779
+historical report generation. State what may be
+delayed, what may be dropped, and what must
+
+00:01:55.779 --> 00:02:00.756
+not be lost. Apply authorization and data-
+retention constraints as part of the design.
+
+00:02:00.756 --> 00:02:06.171
+If a dashboard is unavailable but accepted data
+is durably retained, are availability and
+
+00:02:06.171 --> 00:02:11.463
+durability identical outcomes? No. The service
+can retain data while failing to provide
+
+00:02:11.463 --> 00:02:16.512
+timely access or alerts. Measure both properties
+and explain the user consequences.
+
+00:02:16.756 --> 00:02:22.348
+The case describes the March 2023 Datadog outage
+as a historical case study. An unattended
+
+00:02:22.348 --> 00:02:28.064
+operating-system update restarted networking
+software and disrupted routing on many nodes. A
+
+00:02:28.064 --> 00:02:33.346
+change outside the ordinary staged rollout path
+crossed otherwise separate deployment
+
+00:02:33.346 --> 00:02:34.029
+boundaries.
+
+00:02:34.256 --> 00:02:39.797
+The lesson is about correlated causes. Multiple
+machines, regions or cloud providers do not
+
+00:02:39.797 --> 00:02:45.094
+guarantee independence when a shared update
+mechanism can affect them together. Include
+
+00:02:45.094 --> 00:02:50.513
+operating-system packages, configuration,
+identity, networking and management services in
+
+00:02:50.513 --> 00:02:55.749
+the dependency and change-control review.
+Recovery behavior also differed across cloud
+
+00:02:55.749 --> 00:02:57.880
+environments in the case described.
+
+00:02:57.880 --> 00:03:03.034
+Replacing a machine and rebooting a machine can
+have different consequences for local state.
+
+00:03:03.034 --> 00:03:07.909
+Treat these as historical observations from the
+recording, not guarantees about current
+
+00:03:07.909 --> 00:03:12.784
+cloud-provider behavior. A recovery plan must
+specify what survives each action and how
+
+00:03:12.784 --> 00:03:14.521
+service state is reconstructed.
+
+00:03:14.521 --> 00:03:20.391
+Can a geographically replicated system still
+have one broad failure mechanism? Yes. A shared
+
+00:03:20.391 --> 00:03:25.879
+configuration, update, credential or control-
+plane dependency can fail across regions.
+
+00:03:25.879 --> 00:03:31.302
+Geographic diversity protects only against the
+failure classes it actually separates.

@@ -1,59 +1,175 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:05.401
-The open–closed principle encourages stable code
-around deliberate extension points.
+00:00:00.000 --> 00:00:04.888
+The painter example initially knows how to draw
+each concrete shape. Adding a triangle
 
-00:00:05.401 --> 00:00:11.573
-In the shape example, a common drawing operation
-keeps the painter independent of concrete shape
+00:00:04.888 --> 00:00:09.775
+requires another branch or loop in the painter,
+spreading the variation into a client.
 
-00:00:11.573 --> 00:00:11.958
-types.
+00:00:09.775 --> 00:00:14.208
+Introducing a Shape operation moves drawing
+behavior behind a shared contract.
 
-00:00:11.958 --> 00:00:16.330
-This does not eliminate all edits or require
-inheritance everywhere.
+00:00:14.208 --> 00:00:19.043
+The painter can then iterate over shapes without
+naming every concrete type, making the
 
-00:00:16.330 --> 00:00:22.760
-Judge the abstraction by the changes it localizes
-and the contract new implementations must satisfy.
+00:00:19.043 --> 00:00:20.989
+supported extension point explicit.
 
-00:00:22.800 --> 00:00:27.769
-Liskov substitution preserves the expectations
-clients are entitled to make.
+00:00:21.208 --> 00:00:26.293
+Open–closed design protects stable behavior from
+selected kinds of change; it does not
 
-00:00:27.769 --> 00:00:33.784
-The mutable Rectangle and Square example fails
-because setters violate independent-dimension
+00:00:26.293 --> 00:00:31.614
+forbid editing code or demand inheritance for
+every extension. Composition, strategies and
 
-00:00:33.784 --> 00:00:34.372
-behavior.
+00:00:31.614 --> 00:00:36.640
+registration can serve the same purpose. Adding
+a shape may still require creation or
 
-00:00:34.372 --> 00:00:37.707
-Check actual preconditions, results and invariants.
+00:00:36.640 --> 00:00:38.532
+configuration changes elsewhere.
 
-00:00:37.707 --> 00:00:42.937
-Exceptions are not automatically violations:
-optional operations may allow them.
+00:00:38.708 --> 00:00:43.860
+The key question is whether the abstraction
+matches the expected variation, and whether its
 
-00:00:42.937 --> 00:00:48.560
-The right question is whether the subtype honors the
-contract the client was promised.
+00:00:43.860 --> 00:00:49.011
+contract is sufficient for new implementations
+to work without special cases in the client.
 
-00:00:48.600 --> 00:00:55.110
-Design interfaces around client roles and put high-
-level policy behind appropriate abstractions.
+00:00:49.011 --> 00:00:53.879
+After introducing Shape.draw, must every file
+remain unchanged when Triangle is added?
 
-00:00:55.110 --> 00:00:59.992
-Read-only and mutable capabilities need not be
-bundled for every client.
+00:00:53.879 --> 00:00:59.316
+No. The painting loop can remain stable, while
+Triangle and its creation or registration
 
-00:00:59.992 --> 00:01:05.348
-JDBC shows how a stable API can separate application
-logic from driver details.
+00:00:59.316 --> 00:01:00.922
+still need implementation.
 
-00:01:05.348 --> 00:01:11.994
-These boundaries reduce coupling, but only a
-preserved behavioral contract makes replacement
-safe.
+00:01:00.922 --> 00:01:06.492
+Substitutability concerns behavior visible to
+clients. If a client works under a supertype
+
+00:01:06.492 --> 00:01:11.938
+contract, replacing an object with a subtype
+should not invalidate those expectations. A
+
+00:01:11.938 --> 00:01:16.642
+subtype must not demand stronger preconditions
+or provide weaker guarantees.
+
+00:01:16.642 --> 00:01:21.515
+Phrase this through implications: every input
+accepted by the supertype must remain
+
+00:01:21.515 --> 00:01:26.565
+acceptable, and the subtype’s successful outcome
+must satisfy the supertype’s promised
+
+00:01:26.565 --> 00:01:26.976
+result.
+
+00:01:27.142 --> 00:01:32.246
+The mutable Rectangle example promises
+independently adjustable width and height.
+Square
+
+00:01:32.246 --> 00:01:37.292
+breaks that promise by changing both dimensions
+in a setter, so a client expecting area
+
+00:01:37.292 --> 00:01:42.164
+fifty receives one hundred. This is a contract
+problem rather than a statement about
+
+00:01:42.164 --> 00:01:42.686
+geometry.
+
+00:01:42.686 --> 00:01:48.158
+The unmodifiable List example needs different
+care: Java documents optional mutators, so an
+
+00:01:48.158 --> 00:01:53.450
+exception can be permitted by the declared
+contract. A client requiring mutation needs a
+
+00:01:53.450 --> 00:01:58.862
+stronger capability guarantee. Does the
+mathematical fact that every square is a
+rectangle
+
+00:01:58.862 --> 00:02:01.568
+prove mutable Square is a behavioral subtype?
+
+00:02:01.686 --> 00:02:08.002
+No. The programming interface’s mutation
+promises, not just geometric membership,
+determine
+
+00:02:08.002 --> 00:02:09.182
+substitutability.
+
+00:02:09.186 --> 00:02:14.581
+Interface segregation focuses on what each
+client needs to depend on. A broad interface can
+
+00:02:14.581 --> 00:02:19.917
+mix reading, writing and event handling even
+when many clients need only one role. Smaller
+
+00:02:19.917 --> 00:02:22.407
+role interfaces make capabilities clearer.
+
+00:02:22.407 --> 00:02:27.542
+An adapter with default no-op callbacks may
+reduce implementation effort, but it does not
+
+00:02:27.542 --> 00:02:30.716
+erase the conceptual breadth of the original
+interface.
+
+00:02:30.907 --> 00:02:36.749
+Dependency inversion places policy behind stable
+abstractions instead of binding it directly
+
+00:02:36.749 --> 00:02:42.338
+to implementation details. JDBC illustrates
+application code using a database-facing API
+
+00:02:42.338 --> 00:02:47.673
+implemented by drivers. The boundary can
+localize many implementation changes, while
+
+00:02:47.673 --> 00:02:52.055
+behavioral differences and contract changes may
+still affect clients.
+
+00:02:52.055 --> 00:02:56.970
+Together, these principles encourage focused
+contracts owned by the needs of the caller,
+
+00:02:56.970 --> 00:03:01.717
+with concrete implementations replaceable only
+to the extent that they preserve those
+
+00:03:01.717 --> 00:03:06.855
+contracts. Does adding an interface guarantee
+callers are unaffected by every implementation
+
+00:03:06.855 --> 00:03:07.246
+change?
+
+00:03:07.246 --> 00:03:12.707
+No. Changes in observable behavior, contract or
+supported capabilities can still affect
+
+00:03:12.707 --> 00:03:15.845
+callers even when method signatures remain
+stable.

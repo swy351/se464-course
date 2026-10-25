@@ -1,109 +1,137 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:05.678
-Follow a catalogue request through an arrival queue,
-application handling and a response.
+00:00:00.000 --> 00:00:05.074
+A server framework separates network handling
+from application work. The network-facing
 
-00:00:05.678 --> 00:00:11.484
-When all workers are busy, another request waits
-rather than receiving an immediate worker.
+00:00:05.074 --> 00:00:09.973
+component accepts a request and makes it
+available to a worker. A worker removes one
 
-00:00:11.484 --> 00:00:15.312
-If arrivals remain faster than completions, the
-queue grows.
+00:00:09.973 --> 00:00:14.813
+request, runs the application handler, and
+places its response where the networking
 
-00:00:15.312 --> 00:00:20.672
-A bigger queue may absorb a short burst, but it does
-not create processing capacity.
+00:00:14.813 --> 00:00:16.096
+component can send it.
 
-00:00:20.700 --> 00:00:27.120
-Bounded queues make overload explicit and let the
-service reject or defer work instead of allowing
+00:00:16.096 --> 00:00:21.396
+When the request queue is empty, waiting workers
+can block instead of continuously polling.
 
-00:00:27.120 --> 00:00:30.658
-unlimited memory growth and increasingly late
-answers.
+00:00:21.396 --> 00:00:26.696
+When the response side is congested, completed
+work may also wait before reaching a client.
 
-00:00:30.658 --> 00:00:36.948
-The client sends an HTTP method, target and fields,
-with optional content; the service returns a
+00:00:26.696 --> 00:00:31.938
+The diagram deliberately includes both queues:
+observing a fast application function alone
 
-00:00:36.948 --> 00:00:39.306
-status, fields and optional content.
+00:00:31.938 --> 00:00:34.617
+does not establish a fast end-to-end response.
 
-00:00:39.306 --> 00:00:45.137
-A framework translates that contract into
-application calls and manages network activity.
+00:00:34.617 --> 00:00:39.342
+Time can be spent before the function starts and
+after its computation has finished.
 
-00:00:45.137 --> 00:00:48.864
-It might use threads, processes or asynchronous
-handlers.
+00:00:39.342 --> 00:00:44.417
+Now fill the arrival queue while every worker is
+busy. An unlimited queue keeps accepting
 
-00:00:48.864 --> 00:00:55.336
-Those choices affect how waits are managed, but they
-do not change the meaning of GET or a response
+00:00:44.417 --> 00:00:49.492
+requests but consumes memory and lets waiting
+time increase without bound under sustained
 
-00:00:55.336 --> 00:00:55.794
-status.
+00:00:49.492 --> 00:00:54.339
+overload. A bounded queue creates an explicit
+decision point: accept work while space
 
-00:00:55.794 --> 00:01:02.004
-In a design review, draw both the public request
-contract and the internal queues: one explains
+00:00:54.339 --> 00:00:58.502
+remains, then reject it or apply backpressure
+when capacity is exhausted.
 
-00:01:02.004 --> 00:01:07.234
-interoperability, while the other explains what
-users experience during a burst.
+00:00:58.502 --> 00:01:03.455
+The illustration shows a full queue diverting a
+new arrival to an overload response instead
 
-00:01:07.237 --> 00:01:13.165
-Apply the chapter’s rendering pipeline to a
-different service: a museum collection page.
+00:01:03.455 --> 00:01:08.354
+of hiding it behind an ever-growing backlog.
+Rejection is not automatically desirable, but
 
-00:01:13.165 --> 00:01:19.767
-A browser requests an exhibit; the application reads
-its description from durable storage, formats
+00:01:08.354 --> 00:01:13.036
+an early, meaningful failure can be more useful
+than a response that arrives after the
 
-00:01:19.767 --> 00:01:23.135
-the description, adds navigation and returns HTML.
+00:01:13.036 --> 00:01:16.248
+client has already timed out and submitted
+another request.
 
-00:01:23.135 --> 00:01:29.601
-The database owns saved content, while the
-application constructs a representation for a
-reader.
+00:01:16.248 --> 00:01:22.063
+Follow a reader opening an encyclopedia article
+in the historical architecture example. The
 
-00:01:29.637 --> 00:01:35.899
-Labelling these responsibilities makes the
-architecture diagram useful: each arrow should
-identify a
+00:01:22.063 --> 00:01:27.432
+browser sends an HTTP request identifying the
+article. The application extracts that
 
-00:01:35.899 --> 00:01:39.781
-request or data transfer, rather than simply
-connecting boxes.
+00:01:27.432 --> 00:01:33.248
+identity, retrieves the article's saved wiki
+text from a database, transforms it into HTML,
 
-00:01:39.781 --> 00:01:42.912
-Now compare two visitors reading the same exhibit.
+00:01:33.248 --> 00:01:36.124
+and adds navigation and other page structure.
 
-00:01:42.912 --> 00:01:49.173
-They can share the description and public image, but
-one visitor’s private saved-list indicator must
+00:01:36.248 --> 00:01:41.287
+The database retains the editable content; the
+application computes a representation of it.
 
-00:01:49.173 --> 00:01:51.553
-not become the other visitor’s answer.
+00:01:41.287 --> 00:01:46.270
+These are different responsibilities even if a
+small deployment initially puts them on the
 
-00:01:51.553 --> 00:01:56.523
-This observation identifies possible reuse
-boundaries before choosing a cache.
+00:01:46.270 --> 00:01:51.364
+same machine. The illustration highlights the
+storage read and rendering step separately, so
 
-00:01:56.523 --> 00:02:02.449
-Trace a second request after an exhibit description
-changes, and explain which component must
+00:01:51.364 --> 00:01:56.237
+we can later ask whether repeated reads or
+repeated transformations dominate the cost of
 
-00:02:02.449 --> 00:02:03.723
-observe that update.
+00:01:56.237 --> 00:01:57.179
+serving the page.
 
-00:02:03.723 --> 00:02:10.031
-The point of the historical diagram is this method
-of reasoning about repeated computation, durable
+00:01:57.248 --> 00:02:02.066
+Next compare two readers requesting the same
+article. Most of the article body may be
 
-00:02:10.031 --> 00:02:16.275
-state and personalized output; its component names
-are not a prescription for a modern deployment.
+00:02:02.066 --> 00:02:07.169
+identical, but the page header can differ
+because a signed-in reader sees account controls
+
+00:02:07.169 --> 00:02:12.271
+or notifications. The browser supplies a cookie
+with its request, allowing the application
+
+00:02:12.271 --> 00:02:15.389
+to obtain the relevant identity or session
+information.
+
+00:02:15.389 --> 00:02:20.137
+In the diagram, shared article content and user-
+specific information enter different
+
+00:02:20.137 --> 00:02:25.225
+branches before the final page is assembled.
+Reusing the entire assembled response without
+
+00:02:25.225 --> 00:02:30.143
+distinguishing users could disclose one reader's
+information to another. A cache design
+
+00:02:30.143 --> 00:02:35.061
+should therefore begin by identifying which
+fragments are shared, which vary, and which
+
+00:02:35.061 --> 00:02:38.057
+request properties select the correct
+representation.

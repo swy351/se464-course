@@ -1,14 +1,26 @@
 Introduction to software architecture
-Part 2 • Synthetic narration
+Illustrated lesson · Part 2 · Synthetic narration
 
-Views and meaningful diagrams
+Views and meaningful diagrams — Views and meaningful diagrams
 
-A diagram needs a question and a legend. Boxes may represent domain concepts, modules, processes, or machines; arrows may mean very different things. The four plus one model separates logical, process, development, and physical concerns, and uses scenarios to connect them. Choose a view for the question being asked. Then check that the views agree about the same system, without trying to put every detail into one crowded picture.
+A single box-and-arrow picture rarely answers every architectural question. A static decomposition can show code responsibilities and dependencies. A runtime view can show processes and interactions. A deployment view can show where software executes across devices. State what each box and arrow represents, and distinguish a code dependency from a runtime message or a deployment relationship.
 
-Abstraction, reuse, and C4
+Views and meaningful diagrams — Reason through the consequences
 
-Reusable architectural ideas include styles, reference architectures, and product-line architectures. Their assumptions and constraints matter as much as their shapes. C4 offers nested descriptions: context, containers, components, and code. These levels help match detail to an audience. A container here means a running application or data store, not necessarily a packaging technology. C4 levels and four plus one views are complementary ways to organize descriptions, rather than interchangeable lists.
+The 4+1 model organizes complementary views. The logical view describes key abstractions and responsibilities; the process view addresses runtime concurrency and interactions; the development view describes code organization; the physical view maps software onto hardware or execution nodes. The additional scenarios connect and help examine the views through representative system behavior. For a museum catalog, a logical view might distinguish exhibits and collections, a development view might show modules, and a physical view might place the application on a server. A visitor searching for an exhibit is a scenario that can be traced through the relevant views. These descriptions must agree, but they need not contain identical boxes or identical levels of detail. A maintainer asks which device runs a process. Would a class diagram alone answer the question? Usually not. A physical or deployment view identifies execution placement. A class diagram describes a different concern and needs an explicit mapping to runtime and deployment elements.
 
-Patterns and architectural styles
+Abstraction, reuse, and C4 — Abstraction, reuse, and C4
 
-Patterns organize responsibilities around recurring problems. Three-tier architecture separates presentation, application processing, and data management. MVC focuses on model, view, and controller responsibilities, while sense, compute, control organizes observation and action. These are useful ideas, but labels do not establish deployment or guarantee quality. Explain the problem, the relationships, and the constraints. Then examine whether the proposed arrangement serves the system mission and stakeholder concerns.
+Architectural descriptions can reuse ideas at different scopes. A style describes a family of structures through constraints on elements and relationships. A reference architecture gives a reusable architectural organization for a domain. A product-line architecture captures shared structure and planned variation across related products. These concepts help teams reuse reasoning, rather than copy a diagram without checking its assumptions.
+
+Abstraction, reuse, and C4 — Reason through the consequences
+
+C4 provides four nested levels of structural description: system context, containers, components, and code. Context shows the system in relation to people and external systems. Containers show major running applications or data stores within the system; components describe responsibilities within a container; code shows implementation detail when useful. A C4 container is a modeling concept, not necessarily a Docker container. C4 levels and 4+1 views answer different organizing questions. C4 changes the level of detail; 4+1 separates concerns such as code organization and runtime processes. Neither requires every diagram for every audience. Architectural significance also does not follow a fixed line-count threshold or a rule that architecture happens only early: revisit consequential decisions as the system evolves. A context diagram contains every class in the application. Does the extra detail necessarily help its audience? No. A context audience needs the system boundary, people, and external relationships. Class detail can obscure that purpose; move it to a more detailed description when it answers a relevant question.
+
+Patterns and architectural styles — Patterns and architectural styles
+
+An architectural pattern describes a recurring design problem and an arrangement of responsibilities that addresses it in a context. A style constrains the kinds of elements and relationships allowed in a family of architectures. The terms can overlap in use; explaining the responsibilities, constraints, and consequences is more useful than relying only on a name.
+
+Patterns and architectural styles — Reason through the consequences
+
+The three-tier example separates presentation, application processing, and data management. This helps identify responsibilities and the interfaces between them. A logical separation of these concerns does not by itself prove that they run on three separate machines. MVC separates model, view, and controller responsibilities around an interface; it should not be assumed to be a one-to-one synonym for three deployment tiers. The sense–compute–control example organizes observation, computation, and action on an environment. It highlights a different set of responsibilities from a typical presentation-and-data application. When selecting any pattern, state the problem it addresses and the constraints it imposes. A named style may support desired qualities, but its name alone cannot guarantee maintainability, performance, or other outcomes. A team labels three boxes MVC. Has it demonstrated a three-machine deployment? No. MVC describes responsibilities. Deployment requires separate evidence about where those responsibilities execute; a diagram label does not establish placement.

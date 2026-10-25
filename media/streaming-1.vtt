@@ -1,41 +1,158 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:05.539
-The Leader/Followers concurrency pattern coordinates
-a pool of threads waiting for events.
+00:00:00.000 --> 00:00:05.077
+Imagine three threads sharing an event source.
+Thread A is the leader waiting for the next
 
-00:00:05.539 --> 00:00:11.570
-One thread leads by waiting on an event source; when
-an event arrives, another follower can become
+00:00:05.077 --> 00:00:09.928
+event while B and C are followers. When an event
+arrives, A arranges for a follower to
 
-00:00:11.570 --> 00:00:14.648
-leader while the previous leader handles the work.
+00:00:09.928 --> 00:00:12.918
+become the new leader, then handles the event
+itself.
 
-00:00:14.648 --> 00:00:20.617
-The purpose is efficient event dispatch with
-controlled coordination overhead, not replication of
+00:00:13.000 --> 00:00:18.075
+B can now wait for another event while A
+performs application work. Draw leadership as a
 
-00:00:20.617 --> 00:00:23.202
-durable data across a cluster of machines.
+00:00:18.075 --> 00:00:23.207
+role that moves between threads, not as a
+permanently special machine. The handoff avoids
 
-00:00:23.202 --> 00:00:27.647
-Kafka illustrates a different use of leader and
-follower terminology.
+00:00:23.207 --> 00:00:27.936
+having every waiting thread compete
+unnecessarily for the same event notification.
 
-00:00:27.647 --> 00:00:33.767
-A partition has a leader responsible for its log
-operations and replica followers that copy its
+00:00:28.000 --> 00:00:33.096
+The design also keeps event waiting separate
+from potentially slower handling. Its value
 
-00:00:33.767 --> 00:00:34.089
-data.
+00:00:33.096 --> 00:00:38.365
+depends on the event system and workload, so the
+performance argument should identify which
 
-00:00:34.089 --> 00:00:38.598
-Leadership can move after failure under a cluster
-coordination policy.
+00:00:38.365 --> 00:00:41.607
+coordination or scheduling overhead is actually
+reduced.
 
-00:00:38.598 --> 00:00:44.846
-Several partitions can distribute leadership across
-brokers, so one leader per partition does not
+00:00:41.607 --> 00:00:46.676
+Now compare this thread pool with a replicated
+database. The thread-pool leader waits on an
 
-00:00:44.846 --> 00:00:48.067
-mean the entire system has only one active writer.
+00:00:46.676 --> 00:00:51.745
+event source and coordinates dispatch within a
+process. A database leader may accept writes
+
+00:00:51.745 --> 00:00:56.592
+and coordinate durable state across machines.
+Replacing a waiting thread does not solve
+
+00:00:56.592 --> 00:01:01.549
+replica agreement after a network partition, and
+it does not imply that acknowledged data
+
+00:01:01.549 --> 00:01:03.053
+survives a machine failure.
+
+00:01:03.107 --> 00:01:07.847
+Keeping the two meanings separate prevents an
+architecture explanation from borrowing
+
+00:01:07.847 --> 00:01:12.922
+guarantees from an unrelated pattern. Within the
+thread pool, still examine what happens if
+
+00:01:12.922 --> 00:01:18.052
+a handler blocks, whether another thread can
+continue receiving events, and how cancellation
+
+00:01:18.052 --> 00:01:18.386
+works.
+
+00:01:18.607 --> 00:01:23.601
+Correct handoff protects the shared event
+source; it is not a substitute for timeouts or
+
+00:01:23.601 --> 00:01:25.246
+bounded work in the handlers.
+
+00:01:25.246 --> 00:01:30.468
+A partitioned log divides records among several
+ordered sequences. Each partition can have a
+
+00:01:30.468 --> 00:01:35.689
+leader handling its operations and followers
+copying its records. Different brokers can lead
+
+00:01:35.689 --> 00:01:40.287
+different partitions, so leadership is
+distributed across the cluster rather than
+
+00:01:40.287 --> 00:01:42.387
+concentrated in one universal writer.
+
+00:01:42.387 --> 00:01:47.633
+Within a partition, record positions provide an
+order and consumers track their progress.
+
+00:01:47.633 --> 00:01:52.880
+Across partitions, there is no automatic single
+global order. For order events, using the
+
+00:01:52.880 --> 00:01:57.891
+order identifier as the partitioning key can
+keep one order's sequence together while
+
+00:01:57.891 --> 00:02:00.072
+unrelated orders proceed in parallel.
+
+00:02:00.072 --> 00:02:04.939
+Draw partition boundaries before drawing leader
+and follower arrows. Otherwise a diagram
+
+00:02:04.939 --> 00:02:09.806
+with several brokers can misleadingly suggest
+that every record is ordered against every
+
+00:02:09.806 --> 00:02:11.686
+other record in the entire system.
+
+00:02:11.686 --> 00:02:16.357
+Suppose a leader accepts a record and fails
+before a follower receives it. Whether an
+
+00:02:16.357 --> 00:02:21.082
+acknowledged record can be lost depends on the
+acknowledgement and election rules, not
+
+00:02:21.082 --> 00:02:25.917
+merely on the presence of a follower box in the
+diagram. A lagging replica should not be
+
+00:02:25.917 --> 00:02:30.807
+treated as an equally current replacement
+without considering the durability consequence.
+
+00:02:30.807 --> 00:02:36.068
+Downstream, a payment worker can read a safely
+replicated record and still crash around an
+
+00:02:36.068 --> 00:02:41.270
+external charge. Log durability and effect
+correctness are separate boundaries. Trace the
+
+00:02:41.270 --> 00:02:46.589
+record from producer acknowledgement through
+replication, consumption, and external result.
+
+00:02:46.589 --> 00:02:51.850
+The historical coordination service shown in
+older diagrams is an implementation detail of
+
+00:02:51.850 --> 00:02:56.993
+that version; preserve the reasoning about
+leadership, progress, and failure rather than
+
+00:02:56.993 --> 00:02:59.098
+assuming the topology never changes.

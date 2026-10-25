@@ -1,0 +1,32 @@
+[
+  {
+    "chapter": 4,
+    "title": "Token trust, validation and revocation",
+    "time": 0
+  },
+  {
+    "chapter": 4,
+    "title": "Token trust, validation and revocation",
+    "time": 24.01
+  },
+  {
+    "chapter": 5,
+    "title": "Harden each service and its data paths",
+    "time": 74.11
+  },
+  {
+    "chapter": 5,
+    "title": "Harden each service and its data paths",
+    "time": 102.45
+  },
+  {
+    "chapter": 6,
+    "title": "Practice incident response with bounded simulations",
+    "time": 152.2
+  },
+  {
+    "chapter": 6,
+    "title": "Practice incident response with bounded simulations",
+    "time": 179.82
+  }
+]

@@ -2,9 +2,9 @@
 
 [Open the course](https://swy351.github.io/se464-course/)
 
-Interactive course companions based on Weiyi Shang’s SE464 lecture material: 26 units, 137 chapters, 54 short narrated videos, 29 interactive labs, and 81 additional practice questions with hints and worked answers.
+Interactive course companions based on Weiyi Shang’s SE464 lecture material: 26 units, 137 chapters, 54 illustrated narrated videos, 29 interactive labs, and 81 additional practice questions with hints and worked answers.
 
-Unit 1 uses only the introduction material (slides 9–48 and 50–57) from the Week 1 Admin and intro deck. Administrative material is excluded. The Week 14 review deck informs newly authored practice questions within the units; there is no separate review unit. The two architecture-modeling queueing decks are labeled as overlapping variants.
+Unit 1 uses only the introduction material (slides 9–48 and 50–57) from the Week 1 Admin and intro deck. Administrative material is excluded. The Week 14 review deck informs newly authored practice questions within the units; there is no separate review unit. The two overlapping queueing decks are combined into one unit.
 
 ## Use locally
 
@@ -22,4 +22,6 @@ Written exercise responses are not submitted or saved. Completion progress is st
 
 Teaching weeks and dates now follow the Fall 2026 course timetable. Unit numbers indicate learning order; historical slide filenames are retained as source references. Guest lectures are included.
 
-Three guest-recording units added: Jeromy’s resilience lecture (September 14), Jeromy’s Quality-Oriented Decision Analysis and technical debt lecture (November 9), and Lizhi Liao’s performance modeling lecture (November 18). The 2025 recordings supply material for the 2026 teaching slots. Course totals: 26 units, 137 chapters, 54 narrated mini-lessons, 29 labs, and 81 original practice questions. QODA includes a nine-chapter walkthrough, ROC tree and scoring lab. Original recordings and raw transcripts are not bundled.
+Three guest-recording units added: Jeromy’s resilience lecture (September 14), Jeromy’s Quality-Oriented Decision Analysis and technical debt lecture (November 9), and Lizhi Liao’s performance modeling lecture (November 18). The 2025 recordings supply material for the 2026 teaching slots. Course totals: 26 units, 137 chapters, 54 illustrated lessons, 29 labs, and 81 original practice questions. QODA includes a nine-chapter walkthrough, ROC tree and scoring lab. Original recordings and raw transcripts are not bundled.
+
+The illustrated edition includes 274 original diagrams and approximately 186 minutes of narration, with captions, transcripts and chapter navigation. Notes explain mechanisms, worked examples and tradeoffs in detail.

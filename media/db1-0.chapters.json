@@ -1,0 +1,32 @@
+[
+  {
+    "chapter": 1,
+    "title": "Why state moves into the database",
+    "time": 0
+  },
+  {
+    "chapter": 1,
+    "title": "Why state moves into the database",
+    "time": 36.81
+  },
+  {
+    "chapter": 2,
+    "title": "Relational models and query execution",
+    "time": 78.84
+  },
+  {
+    "chapter": 2,
+    "title": "Relational models and query execution",
+    "time": 119.32
+  },
+  {
+    "chapter": 3,
+    "title": "Indexes and their costs",
+    "time": 161.11
+  },
+  {
+    "chapter": 3,
+    "title": "Indexes and their costs",
+    "time": 199.3
+  }
+]

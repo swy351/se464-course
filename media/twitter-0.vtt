@@ -1,120 +1,143 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:06.297
-Consider a hypothetical professional discussion
-service with tables for members, subscriptions and
+00:00:00.000 --> 00:00:05.513
+Start with a simple social-feed model: users,
+follow relationships and posts. Publishing a
 
-00:00:06.297 --> 00:00:06.683
-posts.
+00:00:05.513 --> 00:00:10.720
+post inserts one record associated with its
+author. To read a viewer's feed, find the
 
-00:00:06.683 --> 00:00:10.924
-A member following forty authors requests the newest
-twenty posts.
+00:00:10.720 --> 00:00:15.744
+authors that viewer follows, retrieve their
+recent posts, join any required author
 
-00:00:10.924 --> 00:00:17.221
-A normalized design first finds the followed authors
-and retrieves their recent posts, then orders
+00:00:15.744 --> 00:00:17.765
+information and order the result.
 
-00:00:17.221 --> 00:00:18.635
-and limits the result.
+00:00:18.000 --> 00:00:23.157
+The write path is compact because each post has
+one authoritative representation. The read
 
-00:00:18.635 --> 00:00:22.491
-This can work well with suitable indexes and modest
-traffic.
+00:00:23.157 --> 00:00:28.085
+path reconstructs a personalized view from
+several sets of records. This is a sensible
 
-00:00:22.500 --> 00:00:28.522
-The architectural question is how much data and how
-many storage owners the request must touch as
+00:00:28.085 --> 00:00:33.127
+starting point, especially at modest scale. The
+problem is not that relational databases
 
-00:00:28.522 --> 00:00:29.826
-the workload changes.
+00:00:33.127 --> 00:00:37.825
+cannot store social data; it is that a heavily
+used personalized query can require
 
-00:00:29.826 --> 00:00:35.103
-Now compare a member who follows four thousand
-authors spread across many partitions.
+00:00:37.825 --> 00:00:41.836
+increasingly expensive access to scattered data
+as the workload grows.
 
-00:00:35.103 --> 00:00:41.062
-The same logical query may require broader fan-out
-and merging, even though the returned page is
+00:00:42.000 --> 00:00:46.882
+Follow one reader who subscribes to three
+authors. Their posts are mixed with many other
 
-00:00:41.062 --> 00:00:42.242
-still twenty posts.
+00:00:46.882 --> 00:00:51.763
+authors' posts in storage and may live on
+different shards. Indexes help locate relevant
 
-00:00:42.242 --> 00:00:45.623
-A small result does not imply a small amount of
-work.
+00:00:51.763 --> 00:00:56.035
+rows, but they do not make every reader's
+selected posts physically adjacent.
 
-00:00:45.623 --> 00:00:51.556
-Measure feed-read frequency, author activity and
-partition fan-out before changing the model.
+00:00:56.035 --> 00:01:01.169
+A feed query can require multiple lookups,
+remote requests and a merge before returning a
 
-00:00:51.556 --> 00:00:57.809
-Normalization makes canonical updates
-straightforward; it does not imply that every read
-is cheap.
+00:01:01.169 --> 00:01:06.016
+small page. Storage systems generally benefit
+from useful locality, while many small
 
-00:00:57.809 --> 00:01:02.530
-Conversely, the presence of a join alone does not
-prove the query is slow.
+00:01:06.016 --> 00:01:11.265
+scattered accesses add work and latency. The
+diagram should branch from the reader's follow
 
-00:01:02.530 --> 00:01:05.719
-The workload and access path provide the evidence.
+00:01:11.265 --> 00:01:15.188
+list to several author histories and then
+converge at a sorted feed.
 
-00:01:05.742 --> 00:01:10.663
-In the hypothetical discussion service, one author
-has eight hundred followers.
+00:01:15.188 --> 00:01:19.919
+This makes the read amplification visible
+instead of attributing the delay vaguely to a
 
-00:01:10.663 --> 00:01:16.517
-Materializing an entry in every follower's feed
-turns one canonical post into as many as eight
+00:01:19.919 --> 00:01:20.191
+join.
 
-00:01:16.517 --> 00:01:18.012
-hundred derived updates.
+00:01:20.191 --> 00:01:25.355
+Prebuilding feeds moves the join's work earlier.
+When an author publishes, the system finds
 
-00:01:18.012 --> 00:01:23.867
-Readers benefit because their recent feed entries
-are already grouped by their own identifier.
+00:01:25.355 --> 00:01:30.180
+the followers and inserts a reference or
+suitable representation into each follower's
 
-00:01:23.867 --> 00:01:29.971
-At ten such posts per second, this illustrative case
-creates up to eight thousand feed updates per
+00:01:30.180 --> 00:01:35.288
+materialized feed. A later feed read can use the
+viewer's identifier to retrieve a compact
 
-00:01:29.971 --> 00:01:32.214
-second before retries or other work.
+00:01:35.288 --> 00:01:36.196
+prepared result.
 
-00:01:32.242 --> 00:01:35.959
-Faster reads have purchased additional write
-amplification.
+00:01:36.196 --> 00:01:41.200
+Partitioning feeds by viewer makes the common
+read involve a bounded storage destination
 
-00:01:35.959 --> 00:01:42.195
-Queue the derived updates so the posting request can
-acknowledge durable acceptance without waiting
+00:01:41.200 --> 00:01:46.376
+rather than a growing collection of author
+shards. The benefit is concrete: the reader does
 
-00:01:42.195 --> 00:01:43.581
-for every destination.
+00:01:46.376 --> 00:01:51.608
+less assembly while waiting. The cost is equally
+concrete: one publication creates many feed
 
-00:01:43.581 --> 00:01:49.503
-Then define a freshness target for readers and
-measure the oldest unfinished publication work.
+00:01:51.608 --> 00:01:54.224
+updates, and the system stores derived copies.
 
-00:01:49.503 --> 00:01:55.488
-Workers can process bounded follower batches and use
-stable post identifiers to avoid duplicate
+00:01:54.224 --> 00:01:59.167
+A post with a thousand followers can create
+roughly a thousand insertions rather than one.
 
-00:01:55.488 --> 00:01:56.873
-entries after retries.
+00:01:59.224 --> 00:02:04.457
+Do not make the publishing request wait for
+every follower update. First durably record the
 
-00:01:56.873 --> 00:02:02.869
-Keep the canonical post distinct from feed
-references so that deletion or moderation has an
-explicit
+00:02:04.457 --> 00:02:09.459
+post and the work that must be performed, then
+let background workers update feeds. The
 
-00:02:02.869 --> 00:02:04.488
-path through derived state.
+00:02:09.459 --> 00:02:13.369
+client can receive an accepted response while
+propagation continues.
 
-00:02:04.488 --> 00:02:10.484
-Asynchrony changes when the work happens and who
-waits; it does not remove the work or automatically
+00:02:13.369 --> 00:02:18.205
+This reduces the publisher's waiting time but
+does not reduce total fan-out work or
 
-00:02:10.484 --> 00:02:11.863
-make all feeds current.
+00:02:18.205 --> 00:02:23.390
+guarantee that every follower sees the post
+immediately. In the diagram, separate durable
+
+00:02:23.390 --> 00:02:28.692
+acceptance from background completion. A queue
+absorbs temporary imbalance between incoming
+
+00:02:28.692 --> 00:02:33.878
+publications and worker capacity, but sustained
+overload makes backlog and delivery delay
+
+00:02:33.878 --> 00:02:34.169
+grow.
+
+00:02:34.369 --> 00:02:39.558
+Monitor the age of pending work as well as queue
+length, because a small number of huge fan-
+
+00:02:39.558 --> 00:02:41.815
+out jobs can still produce a long delay.

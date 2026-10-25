@@ -1,116 +1,156 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:04.954
-A building maintenance app should alert a resident
-when a repair appointment changes.
+00:00:00.000 --> 00:00:04.878
+Imagine a passenger waiting for a car with the
+ride application in the background. The
 
-00:00:04.954 --> 00:00:10.723
-The scheduling server knows the resident's account,
-but that knowledge does not give it a reachable
+00:00:04.878 --> 00:00:09.982
+driver reaches the pickup point and sends an
+arrival update. The passenger has not clicked
 
-00:00:10.723 --> 00:00:13.112
-network endpoint on the resident's phone.
+00:00:09.982 --> 00:00:13.499
+anything, so there is no fresh request waiting
+for a response.
 
-00:00:13.112 --> 00:00:18.707
-The phone may change networks, sit behind address
-translation or have its application suspended.
+00:00:13.500 --> 00:00:18.582
+Draw the event starting at the driver, entering
+the ride service, and then needing to reach
 
-00:00:18.707 --> 00:00:25.034
-Treating the phone as an ordinary public HTTP server
-leaves those constraints unexplained, even if
+00:00:18.582 --> 00:00:23.609
+the passenger. An auction ending is even
+clearer: a timer can create the event while
+every
 
-00:00:25.034 --> 00:00:27.939
-the notification payload is only a few bytes.
+00:00:23.609 --> 00:00:28.579
+participant is idle. Ordinary request and
+response handles a user asking for information;
 
-00:00:27.939 --> 00:00:34.007
-Instead, the device or platform establishes an
-outbound delivery path that the backend can use
+00:00:28.579 --> 00:00:33.662
+this requirement adds a path for information to
+arrive because something elsewhere changed.
 
-00:00:34.007 --> 00:00:34.717
-indirectly.
+00:00:33.662 --> 00:00:38.883
+The notification should point to the saved ride
+state, so losing the alert does not lose the
 
-00:00:34.717 --> 00:00:39.365
-Now consider the phone being offline when the
-appointment changes twice.
+00:00:38.883 --> 00:00:39.734
+arrival itself.
 
-00:00:39.407 --> 00:00:45.804
-Decide whether to retain both changes, replace the
-first with the latest state, or simply notify the
+00:00:39.734 --> 00:00:44.681
+Suppose the passenger moves from home Wi-Fi to a
+mobile network. An address remembered a
 
-00:00:45.804 --> 00:00:46.763
-app to refresh.
+00:00:44.681 --> 00:00:49.627
+minute ago may no longer locate the phone. Even
+a current address may belong to a shared
 
-00:00:46.763 --> 00:00:51.945
-This is a product-level delivery policy, not a
-detail solved by opening a socket.
+00:00:49.627 --> 00:00:52.775
+router that does not accept unsolicited inbound
+traffic.
 
-00:00:51.945 --> 00:00:58.342
-Keep the authoritative appointment in durable
-storage so that reconnecting clients can recover
-their
+00:00:52.775 --> 00:00:57.673
+A firewall may block the connection, and the
+operating system may have suspended the
 
-00:00:58.342 --> 00:01:01.732
-current state even when a notification never
-arrives.
+00:00:57.673 --> 00:01:02.979
+application to save resources. These are
+separate obstacles; solving only address
+discovery
 
-00:01:01.732 --> 00:01:05.019
-A library app user signs in on a phone and a tablet.
+00:01:02.979 --> 00:01:07.936
+does not wake a stopped application. Reverse the
+connection setup instead: the device
 
-00:01:05.019 --> 00:01:11.341
-Each installation registers for platform
-notifications and sends its current provider-issued
-routing
+00:01:07.936 --> 00:01:11.901
+establishes an outbound path to infrastructure
+that stays reachable.
 
-00:01:11.341 --> 00:01:13.554
-token to the authenticated backend.
+00:01:11.901 --> 00:01:17.221
+When connectivity disappears, the path
+disappears too. Therefore delivery also needs a
 
-00:01:13.554 --> 00:01:17.284
-The backend associates both installations with the
-account.
+00:01:17.221 --> 00:01:22.727
+retention and expiry policy, and the application
+must refresh authoritative state when it
 
-00:01:17.284 --> 00:01:23.163
-When a reserved book becomes ready, the notification
-service resolves the account to eligible
+00:01:22.727 --> 00:01:23.222
+returns.
 
-00:01:23.163 --> 00:01:25.945
-installations and submits delivery requests.
+00:01:23.401 --> 00:01:28.634
+Follow the registration triangle before
+attempting a notification. First the installed
 
-00:01:25.945 --> 00:01:32.384
-The account identifies the person; the tokens
-identify destinations through the platform's
-delivery
+00:01:28.634 --> 00:01:33.929
+application asks the platform service for a
+routing identifier, subject to the relevant
 
-00:01:32.384 --> 00:01:33.035
-mechanism.
+00:01:33.929 --> 00:01:38.919
+notification permissions. Next it sends that
+identifier to its own backend over an
 
-00:01:33.035 --> 00:01:35.767
-Now uninstall and reinstall the phone app.
+00:01:38.919 --> 00:01:40.440
+authenticated connection.
 
-00:01:35.767 --> 00:01:40.970
-Its routing information may change, while the
-person's account remains the same.
+00:01:40.440 --> 00:01:45.504
+The backend associates the installation with the
+account. Later a domain event identifies
 
-00:01:40.970 --> 00:01:46.564
-Registration updates and invalid-token cleanup are
-therefore part of normal operation.
+00:01:45.504 --> 00:01:50.568
+the account, the backend retrieves its
+registered destinations, and the provider
+delivers
 
-00:01:46.564 --> 00:01:52.874
-Logging out also requires a policy that prevents the
-next device user from receiving the previous
+00:01:50.568 --> 00:01:55.803
+through its connection to the device. The
+provider identifier is a route to an
+installation,
 
-00:01:52.874 --> 00:01:54.760
-user's private notifications.
+00:01:55.803 --> 00:01:58.193
+not a substitute for the account identity.
 
-00:01:54.760 --> 00:02:00.940
-Provider acceptance only says a delivery request
-entered that provider's process; it does not prove
+00:01:58.440 --> 00:02:03.357
+A person may have a tablet and phone, while
+reinstalling an application may change the
 
-00:02:00.940 --> 00:02:03.062
-the message was displayed or read.
+00:02:03.357 --> 00:02:08.445
+route. This is why the registration table must
+support updates and multiple destinations.
 
-00:02:03.062 --> 00:02:08.992
-A notification can prompt a fresh authorized read of
-the library record instead of carrying all
+00:02:08.445 --> 00:02:13.127
+Now compare one hundred applications each
+maintaining their own connection with one
 
-00:02:08.992 --> 00:02:10.552
-sensitive details itself.
+00:02:13.127 --> 00:02:18.318
+operating-system connection serving them all.
+Keeping a network path alive requires periodic
+
+00:02:18.318 --> 00:02:23.057
+activity, and reconnecting costs work when the
+device changes networks. Sharing that
+
+00:02:23.057 --> 00:02:26.724
+responsibility avoids repeating the same
+machinery for every app.
+
+00:02:26.945 --> 00:02:32.030
+The application backend submits a notification
+to the platform, which handles the device-
+
+00:02:32.030 --> 00:02:37.173
+facing connection. But a successful submission
+only establishes that the provider accepted
+
+00:02:37.173 --> 00:02:42.259
+the request. It does not prove that the phone
+was online, that a banner appeared, or that
+
+00:02:42.259 --> 00:02:43.344
+the person read it.
+
+00:02:43.445 --> 00:02:48.323
+For a ride arrival, keep the current ride status
+on the backend and let opening the app
+
+00:02:48.323 --> 00:02:52.641
+retrieve it. Treat the notification as a timely
+prompt to inspect that state.

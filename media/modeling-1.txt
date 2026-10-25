@@ -1,10 +1,18 @@
 Model architecture and estimate execution cost
-Part 2 • Synthetic narration
+Illustrated lesson · Part 2 · Synthetic narration
 
-Translate software actions into resource demand
+Translate software actions into resource demand — Translate software actions into resource demand
 
-The overhead matrix connects software actions to hardware work. First count resource quantities, then multiply by service time with consistent units. Summing provides a simple baseline, while the resource vector supports later contention analysis. Two designs with the same baseline time can behave differently under load if they concentrate work on different devices.
+A basic operation may request abstract software services such as server work, database access and messaging. An overhead matrix maps each service unit onto CPU instructions, disk operations and network messages. Multiplying requested service units by that matrix yields resource quantities, which are then converted into time using device-specific service costs. Carry units through every multiplication to avoid confusing instructions with thousands of instructions.
 
-Work through the ATM transaction scenario
+Translate software actions into resource demand — Reason through the consequences
 
-The ATM workshop turns graph reduction into a complete baseline estimate. Combine validation, a selected transaction and result delivery. State the branch-probability mapping rather than silently inferring it from extracted labels. The resulting average is conditional on that mapping and omits contention, so use it as input to further analysis rather than a production latency guarantee.
+The authorization illustration combines 3,110 CPU units at .00001 seconds, fourteen disk operations at .02 seconds and one network operation at .01 seconds. The total no-contention service time is .3211 seconds, approximately .32 seconds. These costs can also become device demands for a later queueing model. Keep the per-device vector as well as the scalar sum, because equal total work can create very different bottlenecks on different resources. Why retain separate CPU, disk and network demand after summing execution time? A contention model needs each resource’s demand to identify utilization and bottlenecks; the scalar total loses that information.
+
+Work through the ATM transaction scenario — Work through the ATM transaction scenario
+
+The final exercise combines validation, one transaction branch and result delivery. Using the displayed matrix, validation costs .07315 seconds, withdrawal .0723, deposit .0986, balance inquiry .03715 and result delivery .01115. The shortest path is .12145 seconds and longest .1829 seconds under the given no-contention assumptions. The weighted average additionally depends on which probability belongs to each branch.
+
+Work through the ATM transaction scenario — Reason through the consequences
+
+The printed solution assigns .001 to deposit, .7 to withdrawal and .299 to balance inquiry, yielding .14611645 seconds. The extracted diagram text does not unambiguously establish the edge mapping, so retain that mapping as an explicit assumption until visually checked. Compare the result with alternative probabilities to show workload sensitivity. End the exercise by identifying which resource costs and arrival assumptions are still needed before claiming performance under concurrent use. Can we compute the expected path from branch times without knowing which probability belongs to each branch? No. A sum of probabilities equal to one is insufficient; each probability must be paired with the correct branch.

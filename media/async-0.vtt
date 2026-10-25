@@ -1,115 +1,153 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:04.133
-A researcher requests an export of a large
-experiment dataset.
+00:00:00.000 --> 00:00:04.931
+Sending an email can involve several relays
+before the destination accepts it. If the
 
-00:00:04.133 --> 00:00:10.465
-Waiting for every file to be prepared inside the
-initial request could exceed a useful response
+00:00:04.931 --> 00:00:10.152
+original client waits for that entire chain, a
+slow or temporarily unavailable destination
 
-00:00:10.465 --> 00:00:11.065
-deadline.
+00:00:10.152 --> 00:00:15.431
+keeps the compose interface waiting. An
+asynchronous contract lets the first service
+accept
 
-00:00:11.065 --> 00:00:17.397
-Instead, the service validates the request, records
-an export job and returns a job identifier.
+00:00:15.431 --> 00:00:18.216
+responsibility and return before final delivery.
 
-00:00:17.397 --> 00:00:22.862
-That response means the service accepted
-responsibility for attempting the export.
+00:00:18.216 --> 00:00:23.459
+The response still matters: without it, the
+client cannot distinguish acceptance from a lost
 
-00:00:22.900 --> 00:00:29.103
-It does not mean a downloadable archive already
-exists, so the user interface should display queued
+00:00:23.459 --> 00:00:28.703
+network request. But its meaning has changed
+from completed to accepted for later work. Draw
 
-00:00:29.103 --> 00:00:31.358
-or processing rather than completed.
+00:00:28.703 --> 00:00:33.034
+two separate milestones on the timeline, first
+acceptance and then delivery.
 
-00:00:31.358 --> 00:00:35.994
-The client can later query the job record for
-success or a failure reason.
+00:00:33.216 --> 00:00:38.030
+A quick response is honest only if the interface
+describes the first milestone. The user
 
-00:00:35.994 --> 00:00:41.821
-A webhook is another option for a client with a
-reachable endpoint, but it introduces its own
+00:00:38.030 --> 00:00:42.955
+should not see a delivery guarantee when the
+system has merely stored work that it intends
 
-00:00:41.821 --> 00:00:43.951
-authentication and retry contract.
+00:00:42.955 --> 00:00:43.557
+to attempt.
 
-00:00:44.000 --> 00:00:48.996
-A phone behind a changing network cannot simply be
-assumed to accept callbacks.
+00:00:43.716 --> 00:00:48.728
+A report export may take several minutes, but
+the user still needs the finished file or a
 
-00:00:48.996 --> 00:00:54.372
-Include a terminal failure state so that accepted
-jobs do not appear pending forever.
+00:00:48.728 --> 00:00:53.910
+useful failure explanation. Create an operation
+record and return its identifier immediately
 
-00:00:54.372 --> 00:01:00.064
-Trace a worker failure after acceptance and identify
-how another worker discovers the job.
+00:00:53.910 --> 00:00:58.810
+after durable acceptance. The client can revisit
+that record while its state moves from
 
-00:01:00.064 --> 00:01:05.377
-The shorter response time moves completion tracking
-into explicit application state.
+00:00:58.810 --> 00:01:01.232
+pending to running to successful or failed.
 
-00:01:05.400 --> 00:01:09.695
-A document service places a preview-generation
-request on a queue.
+00:01:01.232 --> 00:01:06.338
+A callback is another option when the receiver
+has an accessible endpoint, but it needs
 
-00:01:09.695 --> 00:01:15.746
-The message contains a job identifier, document
-identifier, desired representation and schema
+00:01:06.338 --> 00:01:11.502
+authentication and retry handling. A browser
+that closes is not automatically a reliable
 
-00:01:15.746 --> 00:01:16.267
-version.
+00:01:11.502 --> 00:01:16.548
+callback server. For a consequential operation,
+hiding all failures in an operator log
 
-00:01:16.267 --> 00:01:22.644
-These fields are an API contract even though no
-synchronous response carries the finished preview.
+00:01:16.548 --> 00:01:18.309
+leaves the user unable to act.
 
-00:01:22.644 --> 00:01:28.240
-The worker must know which document version to
-process and where to record the result.
+00:01:18.309 --> 00:01:23.082
+Choose the feedback path together with the
+acceptance contract, and retain the result long
 
-00:01:28.240 --> 00:01:34.465
-A queue containing only an ambiguous instruction
-such as generate preview leaves important business
+00:01:23.082 --> 00:01:25.575
+enough for an interrupted client to recover it.
 
-00:01:34.465 --> 00:01:35.911
-decisions to guesswork.
+00:01:25.809 --> 00:01:31.342
+A user publishes a short message. The API
+authenticates the session, records the request,
 
-00:01:35.911 --> 00:01:41.381
-Consider a worker that stores the preview and
-crashes before acknowledging the message.
+00:01:31.342 --> 00:01:36.876
+and places a publication job on a queue. The job
+contains the author, message identifier,
 
-00:01:41.381 --> 00:01:44.336
-Redelivery may cause the same job to run again.
+00:01:36.876 --> 00:01:42.596
+content reference, and fields the publication
+worker needs. That schema plays the role of an
 
-00:01:44.336 --> 00:01:50.497
-Use the stable job identifier and a suitable result-
-update rule so that repetition does not create
+00:01:42.596 --> 00:01:48.068
+interface: a producer and consumer must agree on
+its meaning even though they do not run
 
-00:01:50.497 --> 00:01:52.321
-conflicting visible outcomes.
+00:01:48.068 --> 00:01:49.000
+simultaneously.
 
-00:01:52.340 --> 00:01:58.119
-Acknowledgement timing should reflect the actual
-persistence boundary, not merely receipt into
+00:01:49.000 --> 00:01:53.563
+The publication worker later finds the followers
+and updates their feeds. Optional
 
-00:01:58.119 --> 00:01:58.549
-memory.
+00:01:53.563 --> 00:01:58.515
+notification jobs go to another queue because
+sending an alert has different dependencies
 
-00:01:58.549 --> 00:02:04.329
-Likewise, an in-process queue lost during a restart
-provides a different contract from durable
+00:01:58.515 --> 00:02:03.190
+and retry behavior. Drawing these stages
+explains why one cheap API call can trigger
 
-00:02:04.329 --> 00:02:05.251
-broker storage.
+00:02:03.190 --> 00:02:08.198
+thousands of later operations without making the
+user wait for every individual feed write
 
-00:02:05.251 --> 00:02:11.276
-The architecture should state what survives each
-failure and which component owns recovery, rather
+00:02:08.198 --> 00:02:09.311
+and device delivery.
 
-00:02:11.276 --> 00:02:14.042
-than treating every queue icon as equivalent.
+00:02:09.500 --> 00:02:14.696
+Now stop a worker immediately after it adds a
+post to a feed but before it acknowledges the
+
+00:02:14.696 --> 00:02:19.549
+queue message. The broker may deliver that
+message again because completion was never
+
+00:02:19.549 --> 00:02:23.659
+confirmed. Without duplicate protection, the
+same post can appear twice.
+
+00:02:23.659 --> 00:02:28.558
+An idempotency key lets the consumer recognize
+that this logical operation has already
+
+00:02:28.558 --> 00:02:33.683
+produced its effect. A second failure window
+exists at publication: updating business data
+
+00:02:33.683 --> 00:02:38.866
+and then separately enqueueing a message can
+leave a committed post with no downstream work
+
+00:02:38.866 --> 00:02:40.917
+if the process crashes between them.
+
+00:02:41.159 --> 00:02:45.961
+A transactional outbox records the business
+change and pending event together, then
+
+00:02:45.961 --> 00:02:51.109
+publishes the event later. Reliability depends
+on these boundaries, not merely on calling
+
+00:02:51.109 --> 00:02:52.151
+the queue durable.

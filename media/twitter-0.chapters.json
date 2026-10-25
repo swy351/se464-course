@@ -1,0 +1,22 @@
+[
+  {
+    "chapter": 1,
+    "title": "Start with normalized data and a read workload",
+    "time": 0
+  },
+  {
+    "chapter": 1,
+    "title": "Start with normalized data and a read workload",
+    "time": 42.0
+  },
+  {
+    "chapter": 2,
+    "title": "Materialized feeds and asynchronous publication",
+    "time": 80.19
+  },
+  {
+    "chapter": 2,
+    "title": "Materialized feeds and asynchronous publication",
+    "time": 119.22
+  }
+]

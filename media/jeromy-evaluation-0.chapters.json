@@ -1,0 +1,52 @@
+[
+  {
+    "chapter": 1,
+    "title": "1. Define the decision and its business context",
+    "time": 0
+  },
+  {
+    "chapter": 1,
+    "title": "1. Define the decision and its business context",
+    "time": 31.0
+  },
+  {
+    "chapter": 2,
+    "title": "2. Turn quality goals into observable scenarios",
+    "time": 88.0
+  },
+  {
+    "chapter": 2,
+    "title": "2. Turn quality goals into observable scenarios",
+    "time": 127.32
+  },
+  {
+    "chapter": 3,
+    "title": "3. Organize a quality tree",
+    "time": 205.81
+  },
+  {
+    "chapter": 3,
+    "title": "3. Organize a quality tree",
+    "time": 242.81
+  },
+  {
+    "chapter": 4,
+    "title": "4. Convert rankings to ROC weights",
+    "time": 309.03
+  },
+  {
+    "chapter": 4,
+    "title": "4. Convert rankings to ROC weights",
+    "time": 369.37
+  },
+  {
+    "chapter": 5,
+    "title": "5. Multiply weights down each path",
+    "time": 425.02
+  },
+  {
+    "chapter": 5,
+    "title": "5. Multiply weights down each path",
+    "time": 470.87
+  }
+]

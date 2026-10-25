@@ -1,58 +1,223 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:03.680
-A local slowdown is evidence, not an end-to-end
-forecast.
+00:00:00.000 --> 00:00:04.984
+A performance regression is a deterioration in a
+relevant performance measure after a
 
-00:00:03.680 --> 00:00:09.748
-A shorter parallel branch can slow without changing
-the join time, while a heavily used shared
+00:00:04.984 --> 00:00:10.261
+change. Functional tests can still pass. Lizhi
+contrasts expensive whole-system tests with
 
-00:00:09.748 --> 00:00:12.072
-resource can amplify a small change.
+00:00:10.261 --> 00:00:15.421
+small-scale tests that provide earlier, more
+localized feedback, and asks how to combine
 
-00:00:12.072 --> 00:00:18.205
-Lizhi’s approach combines early local measurements
-with an architectural model so we can reason
+00:00:15.421 --> 00:00:16.359
+their strengths.
 
-00:00:18.205 --> 00:00:20.594
-about workload, paths and contention.
+00:00:16.500 --> 00:00:23.161
+Local execution time alone does not determine
+user-visible response time. In a new fork-and-
 
-00:00:20.600 --> 00:00:25.831
-Measure original and updated code under comparable
-conditions and repeat the runs.
+00:00:23.161 --> 00:00:29.460
+join example, two independent branches take 40
+ms and 12 ms and then join. If the short
 
-00:00:25.831 --> 00:00:30.807
-The lecture combines a distribution test, Cliff’s
-delta and a mean difference.
+00:00:29.460 --> 00:00:34.384
+branch rises to 18 ms, the ideal parallel
+portion still takes 40 ms.
 
-00:00:30.807 --> 00:00:35.081
-Statistical evidence does not tell us the whole-
-system consequence.
+00:00:34.500 --> 00:00:39.525
+This simplified example assumes no shared-
+resource contention or other path changes.
 
-00:00:35.081 --> 00:00:41.142
-Keep the protocol and uncertainty visible, and avoid
-calling a noisy or mismatched experiment a
+00:00:39.525 --> 00:00:44.904
+Workload mix can also change the importance of a
+component. A path used by a small fraction
 
-00:00:41.142 --> 00:00:41.844
+00:00:44.904 --> 00:00:50.341
+of requests may become important when that
+fraction grows. An architectural model
+represents
+
+00:00:50.341 --> 00:00:55.719
+call paths, synchronization, resource sharing
+and workload so the local measurements can be
+
+00:00:55.719 --> 00:00:57.079
+interpreted in context.
+
+00:00:57.079 --> 00:01:02.062
+The model alone is not sufficient either: a
+coarse subsystem model can miss a changed
+
+00:01:02.062 --> 00:01:06.869
+function’s service demand. The lecture therefore
+connects fine-grained performance
+
+00:01:06.869 --> 00:01:12.204
+observations to the broader architectural model.
+Does a 50% increase in one function’s time
+
+00:01:12.204 --> 00:01:14.314
+imply 50% worse end-to-end response?
+
+00:01:14.314 --> 00:01:20.154
+No. Frequency, critical-path position, parallel
+execution, shared resources and workload
+
+00:01:20.154 --> 00:01:25.130
+determine how the change propagates. Measure and
+model those relationships.
+
+00:01:25.314 --> 00:01:30.421
+The first step runs small-scale tests on
+original and changed code and collects local
+
+00:01:30.421 --> 00:01:35.287
+performance observations. Keep the inputs,
+environment and measurement boundaries
+
+00:01:35.287 --> 00:01:40.333
+comparable. Repetition matters because timing
+varies with operating-system activity,
+
+00:01:40.333 --> 00:01:43.097
+competing processes, warmup and other effects.
+
+00:01:43.314 --> 00:01:48.384
+The displayed method compares distributions
+using a Mann–Whitney U test and Cliff’s delta,
+
+00:01:48.384 --> 00:01:53.511
+then uses the mean difference as a performance-
+deviation quantity. Statistical evidence and
+
+00:01:53.511 --> 00:01:58.637
+effect size answer different questions; neither
+should be replaced by a single noisy timing
+
+00:01:58.637 --> 00:01:58.862
+run.
+
+00:01:58.862 --> 00:02:03.739
+The slide illustrates repeated runs, not a
+universal sample size requirement.
+
+00:02:03.862 --> 00:02:09.355
+When teaching or applying the method, report the
+measurement protocol, distributions, effect
+
+00:02:09.355 --> 00:02:14.668
+direction and magnitude, thresholds and
+uncertainty. A small p-value is not the size of
+a
+
+00:02:14.668 --> 00:02:19.981
+slowdown, and a local distribution difference
+does not by itself establish a user-visible
+
+00:02:19.981 --> 00:02:20.637
 regression.
 
-00:00:41.844 --> 00:00:46.654
-Map the local deviation to the modeled activity
-before updating a parameter.
+00:02:20.862 --> 00:02:26.421
+New scenario: an updated serializer is
+consistently slower in isolated tests, but its
+inputs
 
-00:00:46.654 --> 00:00:51.844
-The lecture illustrates graph matching and
-propagation through the call structure.
+00:02:26.421 --> 00:02:31.918
+are larger than the baseline’s. Correct the
+comparison before attributing the difference to
 
-00:00:51.844 --> 00:00:57.097
-Keep units and measurement boundaries clear, and
-avoid double counting nested work.
+00:02:31.918 --> 00:02:36.389
+code. Comparable workload is part of the
+evidence, not an optional detail.
 
-00:00:57.097 --> 00:01:03.046
-Compare original and changed models across
-workloads, then validate predictions independently.
+00:02:36.389 --> 00:02:41.992
+A statistically detectable timing difference is
+automatically a serious production problem.
 
-00:01:03.046 --> 00:01:07.476
-Experimental success in selected systems is not a
-universal guarantee.
+00:02:41.992 --> 00:02:47.472
+True or false? False. Consider effect size,
+measurement conditions, the modeled execution
+
+00:02:47.472 --> 00:02:50.736
+path and workload, and the relevant user
+requirement.
+
+00:02:50.889 --> 00:02:55.968
+The next step maps local deviations to the
+higher-level modeled activities. The lecture
+
+00:02:55.968 --> 00:03:00.814
+illustrates structural matching using maximum
+common subgraph analysis, followed by
+
+00:03:00.814 --> 00:03:05.893
+propagation up the relevant call structure so
+the affected architectural service-demand
+
+00:03:05.893 --> 00:03:07.411
+parameters can be updated.
+
+00:03:07.411 --> 00:03:12.471
+A mapping must preserve the meaning and units of
+the measurement. A function’s elapsed time
+
+00:03:12.471 --> 00:03:17.531
+may include waiting or downstream calls; it is
+not automatically an independent CPU service
+
+00:03:17.531 --> 00:03:22.536
+demand. Record call frequency and nesting so the
+same cost is not counted once in a parent
+
+00:03:22.536 --> 00:03:24.482
+measurement and again in its child.
+
+00:03:24.482 --> 00:03:29.743
+Keep original and updated model versions. Change
+parameters supported by the local evidence
+
+00:03:29.743 --> 00:03:34.947
+and preserve other assumptions unless the code
+or architecture changed them. Then evaluate
+
+00:03:34.947 --> 00:03:40.092
+both models under relevant workloads and compare
+the resulting performance distributions.
+
+00:03:40.092 --> 00:03:45.411
+The approach is useful for prioritizing costly
+system tests, but a model is only as credible
+
+00:03:45.411 --> 00:03:48.360
+as its structure, mapping, parameters and
+workload.
+
+00:03:48.482 --> 00:03:53.060
+Validate the baseline and use independent
+measurements to check predictions. The
+
+00:03:53.060 --> 00:03:57.982
+experimental results shown for TeaStore and
+TrainTicket are evidence for those studied
+
+00:03:57.982 --> 00:04:03.018
+cases, not a universal no-false-alarm guarantee.
+Can you add a function’s entire elapsed
+
+00:04:03.018 --> 00:04:06.052
+time to its parent’s demand without further
+analysis?
+
+00:04:06.052 --> 00:04:10.826
+Not safely. The parent may already include the
+child’s time or waiting. Establish
+
+00:04:10.826 --> 00:04:15.895
+measurement boundaries, call counts, resource
+meaning and a mapping that avoids double
+
+00:04:15.895 --> 00:04:16.426
+counting.

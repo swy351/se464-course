@@ -1,81 +1,160 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:05.550
-With a direct call, the caller names the operation
-it wants another component to perform.
+00:00:00.000 --> 00:00:05.103
+Imagine a debugger that stops at a breakpoint. A
+tightly coupled implementation calls the
 
-00:00:05.550 --> 00:00:10.976
-With implicit invocation, a component announces an
-event and registered handlers react.
+00:00:05.103 --> 00:00:09.919
+editor to highlight a line, calls the variables
+pane to refresh, and calls a history
 
-00:00:10.976 --> 00:00:16.838
-A debugger can announce that execution stopped,
-letting an editor highlight source without the
+00:00:09.919 --> 00:00:14.563
+component to record the stop. Adding another
+view requires changing the debugger.
 
-00:00:16.838 --> 00:00:20.018
-debugger depending on that editor’s implementation.
+00:00:14.563 --> 00:00:19.713
+With implicit invocation, the debugger announces
+that execution stopped and registered
 
-00:00:20.018 --> 00:00:26.130
-The same idea supports user-interface observers and
-database triggers inside a single application.
+00:00:19.713 --> 00:00:24.982
+handlers decide how to react. The event carries
+enough context, such as the location and
 
-00:00:26.130 --> 00:00:29.505
-A laboratory announces that an experiment has
-finished.
+00:00:24.982 --> 00:00:30.371
+execution identifier, for each interested
+component. The producer now depends on the event
 
-00:00:29.505 --> 00:00:35.336
-The reporting service needs the result for a
-summary, and an audit service needs it for its own
+00:00:30.371 --> 00:00:33.305
+contract rather than every view's
+implementation.
 
-00:00:35.336 --> 00:00:35.765
-record.
+00:00:33.305 --> 00:00:37.821
+Draw one event leaving the debugger and several
+reactions branching from it. This makes
 
-00:00:35.765 --> 00:00:41.657
-If both merely compete to remove one message from
-the same work queue, only one may receive each
+00:00:37.821 --> 00:00:42.182
+extension easier while preserving an explicit
+description of what happened and which
 
-00:00:41.657 --> 00:00:42.025
-event.
+00:00:42.182 --> 00:00:43.584
+information accompanies it.
 
-00:00:42.025 --> 00:00:48.040
-Independent reactions require separate subscription
-progress or an equivalent fan-out arrangement.
+00:00:43.805 --> 00:00:48.783
+The same event abstraction can run synchronously
+inside one process. Calling an event
 
-00:00:48.040 --> 00:00:54.206
-Within the reporting subscription, multiple workers
-can share processing responsibility without
+00:00:48.783 --> 00:00:53.937
+dispatcher may invoke every handler before
+returning, so a slow handler still delays the
 
-00:00:54.206 --> 00:00:56.673
-changing the audit service's progress.
+00:00:53.937 --> 00:00:58.856
+producer. A distributed broker often introduces
+asynchronous delivery, but that is a
 
-00:00:56.673 --> 00:01:02.709
-The message still needs an explicit contract:
-experiment identifier, event identifier, schema
+00:00:58.856 --> 00:01:01.902
+connector choice rather than a definition of
+events.
 
-00:01:02.709 --> 00:01:06.798
-version and enough context to retrieve or interpret
-the result.
+00:01:01.902 --> 00:01:06.888
+Ask what happens when a handler fails, whether
+other handlers still execute, and whether
 
-00:01:06.798 --> 00:01:13.289
-A broker can route messages, but cannot decide
-whether the reporting service needs a snapshot of
-the
+00:01:06.888 --> 00:01:12.101
+ordering is guaranteed. Without those answers,
+the simple fan-out diagram hides control-flow
 
-00:01:13.289 --> 00:01:15.885
-old result or may read its latest state.
+00:01:12.101 --> 00:01:17.200
+obligations. A debugger extension that throws an
+exception should not accidentally prevent
 
-00:01:15.885 --> 00:01:19.465
-Draw the two subscriptions separately and fail one
-consumer.
+00:01:17.200 --> 00:01:20.657
+the editor from updating unless that behavior is
+intentional.
 
-00:01:19.465 --> 00:01:23.044
-Explain which backlog grows and whether the other
-continues.
+00:01:20.902 --> 00:01:25.999
+Trace a failed handler through the dispatch
+semantics and document the result; modularity
 
-00:01:23.044 --> 00:01:28.771
-This exercise connects asynchronous queue mechanisms
-to event-driven structure while keeping the
+00:01:25.999 --> 00:01:30.294
+requires a predictable interaction contract as
+well as separate components.
 
-00:01:28.771 --> 00:01:34.200
-distinction between an instruction to one worker and
-a fact announced to several consumers.
+00:01:30.402 --> 00:01:35.272
+When a course seat becomes available, a
+registration system can emit one event. A
+
+00:01:35.272 --> 00:01:40.504
+notification subscriber alerts waiting students,
+an analytics subscriber updates demand
+
+00:01:40.504 --> 00:01:45.855
+statistics, and an audit subscriber records the
+change. If all three need the event, they
+
+00:01:45.855 --> 00:01:49.824
+require independent subscriptions or equivalent
+fan-out semantics.
+
+00:01:49.902 --> 00:01:55.123
+Three competing workers sharing one work queue
+would instead divide the messages, so some
+
+00:01:55.123 --> 00:02:00.286
+reactions would never happen. Within the
+notification subscription, multiple workers can
+
+00:02:00.286 --> 00:02:04.745
+share the delivery workload. Draw these two
+levels separately: copies across
+
+00:02:04.745 --> 00:02:08.030
+responsibilities, competition within one
+responsibility.
+
+00:02:08.030 --> 00:02:12.838
+This distinction explains why the words producer
+and consumer do not by themselves tell you
+
+00:02:12.838 --> 00:02:17.328
+whether every service sees every event or
+whether each event goes to just one worker.
+
+00:02:17.530 --> 00:02:22.665
+Suppose the seat event contains only a course
+code. A notification consumer may need to
+
+00:02:22.665 --> 00:02:28.036
+query another service for the section and
+availability version before it can act.
+Including
+
+00:02:28.036 --> 00:02:33.171
+more facts reduces that dependency but can
+increase payload size, privacy exposure, and
+
+00:02:33.171 --> 00:02:34.469
+schema evolution work.
+
+00:02:34.530 --> 00:02:39.687
+There is no contract-free event bus: every
+consumer relies on the meaning of fields and on
+
+00:02:39.687 --> 00:02:44.844
+rules for missing or changed fields. Use
+identifiers and versions to distinguish the
+event
+
+00:02:44.844 --> 00:02:50.001
+from the current entity state. If a requester
+requires a specific reply before proceeding,
+
+00:02:50.001 --> 00:02:53.438
+represent that obligation with correlation and a
+reply path.
+
+00:02:53.530 --> 00:02:58.667
+Hiding a required response inside an event does
+not remove the dependency; it only makes
+
+00:02:58.667 --> 00:03:01.410
+that dependency harder to observe and diagnose.

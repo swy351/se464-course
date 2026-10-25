@@ -1,117 +1,149 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:06.365
-Replication introduces two separate architectural
-questions: where reads can run, and which machine
+00:00:00.000 --> 00:00:04.889
+Assume a publishing application receives
+thousands of reads for each edit. Sending all
 
-00:00:06.365 --> 00:00:08.359
-is authorized to accept writes.
+00:00:04.889 --> 00:00:09.779
+operations to one database makes the read
+workload compete with the much smaller write
 
-00:00:08.359 --> 00:00:12.473
-We can scale the first without automatically solving
-the second.
+00:00:09.779 --> 00:00:14.668
+workload. A primary with read replicas separates
+them: the primary accepts changes and
 
-00:00:12.473 --> 00:00:15.945
-Start by classifying the promises made to each
-reader.
+00:00:14.668 --> 00:00:19.045
+streams them to additional copies, while
+ordinary reads can use those copies.
 
-00:00:15.945 --> 00:00:21.089
-A tutoring service updates a student’s appointment
-time on the primary database.
+00:00:19.045 --> 00:00:24.003
+The replicas are not independent authorities
+allowed to invent conflicting versions. They
 
-00:00:21.100 --> 00:00:25.533
-A replica that has not yet applied the change still
-returns the old time.
+00:00:24.003 --> 00:00:29.017
+reproduce the primary's history. This gives the
+system more places to execute read queries
 
-00:00:25.533 --> 00:00:30.816
-The write can have succeeded even though an
-immediately refreshed page looks unchanged.
+00:00:29.017 --> 00:00:33.417
+without requiring every write to be decided
+jointly by all application workers.
 
-00:00:30.816 --> 00:00:36.889
-Historical appointment reports may tolerate this
-delay; the confirmation shown to the student should
+00:00:33.545 --> 00:00:38.779
+It also reveals the limit: each replica still
+needs to process the stream of changes, so
 
-00:00:36.889 --> 00:00:40.047
-follow a path that satisfies the promised freshness.
+00:00:38.779 --> 00:00:42.169
+replication does not divide the primary's write
+workload.
 
-00:00:40.047 --> 00:00:44.667
-Imagine one primary handling 400 writes and 3,000
-reads per second.
+00:00:42.169 --> 00:00:47.299
+Walk through an edit followed immediately by a
+refresh. The primary has revision 12, while
 
-00:00:44.667 --> 00:00:51.217
-Moving 2,400 eligible reads to three replicas leaves
-roughly 600 reads on the primary, but each
+00:00:47.299 --> 00:00:52.373
+one replica still has revision 11. A read routed
+to that replica can return an apparently
 
-00:00:51.217 --> 00:00:54.113
-replica must still apply the write stream.
+00:00:52.373 --> 00:00:54.768
+lost edit even though the write succeeded.
 
-00:00:54.113 --> 00:00:57.698
-This is a workload sketch, not a capacity guarantee.
+00:00:54.768 --> 00:00:59.848
+The replica may be internally consistent with an
+earlier point in the primary's history, yet
 
-00:00:57.698 --> 00:01:04.386
-If the primary fails, promoting a standby requires
-establishing a single writer and understanding
+00:00:59.848 --> 00:01:04.874
+it is stale relative to this user's action.
+Possible policies include reading recent writes
 
-00:01:04.386 --> 00:01:07.007
-which acknowledged writes it contains.
+00:01:04.874 --> 00:01:09.512
+from the primary or waiting until a replica
+reaches a required replication position.
 
-00:01:07.007 --> 00:01:11.971
-A timeout alone does not establish that the previous
-writer has stopped.
+00:01:09.512 --> 00:01:14.307
+Those policies have latency and availability
+costs. A label saying read replica is
 
-00:01:11.971 --> 00:01:16.485
-Sharding distributes different records rather than
-making full copies.
+00:01:14.307 --> 00:01:19.510
+incomplete unless the design also explains which
+reads may tolerate lag and what the user
 
-00:01:16.485 --> 00:01:20.031
-Its benefit depends on keeping common operations
-local.
+00:01:19.510 --> 00:01:20.680
+sees when lag grows.
 
-00:01:20.031 --> 00:01:26.222
-Let us follow a customer query, then compare it with
-a global report using a deliberately simple
+00:01:20.680 --> 00:01:25.567
+Replication puts copies of the same data on
+several machines. Sharding instead assigns
 
-00:01:26.222 --> 00:01:27.189
-capacity model.
+00:01:25.567 --> 00:01:30.455
+different rows to different homes, allowing
+independent writes to proceed on different
 
-00:01:27.189 --> 00:01:31.058
-A maintenance platform shards equipment records by
-customer.
+00:01:30.455 --> 00:01:35.571
+machines. For a service organized around
+accounts, an account identifier can determine
+the
 
-00:01:31.058 --> 00:01:37.055
-Fetching one customer’s inspection history stays on
-a single shard, while a report across all
+00:01:35.571 --> 00:01:37.674
+shard holding that account's records.
 
-00:01:37.055 --> 00:01:40.859
-customers contacts several shards and merges their
-results.
+00:01:37.680 --> 00:01:42.767
+A request with that identifier can be routed
+directly to its destination. The important
 
-00:01:40.871 --> 00:01:47.469
-Placing customers evenly by count can still overload
-a shard containing a huge customer; traffic and
+00:01:42.767 --> 00:01:48.029
+property is bounded participation: adding more
+shards should not force an ordinary account
 
-00:01:47.469 --> 00:01:50.570
-record size matter as well as the routing rule.
+00:01:48.029 --> 00:01:53.234
+request to involve more machines. Co-locating
+related rows can also keep transactions and
 
-00:01:50.570 --> 00:01:56.837
-In a simplified balanced model, eight shards each
-provide 500 equal-cost operations per second.
+00:01:53.234 --> 00:01:54.578
+joins within one shard.
 
-00:01:56.837 --> 00:02:02.049
-Requests touching one shard have an upper bound near
-4,000 requests per second.
+00:01:54.680 --> 00:01:59.706
+This is why choosing a shard key is a decision
+about the application's operations, not
 
-00:02:02.071 --> 00:02:06.792
-If each request touches four shards, the bound drops
-to about 1,000.
+00:01:59.706 --> 00:02:02.921
+merely a way to divide a large table into equal
+pieces.
 
-00:02:06.792 --> 00:02:09.639
-If it touches all eight, it drops to 500.
+00:02:02.921 --> 00:02:08.088
+Now change the question from one account's
+orders to all orders containing a particular
 
-00:02:09.639 --> 00:02:16.235
-Parallel requests may finish sooner than serial
-requests, but each still consumes cluster work.
+00:02:08.088 --> 00:02:13.254
+product. If rows are partitioned by account, the
+product identifier does not identify a
 
-00:02:16.235 --> 00:02:22.275
-Cross-shard updates additionally need an explicit
-atomicity or reconciliation strategy.
+00:02:13.254 --> 00:02:18.243
+single destination. The application may ask
+every shard, combine results and sort or
+
+00:02:18.243 --> 00:02:19.133
+aggregate them.
+
+00:02:19.133 --> 00:02:24.086
+That scatter-and-gather query grows more
+expensive as shards are added and can wait for
+the
+
+00:02:24.086 --> 00:02:28.766
+slowest participating shard. Dividing data can
+therefore improve one access path while
+
+00:02:28.766 --> 00:02:33.719
+making another harder. The diagram needs both
+paths: a direct arrow from account key to one
+
+00:02:33.719 --> 00:02:37.093
+shard and a branching arrow from a global query
+to all shards.
+
+00:02:37.133 --> 00:02:42.186
+A secondary read model may improve the global
+query, but it creates additional data to
+
+00:02:42.186 --> 00:02:42.715
+maintain.

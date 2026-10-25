@@ -1,14 +1,26 @@
 Lizhi Liao: from local measurements to system performance
-Part 1 • Synthetic narration
+Illustrated lesson · Part 1 · Synthetic narration
 
-Why local performance is not end-to-end performance
+Why local performance is not end-to-end performance — Why local performance is not end-to-end performance
 
-A local slowdown is evidence, not an end-to-end forecast. A shorter parallel branch can slow without changing the join time, while a heavily used shared resource can amplify a small change. Lizhi’s approach combines early local measurements with an architectural model so we can reason about workload, paths and contention.
+A performance regression is a deterioration in a relevant performance measure after a change. Functional tests can still pass. Lizhi contrasts expensive whole-system tests with small-scale tests that provide earlier, more localized feedback, and asks how to combine their strengths. Local execution time alone does not determine user-visible response time. In a new fork-and-join example, two independent branches take 40 ms and 12 ms and then join. If the short branch rises to 18 ms, the ideal parallel portion still takes 40 ms. This simplified example assumes no shared-resource contention or other path changes.
 
-Measure deviations with repeated, comparable experiments
+Why local performance is not end-to-end performance — Reason through the consequences
 
-Measure original and updated code under comparable conditions and repeat the runs. The lecture combines a distribution test, Cliff’s delta and a mean difference. Statistical evidence does not tell us the whole-system consequence. Keep the protocol and uncertainty visible, and avoid calling a noisy or mismatched experiment a regression.
+Workload mix can also change the importance of a component. A path used by a small fraction of requests may become important when that fraction grows. An architectural model represents call paths, synchronization, resource sharing and workload so the local measurements can be interpreted in context. The model alone is not sufficient either: a coarse subsystem model can miss a changed function’s service demand. The lecture therefore connects fine-grained performance observations to the broader architectural model. Does a 50% increase in one function’s time imply 50% worse end-to-end response? No. Frequency, critical-path position, parallel execution, shared resources and workload determine how the change propagates. Measure and model those relationships.
 
-Map code-level changes into an architectural model
+Measure deviations with repeated, comparable experiments — Measure deviations with repeated, comparable experiments
 
-Map the local deviation to the modeled activity before updating a parameter. The lecture illustrates graph matching and propagation through the call structure. Keep units and measurement boundaries clear, and avoid double counting nested work. Compare original and changed models across workloads, then validate predictions independently. Experimental success in selected systems is not a universal guarantee.
+The first step runs small-scale tests on original and changed code and collects local performance observations. Keep the inputs, environment and measurement boundaries comparable. Repetition matters because timing varies with operating-system activity, competing processes, warmup and other effects. The displayed method compares distributions using a Mann–Whitney U test and Cliff’s delta, then uses the mean difference as a performance-deviation quantity. Statistical evidence and effect size answer different questions; neither should be replaced by a single noisy timing run. The slide illustrates repeated runs, not a universal sample size requirement.
+
+Measure deviations with repeated, comparable experiments — Reason through the consequences
+
+When teaching or applying the method, report the measurement protocol, distributions, effect direction and magnitude, thresholds and uncertainty. A small p-value is not the size of a slowdown, and a local distribution difference does not by itself establish a user-visible regression. New scenario: an updated serializer is consistently slower in isolated tests, but its inputs are larger than the baseline’s. Correct the comparison before attributing the difference to code. Comparable workload is part of the evidence, not an optional detail. A statistically detectable timing difference is automatically a serious production problem. True or false? False. Consider effect size, measurement conditions, the modeled execution path and workload, and the relevant user requirement.
+
+Map code-level changes into an architectural model — Map code-level changes into an architectural model
+
+The next step maps local deviations to the higher-level modeled activities. The lecture illustrates structural matching using maximum common subgraph analysis, followed by propagation up the relevant call structure so the affected architectural service-demand parameters can be updated. A mapping must preserve the meaning and units of the measurement. A function’s elapsed time may include waiting or downstream calls; it is not automatically an independent CPU service demand. Record call frequency and nesting so the same cost is not counted once in a parent measurement and again in its child.
+
+Map code-level changes into an architectural model — Reason through the consequences
+
+Keep original and updated model versions. Change parameters supported by the local evidence and preserve other assumptions unless the code or architecture changed them. Then evaluate both models under relevant workloads and compare the resulting performance distributions. The approach is useful for prioritizing costly system tests, but a model is only as credible as its structure, mapping, parameters and workload. Validate the baseline and use independent measurements to check predictions. The experimental results shown for TeaStore and TrainTicket are evidence for those studied cases, not a universal no-false-alarm guarantee. Can you add a function’s entire elapsed time to its parent’s demand without further analysis? Not safely. The parent may already include the child’s time or waiting. Establish measurement boundaries, call counts, resource meaning and a mapping that avoids double counting.

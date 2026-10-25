@@ -1,56 +1,68 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:06.583
-The archive runs four workers, each measured to
-handle 100 requests per second for a specified
+00:00:00.000 --> 00:00:05.067
+A rolling deployment replaces workers in stages
+so the service can remain available. First
 
-00:00:06.583 --> 00:00:07.213
-workload.
+00:00:05.067 --> 00:00:10.078
+stop assigning new requests to one worker, then
+allow its existing work to drain within a
 
-00:00:07.213 --> 00:00:12.885
-At 280 requests per second, removing one worker
-leaves a nominal capacity of 300.
+00:00:10.078 --> 00:00:15.089
+defined deadline. Deploy the new version, verify
+that it is ready to serve, and only then
 
-00:00:12.885 --> 00:00:18.628
-That small margin may be inadequate once request
-costs vary or a dependency slows.
+00:00:15.089 --> 00:00:18.580
+restore it to the active pool before moving to
+another worker.
 
-00:00:18.628 --> 00:00:24.580
-A rolling deployment needs spare capacity as well as
-a sequence of replacement steps.
+00:00:18.580 --> 00:00:23.026
+The illustration separates draining from
+readiness because removing a worker from new
 
-00:00:24.600 --> 00:00:31.039
-Stop new assignments, allow existing work to drain
-within a deadline, deploy, and verify readiness
+00:00:23.026 --> 00:00:27.786
+assignments does not instantly end its in-flight
+work. This procedure needs spare capacity:
 
-00:00:31.039 --> 00:00:32.879
-before returning the worker.
+00:00:27.786 --> 00:00:32.441
+if the remaining pool cannot handle the
+workload, a technically orderly rollout can
+still
 
-00:00:32.879 --> 00:00:39.383
-A failed health probe is evidence that the checked
-path did not respond acceptably; it is not proof
+00:00:32.441 --> 00:00:36.259
+create excessive queueing and errors for users
+throughout the deployment.
 
-00:00:39.383 --> 00:00:40.632
-of a process crash.
+00:00:36.259 --> 00:00:41.497
+Health checks provide observations that help the
+balancer decide where to send new work. A
 
-00:00:40.632 --> 00:00:45.559
-Overload, network trouble or a dependency can
-produce the same observation.
+00:00:41.497 --> 00:00:46.851
+failed probe might indicate a crashed process,
+but it might also reflect overload, a network
 
-00:00:45.600 --> 00:00:52.035
-Failure thresholds reduce reactions to brief
-disturbances but delay removal, so some requests may
+00:00:46.851 --> 00:00:48.713
+problem, or a failed dependency.
 
-00:00:52.035 --> 00:00:53.893
-fail before routing changes.
+00:00:48.759 --> 00:00:54.033
+The diagram shows a healthy response maintaining
+membership and repeated failed observations
 
-00:00:53.893 --> 00:00:57.276
-Explain what clients may retry and with what limit.
+00:00:54.033 --> 00:00:59.249
+leading to removal. Thresholds avoid reacting to
+a single transient failure, at the cost of
 
-00:00:57.276 --> 00:01:03.645
-During a rolling update, old and new versions
-coexist, which makes API and storage compatibility
+00:00:59.249 --> 00:01:04.236
+slower detection. During that interval, some
+real requests may still reach the affected
 
-00:01:03.645 --> 00:01:07.824
-part of deployment safety rather than an optional
-cleanup task.
+00:01:04.236 --> 00:01:04.637
+worker.
+
+00:01:04.759 --> 00:01:10.018
+Explain how the client handles those failures
+and whether a retry is safe. Removing a worker
+
+00:01:10.018 --> 00:01:14.763
+changes future routing; it does not prove that
+previous writes did not take effect.

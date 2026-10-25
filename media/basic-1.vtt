@@ -1,112 +1,148 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:04.622
-Suppose a public archive receives one thousand page
-requests per second.
+00:00:00.000 --> 00:00:04.850
+Scale the publishing system by asking which
+resource is doing repeated work. If most
 
-00:00:04.622 --> 00:00:10.078
-If a shared cache answers eighty percent, two
-hundred requests reach the application.
+00:00:04.850 --> 00:00:10.103
+requests read public pages, the database may
+first benefit from more memory, better queries
 
-00:00:10.078 --> 00:00:16.369
-If each remaining page needs three database reads,
-the uncached read workload is approximately six
+00:00:10.103 --> 00:00:15.415
+and additional read replicas. A read replica
+serves another copy of the records, while edits
 
-00:00:16.369 --> 00:00:17.974
-hundred reads per second.
+00:00:15.415 --> 00:00:17.089
+still go through the primary.
 
-00:00:17.974 --> 00:00:24.393
-These are deliberately simplified assumptions, but
-they show why cache effectiveness must be applied
+00:00:17.089 --> 00:00:22.089
+If page construction becomes the bottleneck, add
+stateless application instances behind a
 
-00:00:24.393 --> 00:00:26.126
-before sizing the database.
+00:00:22.089 --> 00:00:27.202
+load balancer. Those instances can share the
+same authoritative storage because they do not
 
-00:00:26.126 --> 00:00:32.340
-Adding application workers changes application
-capacity; it does not by itself change those six
+00:00:27.202 --> 00:00:32.258
+require local per-user state to answer the next
+request. The progression keeps each change
 
-00:00:32.340 --> 00:00:33.256
-hundred reads.
+00:00:32.258 --> 00:00:33.944
+connected to a measured limit.
 
-00:00:33.256 --> 00:00:38.031
-Classify the remaining requests before distributing
-them across replicas.
+00:00:34.089 --> 00:00:38.480
+Adding machines to a tier that is not limiting
+throughput will not solve a bottleneck
 
-00:00:38.031 --> 00:00:44.114
-A visitor reading an old exhibit may tolerate a
-short delay, while a curator checking an edit
+00:00:38.480 --> 00:00:38.996
+elsewhere.
 
-00:00:44.114 --> 00:00:47.188
-immediately after saving expects the new state.
+00:00:39.089 --> 00:00:44.598
+The next step can avoid application work
+altogether for eligible requests. Put a response
 
-00:00:47.226 --> 00:00:53.481
-The first path can use a lagging replica if the
-product permits it; the second may require a primary
+00:00:44.598 --> 00:00:49.859
+cache in front of public HTML pages and keep
+media delivery cached as well. Anonymous
 
-00:00:53.481 --> 00:00:56.420
-read or another explicit consistency mechanism.
+00:00:49.859 --> 00:00:55.553
+visitors requesting the same page can reuse the
+same response, provided the freshness policy
 
-00:00:56.420 --> 00:01:00.548
-A scalable diagram therefore needs routing rules as
-well as boxes.
+00:00:55.553 --> 00:00:56.234
+permits it.
 
-00:01:00.548 --> 00:01:06.677
-Measure the hit rate and query count under a
-representative mix rather than assuming every
-request
+00:00:56.234 --> 00:01:01.672
+The architecture now has two filters on origin
+demand: media hits bypass object-origin
 
-00:01:06.677 --> 00:01:07.740
-benefits equally.
+00:01:01.672 --> 00:01:07.362
+retrieval, and HTML hits bypass page
+construction and its database queries. Follow a
+cache
 
-00:01:07.740 --> 00:01:13.160
-An illustrative service records twenty-six million
-updates over a thirty-day month.
+00:01:07.362 --> 00:01:12.863
+hit and a miss as separate paths. A hit is
+short; a miss still uses the complete origin
 
-00:01:13.160 --> 00:01:18.775
-Dividing by approximately 2.6 million seconds gives
-ten updates per second on average.
+00:01:12.863 --> 00:01:13.180
+path.
 
-00:01:18.775 --> 00:01:23.607
-That calculation is useful for checking magnitude,
-but it conceals timing.
+00:01:13.234 --> 00:01:17.920
+The origin must therefore tolerate miss bursts,
+cache eviction and recovery instead of
 
-00:01:23.607 --> 00:01:30.136
-If a news event produces one hundred updates per
-second for several minutes, a system sized only for
+00:01:17.920 --> 00:01:21.081
+assuming that the average hit rate will always
+protect it.
 
-00:01:30.136 --> 00:01:36.535
-the average can accumulate a backlog or reject
-requests despite apparently modest monthly traffic.
+00:01:21.234 --> 00:01:26.534
+A large monthly total can sound more demanding
+than its rate actually is. The case projects
 
-00:01:36.540 --> 00:01:38.964
-Also expand the meaning of an update.
+00:01:26.534 --> 00:01:31.543
+roughly four hundred thousand monthly write-
+generating events at two hundred times the
 
-00:01:38.964 --> 00:01:44.924
-One user action may write a primary row, update
-indexes and append an audit record inside a
+00:01:31.543 --> 00:01:36.610
+traffic: eighty million events per month.
+Dividing by approximately 2.6 million seconds
 
-00:01:44.924 --> 00:01:45.710
-transaction.
+00:01:36.610 --> 00:01:39.638
+gives about thirty-one events per second on
+average.
 
-00:01:45.710 --> 00:01:52.063
-Those actions do not map to a fixed number of
-physical disk operations because buffering, logging
+00:01:39.734 --> 00:01:44.480
+This calculation does not prove that the system
+can handle the workload, but it challenges
 
-00:01:52.063 --> 00:01:54.159
-and storage behaviour intervene.
+00:01:44.480 --> 00:01:49.067
+the assumption that a large audience
+automatically requires sharded writes. The
+diagram
 
-00:01:54.159 --> 00:01:59.465
-Test the complete transaction with realistic data,
-contention and burst duration.
+00:01:49.067 --> 00:01:52.759
+should show the conversion from events per month
+to events per second.
 
-00:01:59.465 --> 00:02:02.685
-Report latency and error rate alongside throughput.
+00:01:52.759 --> 00:01:57.723
+Always attach the unit to a number; comparing a
+monthly event count directly with a per-
 
-00:02:02.685 --> 00:02:08.809
-The decision to retain one primary should follow
-those measurements and consistency needs, rather
+00:01:57.723 --> 00:01:59.866
+second device capacity is meaningless.
 
-00:02:08.809 --> 00:02:14.680
-than a direct comparison between user events and a
-device's advertised operations per second.
+00:01:59.866 --> 00:02:05.263
+Next compare the projection with measurements.
+If a current workload uses about ten storage
+
+00:02:05.263 --> 00:02:10.482
+operations per second, a simple two-hundred-fold
+projection suggests about two thousand,
+
+00:02:10.482 --> 00:02:15.642
+subject to the assumption that operations grow
+proportionally. CPU observations provide
+
+00:02:15.642 --> 00:02:20.743
+another estimate, but multiplying core count by
+current spare capacity is only a rough
+
+00:02:20.743 --> 00:02:21.099
+bound.
+
+00:02:21.099 --> 00:02:26.547
+Lock contention, serial work, memory pressure
+and changed cache behavior can break linear
+
+00:02:26.547 --> 00:02:32.119
+extrapolation. Likewise, one application event
+is not necessarily one database write or one
+
+00:02:32.119 --> 00:02:37.506
+storage operation. The purpose of the estimate
+is to identify plausible capacity and the
+
+00:02:37.506 --> 00:02:43.139
+next experiment, not to replace a load test with
+arithmetic that ignores the execution path.

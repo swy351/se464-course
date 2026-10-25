@@ -1,14 +1,26 @@
 Secure Microservices: Boundaries, Tokens and Response
-Part 2 • Synthetic narration
+Illustrated lesson · Part 2 · Synthetic narration
 
-Token trust, validation and revocation
+Token trust, validation and revocation — Token trust, validation and revocation
 
-Treat a token as a claim that must be evaluated in context. Verify its issuer, cryptographic protection, audience and time constraints, then authorize the operation. Follow access and refresh tokens separately through expiry and compromise. Central issuance and local verification offer a useful pattern, but revocation and key rotation must be explicit rather than assumed.
+A signed JWT carries claims plus a signature; its readable payload is not encrypted merely because it is signed. A service needs a validation policy: trusted issuer and keys, permitted algorithms, intended audience, token type and applicable time constraints. A valid signature alone does not establish that this token belongs at this API or that its subject may access the requested record.
 
-Harden each service and its data paths
+Token trust, validation and revocation — Reason through the consequences
 
-Apply security at the service as well as the perimeter. Reduce runtime privileges, expose only needed interfaces and manage secrets through their lifecycle. Validate data for its actual destination: SQL, HTML and outbound URLs require different controls. Shared middleware can make checks consistent, but its trust assumptions and execution order must be understood and tested.
+Access and refresh tokens have different roles. Short access-token lifetimes limit exposure, while refresh-token rotation or sender constraints address renewal risk. Revoking a refresh token does not magically invalidate every already issued self-contained access token. Central issuance with local verification can reduce repeated authentication calls, but introduces key-distribution and revocation tradeoffs. OAuth concerns delegated authorization; OpenID Connect adds authentication conventions. Neither is synonymous with the JWT data format. If a user’s refresh token is revoked, must a locally validated access token stop working immediately? No. Immediate rejection requires an additional mechanism such as introspection or a revocation/version check; otherwise the access token may remain valid until expiry.
 
-Practice incident response with bounded simulations
+Harden each service and its data paths — Harden each service and its data paths
 
-Use simulations to practice decisions as well as detections. Tabletop exercises, broad red-team engagements and focused repeatable tests answer different questions. Our course exercise stays with synthetic evidence and role-based discussion. Trace escalation, containment and recovery, then assign concrete improvements after the review. Coverage tracking is useful evidence, not a guarantee of future detection.
+A service should expose only necessary interfaces and run with limited privileges. Non-root execution, reduced capabilities, a read-only filesystem where feasible and narrowly scoped workload credentials reduce consequences of compromise. Secrets should be managed with explicit access, rotation and revocation rather than hardcoded in source. Environment variables and mounted files each have exposure tradeoffs; a secret store still needs authentication and authorization.
+
+Harden each service and its data paths — Reason through the consequences
+
+Input handling must match the destination. Parameterized database operations separate data from SQL, contextual output encoding protects HTML contexts, and destination validation plus network controls help constrain outbound URL requests. An ORM can still execute unsafe raw queries. Error handling should avoid disclosing internal details while retaining useful protected diagnostics. Trust forwarded identity or IP information only from configured trusted intermediaries, and order middleware so identity and permission decisions occur before protected work. Can a service trust X-Forwarded-For simply because the request contains that header? No. Clients can supply headers. The trusted proxy path must overwrite or validate forwarded information, and network address still does not prove user permission.
+
+Practice incident response with bounded simulations — Practice incident response with bounded simulations
+
+The supplied Uber case distinguishes tabletop exercises, red-team operations and smaller repeatable simulations. These methods test different things: decision-making and escalation, broader adversary behavior, or focused detection and response. The historical example should not be treated as a statement of Uber’s current procedures. For this course, a tabletop preserves the architectural learning without running intrusion tools or accessing real credentials.
+
+Practice incident response with bounded simulations — Reason through the consequences
+
+Assign roles for triage, service ownership, communications and decision authority. Introduce synthetic evidence in stages: suspicious token use, an unexpected outbound connection, then an unavailable dependency. Ask what evidence is needed, what can be contained and which users are affected. Record timing and assumptions, then conduct an after-action review with owners for improvements. Coverage mapped to ATT&CK techniques can reveal gaps, but a checked box does not prove that a control will detect every variation. If a simulation triggers an alert, is the response process necessarily successful? No. Someone must triage it, coordinate decisions, contain harm and recover; the exercise should test that complete chain.

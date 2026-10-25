@@ -1,14 +1,26 @@
 Lizhi Liao: from local measurements to system performance
-Part 2 • Synthetic narration
+Illustrated lesson · Part 2 · Synthetic narration
 
-Read the QPN model: activities share resources
+Read the QPN model: activities share resources — Read the QPN model: activities share resources
 
-In the demonstration, several visible places share the same underlying queue. Do not count every green node as a separate server. Trace one request and identify its resource mappings, scheduling, server count and service demand. Shared queues explain why different request classes can interfere even when their diagram paths look separate.
+The demonstration uses QPME, the Queueing Petri Net Modeling Environment. Request paths move through modeled activities and transitions. Queues provide resource contention, while the model can represent different request classes and routing through the system. An important clarification in the recording is that each visible green place is not necessarily an independent hardware resource. Several places can reference the same underlying queue. In the demonstrated naming scheme, the prefix identifies the resource queue. Different request paths can therefore compete for the same web or authentication resource.
 
-Use simulation for capacity and architecture experiments
+Read the QPN model: activities share resources — Reason through the consequences
 
-A capacity change and an asynchronous redesign answer different questions. More servers can reduce queueing; moving work off the response path can reduce waiting without removing the work. Compare throughput, utilization and completion semantics. Also distinguish a confidence interval for a simulation estimate from a percentile of request latency.
+For each shared queue, inspect scheduling discipline, number of servers and service-time assumptions. For each request class, inspect routing, visits and synchronization. Counting diagram nodes as independent servers would understate contention and produce misleading predictions. Follow one request from entry to completion. For an add-to-cart operation, identify which modeled activities use the same resource and which downstream work the caller waits for. Write a small activity-to-resource table before changing the model. The point is to understand the semantics behind the diagram, not memorize its colors. Two places on different request paths both use the WebUI queue. Do they run on independent capacity? No. They share the modeled queue’s capacity unless the model explicitly assigns separate resources. Distinct places can compete at one resource.
 
-Make a prediction and test its limits
+Use simulation for capacity and architecture experiments — Use simulation for capacity and architecture experiments
 
-Our small lab illustrates queueing amplification. At seventy-five requests per second, changing mean service from eight to ten milliseconds changes predicted mean response from twenty to forty milliseconds. This relies on explicit single-server assumptions. Use it to understand the mechanism, then build and validate a model appropriate to the real system.
+The demo first adds capacity to a highly utilized web resource, then explores moving work into a separate cart service with asynchronous interaction. These are different changes: adding a server changes resource capacity; changing the interaction can change the user’s waiting path and where work contends. Inspect throughput, utilization, population and residence time as well as end-to-end response. A substantial response-time improvement can occur near saturation even when utilization changes more modestly. Conversely, a quick acknowledgment may leave substantial background work running.
+
+Use simulation for capacity and architecture experiments — Reason through the consequences
+
+Preserve completion semantics when comparing synchronous and asynchronous designs. Does the response mean the cart update is durable, accepted for later processing, or fully completed? A shorter response is not equivalent behavior if the user-visible contract changed. Also model retries, ordering, failures and backpressure where they matter. Distinguish uncertainty in a simulation estimate from a latency percentile. A 95% confidence interval for a mean is not p95 request latency. The recording shows simulation output; interpret the reported statistic according to its definition, and avoid transferring its example numbers to a real deployment. Moving work off the response path lowers acknowledgment time. Has the total work necessarily decreased? No. The work may continue elsewhere, with similar utilization or new contention. Compare the same completion semantics and inspect downstream capacity and failure behavior.
+
+Make a prediction and test its limits — Make a prediction and test its limits
+
+The interactive lab is a deliberately smaller model than the lecture’s QPN demonstration. It assumes one M/M/1 queue: Poisson arrivals, independent exponential service times, one server, an unbounded queue and steady state. With service demand S seconds and arrival rate λ per second, utilization is ρ = λS and mean response is R = S/(1−ρ), only when ρ < 1. New worked example: λ = 75 requests/second and S = 8 ms gives ρ = 0.60 and R = 20 ms. Increasing S to 10 ms gives ρ = 0.75 and R = 40 ms. A 25% increase in local demand doubles the model’s mean response. At λS ≥ 1 the model has no finite steady-state mean; reporting a negative response from the formula would be an error.
+
+Make a prediction and test its limits — Reason through the consequences
+
+Use this calculation to explain amplification, not to claim every request follows an exponential distribution. A real model may need multiple resources, several visits, parallel branches, finite queues and distinct workload classes. Revalidate after an architectural change. A reviewable analysis records the baseline measurements, local change, mapping, model assumptions, workload, prediction and validation error. Keep calibration evidence separate from validation evidence. Recommend a measurement or experiment that would most reduce uncertainty in the decision. Why is R = S/(1−λS) invalid as a finite steady-state estimate when λS reaches one? Arrivals consume all or more of the service capacity. The assumed queue has no stable finite mean response; the algebra is not a valid continuation beyond the stability condition.

@@ -1,0 +1,32 @@
+[
+  {
+    "chapter": 4,
+    "title": "Design for extension",
+    "time": 0
+  },
+  {
+    "chapter": 4,
+    "title": "Design for extension",
+    "time": 21.21
+  },
+  {
+    "chapter": 5,
+    "title": "Substitutability and contracts",
+    "time": 60.92
+  },
+  {
+    "chapter": 5,
+    "title": "Substitutability and contracts",
+    "time": 87.14
+  },
+  {
+    "chapter": 6,
+    "title": "Client-focused interfaces and dependency inversion",
+    "time": 129.19
+  },
+  {
+    "chapter": 6,
+    "title": "Client-focused interfaces and dependency inversion",
+    "time": 150.91
+  }
+]

@@ -1,74 +1,180 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:03.668
-Read a class diagram as a precise but selective
-model.
+00:00:00.000 --> 00:00:05.936
+A class diagram summarizes selected structural
+facts. Class boxes can show names, attributes
 
-00:00:03.668 --> 00:00:10.393
-Identify classes, access levels, operations and
-relationships, then interpret multiplicities in the
+00:00:05.936 --> 00:00:11.485
+and operations; visibility symbols communicate
+access, while inheritance and interface
 
-00:00:10.393 --> 00:00:10.869
-domain.
+00:00:11.485 --> 00:00:16.905
+realization express different contracts.
+Associations describe relationships between
 
-00:00:10.869 --> 00:00:17.458
-Use code examples to check the model, especially
-when a collection’s capacity differs from actual
+00:00:16.905 --> 00:00:21.228
+instances, with multiplicity constraining how
+many may participate.
 
-00:00:17.458 --> 00:00:18.205
-membership.
+00:00:21.228 --> 00:00:26.321
+The BankAccount and Student–Course examples
+connect these symbols to code so that notation
 
-00:00:18.205 --> 00:00:24.250
-Ownership, inheritance and interface contracts
-communicate different ideas, so choose the
+00:00:26.321 --> 00:00:30.226
+supports an explanation rather than becoming a
+memorization exercise.
 
-00:00:24.250 --> 00:00:27.511
-relationship that matches the intended behavior.
+00:00:30.228 --> 00:00:35.305
+Read multiplicity from the relevant association
+end and distinguish capacity from actual
 
-00:00:27.511 --> 00:00:33.568
-Patterns preserve design knowledge by naming
-recurring problems and explaining solutions and
+00:00:35.305 --> 00:00:40.381
+participation. An array with thirty slots is not
+evidence that thirty courses are always
 
-00:00:33.568 --> 00:00:34.424
-consequences.
+00:00:40.381 --> 00:00:45.112
+assigned. Composition expresses strong ownership
+in the model, whereas an ordinary
 
-00:00:34.424 --> 00:00:37.255
-Apply them with judgment, not mechanically.
+00:00:45.112 --> 00:00:47.708
+association need not imply a shared lifetime.
 
-00:00:37.255 --> 00:00:41.403
-Selective diagrams can help communicate the relevant
-structure.
+00:00:47.728 --> 00:00:52.649
+Nested classes, dependencies and notes add
+detail when needed. Correct partial snippets
 
-00:00:41.403 --> 00:00:47.987
-When comparing composition and inheritance, examine
-the relationship and the behavior clients depend
+00:00:52.649 --> 00:00:57.683
+before treating them as runnable
+implementations, and state conventions where the
+diagram
 
-00:00:47.987 --> 00:00:52.004
-on; reuse alone is not enough to justify a subtype
-hierarchy.
+00:00:57.683 --> 00:01:02.774
+omits information. Does a Student containing a
+Course array of length thirty imply exactly
 
-00:00:52.011 --> 00:00:55.948
-Single responsibility concerns coherent reasons to
-change.
+00:01:02.774 --> 00:01:04.132
+thirty enrolled courses?
 
-00:00:55.948 --> 00:01:02.466
-Use method relationships and shared fields as clues,
-then ask which stakeholder or policy drives
+00:01:04.228 --> 00:01:09.976
+No. Storage capacity does not establish actual
+enrollment; multiplicity should express the
 
-00:01:02.466 --> 00:01:03.280
-each change.
+00:01:09.976 --> 00:01:11.701
+intended domain constraint.
 
-00:01:03.280 --> 00:01:10.001
-Splitting responsibilities can improve
-maintainability, but excessive fragmentation can
-obscure the
+00:01:11.728 --> 00:01:16.888
+UML can be used selectively to resolve a design
+question rather than to document every
 
-00:01:10.001 --> 00:01:10.408
-model.
+00:01:16.888 --> 00:01:22.348
+implementation detail. The cited industry study
+illustrates different usage patterns, not a
 
-00:01:10.408 --> 00:01:17.197
-Public libraries add compatibility costs, making
-clear boundaries especially valuable before clients
+00:01:22.348 --> 00:01:27.749
+universal adoption rate for every team. A
+diagram earns its place by helping collaborators
 
-00:01:17.197 --> 00:01:18.216
-depend on them.
+00:01:27.749 --> 00:01:28.169
+reason.
+
+00:01:28.228 --> 00:01:33.433
+Design patterns likewise provide reusable
+language for a problem, a solution structure and
+
+00:01:33.433 --> 00:01:35.457
+the consequences that accompany it.
+
+00:01:35.457 --> 00:01:40.717
+A pattern is not a mechanical recipe. Its forces
+and tradeoffs must fit the system, language
+
+00:01:40.717 --> 00:01:45.691
+and expected changes. The architectural-doorway
+example makes this concrete: the layout
+
+00:01:45.691 --> 00:01:50.951
+responds to patterns of movement rather than to
+an abstract preference for doors in corners.
+
+00:01:50.957 --> 00:01:56.221
+Composition delegates behavior through
+collaborating objects, while inheritance commits
+to a
+
+00:01:56.221 --> 00:02:01.485
+subtype relationship and its contracts. Prefer
+the mechanism that expresses the relationship
+
+00:02:01.485 --> 00:02:06.634
+and controls the intended variation. Should
+every recurring code fragment be replaced by a
+
+00:02:06.634 --> 00:02:07.836
+named design pattern?
+
+00:02:07.957 --> 00:02:13.385
+No. Use a pattern when its problem and tradeoffs
+match; adding structure without a need can
+
+00:02:13.385 --> 00:02:14.280
+reduce clarity.
+
+00:02:14.457 --> 00:02:19.749
+The single responsibility principle asks whether
+a class has one coherent reason to change.
+
+00:02:19.749 --> 00:02:24.925
+Responsibilities arise from the concerns and
+policies it serves, not simply the number of
+
+00:02:24.925 --> 00:02:29.985
+methods. A cohesion graph connecting methods
+that share fields can expose clusters, but
+
+00:02:29.985 --> 00:02:31.614
+shared state is only a clue.
+
+00:02:31.614 --> 00:02:36.868
+Methods can share a field while serving
+unrelated purposes, and a coherent
+responsibility
+
+00:02:36.868 --> 00:02:38.758
+can use several data structures.
+
+00:02:38.758 --> 00:02:44.083
+The split-class exercise asks which changes
+should remain independent. Separating storage,
+
+00:02:44.083 --> 00:02:49.527
+formatting or domain calculations can reduce the
+number of clients affected by a change. The
+
+00:02:49.527 --> 00:02:54.853
+historical Date API example illustrates the
+long-lived cost of mixing concerns in a public
+
+00:02:54.853 --> 00:02:55.326
+library.
+
+00:02:55.326 --> 00:03:00.782
+Compatibility limits cleanup after release, so
+careful boundaries matter. Avoid splitting
+
+00:03:00.782 --> 00:03:05.809
+every method into its own object; the goal is a
+coherent model with understandable
+
+00:03:05.809 --> 00:03:11.020
+responsibilities and interfaces. If every method
+touches the same field, has SRP been
+
+00:03:11.020 --> 00:03:11.449
+proved?
+
+00:03:11.449 --> 00:03:17.362
+No. Shared fields suggest structural cohesion
+but do not establish a single policy or reason
+
+00:03:17.362 --> 00:03:18.004
+to change.

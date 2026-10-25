@@ -1,0 +1,32 @@
+[
+  {
+    "chapter": 5,
+    "title": "Authorization: lists, capabilities and labels",
+    "time": 0
+  },
+  {
+    "chapter": 5,
+    "title": "Authorization: lists, capabilities and labels",
+    "time": 45.27
+  },
+  {
+    "chapter": 6,
+    "title": "Impersonation, replay and trust",
+    "time": 91.09
+  },
+  {
+    "chapter": 6,
+    "title": "Impersonation, replay and trust",
+    "time": 133.59
+  },
+  {
+    "chapter": 7,
+    "title": "Browser isolation and the patching lifecycle",
+    "time": 182.53
+  },
+  {
+    "chapter": 7,
+    "title": "Browser isolation and the patching lifecycle",
+    "time": 228.83
+  }
+]

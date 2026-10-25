@@ -1,0 +1,22 @@
+[
+  {
+    "chapter": 4,
+    "title": "Read scaling and failover",
+    "time": 0
+  },
+  {
+    "chapter": 4,
+    "title": "Read scaling and failover",
+    "time": 42.17
+  },
+  {
+    "chapter": 5,
+    "title": "Sharding and fan-out",
+    "time": 80.68
+  },
+  {
+    "chapter": 5,
+    "title": "Sharding and fan-out",
+    "time": 122.92
+  }
+]

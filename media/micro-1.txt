@@ -1,6 +1,10 @@
 Microservices & client architectures
-Part 2 • Synthetic narration
+Illustrated lesson · Part 2 · Synthetic narration
 
-Teams, mocks and multiple clients
+Teams, mocks and multiple clients — A mock unblocks one kind of work
 
-The scheduling team supplies a mock API while the real service is under construction. The dashboard team can now build a booking screen, but an always-successful mock teaches the wrong assumptions. Include unavailable slots, invalid input and delayed responses in the contract. Then run the same expectations against the real implementation. A mock accelerates collaboration because it makes assumptions executable; it does not prove that the dependency behaves that way in production. The same scheduling API can serve a browser dashboard and a technician’s mobile app. The browser may receive server-rendered HTML or construct its interface from API responses; a hybrid is also possible. In either case, the backend must enforce authorization and validate requested changes. Hiding an unavailable action in a button does not prevent a different client from sending that request. Review one complete workflow across both clients and check that resource identities, validation failures and permission rules mean the same thing on the shared service boundary.
+When several teams build a system at the same time, agreeing on API behavior allows them to make progress before every implementation is finished. A messaging client can initially call a mock inbox service that returns a fixed list of messages in the agreed response format. The diagram shows the same client first connected to a mock and later to the real service through the same contract. This helps developers build parsing, presentation, and basic error handling early. It does not prove end-to-end correctness: a mock that always returns the same inbox will not reflect newly sent messages, enforce permissions, or reproduce real persistence and concurrency behavior.
+
+Teams, mocks and multiple clients — Many clients, one domain contract
+
+The same backend contract can serve several kinds of client. A mobile application, a desktop application, and a browser interface may all fetch messages, send messages, and authenticate through the same service API while presenting different user interfaces. In a traditional web design, a server builds HTML; in a single-page design, browser code obtains data and updates the interface. The diagram shows different presentation layers converging on the same domain operation. These choices form a continuum, and a system can combine server-rendered pages with browser interactions. Moving presentation to the browser does not move the authority to approve operations there: the backend must still validate every request.

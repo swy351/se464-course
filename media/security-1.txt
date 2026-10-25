@@ -1,14 +1,26 @@
 Security: Trust, Identity and Access
-Part 2 • Synthetic narration
+Illustrated lesson · Part 2 · Synthetic narration
 
-Authorization: lists, capabilities and labels
+Authorization: lists, capabilities and labels — Lists and tickets place authority differently
 
-Compare identity-based access lists with authority carried in a capability. Each can express useful permissions, but delegation and revocation work differently. Mandatory controls impose centrally managed restrictions beyond owner discretion. Use the event-entry and food-coupon example to see how one identity check can lead to a limited capability without making the two mechanisms identical.
+A shared document can authorize access by consulting a list: the guard identifies the requester and checks whether that identity may read the document. A capability-style design instead gives a principal an unforgeable reference carrying narrowly defined authority, such as permission to download one object until a deadline. Presenting the valid capability proves that authority under the scheme's rules. Draw where the policy lives in each case. With a list, changing one central entry can affect future checks. With a copied ticket, revocation may require short expiry, an online revocation check, or another explicit mechanism. Neither design is automatically safer; the choice depends on delegation, sharing, and how quickly permission changes must take effect.
 
-Impersonation, replay and trust
+Authorization: lists, capabilities and labels — Delegation should narrow authority
 
-A valid credential or signature does not settle every trust question. Ask whether a message is fresh, intended for this service and permitted for this action. Replay and compromised keys expose these distinctions. Reputation can help assess expected behavior, but it is contextual evidence rather than an access-control mechanism or a guarantee about the next request.
+Suppose an export service must let a browser download one generated report. Giving the browser the service's storage administrator credential would expose unrelated files and future operations. Instead issue authority limited to that report, the download action, and a short validity period. If the user shares that ticket, the recipient may gain the same limited authority, so this sharing behavior must be intentional. Contrast this with mandatory labels: a centrally defined policy can prevent a document owner from granting access outside an approved classification boundary. A hybrid can authenticate the user against organizational policy and then issue a narrow capability for delivery. Trace who can create, copy, inspect, and revoke authority at every stage of that workflow.
 
-Browser isolation and the patching lifecycle
+Impersonation, replay and trust — A real message can be wrong now
 
-Browser security demonstrates defense in depth at architectural scale. Restrict untrusted rendering, mediate privileged operations, patch promptly and warn about known threats. These controls reduce different risks and still matter when another layer fails. Treat the supplied Chrome diagrams as a historical teaching case, and distinguish that durable reasoning from details that change across browser versions.
+Imagine a valid approval message for transferring ten dollars. An attacker captures it and submits it twice. The signature or authentication code may still verify because the contents are genuine; that check alone does not establish that this is a new authorized action. Include an operation identifier, bind the approval to its intended recipient and purpose, and define whether repeated delivery returns the same result or creates another transfer. An expiry limits the usable time window but does not by itself prevent two uses within that window. Freshness, origin, integrity, and authority are separate claims. The protocol must state which evidence supports each claim rather than using the word authenticated as shorthand for all of them.
+
+Impersonation, replay and trust — Recovery belongs inside the trust model
+
+A login challenge can be sent through an already registered channel to test control of that channel. The challenge must be unpredictable, bound to the relevant attempt, and accepted under explicit expiry and reuse rules. If an attacker controls the recovery mailbox, that control may undermine the protection expected from the login flow. Likewise, a service's good reputation is evidence about past behavior, not a credential authorizing a particular action today. In a collaborative marketplace, reputation might determine how urgently a transaction is reviewed, while access to private records still follows an enforceable policy. Separate confidence in a participant from validation of this message, this account, and this requested effect. Otherwise a favorable history can become an accidental bypass around concrete controls.
+
+Browser isolation and the patching lifecycle — Contain an untrusted renderer
+
+A browser renders pages supplied by parties the user does not control. Suppose a malicious page exploits a renderer bug. If the renderer runs with broad access to local files, the exploit can immediately become a data theft problem. A restricted renderer process changes that consequence: privileged operations must cross a boundary to a component that can enforce policy. Draw the boundary between rendering content and accessing sensitive operating-system resources, then label the allowed messages. The design assumes defects may exist and tries to limit what a successful exploit can reach. It does not make malicious content harmless, nor does it prove the boundary implementation is correct. Evaluate both the compromise and the attempted next step beyond the compromised component.
+
+Browser isolation and the patching lifecycle — A boundary and an update solve different problems
+
+Once a vulnerability is known, a patch can remove the specific defect while isolation continues to limit damage from other defects. The patch must reach users, so distribution and adoption time matter as much as producing a corrected binary. Regression checks help establish that the fix works without breaking expected behavior. Dangerous-site warnings address a different point in the chain by reducing exposure to known hostile destinations. Draw prevention, containment, and repair as separate stages rather than treating them as interchangeable controls. The detailed browser process topology changes across versions, so use the historical architecture as an example of reasoning about privilege boundaries. The enduring question is what the attacker can do after one layer has failed.

@@ -1,0 +1,32 @@
+[
+  {
+    "chapter": 1,
+    "title": "From execution cost to resource contention",
+    "time": 0
+  },
+  {
+    "chapter": 1,
+    "title": "From execution cost to resource contention",
+    "time": 23.5
+  },
+  {
+    "chapter": 2,
+    "title": "Measure throughput and apply operational laws",
+    "time": 64.59
+  },
+  {
+    "chapter": 2,
+    "title": "Measure throughput and apply operational laws",
+    "time": 92.29
+  },
+  {
+    "chapter": 3,
+    "title": "Understand single and multiple server queues",
+    "time": 162.86
+  },
+  {
+    "chapter": 3,
+    "title": "Understand single and multiple server queues",
+    "time": 194.36
+  }
+]

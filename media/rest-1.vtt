@@ -1,117 +1,149 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:06.202
-Two maintenance tickets refer to the same building,
-and that building record refers to its active
+00:00:00.000 --> 00:00:05.116
+Objects in memory cannot simply be copied onto a
+network and expected to retain their
 
-00:00:06.202 --> 00:00:06.714
-tickets.
+00:00:05.116 --> 00:00:10.654
+meaning in another process. The receiver may use
+another language, object layout, or machine
 
-00:00:06.714 --> 00:00:11.254
-Naively nesting the entire building inside each
-ticket duplicates data.
+00:00:10.654 --> 00:00:15.469
+architecture. Serialization converts values into
+a defined representation, while
 
-00:00:11.254 --> 00:00:16.881
-Following the building’s ticket references
-recursively can also create an endless cycle.
+00:00:15.469 --> 00:00:18.539
+deserialization reconstructs useful values from
+it.
 
-00:00:16.881 --> 00:00:22.124
-The in-memory structure is a graph, while ordinary
-nested JSON values form a tree.
+00:00:18.539 --> 00:00:24.106
+JSON works well for combinations of objects,
+arrays, strings, numbers, booleans, and null,
 
-00:00:22.124 --> 00:00:28.831
-Serialization must decide how to represent identity
-and relationships instead of blindly walking
+00:00:24.106 --> 00:00:29.612
+but domain types still need conventions. The
+diagram shows two different client languages
 
-00:00:28.831 --> 00:00:29.809
-every pointer.
+00:00:29.612 --> 00:00:35.303
+meeting at one wire representation. A timestamp
+needs a timezone convention, a large numeric
 
-00:00:29.809 --> 00:00:36.726
-One representation emits building B9 once, emits
-tickets T1 and T2 once, and links each ticket with
+00:00:35.303 --> 00:00:40.500
+identifier may need a string representation, and
+an absent field must have a meaning
 
-00:00:36.726 --> 00:00:37.704
-buildingId B9.
+00:00:40.500 --> 00:00:45.511
+distinct from an explicitly supplied null when
+the API requires that distinction.
 
-00:00:37.704 --> 00:00:44.062
-The client resolves those identifiers using the
-agreed response structure or additional API
+00:00:45.539 --> 00:00:50.471
+References make serialization more interesting
+than printing nested values. Suppose two
 
-00:00:44.062 --> 00:00:44.691
-requests.
+00:00:50.471 --> 00:00:55.630
+people share one hometown object. Embedding the
+complete hometown under both people repeats
 
-00:00:44.724 --> 00:00:50.990
-This reduces duplication but requires a rule for
-missing references and for when related objects
+00:00:55.630 --> 00:00:58.804
+data and can obscure that they refer to the same
+entity.
 
-00:00:50.990 --> 00:00:52.100
-become available.
+00:00:59.039 --> 00:01:04.702
+A cycle is worse: if Alice references Ben and
+Ben references Alice, recursively expanding
 
-00:00:52.100 --> 00:00:58.366
-Also distinguish text length from byte length: a
-title containing accented characters can occupy
+00:01:04.702 --> 00:01:10.556
+both objects never reaches a natural end. Assign
+stable identifiers and serialize a table of
 
-00:00:58.366 --> 00:01:01.108
-more UTF-8 bytes than its character count.
+00:01:10.556 --> 00:01:13.420
+objects plus those identifiers as references.
 
-00:01:01.108 --> 00:01:06.722
-Schema choices, reference rules and encoding all
-belong to the data exchange contract.
+00:01:13.539 --> 00:01:18.992
+The diagram shows two people pointing to one
+shared city record. The receiver can create the
 
-00:01:06.724 --> 00:01:12.146
-The maintenance team supports a browser dashboard
-and an internal batch client.
+00:01:18.992 --> 00:01:24.445
+records first, then resolve links, preserving
+sharing without duplicating the entire city or
 
-00:01:12.146 --> 00:01:18.873
-It first lists requirements: available client
-libraries, message sizes, streaming needs, debugging
+00:01:24.445 --> 00:01:26.519
+endlessly following a cyclic chain.
 
-00:01:18.873 --> 00:01:21.139
-tools and expected compatibility.
+00:01:26.539 --> 00:01:32.263
+Choosing HTTP-based APIs means adopting an
+ecosystem as well as a message format. Existing
 
-00:01:21.139 --> 00:01:27.316
-A familiar HTTP and JSON interface may make
-integration easy, while a schema-driven binary
+00:01:32.263 --> 00:01:37.860
+libraries handle connections, encryption,
+compression, and response parsing; established
 
-00:01:27.316 --> 00:01:30.748
-representation may be useful for another workload.
+00:01:37.860 --> 00:01:43.584
+proxies and observability tools can inspect
+familiar exchanges. For a public catalogue API
 
-00:01:30.748 --> 00:01:37.722
-The decision should compare complete systems under
-realistic requests, not assume that a smaller
+00:01:43.584 --> 00:01:49.372
+used by many independent clients, that shared
+vocabulary can matter more than shaving a few
 
-00:01:37.722 --> 00:01:41.717
-encoded message automatically makes the service
-faster.
+00:01:49.372 --> 00:01:50.962
+bytes from each response.
 
-00:01:41.717 --> 00:01:43.969
-Keep the design layers visible.
+00:01:51.039 --> 00:01:55.914
+The diagram connects different clients through
+one documented interface, with common
 
-00:01:43.969 --> 00:01:50.870
-REST describes architectural constraints, HTTP
-defines protocol semantics, and JSON or Protocol
+00:01:55.914 --> 00:02:00.848
+operational tooling beside it. These benefits
+still require configuration and correct
 
-00:01:50.870 --> 00:01:52.323
-Buffers encode data.
+00:02:00.848 --> 00:02:06.013
+semantics. A cache does not become safe merely
+because the protocol supports caching, and
 
-00:01:52.323 --> 00:01:59.151
-An RPC framework supplies another set of conventions
-and tools; binary serialization can still
+00:02:06.013 --> 00:02:09.496
+encryption does not replace authentication or
+authorization.
 
-00:01:59.151 --> 00:02:02.638
-travel over HTTP, as in common gRPC deployments.
+00:02:09.539 --> 00:02:14.167
+Reuse the infrastructure while explicitly
+defining the application's contract.
 
-00:02:02.648 --> 00:02:07.947
-Reusing HTTP infrastructure also means respecting
-its caching and retry rules.
+00:02:14.167 --> 00:02:19.652
+Now imagine a high-volume internal call with a
+stable schema and many generated clients. A
 
-00:02:07.947 --> 00:02:14.604
-Before changing formats, measure where time is
-spent: if most latency is a database wait, saving a
+00:02:19.652 --> 00:02:25.260
+schema-driven RPC approach can define operations
+and types once, generate language bindings,
 
-00:02:14.604 --> 00:02:16.846
-few bytes may have little effect.
+00:02:25.260 --> 00:02:30.684
+and use a compact representation on the wire.
+The illustration shows one schema producing
 
-00:02:16.846 --> 00:02:22.892
-Select an interface that meets the operational and
-compatibility needs you actually have.
+00:02:30.684 --> 00:02:34.037
+two compatible client libraries and a server
+interface.
+
+00:02:34.167 --> 00:02:39.670
+This can reduce repetitive integration work and
+catch some mismatches earlier, but it
+
+00:02:39.670 --> 00:02:45.496
+introduces schema-evolution rules, generated
+artifacts, and tooling that every participant
+
+00:02:45.496 --> 00:02:51.193
+must manage. Serialization format and transport
+are separate decisions: Protocol Buffers
+
+00:02:51.193 --> 00:02:56.308
+does not itself prohibit HTTP, and an RPC system
+may use HTTP as its transport.
+
+00:02:56.308 --> 00:03:02.419
+Compare complete stacks instead of treating
+JSON, HTTP, and RPC as interchangeable
+
+00:03:02.419 --> 00:03:03.239
+categories.

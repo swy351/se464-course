@@ -1,71 +1,165 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:03.611
-Architecture modeling makes selected decisions
-explicit.
+00:00:00.000 --> 00:00:05.813
+An architectural model records selected design
+decisions, not every fact about the program.
 
-00:00:03.611 --> 00:00:09.672
-Start with the question, then choose components,
-relationships, constraints and rationale that
+00:00:05.813 --> 00:00:10.988
+Components, connectors, interfaces,
+configurations and rationale answer different
 
-00:00:09.672 --> 00:00:10.317
-answer it.
+00:00:10.988 --> 00:00:16.545
+stakeholder questions. The web-system examples
+show how a cache, application, database,
 
-00:00:10.317 --> 00:00:12.897
-More detail is not automatically better.
+00:00:16.545 --> 00:00:20.953
+object store and external services can be placed
+in a shared picture.
 
-00:00:12.897 --> 00:00:19.151
-The model must remain understandable and
-maintainable, while preserving the assumptions
-needed to
+00:00:21.000 --> 00:00:25.609
+The important question is what each element and
+edge means and which decision the picture
 
-00:00:19.151 --> 00:00:21.086
-evaluate behavior and quality.
+00:00:25.609 --> 00:00:26.386
+helps evaluate.
 
-00:00:21.086 --> 00:00:26.567
-Treat runtime state and structural organization as
-related but distinct perspectives.
+00:00:26.500 --> 00:00:31.530
+Choose detail and formality according to the
+benefit of creating and maintaining the model.
 
-00:00:26.600 --> 00:00:31.227
-Use early models to challenge a design while change
-is still affordable.
+00:00:31.530 --> 00:00:36.504
+Include constraints on interaction, concurrency
+or behavior when those constraints matter.
 
-00:00:31.227 --> 00:00:37.654
-An execution graph estimates required work without
-contention, making it useful for spotting obvious
+00:00:36.504 --> 00:00:41.589
+Static structure and runtime state are different
+perspectives, although a running system can
 
-00:00:37.654 --> 00:00:38.233
-problems.
+00:00:41.589 --> 00:00:44.519
+also change topology through scaling or
+redeployment.
 
-00:00:38.233 --> 00:00:41.703
-A good baseline does not establish loaded
-performance.
+00:00:44.519 --> 00:00:49.912
+Functional and quality concerns can both be
+modeled; “prints medical records” leaves speed
 
-00:00:41.703 --> 00:00:47.423
-Refine assumptions with prototypes and measurements,
-then add queueing or simulation when
+00:00:49.912 --> 00:00:55.065
+and confidentiality unresolved until the
+description specifies relevant conditions and
 
-00:00:47.423 --> 00:00:49.608
-competition for resources matters.
+00:00:55.065 --> 00:01:00.339
+evidence. Is a more detailed model always more
+useful? No. Detail incurs maintenance and
 
-00:00:49.608 --> 00:00:54.846
-An execution graph describes sequencing, repetition,
-alternatives and concurrency.
+00:01:00.339 --> 00:01:04.713
+cognitive costs; select what answers
+consequential stakeholder questions.
 
-00:00:54.846 --> 00:00:58.806
-Reduce each structure using the metric you intend to
-estimate.
+00:01:04.713 --> 00:01:09.769
+Performance modeling can reveal a costly design
+before a full system exists. Execution
 
-00:00:58.806 --> 00:01:04.810
-A probability-weighted case answers an average-path
-question, while minimum and maximum answer
+00:01:09.769 --> 00:01:15.060
+graphs estimate scenario work; queueing networks
+estimate contention; other approaches can
 
-00:01:04.810 --> 00:01:06.088
-different questions.
+00:01:15.060 --> 00:01:20.352
+use simulation or learned relationships. Models
+allow early comparison of alternatives and
 
-00:01:06.088 --> 00:01:12.347
-Keep parallel work and asynchronous work distinct,
-and remember that a no-contention graph has not
+00:01:20.352 --> 00:01:25.349
+resource needs, but their answers remain
+conditional on assumptions about operations,
 
-00:01:12.347 --> 00:01:15.413
-yet accounted for waiting behind other requests.
+00:01:25.349 --> 00:01:26.995
+infrastructure and workload.
+
+00:01:27.213 --> 00:01:31.389
+A plausible model is an engineering aid rather
+than a performance guarantee.
+
+00:01:31.389 --> 00:01:36.273
+Execution models in this unit omit resource
+contention. Their service costs therefore
+
+00:01:36.273 --> 00:01:41.215
+provide a baseline, not the response a busy
+production system must achieve. Finding an
+
+00:01:41.215 --> 00:01:45.237
+unacceptable baseline is valuable because
+queueing will not rescue it.
+
+00:01:45.389 --> 00:01:50.901
+Passing that check does not prove adequate
+loaded performance. Combine early models with
+
+00:01:50.901 --> 00:01:56.475
+prototypes and subsequent measurements, revising
+parameters as evidence becomes available
+
+00:01:56.475 --> 00:02:02.237
+instead of treating modeling and testing as
+mutually exclusive stages. If an execution graph
+
+00:02:02.237 --> 00:02:07.248
+predicts 100 ms without contention, is 100 ms
+guaranteed under concurrent users?
+
+00:02:07.389 --> 00:02:12.087
+No. Queueing, interference and model omissions
+can increase response time.
+
+00:02:12.087 --> 00:02:17.724
+Execution graphs make a scenario’s control flow
+explicit. Basic nodes represent processing
+
+00:02:17.724 --> 00:02:23.236
+steps; expanded nodes refer to another graph.
+Repetition nodes specify loops, case nodes
+
+00:02:23.236 --> 00:02:28.935
+select alternatives, parallel-and-join nodes
+wait for all branches and division nodes start
+
+00:02:28.935 --> 00:02:31.816
+work that need not finish before continuation.
+
+00:02:31.816 --> 00:02:36.177
+These distinctions determine whether work
+contributes directly to the response being
+
+00:02:36.177 --> 00:02:36.644
+measured.
+
+00:02:36.816 --> 00:02:42.000
+Reduce simple structures while preserving the
+chosen metric. Sequential times add, a fixed
+
+00:02:42.000 --> 00:02:47.183
+loop multiplies its body cost by the repetition
+count and a case uses the minimum, maximum
+
+00:02:47.183 --> 00:02:50.523
+or probability-weighted average according to the
+question.
+
+00:02:50.523 --> 00:02:55.149
+Parallel elapsed time can depend on the longest
+branch only under assumptions about
+
+00:02:55.149 --> 00:02:59.776
+available resources and synchronization. Keep
+best path separate from best resource
+
+00:02:59.776 --> 00:03:04.625
+conditions: an average path without contention
+is still not an average loaded response.
+
+00:03:04.625 --> 00:03:12.692
+Two exclusive branches take 10 and 90 ms with
+probabilities .9 and .1. What is expected
+
+00:03:12.692 --> 00:03:18.440
+branch cost? 0.9×10+0.1×90=18 ms, plus any case-
+node overhead.

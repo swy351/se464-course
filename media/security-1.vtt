@@ -1,64 +1,243 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:04.842
-Compare identity-based access lists with authority
-carried in a capability.
+00:00:00.000 --> 00:00:04.819
+A shared document can authorize access by
+consulting a list: the guard identifies the
 
-00:00:04.842 --> 00:00:10.266
-Each can express useful permissions, but delegation
-and revocation work differently.
+00:00:04.819 --> 00:00:09.978
+requester and checks whether that identity may
+read the document. A capability-style design
 
-00:00:10.266 --> 00:00:15.495
-Mandatory controls impose centrally managed
-restrictions beyond owner discretion.
+00:00:09.978 --> 00:00:15.194
+instead gives a principal an unforgeable
+reference carrying narrowly defined authority,
+such
 
-00:00:15.495 --> 00:00:21.629
-Use the event-entry and food-coupon example to see
-how one identity check can lead to a limited
+00:00:15.194 --> 00:00:18.256
+as permission to download one object until a
+deadline.
 
-00:00:21.629 --> 00:00:25.180
-capability without making the two mechanisms
-identical.
+00:00:18.500 --> 00:00:24.074
+Presenting the valid capability proves that
+authority under the scheme's rules. Draw where
 
-00:00:25.200 --> 00:00:29.574
-A valid credential or signature does not settle
-every trust question.
+00:00:24.074 --> 00:00:29.524
+the policy lives in each case. With a list,
+changing one central entry can affect future
 
-00:00:29.574 --> 00:00:35.153
-Ask whether a message is fresh, intended for this
-service and permitted for this action.
+00:00:29.524 --> 00:00:34.912
+checks. With a copied ticket, revocation may
+require short expiry, an online revocation
 
-00:00:35.153 --> 00:00:38.576
-Replay and compromised keys expose these
-distinctions.
+00:00:34.912 --> 00:00:37.204
+check, or another explicit mechanism.
 
-00:00:38.576 --> 00:00:44.789
-Reputation can help assess expected behavior, but it
-is contextual evidence rather than an access-
+00:00:37.204 --> 00:00:42.599
+Neither design is automatically safer; the
+choice depends on delegation, sharing, and how
 
-00:00:44.789 --> 00:00:48.339
-control mechanism or a guarantee about the next
-request.
+00:00:42.599 --> 00:00:45.266
+quickly permission changes must take effect.
 
-00:00:48.339 --> 00:00:52.778
-Browser security demonstrates defense in depth at
-architectural scale.
+00:00:45.266 --> 00:00:50.286
+Suppose an export service must let a browser
+download one generated report. Giving the
 
-00:00:52.778 --> 00:00:58.865
-Restrict untrusted rendering, mediate privileged
-operations, patch promptly and warn about known
+00:00:50.286 --> 00:00:55.364
+browser the service's storage administrator
+credential would expose unrelated files and
 
-00:00:58.865 --> 00:00:59.372
-threats.
+00:00:55.364 --> 00:01:00.676
+future operations. Instead issue authority
+limited to that report, the download action, and
 
-00:00:59.372 --> 00:01:04.444
-These controls reduce different risks and still
-matter when another layer fails.
+00:01:00.676 --> 00:01:02.077
+a short validity period.
 
-00:01:04.444 --> 00:01:10.404
-Treat the supplied Chrome diagrams as a historical
-teaching case, and distinguish that durable
+00:01:02.266 --> 00:01:07.559
+If the user shares that ticket, the recipient
+may gain the same limited authority, so this
 
-00:01:10.404 --> 00:01:14.145
-reasoning from details that change across browser
-versions.
+00:01:07.559 --> 00:01:12.617
+sharing behavior must be intentional. Contrast
+this with mandatory labels: a centrally
+
+00:01:12.617 --> 00:01:17.558
+defined policy can prevent a document owner from
+granting access outside an approved
+
+00:01:17.558 --> 00:01:18.969
+classification boundary.
+
+00:01:18.969 --> 00:01:24.248
+A hybrid can authenticate the user against
+organizational policy and then issue a narrow
+
+00:01:24.248 --> 00:01:29.707
+capability for delivery. Trace who can create,
+copy, inspect, and revoke authority at every
+
+00:01:29.707 --> 00:01:31.087
+stage of that workflow.
+
+00:01:31.087 --> 00:01:36.189
+Imagine a valid approval message for
+transferring ten dollars. An attacker captures
+it and
+
+00:01:36.189 --> 00:01:41.405
+submits it twice. The signature or
+authentication code may still verify because the
+contents
+
+00:01:41.405 --> 00:01:46.281
+are genuine; that check alone does not establish
+that this is a new authorized action.
+
+00:01:46.281 --> 00:01:51.498
+Include an operation identifier, bind the
+approval to its intended recipient and purpose,
+
+00:01:51.498 --> 00:01:56.890
+and define whether repeated delivery returns the
+same result or creates another transfer. An
+
+00:01:56.890 --> 00:02:02.048
+expiry limits the usable time window but does
+not by itself prevent two uses within that
+
+00:02:02.048 --> 00:02:02.459
+window.
+
+00:02:02.459 --> 00:02:07.562
+Freshness, origin, integrity, and authority are
+separate claims. The protocol must state
+
+00:02:07.562 --> 00:02:12.898
+which evidence supports each claim rather than
+using the word authenticated as shorthand for
+
+00:02:12.898 --> 00:02:13.594
+all of them.
+
+00:02:13.594 --> 00:02:18.812
+A login challenge can be sent through an already
+registered channel to test control of that
+
+00:02:18.812 --> 00:02:23.915
+channel. The challenge must be unpredictable,
+bound to the relevant attempt, and accepted
+
+00:02:23.915 --> 00:02:29.018
+under explicit expiry and reuse rules. If an
+attacker controls the recovery mailbox, that
+
+00:02:29.018 --> 00:02:32.802
+control may undermine the protection expected
+from the login flow.
+
+00:02:32.802 --> 00:02:38.169
+Likewise, a service's good reputation is
+evidence about past behavior, not a credential
+
+00:02:38.169 --> 00:02:43.535
+authorizing a particular action today. In a
+collaborative marketplace, reputation might
+
+00:02:43.535 --> 00:02:48.902
+determine how urgently a transaction is
+reviewed, while access to private records still
+
+00:02:48.902 --> 00:02:50.752
+follows an enforceable policy.
+
+00:02:50.802 --> 00:02:56.308
+Separate confidence in a participant from
+validation of this message, this account, and
+this
+
+00:02:56.308 --> 00:03:01.454
+requested effect. Otherwise a favorable history
+can become an accidental bypass around
+
+00:03:01.454 --> 00:03:02.531
+concrete controls.
+
+00:03:02.531 --> 00:03:08.015
+A browser renders pages supplied by parties the
+user does not control. Suppose a malicious
+
+00:03:08.015 --> 00:03:13.377
+page exploits a renderer bug. If the renderer
+runs with broad access to local files, the
+
+00:03:13.377 --> 00:03:18.862
+exploit can immediately become a data theft
+problem. A restricted renderer process changes
+
+00:03:18.862 --> 00:03:24.041
+that consequence: privileged operations must
+cross a boundary to a component that can
+
+00:03:24.041 --> 00:03:24.955
+enforce policy.
+
+00:03:25.031 --> 00:03:29.929
+Draw the boundary between rendering content and
+accessing sensitive operating-system
+
+00:03:29.929 --> 00:03:35.176
+resources, then label the allowed messages. The
+design assumes defects may exist and tries
+
+00:03:35.176 --> 00:03:40.424
+to limit what a successful exploit can reach. It
+does not make malicious content harmless,
+
+00:03:40.424 --> 00:03:43.747
+nor does it prove the boundary implementation is
+correct.
+
+00:03:43.747 --> 00:03:48.829
+Evaluate both the compromise and the attempted
+next step beyond the compromised component.
+
+00:03:48.829 --> 00:03:53.883
+Once a vulnerability is known, a patch can
+remove the specific defect while isolation
+
+00:03:53.883 --> 00:03:59.176
+continues to limit damage from other defects.
+The patch must reach users, so distribution
+
+00:03:59.176 --> 00:04:03.041
+and adoption time matter as much as producing a
+corrected binary.
+
+00:04:03.041 --> 00:04:07.937
+Regression checks help establish that the fix
+works without breaking expected behavior.
+
+00:04:07.937 --> 00:04:13.115
+Dangerous-site warnings address a different
+point in the chain by reducing exposure to known
+
+00:04:13.115 --> 00:04:18.067
+hostile destinations. Draw prevention,
+containment, and repair as separate stages
+rather
+
+00:04:18.067 --> 00:04:20.712
+than treating them as interchangeable controls.
+
+00:04:20.712 --> 00:04:25.562
+The detailed browser process topology changes
+across versions, so use the historical
+
+00:04:25.562 --> 00:04:30.875
+architecture as an example of reasoning about
+privilege boundaries. The enduring question is
+
+00:04:30.875 --> 00:04:33.878
+what the attacker can do after one layer has
+failed.

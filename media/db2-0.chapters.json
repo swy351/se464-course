@@ -1,0 +1,32 @@
+[
+  {
+    "chapter": 1,
+    "title": "Data locality and denormalization",
+    "time": 0
+  },
+  {
+    "chapter": 1,
+    "title": "Data locality and denormalization",
+    "time": 39.53
+  },
+  {
+    "chapter": 2,
+    "title": "Hash partitioning",
+    "time": 82.27
+  },
+  {
+    "chapter": 2,
+    "title": "Hash partitioning",
+    "time": 120.93
+  },
+  {
+    "chapter": 3,
+    "title": "Replication and partitions",
+    "time": 161.66
+  },
+  {
+    "chapter": 3,
+    "title": "Replication and partitions",
+    "time": 200.22
+  }
+]

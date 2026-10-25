@@ -1,10 +1,18 @@
 Batch, streaming and two leader–follower patterns
-Part 2 • Synthetic narration
+Illustrated lesson · Part 2 · Synthetic narration
 
-The thread-pool Leader/Followers pattern
+The thread-pool Leader/Followers pattern — Hand off the waiting role before processing
 
-The Leader/Followers concurrency pattern coordinates a pool of threads waiting for events. One thread leads by waiting on an event source; when an event arrives, another follower can become leader while the previous leader handles the work. The purpose is efficient event dispatch with controlled coordination overhead, not replication of durable data across a cluster of machines.
+Imagine three threads sharing an event source. Thread A is the leader waiting for the next event while B and C are followers. When an event arrives, A arranges for a follower to become the new leader, then handles the event itself. B can now wait for another event while A performs application work. Draw leadership as a role that moves between threads, not as a permanently special machine. The handoff avoids having every waiting thread compete unnecessarily for the same event notification. The design also keeps event waiting separate from potentially slower handling. Its value depends on the event system and workload, so the performance argument should identify which coordination or scheduling overhead is actually reduced.
 
-Kafka partition leaders and replicated logs
+The thread-pool Leader/Followers pattern — A thread leader is not a replicated-data leader
 
-Kafka illustrates a different use of leader and follower terminology. A partition has a leader responsible for its log operations and replica followers that copy its data. Leadership can move after failure under a cluster coordination policy. Several partitions can distribute leadership across brokers, so one leader per partition does not mean the entire system has only one active writer.
+Now compare this thread pool with a replicated database. The thread-pool leader waits on an event source and coordinates dispatch within a process. A database leader may accept writes and coordinate durable state across machines. Replacing a waiting thread does not solve replica agreement after a network partition, and it does not imply that acknowledged data survives a machine failure. Keeping the two meanings separate prevents an architecture explanation from borrowing guarantees from an unrelated pattern. Within the thread pool, still examine what happens if a handler blocks, whether another thread can continue receiving events, and how cancellation works. Correct handoff protects the shared event source; it is not a substitute for timeouts or bounded work in the handlers.
+
+Kafka partition leaders and replicated logs — Partition the log and replicate each part
+
+A partitioned log divides records among several ordered sequences. Each partition can have a leader handling its operations and followers copying its records. Different brokers can lead different partitions, so leadership is distributed across the cluster rather than concentrated in one universal writer. Within a partition, record positions provide an order and consumers track their progress. Across partitions, there is no automatic single global order. For order events, using the order identifier as the partitioning key can keep one order's sequence together while unrelated orders proceed in parallel. Draw partition boundaries before drawing leader and follower arrows. Otherwise a diagram with several brokers can misleadingly suggest that every record is ordered against every other record in the entire system.
+
+Kafka partition leaders and replicated logs — A copied record is not a completed business effect
+
+Suppose a leader accepts a record and fails before a follower receives it. Whether an acknowledged record can be lost depends on the acknowledgement and election rules, not merely on the presence of a follower box in the diagram. A lagging replica should not be treated as an equally current replacement without considering the durability consequence. Downstream, a payment worker can read a safely replicated record and still crash around an external charge. Log durability and effect correctness are separate boundaries. Trace the record from producer acknowledgement through replication, consumption, and external result. The historical coordination service shown in older diagrams is an implementation detail of that version; preserve the reasoning about leadership, progress, and failure rather than assuming the topology never changes.

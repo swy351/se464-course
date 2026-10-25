@@ -1,69 +1,190 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:05.714
-Start with the public boundary: expose only the
-routes clients need, apply common gateway
+00:00:00.000 --> 00:00:05.391
+A microservice system has more communication
+paths and administrative surfaces than one
 
-00:00:05.714 --> 00:00:08.475
-protections and restrict management access.
+00:00:05.391 --> 00:00:10.906
+isolated process. Begin by identifying which
+routes clients actually need. An API gateway
 
-00:00:08.475 --> 00:00:12.263
-Then examine what happens after traffic enters the
-cluster.
+00:00:10.906 --> 00:00:16.236
+can expose those routes, apply common checks and
+direct requests to internal services.
 
-00:00:12.263 --> 00:00:17.013
-A gateway reduces exposure but does not make
-internal callers trustworthy.
+00:00:16.236 --> 00:00:21.335
+Restricting direct access reduces opportunities
+to bypass those checks, but the gateway is
 
-00:00:17.013 --> 00:00:23.305
-Distinguish a client application credential from the
-identity and permissions of the user behind a
+00:00:21.335 --> 00:00:24.904
+one control rather than a reason to trust
+everything behind it.
 
-00:00:23.305 --> 00:00:23.819
-request.
+00:00:24.904 --> 00:00:29.915
+Client application credentials and user identity
+answer different questions. A secret
 
-00:00:23.819 --> 00:00:28.355
-Follow the certificate trust decision before
-discussing encryption.
+00:00:29.915 --> 00:00:35.043
+embedded in a distributed browser or mobile
+application cannot be assumed confidential.
 
-00:00:28.355 --> 00:00:33.636
-The client must verify the intended service, not
-merely receive a certificate.
+00:00:35.043 --> 00:00:40.290
+Apply request limits and protect the
+infrastructure control plane, while planning
+gateway
 
-00:00:33.636 --> 00:00:39.188
-Mutual TLS adds client-side credentials to the
-channel and can identify workloads.
+00:00:40.290 --> 00:00:42.058
+capacity and failure behavior.
 
-00:00:39.188 --> 00:00:42.980
-It still leaves application authorization to be
-decided.
+00:00:42.058 --> 00:00:47.165
+Include outbound dependencies in the trust
+model: an internal service may call an external
 
-00:00:42.980 --> 00:00:49.209
-Key protection, certificate renewal and recovery are
-ongoing architectural responsibilities,
+00:00:47.165 --> 00:00:51.818
+endpoint that supplies malicious data or
+receives sensitive information. Draw both
 
-00:00:49.209 --> 00:00:51.376
-especially when pinning is used.
+00:00:51.818 --> 00:00:56.924
+directions of traffic before deciding where
+checks belong. If only the gateway is publicly
 
-00:00:51.419 --> 00:00:54.323
-Containment starts with a communication map.
+00:00:56.924 --> 00:01:00.442
+reachable, can an internal billing service skip
+authorization?
 
-00:00:54.323 --> 00:00:59.801
-Allow required paths and consider outbound traffic
-as carefully as inbound traffic.
+00:01:00.558 --> 00:01:05.849
+No. A compromised internal caller or a mistaken
+route can still reach it. Enforce resource
 
-00:00:59.801 --> 00:01:06.401
-Namespaces organize resources, while supported
-network policies enforce selected network
-boundaries.
+00:01:05.849 --> 00:01:09.494
+permissions at a trustworthy boundary that
+cannot be bypassed.
 
-00:01:06.401 --> 00:01:10.228
-Monitoring and quotas add detection and resource
-controls.
+00:01:09.558 --> 00:01:14.367
+Encryption is useful only when the connection
+reaches the intended peer. Certificate
 
-00:01:10.228 --> 00:01:16.696
-Evaluate each mechanism by the consequence it
-limits, and do not mistake an alert or configuration
+00:01:14.367 --> 00:01:19.119
+verification links a presented key to a trusted
+identity under the client’s policy.
 
-00:01:16.696 --> 00:01:18.874
-object for guaranteed prevention.
+00:01:19.119 --> 00:01:23.927
+Accepting every certificate removes that
+assurance. A self-signed certificate can be
+
+00:01:23.927 --> 00:01:28.965
+deliberately trusted through an authenticated
+provisioning process; simply accepting any
+
+00:01:28.965 --> 00:01:32.400
+self-signed certificate does not establish the
+correct peer.
+
+00:01:32.558 --> 00:01:38.066
+Verification includes the intended service
+identity, not merely a recognizable issuer.
+
+00:01:38.066 --> 00:01:43.458
+TLS protects data while it crosses the
+established channel. In mutual TLS, both sides
+
+00:01:43.458 --> 00:01:48.787
+authenticate with certificates; this identifies
+a workload or client credential, not
+
+00:01:48.787 --> 00:01:53.101
+automatically a human user or permission to
+perform every operation.
+
+00:01:53.101 --> 00:01:58.441
+Protect private keys and plan issuance, renewal
+and compromise response. Pinning narrows
+
+00:01:58.441 --> 00:02:03.904
+accepted credentials but adds rotation and
+recovery responsibilities. Keep authentication,
+
+00:02:03.904 --> 00:02:09.244
+confidentiality and application authorization
+distinct in the architecture diagram. If a
+
+00:02:09.244 --> 00:02:14.464
+client encrypts traffic but accepts any
+certificate, has it authenticated the intended
+
+00:02:14.464 --> 00:02:14.889
+server?
+
+00:02:15.101 --> 00:02:20.519
+No. It may establish an encrypted channel to an
+impostor; identity verification is
+
+00:02:20.519 --> 00:02:21.180
+essential.
+
+00:02:21.180 --> 00:02:26.584
+An internal network should not imply
+unrestricted communication. List the connections
+each
+
+00:02:26.584 --> 00:02:31.868
+workload requires, then restrict both incoming
+and outgoing paths. Kubernetes namespaces
+
+00:02:31.868 --> 00:02:37.152
+organize resources but do not automatically
+isolate their network traffic. NetworkPolicy
+
+00:02:37.152 --> 00:02:40.935
+requires enforcement by the selected networking
+implementation.
+
+00:02:41.180 --> 00:02:46.466
+Separate intended policy from demonstrated
+behavior, and test whether an unrelated service
+
+00:02:46.466 --> 00:02:48.404
+can reach a protected dependency.
+
+00:02:48.404 --> 00:02:54.015
+Outbound restrictions help reduce unwanted
+destinations and some SSRF consequences, but
+they
+
+00:02:54.015 --> 00:02:59.138
+complement rather than replace application
+validation. Runtime monitoring can report
+
+00:02:59.138 --> 00:03:04.749
+suspicious behavior; an alert is not necessarily
+a preventive control. Resource quotas bound
+
+00:03:04.749 --> 00:03:09.994
+aggregate namespace allocations, while workload
+requests and limits address individual
+
+00:03:09.994 --> 00:03:11.092
+resource behavior.
+
+00:03:11.092 --> 00:03:15.720
+These measures can reduce blast radius and
+resource contention without promising to
+
+00:03:15.720 --> 00:03:20.684
+eliminate denial of service. Define who
+investigates alerts and how a service is
+isolated
+
+00:03:20.684 --> 00:03:25.647
+without losing essential evidence. Does placing
+billing and search in separate namespaces
+
+00:03:25.647 --> 00:03:27.710
+block search from contacting billing?
+
+00:03:27.710 --> 00:03:33.483
+No. Namespaces alone do not impose that network
+boundary; enforced policies and the relevant
+
+00:03:33.483 --> 00:03:35.241
+selectors must establish it.

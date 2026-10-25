@@ -1,0 +1,42 @@
+[
+  {
+    "chapter": 1,
+    "title": "Describe a style through its constraints",
+    "time": 0
+  },
+  {
+    "chapter": 1,
+    "title": "Describe a style through its constraints",
+    "time": 22.08
+  },
+  {
+    "chapter": 2,
+    "title": "Repository and blackboard architectures",
+    "time": 63.83
+  },
+  {
+    "chapter": 2,
+    "title": "Repository and blackboard architectures",
+    "time": 90.33
+  },
+  {
+    "chapter": 3,
+    "title": "Pipes, filters and compiler hybrids",
+    "time": 131.6
+  },
+  {
+    "chapter": 3,
+    "title": "Pipes, filters and compiler hybrids",
+    "time": 156.15
+  },
+  {
+    "chapter": 4,
+    "title": "Objects and layers as boundaries",
+    "time": 197.28
+  },
+  {
+    "chapter": 4,
+    "title": "Objects and layers as boundaries",
+    "time": 223.88
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "chapter": 1,
+    "title": "Distributed aggregates and data movement",
+    "time": 0
+  },
+  {
+    "chapter": 1,
+    "title": "Distributed aggregates and data movement",
+    "time": 42.17
+  },
+  {
+    "chapter": 2,
+    "title": "MapReduce and finite batch jobs",
+    "time": 84.88
+  },
+  {
+    "chapter": 2,
+    "title": "MapReduce and finite batch jobs",
+    "time": 124.62
+  },
+  {
+    "chapter": 3,
+    "title": "Continuous streams and state",
+    "time": 167.35
+  },
+  {
+    "chapter": 3,
+    "title": "Continuous streams and state",
+    "time": 210.94
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "chapter": 1,
+    "title": "One service, many workers",
+    "time": 0
+  },
+  {
+    "chapter": 1,
+    "title": "One service, many workers",
+    "time": 39.97
+  },
+  {
+    "chapter": 2,
+    "title": "Local routing: L4 and L7",
+    "time": 83.04
+  },
+  {
+    "chapter": 2,
+    "title": "Local routing: L4 and L7",
+    "time": 125.18
+  }
+]

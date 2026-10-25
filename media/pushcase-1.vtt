@@ -1,46 +1,111 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:06.088
-The slides describe an early RAMEN implementation
-using sharded connections and Redis, followed by a
+00:00:00.000 --> 00:00:04.760
+The slides describe an early RAMEN
+implementation using sharded connections and
+Redis,
 
-00:00:06.088 --> 00:00:10.472
-redesign separating connection handling, routing and
-cluster management.
+00:00:04.760 --> 00:00:09.852
+followed by a redesign separating connection
+handling, routing and cluster management. Treat
 
-00:00:10.472 --> 00:00:15.282
-Treat the throughput and connection counts as
-reported historical observations.
+00:00:09.852 --> 00:00:14.778
+the throughput and connection counts as reported
+historical observations. They illustrate
 
-00:00:15.282 --> 00:00:21.248
-They illustrate why topology convergence and
-overloaded event loops can become important even
-when
+00:00:14.778 --> 00:00:19.593
+why topology convergence and overloaded event
+loops can become important even when each
 
-00:00:21.248 --> 00:00:26.971
-each individual message is small and the
+00:00:19.593 --> 00:00:24.520
+individual message is small and the
 application’s business logic appears
 straightforward.
 
-00:00:27.000 --> 00:00:33.388
+00:00:24.520 --> 00:00:29.757
+In the redesigned case, Streamgate handles
+protocol and storage work while a frontend
+routes
+
+00:00:29.757 --> 00:00:34.254
+requests to the appropriate worker. Helix and
+ZooKeeper manage topology-related
+
+00:00:34.254 --> 00:00:39.036
+responsibilities, and the cache and durable
+storage layers serve different purposes.
+
+00:00:39.036 --> 00:00:44.174
+The architectural lesson is ownership: changing
+a worker assignment must be coordinated with
+
+00:00:44.174 --> 00:00:49.255
+routing and recovery. More workers cannot help
+if clients or producers continue using stale
+
+00:00:49.255 --> 00:00:54.057
+ownership information. Can doubling connection
+workers help if routing still sends all
+
+00:00:54.057 --> 00:00:55.509
+requests to the old owner?
+
+00:00:55.536 --> 00:01:00.164
+Not reliably. Membership and routing convergence
+are part of the scaling design.
+
+00:01:00.164 --> 00:01:05.562
 The case identifies long-tail delivery problems
-involving acknowledgement loss, inconsistent client
+involving acknowledgement loss, inconsistent
 
-00:00:33.388 --> 00:00:37.389
-behavior and limitations of the earlier
-unidirectional stream.
+00:01:05.562 --> 00:01:10.725
+client behavior and limitations of the earlier
+unidirectional stream. Its later protocol
 
-00:00:37.389 --> 00:00:43.713
-Its later protocol work explores bidirectional
-communication and more standardized client support.
+00:01:10.725 --> 00:01:16.123
+work explores bidirectional communication and
+more standardized client support. Separate the
 
-00:00:43.713 --> 00:00:49.907
-Separate the enduring requirement from a particular
-transport choice: the service needs feedback
+00:01:16.123 --> 00:01:21.345
+enduring requirement from a particular transport
+choice: the service needs feedback about
 
-00:00:49.907 --> 00:00:55.908
-about progress, recoverable state and a clear policy
+00:01:21.345 --> 00:01:26.450
+progress, recoverable state and a clear policy
 for clients whose networks disappear for
 
-00:00:55.908 --> 00:00:57.005
+00:01:26.450 --> 00:01:27.448
 extended periods.
+
+00:01:27.664 --> 00:01:32.709
+Bidirectional streaming can carry
+acknowledgements promptly, but it does not turn
+a network
+
+00:01:32.709 --> 00:01:37.699
+failure into certainty about application
+effects. Define exactly what each
+acknowledgement
+
+00:01:37.699 --> 00:01:42.245
+means and which state survives a worker restart.
+The source’s reported server-side
+
+00:01:42.245 --> 00:01:47.069
+reliability is not an end-to-end guarantee that
+a person received or acted on an alert.
+
+00:01:47.164 --> 00:01:52.741
+Evaluate transport changes by measured recovery
+behavior and implementation consistency.
+
+00:01:52.741 --> 00:01:58.191
+Does changing from SSE to a bidirectional RPC
+stream automatically create exactly-once
+
+00:01:58.191 --> 00:02:03.832
+application processing? No. Durable state,
+acknowledgement meaning and duplicate handling
+
+00:02:03.832 --> 00:02:06.113
+still determine application effects.

@@ -1,160 +1,320 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:04.314
-Begin with assets, permitted actions and adversary
-capabilities.
+00:00:00.000 --> 00:00:04.857
+Imagine a document service where a student
+successfully logs in and requests another
 
-00:00:04.314 --> 00:00:10.313
-The confidentiality, integrity and availability
-goals turn a vague wish for security into
+00:00:04.857 --> 00:00:10.119
+student's private submission. Authentication can
+correctly identify the requester while the
 
-00:00:10.313 --> 00:00:11.189
-requirements.
+00:00:10.119 --> 00:00:15.381
+requested read must still be denied. Put a guard
+before the document operation: it receives
 
-00:00:11.189 --> 00:00:15.772
-A guard must identify a requester and check the
-requested operation.
+00:00:15.381 --> 00:00:19.197
+the authenticated identity, the action, and the
+specific document.
 
-00:00:15.772 --> 00:00:22.378
-The profile-query example shows why correct checks
-also depend on safe interpretation of input and
+00:00:19.197 --> 00:00:24.582
+The policy might permit the owner and assigned
+marker to read, but nobody else. Draw those
 
-00:00:22.378 --> 00:00:24.669
-complete coverage of access paths.
+00:00:24.582 --> 00:00:30.027
+inputs separately so identity is not mistaken
+for authority. Confidentiality is violated if
 
-00:00:24.700 --> 00:00:27.972
-Use the design principles to make concrete choices.
+00:00:30.027 --> 00:00:35.173
+the read succeeds incorrectly; integrity is
+violated if an unauthorized edit succeeds.
 
-00:00:27.972 --> 00:00:34.259
-Give a component only the rights it needs, deny by
-default and keep decision logic understandable.
+00:00:35.197 --> 00:00:40.484
+Availability asks whether legitimate readers can
+still obtain access. A useful threat model
 
-00:00:34.259 --> 00:00:36.954
-Plan what happens when permissions change.
+00:00:40.484 --> 00:00:45.654
+specifies which requests an attacker can send
+and which boundaries the system promises to
 
-00:00:36.954 --> 00:00:42.215
-Combine isolation and independent checks while
-keeping the secure workflow usable.
+00:00:45.654 --> 00:00:46.119
+enforce.
 
-00:00:42.215 --> 00:00:48.310
-The backup example exposes the difference between
-necessary access and convenient but excessive
+00:00:46.197 --> 00:00:51.007
+A permission check can be undermined if later
+code lets untrusted input rewrite the
 
-00:00:48.310 --> 00:00:48.951
-authority.
+00:00:51.007 --> 00:00:56.281
+operation being checked. Suppose a profile query
+is intended to select only public records.
 
-00:00:49.000 --> 00:00:55.084
-Imagine a laboratory booking service whose first
-implementation sends a password with every
+00:00:56.281 --> 00:01:01.206
+If the application builds SQL by joining
+strings, hostile input may alter the query's
 
-00:00:55.084 --> 00:00:56.421
-reservation request.
+00:01:01.206 --> 00:01:03.467
+condition instead of remaining a value.
 
-00:00:56.421 --> 00:01:03.040
-Even over HTTPS, the reservation handler, diagnostic
-logs and downstream integrations may encounter
+00:01:03.697 --> 00:01:08.800
+The guard may have approved a public-profile
+lookup while the database executes a broader
 
-00:01:03.040 --> 00:01:03.842
-that secret.
+00:01:08.800 --> 00:01:13.845
+query. Parameter binding keeps the query
+structure fixed and supplies input as data. The
 
-00:01:03.842 --> 00:01:09.859
-Move password verification to a deliberate sign-in
-boundary, then issue a separate session
+00:01:13.845 --> 00:01:18.775
+architectural lesson extends beyond this
+example: validate the operation that actually
 
-00:01:09.859 --> 00:01:12.199
-credential for subsequent requests.
+00:01:18.775 --> 00:01:23.247
+reaches the protected resource, and avoid
+alternate paths that skip mediation.
 
-00:01:12.199 --> 00:01:18.751
-This reduces repeated exposure of the long-lived
-password, although the session credential remains
+00:01:23.247 --> 00:01:28.722
+Test a denied request, a malformed request, and
+an allowed request so the evidence covers
 
-00:01:18.751 --> 00:01:20.355
-valuable to an attacker.
+00:01:28.722 --> 00:01:31.490
+the boundary rather than only successful use.
 
-00:01:20.400 --> 00:01:24.555
-Now inspect a different failure: the account
-database is copied.
+00:01:31.490 --> 00:01:36.532
+A backup worker needs to read production data
+and create a protected copy. Giving it the
 
-00:01:24.555 --> 00:01:28.970
-TLS cannot protect a database backup after it leaves
-the connection.
+00:01:36.532 --> 00:01:41.573
+administrator account also lets it delete
+production records, disable auditing, or erase
 
-00:01:28.970 --> 00:01:35.202
-Dedicated password hashing with a unique salt
-addresses this separate exposure by making offline
+00:01:41.573 --> 00:01:46.500
+every backup. Those powers are unrelated to its
+purpose. Draw separate credentials for
 
-00:01:35.202 --> 00:01:36.501
-guesses more costly.
+00:01:46.500 --> 00:01:51.656
+reading production and writing a backup
+destination, then remove deletion rights where
+the
 
-00:01:36.501 --> 00:01:39.357
-Neither mechanism substitutes for the other.
+00:01:51.656 --> 00:01:53.260
+workflow does not need them.
 
-00:01:39.357 --> 00:01:45.785
-Ask students to draw two attack paths, interception
-during transport and theft of stored verifiers,
+00:01:53.490 --> 00:01:58.959
+If an attacker compromises the worker, the
+remaining damage is bounded by those
+permissions.
 
-00:01:45.785 --> 00:01:48.252
-and label the protection on each path.
+00:01:58.959 --> 00:02:03.893
+Least privilege is therefore a design decision
+about component responsibilities and
 
-00:01:48.252 --> 00:01:54.420
-The architectural lesson is to match a mechanism to
-the asset and threat it actually addresses.
+00:02:03.893 --> 00:02:09.244
+interfaces, not merely a checkbox on an account.
+Follow the recovery path too: a backup is
 
-00:01:54.420 --> 00:01:59.790
-A volunteer signs in to a community archive and
-receives an opaque session identifier.
+00:02:09.244 --> 00:02:14.356
+useful only if the recovery process can access a
+trustworthy copy after the production
 
-00:01:59.790 --> 00:02:05.661
-Later, an image-editing request carries that
-identifier in a protected cookie or authorization
+00:02:14.356 --> 00:02:15.664
+system is compromised.
 
-00:02:05.661 --> 00:02:06.098
-header.
+00:02:15.664 --> 00:02:20.635
+Consider an authorization service that is
+temporarily unavailable. If an application
 
-00:02:06.098 --> 00:02:12.031
-The application looks up its associated account and
-expiry, then separately checks whether that
+00:02:20.635 --> 00:02:25.962
+interprets a timeout as permission, an outage
+becomes an access bypass. A fail-safe design
 
-00:02:12.031 --> 00:02:13.779
-account may edit this image.
+00:02:25.962 --> 00:02:30.933
+rejects the protected operation or uses an
+explicitly bounded, previously authorized
 
-00:02:13.779 --> 00:02:19.712
-No account name supplied by the browser should
-override the identity established by the session
+00:02:30.933 --> 00:02:33.656
+decision whose freshness rules are understood.
 
-00:02:19.712 --> 00:02:20.149
-lookup.
+00:02:33.664 --> 00:02:39.140
+Complete mediation requires examining every
+route, including batch jobs and internal APIs,
 
-00:02:20.149 --> 00:02:24.824
-Authentication and resource authorization are
-distinct steps in the trace.
+00:02:39.140 --> 00:02:44.191
+rather than protecting only the public page.
+Defense in depth then adds independent
 
-00:02:24.824 --> 00:02:30.131
-Suppose several application workers cache successful
-session checks for two minutes.
+00:02:44.191 --> 00:02:49.546
+boundaries: a narrow service identity, network
+restrictions, and storage permissions can
 
-00:02:30.131 --> 00:02:35.880
-Disabling the account in the central store does not
-instantly erase those cached decisions.
+00:02:49.546 --> 00:02:52.224
+still constrain damage when one check fails.
 
-00:02:35.880 --> 00:02:41.882
-The design needs a stated revocation delay,
-invalidation mechanism or fresh check for sensitive
+00:02:52.224 --> 00:02:57.489
+These controls must remain understandable to
+operators. A complicated emergency procedure
 
-00:02:41.882 --> 00:02:42.387
-actions.
+00:02:57.489 --> 00:03:02.695
+that routinely requires disabling all checks
+creates an operational weakness even if the
 
-00:02:42.387 --> 00:02:48.339
-This makes the authentication service a consistency
-and availability dependency as well as a
+00:03:02.695 --> 00:03:05.121
+normal architecture diagram looks secure.
 
-00:02:48.339 --> 00:02:49.568
-security component.
+00:03:05.224 --> 00:03:10.572
+Suppose a database leak exposes account records.
+If the records contain plain passwords, the
 
-00:02:49.568 --> 00:02:55.714
-A request log should record useful operational
-identifiers without retaining the bearer secret.
+00:03:10.572 --> 00:03:15.688
+attacker can immediately try them on other
+services where people reused those passwords.
 
-00:02:55.714 --> 00:03:00.501
-Explain what a stolen session permits and how that
-access eventually ends.
+00:03:15.688 --> 00:03:20.804
+Password verification should instead compare
+against a dedicated password-hashing result
+
+00:03:20.804 --> 00:03:22.606
+with a unique salt per account.
+
+00:03:22.724 --> 00:03:28.055
+During login, the server repeats the configured
+calculation using the submitted password and
+
+00:03:28.055 --> 00:03:33.039
+stored salt. The salt is not a secret
+replacement password: its role is to prevent one
+
+00:03:33.039 --> 00:03:37.965
+reusable precomputed result from serving many
+accounts. An expensive password-hashing
+
+00:03:37.965 --> 00:03:41.269
+function increases the work required for offline
+guesses.
+
+00:03:41.269 --> 00:03:46.170
+Rate limiting helps with guesses sent through
+the login endpoint, but it cannot control an
+
+00:03:46.170 --> 00:03:50.146
+attacker computing guesses independently from a
+stolen verifier database.
+
+00:03:50.269 --> 00:03:55.444
+Trace a password from the browser to the login
+service over HTTPS. Transport protection
+
+00:03:55.444 --> 00:04:00.619
+prevents an observer along that connection from
+simply reading or changing the request,
+
+00:04:00.619 --> 00:04:05.676
+provided the peer and connection are correctly
+verified. Once the request reaches the
+
+00:04:05.676 --> 00:04:10.078
+application, however, the plaintext password may
+be available to its code.
+
+00:04:10.269 --> 00:04:15.353
+Logging the entire request can copy that secret
+into another system with different access
+
+00:04:15.353 --> 00:04:20.266
+controls and retention. Requiring the password
+on every API operation multiplies these
+
+00:04:20.266 --> 00:04:25.008
+opportunities and forces the client to keep a
+powerful long-lived secret available.
+
+00:04:25.008 --> 00:04:29.807
+Authenticate through the login workflow, then
+use an appropriately protected session
+
+00:04:29.807 --> 00:04:31.635
+credential for later operations.
+
+00:04:31.769 --> 00:04:37.338
+Transport security, secret handling, and account
+verification solve different parts of the
+
+00:04:37.338 --> 00:04:38.143
+same journey.
+
+00:04:38.269 --> 00:04:43.510
+After a successful login, the backend generates
+an unpredictable session identifier and
+
+00:04:43.510 --> 00:04:48.570
+stores its association with the user and expiry.
+The client sends that identifier on
+
+00:04:48.570 --> 00:04:53.751
+subsequent requests. In a feed request, the API
+first translates the token into a user
+
+00:04:53.751 --> 00:04:59.173
+identity, then reads the feed for that identity;
+it should not trust a separately supplied
+
+00:04:59.173 --> 00:05:01.041
+username as proof of ownership.
+
+00:05:01.269 --> 00:05:06.412
+A cookie can carry the identifier automatically
+for a browser, while another client may use
+
+00:05:06.412 --> 00:05:11.330
+an authorization header. These are transport
+choices around the same underlying session
+
+00:05:11.330 --> 00:05:16.530
+idea. Revoking the session invalidates that
+credential without changing the user's memorized
+
+00:05:16.530 --> 00:05:17.039
+password.
+
+00:05:17.269 --> 00:05:22.104
+The token is still a secret: possession can be
+enough to impersonate the session while it
+
+00:05:22.104 --> 00:05:22.865
+remains valid.
+
+00:05:22.865 --> 00:05:27.802
+Now place a cache in front of session
+verification so every API request does not make
+
+00:05:27.802 --> 00:05:32.332
+another network round trip. Performance
+improves, but a session revoked at the
+
+00:05:32.332 --> 00:05:37.094
+authentication service may still be accepted by
+a cache holding an older decision.
+
+00:05:37.094 --> 00:05:42.059
+Choose a bounded lifetime or invalidation
+mechanism that matches the harm of stale
+
+00:05:42.059 --> 00:05:47.085
+authorization. A temporary browsing session and
+an administrator action may require
+
+00:05:47.085 --> 00:05:52.292
+different policies. Keep tokens out of ordinary
+URLs because request paths often reach
+
+00:05:52.292 --> 00:05:54.714
+histories, logs, and monitoring systems.
+
+00:05:54.714 --> 00:06:00.289
+A second factor adds another check, but recovery
+must protect the same account: a weak reset
+
+00:06:00.289 --> 00:06:05.439
+process can bypass a strong login. Evaluate both
+normal access and credential loss as
+
+00:06:05.439 --> 00:06:09.560
+complete workflows, including revocation and
+renewed authentication.

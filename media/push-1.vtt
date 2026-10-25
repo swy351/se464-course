@@ -1,117 +1,153 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:04.754
-A workshop dashboard polls every ten seconds for a
-changed machine status.
+00:00:00.000 --> 00:00:05.155
+Consider an inbox checked once every sixty
+seconds. A message arriving immediately after a
 
-00:00:04.754 --> 00:00:10.729
-With changes occurring at arbitrary times, the
-average wait until the next poll is about five
+00:00:05.155 --> 00:00:10.252
+check can remain invisible for almost a minute.
+Checking every second improves freshness,
 
-00:00:10.729 --> 00:00:12.913
-seconds, ignoring request latency.
+00:00:10.252 --> 00:00:15.293
+but one thousand idle browsers then generate
+about one thousand requests per second even
 
-00:00:12.913 --> 00:00:18.888
-Reducing the interval lowers that wait but increases
-the number of requests even when nothing
+00:00:15.293 --> 00:00:16.496
+when no mail arrives.
 
-00:00:18.888 --> 00:00:19.402
-changes.
+00:00:16.500 --> 00:00:21.495
+The interval trades resource use against update
+delay. Long polling changes the exchange:
 
-00:00:19.402 --> 00:00:25.535
-A WebSocket keeps a bidirectional channel open,
-while long polling lets the server hold a request
+00:00:21.495 --> 00:00:26.489
+the browser asks for an update and the server
+leaves that request pending until a message
 
-00:00:25.535 --> 00:00:28.191
-until data or a timeout becomes available.
+00:00:26.489 --> 00:00:31.203
+exists or a timeout occurs. The browser
+immediately starts another request after the
 
-00:00:28.191 --> 00:00:31.289
-The connection does not eliminate state recovery.
+00:00:31.203 --> 00:00:31.708
+response.
 
-00:00:31.289 --> 00:00:37.611
-If a browser loses its network for thirty seconds,
-it may miss several transitions regardless of the
+00:00:31.708 --> 00:00:36.801
+Draw the long quiet interval as a pending
+request, not as repeated empty responses. This
 
-00:00:37.611 --> 00:00:39.002
-chosen live transport.
+00:00:36.801 --> 00:00:41.952
+explains both the low update latency and the
+need to manage many outstanding connections.
 
-00:00:39.002 --> 00:00:45.094
-On reconnect, retrieve the current authoritative
-status or resume from a position supported by the
+00:00:41.952 --> 00:00:47.185
+A WebSocket establishes a persistent channel
+that supports messages in both directions. For
 
-00:00:45.094 --> 00:00:46.399
-application protocol.
+00:00:47.185 --> 00:00:52.476
+an active collaboration page, cursor updates can
+travel to the server while document changes
 
-00:00:46.399 --> 00:00:52.616
-Distinguish a dashboard that needs only the latest
-temperature from an audit screen that needs every
+00:00:52.476 --> 00:00:56.904
+travel back without opening a new application-
+level request for every update.
 
-00:00:52.616 --> 00:00:53.299
-transition.
+00:00:56.952 --> 00:01:02.157
+Long polling instead completes an HTTP response
+and opens the next request. Neither
 
-00:00:53.299 --> 00:00:57.153
-That requirement determines how much history must be
-retained.
+00:01:02.157 --> 00:01:07.424
+transport removes failure: a laptop sleeps, a
+proxy closes an idle path, or a server
 
-00:00:57.153 --> 00:01:03.307
-Compare latency, idle connection resources and
-reconnect behaviour, rather than choosing a protocol
+00:01:07.424 --> 00:01:13.005
+restarts. When reconnecting, the client should
+identify what it last received and recover
 
-00:01:03.307 --> 00:01:06.042
-solely because it is described as real time.
+00:01:13.005 --> 00:01:16.266
+missing state according to the application
+protocol.
 
-00:01:06.042 --> 00:01:11.995
-An account has two browser tabs, one connected to
-notification worker A and another to worker B.
+00:01:16.452 --> 00:01:21.533
+Otherwise a successful new connection can hide
+an incomplete view. Choose server-sent events
 
-00:01:11.995 --> 00:01:15.778
-An appointment service running elsewhere generates
-an update.
+00:01:21.533 --> 00:01:26.282
+when a one-way server stream fits; choose a
+bidirectional channel when the interaction
 
-00:01:15.778 --> 00:01:21.793
-Sending the update to an arbitrary notification
-worker is insufficient: only the worker holding a
+00:01:26.282 --> 00:01:27.441
+actually requires it.
 
-00:01:21.793 --> 00:01:24.459
-particular live connection can write to it.
+00:01:27.452 --> 00:01:32.346
+Suppose a browser's live connection terminates
+at notification worker B. A ride update
 
-00:01:24.459 --> 00:01:30.350
-A registration directory maps the logical recipient
-to connection identifiers and their owners,
+00:01:32.346 --> 00:01:37.467
+happens on application worker A. Sending the
+update to an arbitrary notification worker is
 
-00:01:30.350 --> 00:01:33.699
-allowing the notification layer to route to both
-tabs.
+00:01:37.467 --> 00:01:42.645
+insufficient because only B owns the existing
+socket. A routing registry therefore maps the
 
-00:01:33.742 --> 00:01:36.669
-Close one tab just after the directory lookup.
+00:01:42.645 --> 00:01:45.888
+user's active session to B and its connection
+identifier.
 
-00:01:36.669 --> 00:01:42.776
-The route can become stale between lookup and send,
-so lookup success cannot guarantee delivery.
+00:01:45.952 --> 00:01:51.022
+Worker A sends a logical notification to the
+notification service; the service looks up the
 
-00:01:42.776 --> 00:01:48.374
-Clean up failed destinations and let reconnecting
-clients establish fresh registrations.
+00:01:51.022 --> 00:01:56.147
+destination and forwards to B. The registry is
+the bridge between a stable business identity
 
-00:01:48.374 --> 00:01:54.290
-Keep transport failures separate from the underlying
-appointment change, which remains stored
+00:01:56.147 --> 00:02:01.273
+and a temporary physical route. Adding a load
+balancer helps distribute new connections, but
 
-00:01:54.290 --> 00:01:55.181
-independently.
+00:02:01.273 --> 00:02:05.061
+does not make all established connections
+available on every worker.
 
-00:01:55.181 --> 00:02:01.479
-If the design promises recovery of missed updates,
-retain an appropriate event history or provide a
+00:02:05.061 --> 00:02:08.904
+Trace ownership explicitly when drawing a
+distributed push design.
 
-00:02:01.479 --> 00:02:02.560
-fresh-state read.
+00:02:09.061 --> 00:02:14.550
+Now let the user open two browser tabs and also
+register a phone. One logical event can map
 
-00:02:02.560 --> 00:02:08.054
-Trace a worker restart as well as a normal send;
-this reveals why connection ownership,
+00:02:14.550 --> 00:02:20.099
+to three destinations, possibly using two
+different delivery mechanisms. Closing a tab
+makes
 
-00:02:08.054 --> 00:02:12.727
-authoritative data and notification progress are
-different kinds of state.
+00:02:20.099 --> 00:02:24.925
+one route obsolete; restarting its worker can
+make many routes obsolete at once.
+
+00:02:25.061 --> 00:02:29.997
+A lookup can race with a disconnect, so a
+routing result is not a guarantee of delivery.
+
+00:02:29.997 --> 00:02:34.878
+Remove invalid destinations and use connection
+lifetimes or leases to prevent abandoned
+
+00:02:34.878 --> 00:02:39.646
+records accumulating. Decide whether every
+destination needs the event or whether one
+
+00:02:39.646 --> 00:02:41.273
+current device is sufficient.
+
+00:02:41.273 --> 00:02:46.142
+Persist the business event separately from this
+transient registry. After a failure, the
+
+00:02:46.142 --> 00:02:50.845
+user can reconnect and retrieve the current ride
+even if none of the old routes still
+
+00:02:50.845 --> 00:02:51.232
+exists.

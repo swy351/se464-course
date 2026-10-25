@@ -1,0 +1,32 @@
+[
+  {
+    "chapter": 1,
+    "title": "Start with workload and invariants",
+    "time": 0
+  },
+  {
+    "chapter": 1,
+    "title": "Start with workload and invariants",
+    "time": 44.37
+  },
+  {
+    "chapter": 2,
+    "title": "Transactions and concurrency",
+    "time": 88.37
+  },
+  {
+    "chapter": 2,
+    "title": "Transactions and concurrency",
+    "time": 128.12
+  },
+  {
+    "chapter": 3,
+    "title": "Storage models and analytics",
+    "time": 169.86
+  },
+  {
+    "chapter": 3,
+    "title": "Storage models and analytics",
+    "time": 212.86
+  }
+]

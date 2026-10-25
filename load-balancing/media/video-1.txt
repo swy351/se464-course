@@ -1,6 +1,10 @@
 Load balancing
-Part 2 • Synthetic narration
+Illustrated lesson · Part 2 · Synthetic narration
 
-Failures and safe deployments
+Failures and safe deployments — Drain before replacing a worker
 
-The archive runs four workers, each measured to handle 100 requests per second for a specified workload. At 280 requests per second, removing one worker leaves a nominal capacity of 300. That small margin may be inadequate once request costs vary or a dependency slows. A rolling deployment needs spare capacity as well as a sequence of replacement steps. Stop new assignments, allow existing work to drain within a deadline, deploy, and verify readiness before returning the worker. A failed health probe is evidence that the checked path did not respond acceptably; it is not proof of a process crash. Overload, network trouble or a dependency can produce the same observation. Failure thresholds reduce reactions to brief disturbances but delay removal, so some requests may fail before routing changes. Explain what clients may retry and with what limit. During a rolling update, old and new versions coexist, which makes API and storage compatibility part of deployment safety rather than an optional cleanup task.
+A rolling deployment replaces workers in stages so the service can remain available. First stop assigning new requests to one worker, then allow its existing work to drain within a defined deadline. Deploy the new version, verify that it is ready to serve, and only then restore it to the active pool before moving to another worker. The illustration separates draining from readiness because removing a worker from new assignments does not instantly end its in-flight work. This procedure needs spare capacity: if the remaining pool cannot handle the workload, a technically orderly rollout can still create excessive queueing and errors for users throughout the deployment.
+
+Failures and safe deployments — Health is observed, not known
+
+Health checks provide observations that help the balancer decide where to send new work. A failed probe might indicate a crashed process, but it might also reflect overload, a network problem, or a failed dependency. The diagram shows a healthy response maintaining membership and repeated failed observations leading to removal. Thresholds avoid reacting to a single transient failure, at the cost of slower detection. During that interval, some real requests may still reach the affected worker. Explain how the client handles those failures and whether a retry is safe. Removing a worker changes future routing; it does not prove that previous writes did not take effect.

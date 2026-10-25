@@ -1,116 +1,155 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:06.094
-A repair platform contains ticketing, technician
-scheduling and customer notifications in one
+00:00:00.000 --> 00:00:05.283
+A monolithic application is one principal
+deployable application, not necessarily one
 
-00:00:06.094 --> 00:00:07.601
-deployable application.
+00:00:05.283 --> 00:00:10.814
+physical machine. In the historical encyclopedia
+design, many interchangeable workers run
 
-00:00:07.601 --> 00:00:13.171
-Running four copies behind a load balancer creates
-four replicas of that application.
+00:00:10.814 --> 00:00:16.158
+the same application code, each capable of
+handling the application's request types. A
 
-00:00:13.171 --> 00:00:15.924
-It does not create four business services.
+00:00:16.158 --> 00:00:21.876
+caching proxy in front and a database behind do
+not automatically turn that application into
 
-00:00:15.924 --> 00:00:22.411
-Each replica can still execute all three
-responsibilities, and a release typically deploys
-the same
+00:00:21.876 --> 00:00:22.746
+microservices.
 
-00:00:22.411 --> 00:00:23.722
-application package.
+00:00:22.746 --> 00:00:28.005
+The diagram shows one application artifact
+copied to several workers. Replication increases
 
-00:00:23.722 --> 00:00:30.059
-A database and cache outside that package do not, on
-their own, establish independent application
+00:00:28.005 --> 00:00:33.323
+the capacity for independent requests while
+keeping the code and release unit together. This
 
-00:00:30.059 --> 00:00:30.778
+00:00:33.323 --> 00:00:38.466
+distinction prevents a common category error:
+counting deployment machines tells us about
+
+00:00:38.466 --> 00:00:43.610
+runtime topology, while identifying
+independently developed and deployed
+responsibilities
+
+00:00:43.610 --> 00:00:46.789
+tells us about the structure of the application
+itself.
+
+00:00:46.789 --> 00:00:52.030
+For a small team, keeping related functionality
+in one application can make development
+
+00:00:52.030 --> 00:00:57.031
+practical. A developer runs one application
+locally, steps through one request in a
+
+00:00:57.031 --> 00:01:02.333
+debugger, and can coordinate a database
+transaction without crossing service boundaries.
+
+00:01:02.333 --> 00:01:07.467
+In the diagram, catalogue lookup, reservation
+validation, and reservation storage are
+
+00:01:07.467 --> 00:01:12.721
+modules inside the same deployable boundary.
+They should still have clear interfaces; a
+
+00:01:12.721 --> 00:01:18.157
+monolith need not be an undifferentiated pile of
+code. The simplicity comes from sharing a
+
+00:01:18.157 --> 00:01:21.962
+runtime and deployment process, not from
+abandoning modularity.
+
+00:01:21.962 --> 00:01:26.724
+Before splitting the system, identify a concrete
+limitation that separate services would
+
+00:01:26.724 --> 00:01:31.324
+address and compare that benefit with the new
+coordination work the split introduces.
+
+00:01:31.462 --> 00:01:36.514
+A service boundary turns a local collaboration
+into an explicit network contract. Imagine
+
+00:01:36.514 --> 00:01:41.510
+separating a shop's catalogue from its order
+workflow because they have distinct owners,
+
+00:01:41.510 --> 00:01:46.278
+change patterns, and scaling needs. The order
+service asks the catalogue for product
+
+00:01:46.278 --> 00:01:51.103
+information through an API rather than reading
+its private tables or calling internal
+
+00:01:51.103 --> 00:01:51.670
+functions.
+
+00:01:51.670 --> 00:01:56.498
+The diagram marks both the request boundary and
+the data owned behind it. Each side can
+
+00:01:56.498 --> 00:02:01.437
+change its implementation while preserving the
+contract, but only if callers respect that
+
+00:02:01.437 --> 00:02:06.487
+boundary. If every release still requires
+coordinated changes to both services, the
+network
+
+00:02:06.487 --> 00:02:11.593
+split has not delivered much independence and
+may simply have made an existing coupling more
+
+00:02:11.593 --> 00:02:12.148
+expensive.
+
+00:02:12.170 --> 00:02:17.563
+Splitting a checkout across services also
+changes failures. A payment service might accept
+a
+
+00:02:17.563 --> 00:02:22.487
+charge before an inventory reservation fails,
+leaving a partially completed business
+
+00:02:22.487 --> 00:02:27.235
+operation. There is no automatic single-process
+rollback across those independent
+
+00:02:27.235 --> 00:02:27.879
 boundaries.
 
-00:00:30.778 --> 00:00:37.115
-This arrangement can be useful for a small team:
-developers run one application locally, follow a
+00:02:27.879 --> 00:02:33.087
+The diagram stops the inventory branch after
+payment succeeds and then adds a compensating
 
-00:00:37.115 --> 00:00:42.669
-request through one process and use a local database
-transaction for related changes.
+00:02:33.087 --> 00:02:38.295
+action such as releasing or refunding the
+payment under a defined policy. This is a design
 
-00:00:42.669 --> 00:00:49.072
-Trouble may appear when unrelated modules force
-coordinated releases or compete for very different
+00:02:38.295 --> 00:02:42.634
+decision, not a generic promise that
+compensation perfectly erases history.
 
-00:00:49.072 --> 00:00:49.725
-resources.
+00:02:42.879 --> 00:02:48.549
+Timeouts, duplicate delivery, and uncertain
+outcomes need explicit handling. Follow the full
 
-00:00:49.725 --> 00:00:54.869
-First ask whether clearer modules inside the
-application would address the problem.
+00:02:48.549 --> 00:02:53.972
+operation rather than evaluating each small
+service only in isolation, because customers
 
-00:00:54.869 --> 00:01:00.880
-A network boundary adds deployment and failure
-concerns, so justify it using an observed need for
-
-00:01:00.880 --> 00:01:05.961
-independent change or operation rather than the
-visual appeal of additional boxes.
-
-00:01:05.961 --> 00:01:11.945
-Suppose technician scheduling becomes a separate
-service because its optimization workload and
-
-00:01:11.945 --> 00:01:14.874
-release cadence differ from ticket management.
-
-00:01:14.874 --> 00:01:21.049
-The boundary now has a contract: ticket management
-requests a slot, scheduling accepts or rejects
-
-00:01:21.049 --> 00:01:24.041
-it, and both agree on identifiers and outcomes.
-
-00:01:24.041 --> 00:01:30.407
-This can allow independent implementation, but
-independence is weakened if every schema change
-still
-
-00:01:30.407 --> 00:01:33.017
-forces both services to release together.
-
-00:01:33.061 --> 00:01:36.501
-A meaningful boundary contains change as well as
-code.
-
-00:01:36.501 --> 00:01:39.814
-Now scheduling accepts a slot but the reply is lost.
-
-00:01:39.814 --> 00:01:44.656
-Ticket management sees a timeout while scheduling
-has already changed state.
-
-00:01:44.656 --> 00:01:50.007
-A local rollback in ticket management cannot undo a
-remote commitment automatically.
-
-00:01:50.007 --> 00:01:55.932
-The design needs a way to discover the outcome,
-avoid duplicate reservations and recover from
-
-00:01:55.932 --> 00:01:56.888
-abandoned work.
-
-00:01:56.888 --> 00:02:01.448
-Trace this failure before celebrating a successful
-normal-path demo.
-
-00:02:01.448 --> 00:02:07.753
-Smaller services can make focused tests easier,
-while cross-service behavior requires contract
-
-00:02:07.753 --> 00:02:11.240
-tests, observability and explicit recovery policies.
-
-00:02:11.240 --> 00:02:15.734
-Compare these costs with the independence that
-motivated the split.
+00:02:53.972 --> 00:02:55.882
+experience the combined result.

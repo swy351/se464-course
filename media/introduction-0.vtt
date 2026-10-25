@@ -1,84 +1,220 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:06.334
-Software architecture helps us reason about a system
-that is too complex to hold entirely in our
+00:00:00.000 --> 00:00:05.249
+Software supports everyday activities, and a
+large system can exceed what any one developer
 
-00:00:06.334 --> 00:00:06.730
-heads.
+00:00:05.249 --> 00:00:10.556
+can understand at once. The historical codebase
+examples in the slides illustrate growth and
 
-00:00:06.730 --> 00:00:10.557
-The slides use growing codebases to motivate this
-problem.
+00:00:10.556 --> 00:00:15.863
+complexity. Their exact line counts are
+snapshots, not a measure of design quality or a
+rule
 
-00:00:10.557 --> 00:00:16.693
-Architecture connects requirements to important
-structural decisions, and helps people locate
+00:00:15.863 --> 00:00:18.171
+for when architecture becomes necessary.
 
-00:00:16.693 --> 00:00:19.663
-changes, examine quality, and plan evolution.
+00:00:18.171 --> 00:00:23.372
+Complexity creates practical questions: where
+should a change go, what might it break, how
 
-00:00:19.663 --> 00:00:22.962
-Size alone does not determine the effort required.
+00:00:23.372 --> 00:00:28.516
+can we inspect security and quality, and how
+will the system run and evolve? Architecture
 
-00:00:22.962 --> 00:00:29.296
-Ask which decisions affect many parts of the system,
-and which assumptions would be expensive to
+00:00:28.516 --> 00:00:33.602
+provides a manageable account of important
+parts, their relationships, and the decisions
 
-00:00:29.296 --> 00:00:29.758
-change.
+00:00:33.602 --> 00:00:38.342
+that constrain them. It connects a problem and
+its requirements to a solution that
 
-00:00:29.800 --> 00:00:34.422
-Begin with the system mission, its environment, and
-its stakeholders.
+00:00:38.342 --> 00:00:40.307
+developers can implement and test.
 
-00:00:34.422 --> 00:00:39.178
-Then identify the decisions that strongly shape
-structure and behavior.
+00:00:40.307 --> 00:00:45.488
+The engineering analogy in the slides emphasizes
+planning, coordination, and checking the
 
-00:00:39.178 --> 00:00:45.340
-Architecture includes important responsibilities,
-interfaces, relationships, and principles.
+00:00:45.488 --> 00:00:50.552
+result. It does not require every decision to be
+completed before coding. Architectural
 
-00:00:45.340 --> 00:00:48.220
-Not every design choice has the same reach.
+00:00:50.552 --> 00:00:55.733
+reasoning can continue as implementation and
+feedback reveal new constraints. Maintenance
 
-00:00:48.220 --> 00:00:53.579
-Even an algorithm can be architectural when it
-determines a system-wide quality.
+00:00:55.733 --> 00:01:00.972
+and evolution make preserving the reasons behind
+important decisions valuable. Two systems
 
-00:00:53.579 --> 00:00:59.875
-The purpose is to support communication and
-analysis, so a useful description explains why its
+00:01:00.972 --> 00:01:03.126
+have the same number of source lines.
 
-00:00:59.875 --> 00:01:02.555
-decisions matter to the people involved.
+00:01:03.307 --> 00:01:08.812
+Must they need the same architectural effort?
+No. Relationships, stakeholder concerns,
 
-00:01:02.600 --> 00:01:06.773
-An intended architecture states how a system should
-be organized.
+00:01:08.812 --> 00:01:14.637
+quality requirements, and the cost of changing
+important decisions matter. Line count alone
 
-00:01:06.773 --> 00:01:09.983
-An implemented architecture describes what exists.
+00:01:14.637 --> 00:01:16.558
+does not reveal these factors.
 
-00:01:09.983 --> 00:01:16.340
-Drift adds undocumented decisions without violating
-the intended design; erosion breaks an intended
+00:01:16.807 --> 00:01:21.868
+A system exists in an environment and serves a
+mission. Its stakeholders are people or
 
-00:01:16.340 --> 00:01:17.046
-constraint.
+00:01:21.868 --> 00:01:27.047
+organizations with an interest in its behavior
+or development. For a museum catalog, the
 
-00:01:17.046 --> 00:01:23.274
-To distinguish them, first identify the actual rule,
-then inspect evidence of the implementation.
+00:01:27.047 --> 00:01:32.227
+mission might be to help visitors discover
+exhibits; curators, visitors, and maintainers
 
-00:01:23.274 --> 00:01:26.741
-Architecture recovery helps reconstruct that
-evidence.
+00:01:32.227 --> 00:01:33.639
+have different concerns.
 
-00:01:26.741 --> 00:01:33.097
-A team can repair a violation or consciously revise
-a decision, but should keep its description and
+00:01:33.807 --> 00:01:39.008
+State the system boundary so that external
+people and systems are not mistaken for internal
 
-00:01:33.097 --> 00:01:35.280
-rationale aligned with the result.
+00:01:39.008 --> 00:01:39.637
+components.
+
+00:01:39.807 --> 00:01:45.121
+The definitions in the slides emphasize
+components, relationships, interfaces, behavior,
+
+00:01:45.121 --> 00:01:50.254
+composition, and guiding principles.
+Architectural decisions are the design decisions
+
+00:01:50.254 --> 00:01:55.809
+significant to the system as a whole: they shape
+how major responsibilities fit together and
+
+00:01:55.809 --> 00:02:01.244
+how important qualities can be achieved.
+Architecture is design, but a local design
+choice
+
+00:02:01.244 --> 00:02:04.203
+is not automatically architecturally
+significant.
+
+00:02:04.307 --> 00:02:10.013
+Significance depends on context. An algorithm or
+data structure can become an architectural
+
+00:02:10.013 --> 00:02:15.407
+concern if it determines system-wide
+performance, compatibility, or feasible
+behavior.
+
+00:02:15.407 --> 00:02:20.674
+Conversely, a small local implementation choice
+may be easy to replace. Architecture
+
+00:02:20.674 --> 00:02:26.068
+supports communication among stakeholders,
+analysis of a proposed system, and reuse of
+
+00:02:26.068 --> 00:02:31.147
+successful structures; a diagram is useful only
+when people agree on its meaning.
+
+00:02:31.307 --> 00:02:36.547
+Is choosing an algorithm always outside software
+architecture? No. A locally replaceable
+
+00:02:36.547 --> 00:02:41.907
+algorithm may be detailed design, but one that
+constrains the whole system or determines a
+
+00:02:41.907 --> 00:02:45.003
+critical quality can be architecturally
+significant.
+
+00:02:45.003 --> 00:02:50.131
+Prescriptive, or intended, architecture
+describes how the system is supposed to be
+
+00:02:50.131 --> 00:02:55.885
+organized. Descriptive, or implemented,
+architecture describes what actually exists. The
+two
+
+00:02:55.885 --> 00:03:01.076
+can differ because software evolves,
+documentation becomes stale, or implementation
+
+00:03:01.076 --> 00:03:03.264
+decisions bypass agreed boundaries.
+
+00:03:03.503 --> 00:03:08.518
+Treat an intended diagram as a statement of
+design intent, not proof of the current code
+
+00:03:08.518 --> 00:03:09.088
+structure.
+
+00:03:09.088 --> 00:03:13.762
+Architecture drift means new implementation
+decisions are absent from the intended
+
+00:03:13.762 --> 00:03:19.006
+description without violating it. Architecture
+erosion means the implementation violates the
+
+00:03:19.006 --> 00:03:24.022
+intended architecture. Suppose the intended
+design permits a presentation module to call
+
+00:03:24.022 --> 00:03:29.095
+only an application interface. An allowed new
+implementation behind that interface may be
+
+00:03:29.095 --> 00:03:34.339
+undocumented drift; a direct presentation-to-
+storage dependency violates the stated boundary
+
+00:03:34.339 --> 00:03:35.194
+and is erosion.
+
+00:03:35.194 --> 00:03:40.316
+Architecture recovery reconstructs an account of
+the implemented system from evidence such
+
+00:03:40.316 --> 00:03:45.096
+as source code, executable structure,
+configuration, and developer knowledge. Record
+
+00:03:45.096 --> 00:03:50.161
+uncertainty rather than filling gaps with
+guesses. Compare the recovered account with the
+
+00:03:50.161 --> 00:03:55.225
+intended one, investigate differences, and
+decide whether to repair the implementation or
+
+00:03:55.225 --> 00:03:58.526
+deliberately revise the intended design and its
+rationale.
+
+00:03:58.694 --> 00:04:03.649
+An undocumented component is added within all
+permitted dependency rules. Is that
+
+00:04:03.649 --> 00:04:08.970
+necessarily erosion? No. Under the distinction
+in the slides, a compatible undocumented
+
+00:04:08.970 --> 00:04:13.436
+decision is drift. Erosion requires evidence of
+a violated intended rule.

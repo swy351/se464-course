@@ -1,118 +1,144 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:04.526
-Draw six members of a discussion service across
-three storage partitions.
+00:00:00.000 --> 00:00:04.772
+Partitioning social data is difficult because
+different readers want the same post near
 
-00:00:04.526 --> 00:00:08.679
-Give each member subscriptions to authors on both
-other partitions.
+00:00:04.772 --> 00:00:09.599
+different places. A viewer's user row and
+follow-list entries can share a shard, but the
 
-00:00:08.679 --> 00:00:14.878
-Placing a member's subscription list beside that
-member helps discover followed authors locally, but
+00:00:09.599 --> 00:00:13.164
+authors they follow may be distributed across
+the entire service.
 
-00:00:14.878 --> 00:00:20.892
-it cannot also place every author's canonical posts
-beside every subscriber without copying them.
+00:00:13.164 --> 00:00:18.111
+Placing one author's posts beside one follower
+helps that follower without necessarily
 
-00:00:20.900 --> 00:00:26.115
-Moving an author to satisfy one reader may make
-another reader's path less local.
+00:00:18.111 --> 00:00:23.289
+helping the others. A popular author can have
+followers on every shard. This is a conflict
 
-00:00:26.115 --> 00:00:30.622
-The small graph exposes the conflict before any
-large-scale benchmark.
+00:00:23.289 --> 00:00:27.719
+in the access pattern, not a failure to invent a
+clever enough hash function.
 
-00:00:30.622 --> 00:00:32.618
-Compare three different copies.
+00:00:27.719 --> 00:00:32.812
+The diagram should place followers on two shards
+and connect both to one author, showing why
 
-00:00:32.618 --> 00:00:38.927
-A replica preserves another copy of the same owned
-data for a defined availability or read-serving
+00:00:32.812 --> 00:00:36.299
+a single physical home cannot be local to every
+reader at once.
 
-00:00:38.927 --> 00:00:39.442
-purpose.
+00:00:36.299 --> 00:00:41.273
+Represent the follow structure as a graph. Users
+are nodes and follow relationships are
 
-00:00:39.442 --> 00:00:43.885
-A materialized feed stores a reader-oriented
-representation of posts.
+00:00:41.273 --> 00:00:46.475
+edges. A balanced partitioning tries to
+distribute load while keeping frequently used
+edges
 
-00:00:43.900 --> 00:00:47.719
-A cache retains reusable results under a freshness
-policy.
+00:00:46.475 --> 00:00:51.621
+within partitions. Communities can improve
+locality, but cross-community relationships and
 
-00:00:47.719 --> 00:00:52.131
-All consume resources, but their ownership and
-update rules differ.
+00:00:51.621 --> 00:00:53.965
+high-degree users still create crossings.
 
-00:00:52.131 --> 00:00:56.477
-State which operation needs each copy and how stale
-it may become.
+00:00:53.965 --> 00:00:58.920
+A perfectly balanced count of users can also
+conceal large differences in query rate and
 
-00:00:56.477 --> 00:01:02.996
-Hashing member identifiers can spread ownership, yet
-it does not eliminate popular-author hotspots,
+00:00:58.920 --> 00:01:04.101
+audience size. Weight the graph by the
+operations that actually traverse it, not just
+by the
 
-00:01:02.996 --> 00:01:06.288
-cross-partition relationships or network transfer.
+00:01:04.101 --> 00:01:09.113
+existence of a relationship. Moving an account
+between partitions can change locality for
 
-00:01:06.288 --> 00:01:10.963
-Scaling claims must include those remaining costs
-and skewed workloads.
+00:01:09.113 --> 00:01:12.379
+several neighbors and requires routing and
+migration work.
 
-00:01:11.000 --> 00:01:17.037
-An author in a hypothetical community has one
-hundred thousand followers, but only five thousand
-of
+00:01:12.465 --> 00:01:17.290
+The useful question is how much communication a
+placement avoids for the measured workload,
 
-00:01:17.037 --> 00:01:19.597
-them read during a short freshness window.
+00:01:17.290 --> 00:01:19.942
+rather than whether it makes an appealing
+picture.
 
-00:01:19.597 --> 00:01:23.927
-Eagerly updating every feed pays for one hundred
-thousand destinations.
+00:01:19.965 --> 00:01:24.964
+A single publication policy becomes inefficient
+when follower counts vary by orders of
 
-00:01:23.927 --> 00:01:29.719
-Fetching the author's recent posts during those
-active readers' requests may do much less work,
+00:01:24.964 --> 00:01:30.254
+magnitude. An ordinary author with a few hundred
+followers may be inexpensive to fan out. A
 
-00:01:29.719 --> 00:01:32.890
-especially if results can be shared through a cache.
+00:01:30.254 --> 00:01:34.963
+highly followed author can create millions of
+feed updates for one post, delaying
 
-00:01:32.900 --> 00:01:39.199
-These illustrative counts motivate a hybrid rather
-than a rule that every post must follow the same
+00:01:34.963 --> 00:01:39.962
+propagation and consuming resources even for
+followers who never open the application.
 
-00:01:39.199 --> 00:01:40.280
-publication path.
+00:01:39.965 --> 00:01:44.883
+A queue keeps the publisher from waiting for all
+those updates, but it does not make them
 
-00:01:40.280 --> 00:01:46.197
-Precompute entries for ordinary authors and merge
-selected high-fan-out authors at read time.
+00:01:44.883 --> 00:01:49.745
+disappear. The hybrid idea is to keep
+materialized feeds for ordinary publications
+while
 
-00:01:46.197 --> 00:01:52.496
-Choose the threshold using observed fan-out cost,
-active readership, freshness and cache behaviour,
+00:01:49.745 --> 00:01:54.608
+storing very high-fan-out authors' posts in a
+separate path that can be consulted when a
 
-00:01:52.496 --> 00:01:54.277
-not a fixed celebrity label.
+00:01:54.608 --> 00:01:55.879
+reader requests a feed.
 
-00:01:54.300 --> 00:02:00.336
-The merge still needs stable ordering and
-pagination: a post appearing in both paths must not
-be
+00:01:55.965 --> 00:02:01.222
+A feed request now has two inputs. Fetch the
+reader's prepared ordinary-author entries, then
 
-00:02:00.336 --> 00:02:03.040
-shown twice, and deletion must affect both.
+00:02:01.222 --> 00:02:06.308
+fetch recent posts from the exceptional authors
+that reader follows, and merge them using
 
-00:02:03.040 --> 00:02:07.505
-The storage technology for the exceptional path is a
-separate decision.
+00:02:06.308 --> 00:02:11.109
+the feed's ordering rules. This adds bounded
+read-time work in exchange for avoiding
 
-00:02:07.505 --> 00:02:13.226
-This is an architecture exercise about moving work
-between reads and writes, not a verified
+00:02:11.109 --> 00:02:13.166
+enormous publication-time expansion.
 
-00:02:13.226 --> 00:02:16.433
-description of a current commercial social network.
+00:02:13.166 --> 00:02:18.349
+The exceptional-post store can have read
+replicas or caches because relatively few
+authors
+
+00:02:18.349 --> 00:02:23.302
+generate its writes while many readers retrieve
+them. The important asymmetry is write
+
+00:02:23.302 --> 00:02:28.543
+amplification per publication, not a claim that
+famous users intrinsically perform more API
+
+00:02:28.543 --> 00:02:29.579
+writes than reads.
+
+00:02:29.666 --> 00:02:34.539
+Draw both sources converging at the merge step
+so students can see precisely which work was
+
+00:02:34.539 --> 00:02:36.520
+retained and which work was deferred.

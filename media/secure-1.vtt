@@ -1,66 +1,190 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:03.996
-Treat a token as a claim that must be evaluated in
-context.
+00:00:00.000 --> 00:00:05.714
+A signed JWT carries claims plus a signature;
+its readable payload is not encrypted merely
 
-00:00:03.996 --> 00:00:10.363
-Verify its issuer, cryptographic protection,
-audience and time constraints, then authorize the
+00:00:05.714 --> 00:00:10.984
+because it is signed. A service needs a
+validation policy: trusted issuer and keys,
 
-00:00:10.363 --> 00:00:11.040
-operation.
+00:00:10.984 --> 00:00:16.317
+permitted algorithms, intended audience, token
+type and applicable time constraints.
 
-00:00:11.040 --> 00:00:16.052
-Follow access and refresh tokens separately through
-expiry and compromise.
+00:00:16.500 --> 00:00:21.698
+A valid signature alone does not establish that
+this token belongs at this API or that its
 
-00:00:16.052 --> 00:00:22.826
-Central issuance and local verification offer a
-useful pattern, but revocation and key rotation must
+00:00:21.698 --> 00:00:24.008
+subject may access the requested record.
 
-00:00:22.826 --> 00:00:24.993
-be explicit rather than assumed.
+00:00:24.008 --> 00:00:29.482
+Access and refresh tokens have different roles.
+Short access-token lifetimes limit exposure,
 
-00:00:25.000 --> 00:00:28.771
-Apply security at the service as well as the
-perimeter.
+00:00:29.482 --> 00:00:34.896
+while refresh-token rotation or sender
+constraints address renewal risk. Revoking a
+refresh
 
-00:00:28.771 --> 00:00:35.627
-Reduce runtime privileges, expose only needed
-interfaces and manage secrets through their
-lifecycle.
+00:00:34.896 --> 00:00:39.953
+token does not magically invalidate every
+already issued self-contained access token.
 
-00:00:35.627 --> 00:00:42.278
-Validate data for its actual destination: SQL, HTML
-and outbound URLs require different controls.
+00:00:40.008 --> 00:00:45.531
+Central issuance with local verification can
+reduce repeated authentication calls, but
 
-00:00:42.278 --> 00:00:49.065
-Shared middleware can make checks consistent, but
-its trust assumptions and execution order must be
+00:00:45.531 --> 00:00:50.541
+introduces key-distribution and revocation
+tradeoffs. OAuth concerns delegated
 
-00:00:49.065 --> 00:00:50.574
-understood and tested.
+00:00:50.541 --> 00:00:56.256
+authorization; OpenID Connect adds
+authentication conventions. Neither is
+synonymous with
 
-00:00:50.600 --> 00:00:54.632
-Use simulations to practice decisions as well as
-detections.
+00:00:56.256 --> 00:01:02.036
+the JWT data format. If a user’s refresh token
+is revoked, must a locally validated access
 
-00:00:54.632 --> 00:01:00.815
-Tabletop exercises, broad red-team engagements and
-focused repeatable tests answer different
+00:01:02.036 --> 00:01:04.027
+token stop working immediately?
 
-00:01:00.815 --> 00:01:01.487
-questions.
+00:01:04.027 --> 00:01:09.070
+No. Immediate rejection requires an additional
+mechanism such as introspection or a
 
-00:01:01.487 --> 00:01:06.594
-Our course exercise stays with synthetic evidence
-and role-based discussion.
+00:01:09.070 --> 00:01:14.112
+revocation/version check; otherwise the access
+token may remain valid until expiry.
 
-00:01:06.594 --> 00:01:12.978
-Trace escalation, containment and recovery, then
-assign concrete improvements after the review.
+00:01:14.112 --> 00:01:19.624
+A service should expose only necessary
+interfaces and run with limited privileges. Non-
+root
 
-00:01:12.978 --> 00:01:17.951
-Coverage tracking is useful evidence, not a
-guarantee of future detection.
+00:01:19.624 --> 00:01:25.076
+execution, reduced capabilities, a read-only
+filesystem where feasible and narrowly scoped
+
+00:01:25.076 --> 00:01:30.286
+workload credentials reduce consequences of
+compromise. Secrets should be managed with
+
+00:01:30.286 --> 00:01:34.708
+explicit access, rotation and revocation rather
+than hardcoded in source.
+
+00:01:34.708 --> 00:01:40.108
+Environment variables and mounted files each
+have exposure tradeoffs; a secret store still
+
+00:01:40.108 --> 00:01:42.448
+needs authentication and authorization.
+
+00:01:42.448 --> 00:01:48.484
+Input handling must match the destination.
+Parameterized database operations separate data
+
+00:01:48.484 --> 00:01:54.654
+from SQL, contextual output encoding protects
+HTML contexts, and destination validation plus
+
+00:01:54.654 --> 00:02:00.690
+network controls help constrain outbound URL
+requests. An ORM can still execute unsafe raw
+
+00:02:00.690 --> 00:02:01.227
+queries.
+
+00:02:01.448 --> 00:02:06.596
+Error handling should avoid disclosing internal
+details while retaining useful protected
+
+00:02:06.596 --> 00:02:11.510
+diagnostics. Trust forwarded identity or IP
+information only from configured trusted
+
+00:02:11.510 --> 00:02:16.540
+intermediaries, and order middleware so identity
+and permission decisions occur before
+
+00:02:16.540 --> 00:02:21.922
+protected work. Can a service trust X-Forwarded-
+For simply because the request contains that
+
+00:02:21.922 --> 00:02:22.331
+header?
+
+00:02:22.448 --> 00:02:27.958
+No. Clients can supply headers. The trusted
+proxy path must overwrite or validate forwarded
+
+00:02:27.958 --> 00:02:32.196
+information, and network address still does not
+prove user permission.
+
+00:02:32.196 --> 00:02:37.546
+The supplied Uber case distinguishes tabletop
+exercises, red-team operations and smaller
+
+00:02:37.546 --> 00:02:43.138
+repeatable simulations. These methods test
+different things: decision-making and
+escalation,
+
+00:02:43.138 --> 00:02:48.731
+broader adversary behavior, or focused detection
+and response. The historical example should
+
+00:02:48.731 --> 00:02:52.317
+not be treated as a statement of Uber’s current
+procedures.
+
+00:02:52.317 --> 00:02:57.526
+For this course, a tabletop preserves the
+architectural learning without running intrusion
+
+00:02:57.526 --> 00:02:59.610
+tools or accessing real credentials.
+
+00:02:59.817 --> 00:03:05.507
+Assign roles for triage, service ownership,
+communications and decision authority. Introduce
+
+00:03:05.507 --> 00:03:11.135
+synthetic evidence in stages: suspicious token
+use, an unexpected outbound connection, then
+
+00:03:11.135 --> 00:03:16.515
+an unavailable dependency. Ask what evidence is
+needed, what can be contained and which
+
+00:03:16.515 --> 00:03:17.690
+users are affected.
+
+00:03:17.817 --> 00:03:22.567
+Record timing and assumptions, then conduct an
+after-action review with owners for
+
+00:03:22.567 --> 00:03:27.781
+improvements. Coverage mapped to ATT&CK
+techniques can reveal gaps, but a checked box
+does
+
+00:03:27.781 --> 00:03:30.851
+not prove that a control will detect every
+variation.
+
+00:03:30.851 --> 00:03:36.401
+If a simulation triggers an alert, is the
+response process necessarily successful? No.
+
+00:03:36.401 --> 00:03:42.273
+Someone must triage it, coordinate decisions,
+contain harm and recover; the exercise should
+
+00:03:42.273 --> 00:03:43.886
+test that complete chain.

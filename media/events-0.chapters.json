@@ -1,0 +1,22 @@
+[
+  {
+    "chapter": 1,
+    "title": "From direct calls to implicit invocation",
+    "time": 0
+  },
+  {
+    "chapter": 1,
+    "title": "From direct calls to implicit invocation",
+    "time": 43.8
+  },
+  {
+    "chapter": 2,
+    "title": "Event-driven architecture and brokered fan-out",
+    "time": 90.4
+  },
+  {
+    "chapter": 2,
+    "title": "Event-driven architecture and brokered fan-out",
+    "time": 137.53
+  }
+]

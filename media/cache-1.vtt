@@ -1,116 +1,132 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:05.648
-Trace a cache with room for two exhibit descriptions
-through accesses A, B, A, C, B.
+00:00:00.000 --> 00:00:05.418
+A proxy is an intermediary: it accepts the
+client's request, knows which upstream service
 
-00:00:05.648 --> 00:00:08.472
-A and B initially miss and fill the cache.
+00:00:05.418 --> 00:00:11.019
+can answer it, and relays the response. Add
+storage to that intermediary and it can remember
 
-00:00:08.472 --> 00:00:12.709
-The second A is a hit and makes A the most recently
-used entry.
+00:00:11.019 --> 00:00:16.620
+reusable answers. On the first request for
+article A, the cache has no matching entry, so
+it
 
-00:00:12.709 --> 00:00:16.878
-C then misses and evicts B under least recently used
-eviction.
+00:00:16.620 --> 00:00:19.055
+forwards the request to the application.
 
-00:00:16.900 --> 00:00:19.078
-The final B misses and evicts A.
+00:00:19.055 --> 00:00:24.084
+The application reads data and constructs the
+response; the proxy saves an eligible copy
 
-00:00:19.078 --> 00:00:25.611
-Only one of these five accesses hits, showing that a
-cache’s benefit depends on access order and
+00:00:24.084 --> 00:00:29.341
+while returning it. A second equivalent request
+can be answered directly from that copy. The
 
-00:00:25.611 --> 00:00:28.198
-capacity, not merely on its existence.
+00:00:29.341 --> 00:00:33.113
+diagram shows the miss visiting origin and the
+hit stopping early.
 
-00:00:28.198 --> 00:00:34.731
-In a managed cache design, application code performs
-this lookup and fill around storage access.
+00:00:33.113 --> 00:00:37.939
+The performance gain comes from avoiding
+repeated work, not from making the original
 
-00:00:34.731 --> 00:00:41.333
-With a caching proxy, the client uses its normal
-request interface while the intermediary manages
+00:00:37.939 --> 00:00:39.836
+computation intrinsically faster.
 
-00:00:41.333 --> 00:00:42.354
-eligible reuse.
+00:00:39.836 --> 00:00:45.610
+Because a cache has a finite budget, admitting a
+new object may require evicting another.
 
-00:00:42.400 --> 00:00:45.511
-Both still need a valid key and freshness policy.
+00:00:45.610 --> 00:00:51.319
+Consider room for three equally sized items and
+accesses A, B, C, A, D. After the second
 
-00:00:45.511 --> 00:00:51.860
-A load-balancing proxy performs a different
-decision: which backend should receive work that
-must be
+00:00:51.319 --> 00:00:54.434
+access to A, B is the least recently used entry.
 
-00:00:51.860 --> 00:00:52.495
-forwarded?
+00:00:54.434 --> 00:01:00.035
+An LRU policy evicts B when D arrives,
+preserving A and C. The illustration emphasizes
+that
 
-00:00:52.495 --> 00:00:58.654
-One component may implement both roles, but a
-diagram should make clear whether it is selecting a
+00:01:00.035 --> 00:01:05.512
+a hit updates the recency order even though it
+does not fetch another object. This policy
 
-00:00:58.654 --> 00:01:01.511
-worker, serving saved content, or doing both.
+00:01:05.512 --> 00:01:10.067
+exploits temporal locality: recently useful data
+may be needed again soon.
 
-00:01:01.511 --> 00:01:08.105
-Suppose an exhibit launch receives 800 eligible
-reads each second and the measured cache hit ratio
+00:01:10.067 --> 00:01:15.330
+It is a prediction about the workload, not a
+guarantee; a scan of unrelated objects can
 
-00:01:08.105 --> 00:01:09.047
-is 85 percent.
+00:01:15.330 --> 00:01:17.750
+displace a genuinely useful working set.
 
-00:01:09.047 --> 00:01:15.708
-Under a simple model with one backing read per miss
-and no revalidation traffic, only 120 reads per
+00:01:17.750 --> 00:01:22.659
+Why can a small cache remove a large fraction of
+service traffic? Requests are often
 
-00:01:15.708 --> 00:01:17.928
-second reach the backing service.
+00:01:22.659 --> 00:01:27.977
+unevenly distributed. A few popular articles
+receive repeated reads while many less popular
 
-00:01:17.928 --> 00:01:21.965
-This gain follows from repeated demand for reusable
-content.
+00:01:27.977 --> 00:01:33.236
+articles form a long tail. If a cache stores the
+frequently requested subset, its fraction
 
-00:01:22.011 --> 00:01:28.052
-If requests become personalized or spread across
-many rarely repeated items, the same cache may
+00:01:33.236 --> 00:01:38.554
+of all stored documents can be small even while
+its fraction of answered requests is large.
 
-00:01:28.052 --> 00:01:30.023
-achieve a much lower hit ratio.
+00:01:38.750 --> 00:01:43.820
+For an illustrative workload of one thousand
+requests per second with a ninety percent hit
 
-00:01:30.023 --> 00:01:32.121
-Freshness is a separate decision.
+00:01:43.820 --> 00:01:48.947
+ratio, only about one hundred misses per second
+reach origin, ignoring validation and other
 
-00:01:32.121 --> 00:01:38.480
-A public exhibit description might tolerate a short
-stale interval, while a reservation confirmation
+00:01:48.947 --> 00:01:53.792
+traffic. The diagram separates the hot set from
+the long tail rather than treating all
 
-00:01:38.480 --> 00:01:40.069
-needs a different policy.
+00:01:53.792 --> 00:01:56.271
+documents as equally likely to be requested.
 
-00:01:40.069 --> 00:01:46.046
-Versioned image names let old and new images coexist
-without changing an existing cache entry.
+00:01:56.271 --> 00:02:01.493
+The price of reuse appears when an authoritative
+value changes after a cached copy was
 
-00:01:46.046 --> 00:01:51.477
-For mutable responses, distinguish expiration,
-validation and storage prohibition.
+00:02:01.493 --> 00:02:07.018
+saved. Suppose a public timetable response can
+remain fresh for sixty seconds. At time zero
 
-00:01:51.477 --> 00:01:57.571
-No-cache can allow storage but requires successful
-validation before reuse; no-store forbids
+00:02:07.018 --> 00:02:11.754
+the proxy stores version one; at time twenty the
+origin publishes version two.
 
-00:01:57.571 --> 00:01:58.101
-storage.
+00:02:11.771 --> 00:02:16.824
+An otherwise eligible request at time forty can
+still receive version one under that
 
-00:01:58.101 --> 00:02:04.260
-A private response cannot become a shared-cache
-answer simply because it has a long freshness
+00:02:16.824 --> 00:02:22.238
+freshness policy. At expiry, the cache must
+refresh or validate before ordinary reuse. The
 
-00:02:04.260 --> 00:02:04.856
-lifetime.
+00:02:22.238 --> 00:02:27.592
+diagram places the edit and expiry on separate
+paths to show why updating origin does not
 
-00:02:04.856 --> 00:02:08.830
-Always explain whose requests are allowed to reuse
-an entry.
+00:02:27.592 --> 00:02:29.276
+instantly update every copy.
+
+00:02:29.276 --> 00:02:34.300
+Select a freshness window from the application's
+tolerance for stale information, not only
+
+00:02:34.300 --> 00:02:36.477
+from the hit ratio you hope to achieve.

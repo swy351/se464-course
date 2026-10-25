@@ -1,86 +1,226 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:02.772
-A diagram needs a question and a legend.
+00:00:00.000 --> 00:00:05.186
+A single box-and-arrow picture rarely answers
+every architectural question. A static
 
-00:00:02.772 --> 00:00:09.703
-Boxes may represent domain concepts, modules,
-processes, or machines; arrows may mean very
-different
+00:00:05.186 --> 00:00:10.495
+decomposition can show code responsibilities and
+dependencies. A runtime view can show
 
-00:00:09.703 --> 00:00:10.188
-things.
+00:00:10.495 --> 00:00:15.742
+processes and interactions. A deployment view
+can show where software executes across
 
-00:00:10.188 --> 00:00:16.841
-The four plus one model separates logical, process,
-development, and physical concerns, and uses
+00:00:15.742 --> 00:00:16.236
+devices.
 
-00:00:16.841 --> 00:00:18.643
-scenarios to connect them.
+00:00:16.236 --> 00:00:21.412
+State what each box and arrow represents, and
+distinguish a code dependency from a runtime
 
-00:00:18.643 --> 00:00:21.623
-Choose a view for the question being asked.
+00:00:21.412 --> 00:00:23.540
+message or a deployment relationship.
 
-00:00:21.623 --> 00:00:28.415
-Then check that the views agree about the same
-system, without trying to put every detail into one
+00:00:23.736 --> 00:00:29.175
+The 4+1 model organizes complementary views. The
+logical view describes key abstractions and
 
-00:00:28.415 --> 00:00:29.524
-crowded picture.
+00:00:29.175 --> 00:00:34.259
+responsibilities; the process view addresses
+runtime concurrency and interactions; the
 
-00:00:29.524 --> 00:00:35.575
-Reusable architectural ideas include styles,
-reference architectures, and product-line
+00:00:34.259 --> 00:00:39.638
+development view describes code organization;
+the physical view maps software onto hardware
 
-00:00:35.575 --> 00:00:36.560
-architectures.
+00:00:39.638 --> 00:00:44.782
+or execution nodes. The additional scenarios
+connect and help examine the views through
 
-00:00:36.560 --> 00:00:41.134
-Their assumptions and constraints matter as much as
-their shapes.
+00:00:44.782 --> 00:00:49.866
+representative system behavior. For a museum
+catalog, a logical view might distinguish
 
-00:00:41.134 --> 00:00:46.270
-C4 offers nested descriptions: context, containers,
-components, and code.
+00:00:49.866 --> 00:00:55.187
+exhibits and collections, a development view
+might show modules, and a physical view might
 
-00:00:46.270 --> 00:00:49.507
-These levels help match detail to an audience.
+00:00:55.187 --> 00:00:57.197
+place the application on a server.
 
-00:00:49.507 --> 00:00:56.473
-A container here means a running application or data
-store, not necessarily a packaging technology.
+00:00:57.236 --> 00:01:02.492
+A visitor searching for an exhibit is a scenario
+that can be traced through the relevant
 
-00:00:56.473 --> 00:01:03.087
-C4 levels and four plus one views are complementary
-ways to organize descriptions, rather than
+00:01:02.492 --> 00:01:07.987
+views. These descriptions must agree, but they
+need not contain identical boxes or identical
 
-00:01:03.087 --> 00:01:04.635
-interchangeable lists.
+00:01:07.987 --> 00:01:13.482
+levels of detail. A maintainer asks which device
+runs a process. Would a class diagram alone
 
-00:01:04.635 --> 00:01:08.916
-Patterns organize responsibilities around recurring
-problems.
+00:01:13.482 --> 00:01:18.499
+answer the question? Usually not. A physical or
+deployment view identifies execution
 
-00:01:08.916 --> 00:01:15.371
-Three-tier architecture separates presentation,
+00:01:18.499 --> 00:01:19.096
+placement.
+
+00:01:19.236 --> 00:01:24.211
+A class diagram describes a different concern
+and needs an explicit mapping to runtime and
+
+00:01:24.211 --> 00:01:25.316
+deployment elements.
+
+00:01:25.316 --> 00:01:30.455
+Architectural descriptions can reuse ideas at
+different scopes. A style describes a family
+
+00:01:30.455 --> 00:01:35.536
+of structures through constraints on elements
+and relationships. A reference architecture
+
+00:01:35.536 --> 00:01:40.389
+gives a reusable architectural organization for
+a domain. A product-line architecture
+
+00:01:40.389 --> 00:01:44.500
+captures shared structure and planned variation
+across related products.
+
+00:01:44.500 --> 00:01:49.856
+These concepts help teams reuse reasoning,
+rather than copy a diagram without checking its
+
+00:01:49.856 --> 00:01:50.570
+assumptions.
+
+00:01:50.570 --> 00:01:55.988
+C4 provides four nested levels of structural
+description: system context, containers,
+
+00:01:55.988 --> 00:02:01.725
+components, and code. Context shows the system
+in relation to people and external systems.
+
+00:02:01.725 --> 00:02:07.271
+Containers show major running applications or
+data stores within the system; components
+
+00:02:07.271 --> 00:02:13.072
+describe responsibilities within a container;
+code shows implementation detail when useful.
+
+00:02:13.072 --> 00:02:17.725
+A C4 container is a modeling concept, not
+necessarily a Docker container.
+
+00:02:17.725 --> 00:02:23.258
+C4 levels and 4+1 views answer different
+organizing questions. C4 changes the level of
+
+00:02:23.258 --> 00:02:28.856
+detail; 4+1 separates concerns such as code
+organization and runtime processes. Neither
+
+00:02:28.856 --> 00:02:34.775
+requires every diagram for every audience.
+Architectural significance also does not follow
+a
+
+00:02:34.775 --> 00:02:40.051
+fixed line-count threshold or a rule that
+architecture happens only early: revisit
+
+00:02:40.051 --> 00:02:43.010
+consequential decisions as the system evolves.
+
+00:02:43.225 --> 00:02:49.013
+A context diagram contains every class in the
+application. Does the extra detail necessarily
+
+00:02:49.013 --> 00:02:54.613
+help its audience? No. A context audience needs
+the system boundary, people, and external
+
+00:02:54.613 --> 00:03:00.402
+relationships. Class detail can obscure that
+purpose; move it to a more detailed description
+
+00:03:00.402 --> 00:03:02.667
+when it answers a relevant question.
+
+00:03:02.725 --> 00:03:07.553
+An architectural pattern describes a recurring
+design problem and an arrangement of
+
+00:03:07.553 --> 00:03:12.730
+responsibilities that addresses it in a context.
+A style constrains the kinds of elements
+
+00:03:12.730 --> 00:03:17.675
+and relationships allowed in a family of
+architectures. The terms can overlap in use;
+
+00:03:17.675 --> 00:03:22.910
+explaining the responsibilities, constraints,
+and consequences is more useful than relying
+
+00:03:22.910 --> 00:03:23.783
+only on a name.
+
+00:03:23.783 --> 00:03:29.266
+The three-tier example separates presentation,
 application processing, and data management.
 
-00:01:15.371 --> 00:01:22.388
-MVC focuses on model, view, and controller
-responsibilities, while sense, compute, control
-organizes
+00:03:29.266 --> 00:03:34.689
+This helps identify responsibilities and the
+interfaces between them. A logical separation
 
-00:01:22.388 --> 00:01:24.002
-observation and action.
+00:03:34.689 --> 00:03:39.992
+of these concerns does not by itself prove that
+they run on three separate machines. MVC
 
-00:01:24.002 --> 00:01:29.897
-These are useful ideas, but labels do not establish
-deployment or guarantee quality.
+00:03:39.992 --> 00:03:45.536
+separates model, view, and controller
+responsibilities around an interface; it should
+not be
 
-00:01:29.897 --> 00:01:34.107
-Explain the problem, the relationships, and the
-constraints.
+00:03:45.536 --> 00:03:49.272
+assumed to be a one-to-one synonym for three
+deployment tiers.
 
-00:01:34.107 --> 00:01:40.913
-Then examine whether the proposed arrangement serves
-the system mission and stakeholder concerns.
+00:03:49.283 --> 00:03:54.443
+The sense–compute–control example organizes
+observation, computation, and action on an
+
+00:03:54.443 --> 00:03:59.903
+environment. It highlights a different set of
+responsibilities from a typical presentation-
+
+00:03:59.903 --> 00:04:05.184
+and-data application. When selecting any
+pattern, state the problem it addresses and the
+
+00:04:05.184 --> 00:04:10.404
+constraints it imposes. A named style may
+support desired qualities, but its name alone
+
+00:04:10.404 --> 00:04:14.304
+cannot guarantee maintainability, performance,
+or other outcomes.
+
+00:04:14.304 --> 00:04:19.961
+A team labels three boxes MVC. Has it
+demonstrated a three-machine deployment? No. MVC
+
+00:04:19.961 --> 00:04:25.421
+describes responsibilities. Deployment requires
+separate evidence about where those
+
+00:04:25.421 --> 00:04:30.091
+responsibilities execute; a diagram label does
+not establish placement.

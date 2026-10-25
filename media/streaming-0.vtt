@@ -1,135 +1,227 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:04.683
-A sensor analysis job estimates the average reading
-across two partitions.
+00:00:00.000 --> 00:00:05.113
+Suppose three workers store sales records and
+their local maximum orders are eighty, one
 
-00:00:04.683 --> 00:00:10.568
-One holds ten readings averaging twenty, and the
-other holds ninety readings averaging forty.
+00:00:05.113 --> 00:00:10.284
+hundred twenty, and ninety dollars. To find the
+global maximum, each worker scans its own
 
-00:00:10.568 --> 00:00:16.327
-Averaging the two local averages gives thirty, but
-the correct global mean is thirty-eight.
+00:00:10.284 --> 00:00:15.630
+records and sends just one candidate. The
+coordinator compares three numbers and returns
+one
 
-00:00:16.327 --> 00:00:22.655
-Each worker must return both a sum and a count: two
-hundred plus three thousand six hundred, divided
+00:00:15.630 --> 00:00:16.501
+hundred twenty.
 
-00:00:22.655 --> 00:00:23.604
-by one hundred.
+00:00:16.501 --> 00:00:21.443
+Shipping every original order to the coordinator
+would do far more network work without
 
-00:00:23.604 --> 00:00:29.007
-The summary must preserve the information needed to
-combine unequal partitions correctly.
+00:00:21.443 --> 00:00:26.612
+improving this result. The key is an algebraic
+property: the maximum of local maxima equals
 
-00:00:29.007 --> 00:00:34.775
-Compare that with finding the global minimum: each
-worker needs to send only its local minimum.
+00:00:26.612 --> 00:00:31.611
+the maximum of the union. Draw computation
+beside each partition and only the candidates
 
-00:00:34.775 --> 00:00:38.903
-The amount and meaning of intermediate data depend
-on the operation.
+00:00:31.611 --> 00:00:32.804
+crossing the network.
 
-00:00:38.903 --> 00:00:44.367
-Sending all raw readings to one coordinator may be
-correct, but can destroy the benefit of
+00:00:33.001 --> 00:00:37.586
+This reasoning explains why some analyses
+parallelize easily while others require
 
-00:00:44.367 --> 00:00:45.703
-distributing the work.
+00:00:37.586 --> 00:00:42.171
+substantially richer intermediate information or
+several rounds of communication.
 
-00:00:45.704 --> 00:00:51.472
-Design the summary, estimate transfer volume and
-then identify where combination happens.
+00:00:42.171 --> 00:00:47.141
+Means reveal why the summary matters. Suppose
+one partition contains one order worth ten
 
-00:00:51.472 --> 00:00:56.980
-Some calculations require multiple communication
-rounds or richer intermediate state.
+00:00:47.141 --> 00:00:52.054
+dollars and another contains nine orders
+totaling nine hundred dollars. Averaging their
 
-00:00:56.980 --> 00:01:03.461
-More workers reduce only the parallel portion of the
-cost; data movement and coordination still need
+00:00:52.054 --> 00:00:57.137
+local means gives fifty-five dollars, which is
+wrong because it gives the partitions equal
 
-00:01:03.461 --> 00:01:06.248
-an explicit place in the performance model.
+00:00:57.137 --> 00:00:57.532
+weight.
 
-00:01:06.248 --> 00:01:11.835
-A transport agency wants total delay minutes by
-route from a finite day of trip records.
+00:00:57.671 --> 00:01:03.239
+Send each partition's sum and count instead; the
+global mean is nine hundred ten divided by
 
-00:01:11.835 --> 00:01:15.709
-Each mapper emits the route identifier and that
-trip's delay.
+00:01:03.239 --> 00:01:08.745
+ten, or ninety-one dollars. An exact median is
+harder still: local medians alone generally
 
-00:01:15.709 --> 00:01:20.026
-The shuffle groups values by route, and each reducer
-sums its group.
+00:01:08.745 --> 00:01:14.313
+do not determine the global median. A pivot
+method asks every partition how many values lie
 
-00:01:20.026 --> 00:01:25.741
-The programmer specifies meaningful transformations
-while the framework arranges tasks and
+00:01:14.313 --> 00:01:18.534
+below, equal to, and above a candidate, then
+narrows the target rank.
 
-00:01:25.741 --> 00:01:27.138
-intermediate movement.
+00:01:18.671 --> 00:01:23.841
+Before selecting a framework, derive what
+information must cross partitions for the answer
 
-00:01:27.148 --> 00:01:33.331
-Following one route through those stages makes the
-key's role concrete: it determines which records
+00:01:23.841 --> 00:01:24.875
+to remain correct.
 
-00:01:33.331 --> 00:01:34.955
-must meet for aggregation.
+00:01:24.875 --> 00:01:29.971
+Count words in two documents: the first says red
+blue red, and the second says blue green.
 
-00:01:34.955 --> 00:01:40.702
-If one route has most of the trips, its reducer may
-dominate completion time even when other
+00:01:29.971 --> 00:01:35.181
+Each mapper emits a word and one for each
+occurrence. The shuffle groups all values with
+the
 
-00:01:40.702 --> 00:01:42.076
-reducers finish early.
+00:01:35.181 --> 00:01:38.238
+same word, regardless of which document produced
+them.
 
-00:01:42.076 --> 00:01:48.135
-Local combining can reduce transfer for a sum, but
-the design still needs to account for skew and
+00:01:38.375 --> 00:01:43.605
+Reducers then add the grouped values, producing
+red two, blue two, and green one. Draw the
 
-00:01:48.135 --> 00:01:48.697
-recovery.
+00:01:43.605 --> 00:01:48.952
+blue emissions from both documents converging on
+the same group. This is the important step:
 
-00:01:48.697 --> 00:01:54.983
-A framework that retains reusable intermediate
-datasets in memory can help repeated analyses, while
+00:01:48.952 --> 00:01:54.124
+the programmer's chosen intermediate key tells
+the framework which information must meet.
 
-00:01:54.983 --> 00:01:59.364
-its lineage or persistence rules determine recovery
-after lost state.
+00:01:54.124 --> 00:01:59.014
+The framework handles distribution and grouping,
+while the mapper and reducer define the
 
-00:01:59.364 --> 00:02:01.713
-These are bounded batch computations.
+00:01:59.014 --> 00:02:04.015
+calculation. An incorrect key can produce an
+efficient parallel job that answers the wrong
 
-00:02:01.713 --> 00:02:08.062
-They do not by themselves specify event-time windows
-or handling of an endless stream, so keep those
+00:02:04.015 --> 00:02:04.515
+question.
 
-00:02:08.062 --> 00:02:13.078
-separate requirements visible when comparing batch
-and streaming architectures.
+00:02:04.624 --> 00:02:09.802
+A batch job has a finite input and eventually
+completes, but its tasks may execute on many
 
-00:02:13.097 --> 00:02:19.005
-Stream processing reacts to an ongoing sequence
-rather than waiting for a complete dataset.
+00:02:09.802 --> 00:02:15.038
+machines at once. Scheduling a mapper near its
+input reduces the need to move the raw data.
 
-00:02:19.005 --> 00:02:25.498
-Monitoring and recommendations may benefit from
-short update latency, while historical reporting can
+00:02:15.038 --> 00:02:19.987
+The shuffle can still be expensive because
+records with matching keys must meet across
 
-00:02:25.498 --> 00:02:27.576
-tolerate larger batch intervals.
+00:02:19.987 --> 00:02:20.620
+partitions.
 
-00:02:27.576 --> 00:02:30.952
-Low latency is a target, not an automatic guarantee.
+00:02:20.624 --> 00:02:25.679
+If one word dominates the corpus, the
+corresponding reducer may become a bottleneck
+even
 
-00:02:30.952 --> 00:02:37.250
-A stream operator may still wait for enough
-evidence, and overloaded consumers can accumulate
-lag
+00:02:25.679 --> 00:02:30.620
+when the input is evenly divided. Chaining jobs
+creates more intermediate datasets and
 
-00:02:37.250 --> 00:02:40.301
-even when the architecture is called real time.
+00:02:30.620 --> 00:02:35.905
+communication stages, so sketch those
+intermediates before assuming that more machines
+solve
+
+00:02:35.905 --> 00:02:36.594
+the problem.
+
+00:02:36.624 --> 00:02:41.472
+Retries also matter: a failed task may run
+again, which is safe for framework-managed
+
+00:02:41.472 --> 00:02:46.378
+results under its contract but needs additional
+care for external side effects such as
+
+00:02:46.378 --> 00:02:47.347
+sending messages.
+
+00:02:47.347 --> 00:02:53.533
+A dashboard showing orders per minute cannot
+wait for the entire order stream to finish,
+
+00:02:53.533 --> 00:02:59.509
+because new orders keep arriving. It defines a
+window and produces an answer for that
+
+00:02:59.509 --> 00:03:05.836
+bounded interval while processing continues. Now
+let an order happen at 12:00:58 but reach
+
+00:03:05.836 --> 00:03:09.210
+the processor at 12:01:04 after a network delay.
+
+00:03:09.347 --> 00:03:14.512
+Event time places it in the earlier minute;
+arrival time places it in the later one. Choose
+
+00:03:14.512 --> 00:03:19.676
+which meaning the dashboard requires, then
+define whether a previously emitted count can be
+
+00:03:19.676 --> 00:03:23.763
+corrected. Calling the system real time does not
+answer those questions.
+
+00:03:23.847 --> 00:03:29.107
+The architecture needs explicit rules for window
+boundaries, late data, and the freshness
+
+00:03:29.107 --> 00:03:30.939
+the user can reasonably expect.
+
+00:03:30.939 --> 00:03:36.075
+A stream counter remembers partial results
+between messages. If it crashes after adding an
+
+00:03:36.075 --> 00:03:41.154
+order but before recording its input position, a
+restart may read that order again. If it
+
+00:03:41.154 --> 00:03:46.119
+records the position first and loses the counter
+update, it may skip the order instead.
+
+00:03:46.119 --> 00:03:51.236
+Recovery must coordinate the state with the
+consumed position under a defined processing
+
+00:03:51.236 --> 00:03:56.471
+contract. Checkpointing and replay are common
+building blocks, while external effects need
+
+00:03:56.471 --> 00:04:01.647
+their own idempotency or transaction design. A
+fast operator can also accumulate lag when
+
+00:04:01.647 --> 00:04:06.939
+arrivals exceed its capacity, so low latency is
+an operating condition rather than a label.
+
+00:04:07.119 --> 00:04:11.979
+Compare a nightly batch report and a
+continuously updated dashboard on their required
+
+00:04:11.979 --> 00:04:16.267
+freshness and recovery costs, not on whether
+either can process large data.

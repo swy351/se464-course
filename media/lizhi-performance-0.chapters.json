@@ -1,0 +1,32 @@
+[
+  {
+    "chapter": 1,
+    "title": "Why local performance is not end-to-end performance",
+    "time": 0
+  },
+  {
+    "chapter": 1,
+    "title": "Why local performance is not end-to-end performance",
+    "time": 39.53
+  },
+  {
+    "chapter": 2,
+    "title": "Measure deviations with repeated, comparable experiments",
+    "time": 85.31
+  },
+  {
+    "chapter": 2,
+    "title": "Measure deviations with repeated, comparable experiments",
+    "time": 123.86
+  },
+  {
+    "chapter": 3,
+    "title": "Map code-level changes into an architectural model",
+    "time": 170.89
+  },
+  {
+    "chapter": 3,
+    "title": "Map code-level changes into an architectural model",
+    "time": 204.48
+  }
+]

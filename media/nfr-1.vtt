@@ -1,42 +1,112 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:03.085
-Turn quality goals into measurable agreements.
+00:00:00.000 --> 00:00:05.248
+A measurable requirement names the observation
+and the conditions under which it must hold.
 
-00:00:03.085 --> 00:00:09.725
-State the metric, workload, threshold and
-observation interval, including how failures are
-counted.
+00:00:05.248 --> 00:00:10.439
+The search example gives a proportion and a
+latency threshold, but still needs a workload,
 
-00:00:09.725 --> 00:00:13.480
-Capacity needs an activity model, not just a user
-total.
+00:00:10.439 --> 00:00:15.572
+dataset and measurement window. Counting
+registered users does not specify concurrency or
 
-00:00:13.480 --> 00:00:20.120
-For other attributes, distinguish an outcome from a
-prescribed technology and test the outcome that
+00:00:15.572 --> 00:00:16.610
+request intensity.
 
-00:00:20.120 --> 00:00:22.333
-stakeholders actually care about.
+00:00:16.610 --> 00:00:21.555
+Define how failures, timeouts and warm-up
+periods enter a measurement so that different
 
-00:00:22.333 --> 00:00:26.326
-Optimize the end-to-end flow, not isolated component
-rates.
+00:00:21.555 --> 00:00:23.317
+tests answer the same question.
 
-00:00:26.326 --> 00:00:32.486
-In this simplified producer-consumer model,
-throughput is limited by combined production or
+00:00:23.317 --> 00:00:29.007
+Other qualities require equal care. Accuracy
+needs a defined error measure; maintainability
 
-00:00:32.486 --> 00:00:34.787
-consumption, whichever is smaller.
+00:00:29.007 --> 00:00:34.322
+needs a relevant change task or evidence rather
+than a vague hope. XML, Java or a SQL
 
-00:00:34.787 --> 00:00:38.442
-Balancing the stages can outperform equal
-allocations.
+00:00:34.322 --> 00:00:39.012
+database may be design constraints, but they do
+not by themselves establish
 
-00:00:38.442 --> 00:00:45.007
-State the equal-cost assumption and remember that
-full CPU utilization is still a capacity limit,
+00:00:39.012 --> 00:00:40.075
+interoperability.
 
-00:00:45.007 --> 00:00:46.835
-with no practical headroom.
+00:00:40.317 --> 00:00:45.212
+Distinguish the objective from a proposed
+mechanism and choose a test that addresses the
+
+00:00:45.212 --> 00:00:49.997
+objective. Any additional numerical targets in a
+teaching exercise should be marked as
+
+00:00:49.997 --> 00:00:55.059
+assumptions. Do twenty million registered users
+imply twenty million simultaneous requests?
+
+00:00:55.059 --> 00:01:00.255
+No. Registration, activity, concurrency and
+request rate measure different things and
+
+00:01:00.255 --> 00:01:02.578
+require separate workload assumptions.
+
+00:01:02.578 --> 00:01:08.164
+The C1, C2 and T1 example models producers
+feeding a consumer on one CPU. Under the stated
+
+00:01:08.164 --> 00:01:13.440
+teaching assumptions, each stage operation has
+equal cost and completed throughput is
+
+00:01:13.440 --> 00:01:17.288
+limited by the smaller of combined production
+and consumption.
+
+00:01:17.288 --> 00:01:22.779
+A CPU budget of twelve stage operations per
+second must cover both producing and consuming
+
+00:01:22.779 --> 00:01:27.293
+work, so maximizing each component independently
+is not a valid objective.
+
+00:01:27.293 --> 00:01:32.116
+With producer rates three and three and a
+consumer rate six, completed throughput is six
+
+00:01:32.116 --> 00:01:37.158
+while the total CPU budget is twelve. Giving all
+three components four operations per second
+
+00:01:37.158 --> 00:01:41.708
+consumes the same budget but only completes four
+because consumption is slower than
+
+00:01:41.708 --> 00:01:42.311
+production.
+
+00:01:42.311 --> 00:01:48.623
+This is a deliberately simplified capacity
+model. Real systems add scheduling, unequal
+costs
+
+00:01:48.623 --> 00:01:54.936
+and queueing; one hundred percent utilization
+leaves no headroom and should not be described
+
+00:01:54.936 --> 00:02:00.632
+as unlimited capacity. Why can rates 3,3,6 beat
+rates 4,4,4 with the same CPU cost?
+
+00:02:00.811 --> 00:02:07.536
+Both consume twelve stage operations per second,
+but throughput is min(C1+C2,T1): six in the
+
+00:02:07.536 --> 00:02:10.021
+first case and four in the second.

@@ -1,0 +1,22 @@
+[
+  {
+    "chapter": 4,
+    "title": "The thread-pool Leader/Followers pattern",
+    "time": 0
+  },
+  {
+    "chapter": 4,
+    "title": "The thread-pool Leader/Followers pattern",
+    "time": 41.61
+  },
+  {
+    "chapter": 5,
+    "title": "Kafka partition leaders and replicated logs",
+    "time": 85.25
+  },
+  {
+    "chapter": 5,
+    "title": "Kafka partition leaders and replicated logs",
+    "time": 131.69
+  }
+]

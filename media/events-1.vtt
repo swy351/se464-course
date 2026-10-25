@@ -1,74 +1,168 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:05.926
-A subscriber records an experiment-completed event
-and then sends a researcher a notification.
+00:00:00.000 --> 00:00:05.155
+Consider two events for a shipping address:
+version seven sets one address and version eight
 
-00:00:05.926 --> 00:00:12.168
-If it crashes after sending but before recording
-progress, a retry can send the notification again.
+00:00:05.155 --> 00:00:10.142
+replaces it. A handler can deduplicate repeated
+event identifiers and still get the wrong
 
-00:00:12.168 --> 00:00:18.472
-Repeated delivery and repeated business effects are
-different issues: a stable event identifier lets
+00:00:10.142 --> 00:00:14.625
+result if version seven arrives after version
+eight with a different identifier.
 
-00:00:18.472 --> 00:00:24.588
-the handler recognize a prior effect only when the
-relevant state is recorded with an appropriate
+00:00:14.625 --> 00:00:19.802
+Record or compare the entity version when
+applying a change, or choose an ordered
+processing
 
-00:00:24.588 --> 00:00:25.659
-consistency rule.
+00:00:19.802 --> 00:00:24.753
+scope that preserves the required sequence.
+Idempotency answers whether the same logical
 
-00:00:25.700 --> 00:00:30.080
-Simply labelling the handler idempotent does not
-establish that rule.
+00:00:24.753 --> 00:00:29.873
+event produces an extra effect; ordering answers
+whether different valid events produce the
 
-00:00:30.080 --> 00:00:33.381
-Now deliver result version three before version two.
+00:00:29.873 --> 00:00:30.999
+correct final state.
 
-00:00:33.381 --> 00:00:38.967
-Duplicate detection alone cannot prevent an old
-version from overwriting a newer result.
+00:00:31.125 --> 00:00:35.800
+Draw both the event identifier and entity
+version in a worked example. This prevents a
 
-00:00:38.967 --> 00:00:43.919
-Define ordering per experiment or reject obsolete
-updates using their version.
+00:00:35.800 --> 00:00:40.475
+common reasoning error where a system is called
+reliable simply because duplicates are
 
-00:00:43.919 --> 00:00:50.140
-When a malformed event repeatedly fails, bound
-retries and retain enough information for diagnosis
+00:00:40.475 --> 00:00:44.063
+ignored while stale updates can still overwrite
+newer information.
 
-00:00:50.140 --> 00:00:51.536
-and controlled replay.
+00:00:44.125 --> 00:00:49.416
+A subscriber receives an event it cannot parse
+because a required field has an unexpected
 
-00:00:51.536 --> 00:00:57.508
-Monitor subscription age as well as message counts
-so a small set of stuck events is visible.
+00:00:49.416 --> 00:00:54.885
+format. Immediate unlimited retries cannot
+repair that message and can crowd out valid
+work.
 
-00:00:57.508 --> 00:01:03.672
-These decisions belong to the consumer contract and
-broker configuration; a distributed delivery
+00:00:54.885 --> 00:01:00.295
+After a bounded retry policy, move it to a dead-
+letter workflow that preserves the payload,
 
-00:01:03.672 --> 00:01:10.029
-system does not offer one universal ordering or
-exactly-once guarantee for every downstream effect.
+00:01:00.295 --> 00:01:02.613
+failure reason, and diagnostic context.
 
-00:01:10.036 --> 00:01:14.828
-The robotics example organizes computation into
-nodes with typed messages.
+00:01:02.625 --> 00:01:07.691
+An operator or repair process can correct the
+cause and replay deliberately. Some messages
 
-00:01:14.828 --> 00:01:21.109
-Topics carry streams such as sensor readings,
-services provide request-and-response interactions,
+00:01:07.691 --> 00:01:12.644
+should instead expire: an alert that a pickup is
+arriving may be useless hours after the
 
-00:01:21.109 --> 00:01:25.383
-and actions support longer goals with progress and a
-final result.
+00:01:12.644 --> 00:01:17.653
+trip ended. Each subscription needs its own lag
+monitoring because analytics may tolerate
 
-00:01:25.383 --> 00:01:31.534
-These interfaces let sensing, planning, control and
-visualization evolve separately while still
+00:01:17.653 --> 00:01:19.454
+delay that notifications cannot.
 
-00:01:31.534 --> 00:01:38.009
-communicating through explicit data contracts suited
-to their interaction patterns and timing needs.
+00:01:19.625 --> 00:01:24.657
+A successful publisher acknowledgement therefore
+says little about every downstream result.
+
+00:01:24.657 --> 00:01:29.412
+Observe progress and failure at the consumer
+responsibility where the useful effect is
+
+00:01:29.412 --> 00:01:30.407
+supposed to occur.
+
+00:01:30.625 --> 00:01:35.931
+A robot camera produces frames continuously, so
+a topic is a natural way to let perception
+
+00:01:35.931 --> 00:01:41.354
+and visualization subscribe independently.
+Asking for the current map is closer to a
+request
+
+00:01:41.354 --> 00:01:46.719
+with a result. Asking the robot to navigate to a
+destination is a longer goal that benefits
+
+00:01:46.719 --> 00:01:50.669
+from progress feedback and cancellation as well
+as a final outcome.
+
+00:01:50.669 --> 00:01:55.464
+These are different interaction contracts even
+if all are implemented with messages
+
+00:01:55.464 --> 00:02:00.779
+underneath. Draw the camera stream, map request,
+and navigation goal as different connectors
+
+00:02:00.779 --> 00:02:05.458
+between nodes. A single generic message arrow
+would conceal timing and completion
+
+00:02:05.458 --> 00:02:06.210
+expectations.
+
+00:02:06.210 --> 00:02:11.527
+Typed interfaces help components evolve
+independently, but the architect still has to
+choose
+
+00:02:11.527 --> 00:02:14.418
+what data and lifecycle each interaction
+promises.
+
+00:02:14.418 --> 00:02:19.357
+Knowing that a camera node exists does not
+establish which frames must be retained, how
+
+00:02:19.357 --> 00:02:24.466
+quickly a controller needs them, or what to do
+when communication stops. A stale image and
+
+00:02:24.466 --> 00:02:29.688
+an emergency-stop command have different
+consequences, so their delivery and timing
+policies
+
+00:02:29.688 --> 00:02:31.335
+should not be copied blindly.
+
+00:02:31.418 --> 00:02:36.701
+The centralized registration component in the
+historical ROS 1 example illustrates naming
+
+00:02:36.701 --> 00:02:41.628
+and discovery; a different version can use a
+different discovery architecture while
+
+00:02:41.628 --> 00:02:46.615
+preserving the modular node idea. Keep these
+concerns separate in the diagram. After
+
+00:02:46.615 --> 00:02:51.423
+discovering a peer, a component still needs
+compatible interfaces, an appropriate
+
+00:02:51.423 --> 00:02:54.450
+communication policy, and defined failure
+behavior.
+
+00:02:54.450 --> 00:02:59.558
+For safety-related control, a communication
+abstraction alone is insufficient evidence that
+
+00:02:59.558 --> 00:03:03.206
+the complete system will meet its timing and
+safety requirements.

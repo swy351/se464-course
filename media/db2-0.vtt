@@ -1,180 +1,215 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:06.433
-Data locality begins with the question a user asks,
-but it must also account for how facts change.
+00:00:00.000 --> 00:00:05.051
+Imagine drawing a normalized database as a
+graph. Each row is a node, and each foreign-key
 
-00:00:06.433 --> 00:00:12.866
-We will use campsite reservations to distinguish
-useful snapshots from duplicated information that
+00:00:05.051 --> 00:00:10.158
+reference is an edge. Placing rows on storage
+machines becomes a partitioning problem: keep
 
-00:00:12.866 --> 00:00:14.835
-becomes difficult to maintain.
+00:00:10.158 --> 00:00:14.031
+related rows together while keeping the machines
+reasonably balanced.
 
-00:00:14.835 --> 00:00:21.268
-A campsite booking page needs a reservation, its
-selected facilities and a short site description.
+00:00:14.031 --> 00:00:19.133
+An edge crossing a partition boundary suggests a
+network lookup during a join. Some graphs
 
-00:00:21.300 --> 00:00:26.797
-Embedding a snapshot of the booked facilities can
-make that page a single aggregate read.
+00:00:19.133 --> 00:00:24.234
+divide naturally, such as independent accounts
+with their own orders. Social relationships
 
-00:00:26.797 --> 00:00:32.911
-Keeping the current site description separately
-avoids rewriting thousands of reservations whenever
+00:00:24.234 --> 00:00:29.110
+and shared reference data are harder because
+many users connect across any boundary we
 
-00:00:32.911 --> 00:00:34.393
-the description changes.
+00:00:29.110 --> 00:00:29.506
+choose.
 
-00:00:34.393 --> 00:00:40.446
-The correct boundary depends on whether the page
-promises historical booking details or the latest
+00:00:29.531 --> 00:00:34.310
+Even an excellent placement cannot remove every
+crossing. Counting rows alone misses the
 
-00:00:40.446 --> 00:00:41.805
-catalogue information.
+00:00:34.310 --> 00:00:38.764
+workload: a frequently followed edge can matter
+more than thousands of rarely used
 
-00:00:41.805 --> 00:00:45.695
-Suppose 2,000 reservations contain a copied access
-instruction.
+00:00:38.764 --> 00:00:39.361
+references.
 
-00:00:45.700 --> 00:00:51.627
-A correction now requires updating many copies or
-accepting mixed versions during propagation.
+00:00:39.531 --> 00:00:44.750
+Denormalization changes that problem by copying
+information into the aggregate that needs
 
-00:00:51.627 --> 00:00:56.860
-By contrast, a historical price agreed at booking
-should usually remain a snapshot.
+00:00:44.750 --> 00:00:50.146
+it. A profile document can contain the region
+name, employment entries and education entries
 
-00:00:56.860 --> 00:01:02.977
-Denormalization is therefore a choice about update
-ownership and meaning, as well as query speed.
+00:00:50.146 --> 00:00:55.541
+instead of requiring a separate lookup for each
+item. Fetching the profile then requires one
 
-00:01:02.977 --> 00:01:09.156
-List each embedded field, its authoritative source
-and the rule for changing it before celebrating
+00:00:55.541 --> 00:00:59.647
+bounded access path, which is easier to
+distribute by user identifier.
 
-00:01:09.156 --> 00:01:10.543
-fewer network lookups.
+00:00:59.647 --> 00:01:05.168
+The cost appears when shared information
+changes. A region rename that once modified one
+row
 
-00:01:10.543 --> 00:01:14.281
-A hash gives a repeatable route from a key to a
-partition.
+00:01:05.168 --> 00:01:10.569
+may now require updates to many profiles, and
+intermediate states can disagree. Follow the
 
-00:01:14.281 --> 00:01:18.341
-It is a routing mechanism, not a proof of balanced
-performance.
+00:01:10.569 --> 00:01:15.551
+arrows from one shared region to two copied
+profiles: duplication removes read-time
 
-00:01:18.341 --> 00:01:23.626
-Let us trace one identifier and then test the
-assumptions behind the distribution.
+00:01:15.551 --> 00:01:18.492
+communication but creates write-time
+maintenance.
 
-00:01:23.626 --> 00:01:29.748
-Consider a toy hash space with values zero through
-ninety-nine, divided into four equal ranges.
+00:01:18.647 --> 00:01:22.266
+It moves work and responsibility rather than
+making them disappear.
 
-00:01:29.748 --> 00:01:35.990
-A parcel identifier hashing to sixty-two is routed
-to the owner of the fifty-through-seventy-four
+00:01:22.266 --> 00:01:27.556
+A local hash table turns a key into a storage
+location. A distributed hash table extends
 
-00:01:35.990 --> 00:01:36.376
-range.
+00:01:27.556 --> 00:01:32.726
+that idea by assigning ranges of hash values to
+different machines. Suppose a teaching
 
-00:01:36.376 --> 00:01:41.010
-The client needs the current ownership map as well
-as the hash function.
+00:01:32.726 --> 00:01:38.076
+example uses hashes from zero through ninety-
+nine: node A owns zero through thirty-two, B
 
-00:01:41.010 --> 00:01:47.381
-When ownership changes, migration and routing must
-agree so requests do not silently read the wrong
+00:01:38.076 --> 00:01:41.863
+owns thirty-three through sixty-five, and C owns
+the remainder.
 
-00:01:47.381 --> 00:01:47.767
-place.
+00:01:41.863 --> 00:01:47.062
+A client hashes an account key, finds the
+containing range in its routing map and contacts
 
-00:01:47.767 --> 00:01:52.336
-Evenly distributed identifiers do not imply evenly
-distributed traffic.
+00:01:47.062 --> 00:01:52.146
+the responsible node. The same key must produce
+the same hash for all clients using that
 
-00:01:52.348 --> 00:01:58.578
-If one parcel receives half the tracking requests,
-its owner can remain overloaded while other
+00:01:52.146 --> 00:01:57.057
+configuration. No central dispatcher needs to
+execute every data request, which helps
 
-00:01:58.578 --> 00:01:59.638
-owners are idle.
+00:01:57.057 --> 00:02:00.928
+different clients make progress independently as
+the cluster grows.
 
-00:01:59.638 --> 00:02:04.675
-Adding machines does not split that individual key’s
-requests automatically.
+00:02:00.928 --> 00:02:05.843
+Hashing deliberately scatters nearby input keys.
+That is useful for distributing many
 
-00:02:04.675 --> 00:02:11.103
-Similarly, hashes scatter nearby timestamps, so a
-query for all parcels created between two times
+00:02:05.843 --> 00:02:11.105
+distinct keys, but it removes the original key
+order. Asking for one known account is easy;
 
-00:02:11.103 --> 00:02:13.754
-cannot simply walk adjacent hash values.
+00:02:11.105 --> 00:02:16.252
+asking for every account between two identifiers
+cannot generally be answered by scanning
 
-00:02:13.754 --> 00:02:19.454
-Separate point lookup, range lookup and hot-key
-mitigation when evaluating the design.
+00:02:16.252 --> 00:02:17.929
+one contiguous hash interval.
 
-00:02:19.454 --> 00:02:24.708
-Replication provides extra copies, but those copies
-may be unable to communicate.
+00:02:17.929 --> 00:02:23.348
+Nor does a uniform distribution of keys imply
+uniform traffic: one extremely popular key
 
-00:02:24.708 --> 00:02:30.806
-The architectural decision becomes concrete when we
-ask what the application may promise while
+00:02:23.348 --> 00:02:28.766
+still maps to one replica group. In the diagram,
+distinguish the key-to-hash calculation
 
-00:02:30.806 --> 00:02:32.363
-communication is broken.
+00:02:28.766 --> 00:02:33.815
+from the routing map. The first is deterministic
+computation; the second is shared
 
-00:02:32.363 --> 00:02:35.865
-Compare a rental commitment with a display
-preference.
+00:02:33.815 --> 00:02:35.662
+configuration that can change.
 
-00:02:35.865 --> 00:02:40.212
-A tool-rental service keeps three copies of an
-availability record.
+00:02:35.662 --> 00:02:40.686
+A correct hash calculation with an obsolete
+ownership map can still send a request to the
 
-00:02:40.212 --> 00:02:43.650
-A network break isolates one copy from the other
-two.
+00:02:40.686 --> 00:02:41.476
+wrong machine.
 
-00:02:43.654 --> 00:02:50.061
-If both sides independently confirm rental of the
-final drill, later reconciliation cannot make both
+00:02:41.662 --> 00:02:46.980
+A cluster containing many machines should expect
+individual failures. If every key has only
 
-00:02:50.061 --> 00:02:51.919
-promises physically possible.
+00:02:46.980 --> 00:02:52.238
+one copy, losing a node makes that node's range
+unavailable and may lose data permanently.
 
-00:02:51.919 --> 00:02:58.262
-A design protecting that single-item invariant may
-require the isolated side to refuse or delay the
+00:02:52.238 --> 00:02:56.504
+Replication stores each key on several nodes so
+another copy can survive.
 
-00:02:58.262 --> 00:03:00.633
-booking while the majority continues.
+00:02:56.662 --> 00:03:01.515
+Keep the distinction between cluster size and
+replication factor clear: a cluster might
 
-00:03:00.633 --> 00:03:06.976
-A less critical observation, such as a customer’s
-preferred display colour, may be accepted on both
+00:03:01.515 --> 00:03:06.534
+contain hundreds of machines while each key has
+three replicas. A write to all replicas of
 
-00:03:06.976 --> 00:03:08.706
-sides and reconciled later.
+00:03:06.534 --> 00:03:10.717
+one key then involves three destinations, not
+every machine in the cluster.
 
-00:03:08.754 --> 00:03:14.613
-This illustrates the CAP trade-off during a
-partition: linearizable behavior and a successful
+00:03:10.717 --> 00:03:15.582
+This bounded redundancy preserves the basic
+scaling idea while improving durability and
 
-00:03:14.613 --> 00:03:19.212
-response to every request at non-failing nodes
-cannot both be guaranteed.
+00:03:15.582 --> 00:03:20.224
+recovery options, provided the replicas do not
+all share the same failure boundary.
 
-00:03:19.212 --> 00:03:23.811
-It does not say replication is always unavailable or
-always inconsistent.
+00:03:20.224 --> 00:03:25.688
+Replication introduces a new timing problem.
+Initially A, B and C store x equal to one. A
 
-00:03:23.811 --> 00:03:30.111
-State the operation, its invariant and the failure
-condition rather than assigning one slogan to the
+00:03:25.688 --> 00:03:30.784
+client writes x equal to two, and A receives the
+update before B and C. During this
 
-00:03:30.111 --> 00:03:31.308
-entire application.
+00:03:30.784 --> 00:03:36.248
+interval, different replicas can answer the same
+read differently even though no disk has
+
+00:03:36.248 --> 00:03:36.678
+failed.
+
+00:03:36.724 --> 00:03:41.851
+Network delays, queueing and scheduling make
+simultaneous arrival unrealistic. Now imagine
+
+00:03:41.851 --> 00:03:46.979
+that the network separates A from the other
+copies. If both sides must answer immediately,
+
+00:03:46.979 --> 00:03:51.765
+they cannot always know whether an unseen write
+has occurred elsewhere. If they must
+
+00:03:51.765 --> 00:03:56.323
+preserve a single real-time-consistent history,
+some requests must wait or fail.
+
+00:03:56.323 --> 00:04:01.247
+The partition makes this choice unavoidable; it
+is not solved by drawing more replica
+
+00:04:01.247 --> 00:04:01.652
+arrows.

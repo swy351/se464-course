@@ -1,0 +1,42 @@
+[
+  {
+    "chapter": 1,
+    "title": "Policies, threats and the guard",
+    "time": 0
+  },
+  {
+    "chapter": 1,
+    "title": "Policies, threats and the guard",
+    "time": 46.2
+  },
+  {
+    "chapter": 2,
+    "title": "Security principles as architecture decisions",
+    "time": 91.49
+  },
+  {
+    "chapter": 2,
+    "title": "Security principles as architecture decisions",
+    "time": 135.66
+  },
+  {
+    "chapter": 3,
+    "title": "Passwords, hashes and protected transport",
+    "time": 185.22
+  },
+  {
+    "chapter": 3,
+    "title": "Passwords, hashes and protected transport",
+    "time": 230.27
+  },
+  {
+    "chapter": 4,
+    "title": "Sessions, cookies and phishing resistance",
+    "time": 278.27
+  },
+  {
+    "chapter": 4,
+    "title": "Sessions, cookies and phishing resistance",
+    "time": 322.87
+  }
+]

@@ -1,10 +1,18 @@
 Case study: Uber’s real-time push platform
-Part 2 • Synthetic narration
+Illustrated lesson · Part 2 · Synthetic narration
 
-Scaling connection ownership
+Scaling connection ownership — Scaling connection ownership
 
 The slides describe an early RAMEN implementation using sharded connections and Redis, followed by a redesign separating connection handling, routing and cluster management. Treat the throughput and connection counts as reported historical observations. They illustrate why topology convergence and overloaded event loops can become important even when each individual message is small and the application’s business logic appears straightforward.
 
-Protocol evolution and the reliability boundary
+Scaling connection ownership — Reason through the consequences
+
+In the redesigned case, Streamgate handles protocol and storage work while a frontend routes requests to the appropriate worker. Helix and ZooKeeper manage topology-related responsibilities, and the cache and durable storage layers serve different purposes. The architectural lesson is ownership: changing a worker assignment must be coordinated with routing and recovery. More workers cannot help if clients or producers continue using stale ownership information. Can doubling connection workers help if routing still sends all requests to the old owner? Not reliably. Membership and routing convergence are part of the scaling design.
+
+Protocol evolution and the reliability boundary — Protocol evolution and the reliability boundary
 
 The case identifies long-tail delivery problems involving acknowledgement loss, inconsistent client behavior and limitations of the earlier unidirectional stream. Its later protocol work explores bidirectional communication and more standardized client support. Separate the enduring requirement from a particular transport choice: the service needs feedback about progress, recoverable state and a clear policy for clients whose networks disappear for extended periods.
+
+Protocol evolution and the reliability boundary — Reason through the consequences
+
+Bidirectional streaming can carry acknowledgements promptly, but it does not turn a network failure into certainty about application effects. Define exactly what each acknowledgement means and which state survives a worker restart. The source’s reported server-side reliability is not an end-to-end guarantee that a person received or acted on an alert. Evaluate transport changes by measured recovery behavior and implementation consistency. Does changing from SSE to a bidirectional RPC stream automatically create exactly-once application processing? No. Durable state, acknowledgement meaning and duplicate handling still determine application effects.

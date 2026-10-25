@@ -1,0 +1,32 @@
+[
+  {
+    "chapter": 1,
+    "title": "Read and write class diagrams",
+    "time": 0
+  },
+  {
+    "chapter": 1,
+    "title": "Read and write class diagrams",
+    "time": 30.23
+  },
+  {
+    "chapter": 2,
+    "title": "Patterns as reusable design knowledge",
+    "time": 71.73
+  },
+  {
+    "chapter": 2,
+    "title": "Patterns as reusable design knowledge",
+    "time": 95.46
+  },
+  {
+    "chapter": 3,
+    "title": "Single responsibility and cohesion",
+    "time": 134.46
+  },
+  {
+    "chapter": 3,
+    "title": "Single responsibility and cohesion",
+    "time": 158.76
+  }
+]

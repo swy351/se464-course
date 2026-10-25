@@ -12,131 +12,131 @@ email submission dialogue: earlier commands
 establish the sender and recipients, while a
 later command supplies the message body.
 
-00:00:14.648 --> 00:00:20.090
+00:00:14.648 --> 00:00:20.125
 A worker that sees only the final body cannot
 reconstruct the complete operation. It needs
 
-00:00:20.090 --> 00:00:25.592
+00:00:20.125 --> 00:00:25.237
 information retained from the earlier messages.
-The diagram shows these pieces accumulating
+In this example, notice these pieces
 
-00:00:25.592 --> 00:00:31.034
-in one conversation context. State is therefore
-not simply data in a database; it includes
+00:00:25.237 --> 00:00:30.775
+accumulating in one conversation context. State
+is therefore not simply data in a database;
 
-00:00:31.034 --> 00:00:36.597
-any remembered information that later processing
-depends on, including process variables, an
+00:00:30.775 --> 00:00:36.252
+it includes any remembered information that
+later processing depends on, including process
 
-00:00:36.597 --> 00:00:40.769
-open connection's context, or a partially
-completed user interaction.
+00:00:36.252 --> 00:00:41.303
+variables, an open connection's context, or a
+partially completed user interaction.
 
-00:00:40.769 --> 00:00:46.034
+00:00:41.303 --> 00:00:46.568
 HTTP requests are designed to carry the
 information needed to interpret each individual
 
-00:00:46.034 --> 00:00:51.480
+00:00:46.568 --> 00:00:52.014
 exchange, but an HTTP application can still
 introduce a dependency on a particular worker.
 
-00:00:51.480 --> 00:00:55.534
+00:00:52.014 --> 00:00:56.068
 Imagine worker A storing an unfinished game only
 in its own memory.
 
-00:00:55.769 --> 00:01:00.939
+00:00:56.303 --> 00:01:01.520
 The next request contains the game identifier
 but reaches worker B, whose dictionary has no
 
-00:01:00.939 --> 00:01:06.166
+00:01:01.520 --> 00:01:06.794
 corresponding entry. Identical code does not
 make these workers interchangeable because they
 
-00:01:06.166 --> 00:01:11.336
-have different histories. The illustration
-follows the identifier to the wrong memory store
+00:01:06.794 --> 00:01:12.011
+have different histories. This example follows
+the identifier to the wrong memory store and
 
-00:01:11.336 --> 00:01:13.381
-and exposes the missing information.
+00:01:12.011 --> 00:01:13.845
+exposes the missing information.
 
-00:01:13.381 --> 00:01:18.180
+00:01:13.845 --> 00:01:18.645
 Before adding replicas, ask whether another
 worker can complete the request using the
 
-00:01:18.180 --> 00:01:23.093
+00:01:18.645 --> 00:01:23.557
 request itself and explicitly shared services,
 without consulting the original worker's
 
-00:01:23.093 --> 00:01:23.997
+00:01:23.557 --> 00:01:24.461
 private history.
 
-00:01:23.997 --> 00:01:29.214
+00:01:24.461 --> 00:01:29.678
 Start with a chess application that keeps a
 dictionary of active games inside one process.
 
-00:01:29.214 --> 00:01:34.489
+00:01:29.678 --> 00:01:34.954
 Cloning that process creates several independent
 dictionaries, so each game becomes tied to
 
-00:01:34.489 --> 00:01:39.533
+00:01:34.954 --> 00:01:39.997
 the worker holding it. Instead, put the
 authoritative game record in shared storage and
 
-00:01:39.533 --> 00:01:41.794
+00:01:39.997 --> 00:01:42.258
 include its identifier in each request.
 
-00:01:41.997 --> 00:01:47.510
+00:01:42.461 --> 00:01:48.032
 A worker loads the board, validates the
 requested move, saves the result, and returns
 the
 
-00:01:47.510 --> 00:01:52.962
+00:01:48.032 --> 00:01:53.540
 updated representation. A replacement worker can
 now continue after the original process
 
-00:01:52.962 --> 00:01:58.662
-disappears. The diagram shows two
+00:01:53.540 --> 00:01:59.112
+disappears. In this example, notice two
 interchangeable application workers converging
-on one game
+on
 
-00:01:58.662 --> 00:01:59.095
-record.
+00:01:59.112 --> 00:02:00.113
+one game record.
 
-00:01:59.095 --> 00:02:04.137
+00:02:00.113 --> 00:02:05.154
 We have removed a placement constraint from the
 application tier, but we have deliberately
 
-00:02:04.137 --> 00:02:08.618
+00:02:05.154 --> 00:02:09.636
 created a shared dependency that needs its own
 capacity and availability design.
 
-00:02:08.618 --> 00:02:13.605
+00:02:09.636 --> 00:02:14.623
 Externalizing state does not automatically make
 concurrent updates correct. Suppose two
 
-00:02:13.605 --> 00:02:18.763
+00:02:14.623 --> 00:02:19.781
 requests both read game version twelve. The
 first valid move updates the record to version
 
-00:02:18.763 --> 00:02:23.922
+00:02:19.781 --> 00:02:24.940
 thirteen. If the second request blindly writes
 its earlier view, it can erase the accepted
 
-00:02:23.922 --> 00:02:26.444
+00:02:24.940 --> 00:02:27.462
 change or apply a move to an obsolete board.
 
-00:02:26.618 --> 00:02:31.547
+00:02:27.636 --> 00:02:32.560
 A conditional update that succeeds only while
 the version is still twelve lets exactly one
 
-00:02:31.547 --> 00:02:36.422
+00:02:32.560 --> 00:02:37.429
 of these competing updates win. The second
 request must reload and reconsider its action.
 
-00:02:36.422 --> 00:02:41.352
-The diagram marks the two reads and the rejected
-stale write; it makes clear that a common
+00:02:37.429 --> 00:02:42.189
+Notice the two reads and the rejected stale
+write; it makes clear that a common storage
 
-00:02:41.352 --> 00:02:45.295
-storage location and a correct update protocol
-solve different problems.
+00:02:42.189 --> 00:02:45.690
+location and a correct update protocol solve
+different problems.

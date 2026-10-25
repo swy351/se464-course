@@ -7,7 +7,7 @@ Start with a simple social-feed model: users, follow relationships and posts. Pu
 
 Start with normalized data and a read workload — One feed reaches several histories
 
-Follow one reader who subscribes to three authors. Their posts are mixed with many other authors' posts in storage and may live on different shards. Indexes help locate relevant rows, but they do not make every reader's selected posts physically adjacent. A feed query can require multiple lookups, remote requests and a merge before returning a small page. Storage systems generally benefit from useful locality, while many small scattered accesses add work and latency. The diagram should branch from the reader's follow list to several author histories and then converge at a sorted feed. This makes the read amplification visible instead of attributing the delay vaguely to a join.
+Follow one reader who subscribes to three authors. Their posts are mixed with many other authors' posts in storage and may live on different shards. Indexes help locate relevant rows, but they do not make every reader's selected posts physically adjacent. A feed query can require multiple lookups, remote requests and a merge before returning a small page. Storage systems generally benefit from useful locality, while many small scattered accesses add work and latency. This example should branch from the reader's follow list to several author histories and then converge at a sorted feed. This makes the read amplification visible instead of attributing the delay vaguely to a join.
 
 Materialized feeds and asynchronous publication — Build the read model when a post arrives
 

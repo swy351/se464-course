@@ -76,100 +76,105 @@ must satisfy the supertype’s promised
 00:01:26.565 --> 00:01:26.976
 result.
 
-00:01:27.142 --> 00:01:32.246
-The mutable Rectangle example promises
-independently adjustable width and height.
-Square
+00:01:27.142 --> 00:01:32.257
+Consider this client code: set the width to
+five, then set the height to ten. Under a
 
-00:01:32.246 --> 00:01:37.292
-breaks that promise by changing both dimensions
-in a setter, so a client expecting area
+00:01:32.257 --> 00:01:37.673
+mutable Rectangle contract with independently
+adjustable dimensions, the client expects an
 
-00:01:37.292 --> 00:01:42.164
-fifty receives one hundred. This is a contract
-problem rather than a statement about
+00:01:37.673 --> 00:01:41.584
+area of fifty. The blue rectangle makes that
+expectation visible.
 
-00:01:42.164 --> 00:01:42.686
-geometry.
+00:01:41.642 --> 00:01:46.606
+Now substitute a mutable Square whose setters
+always change both dimensions. Setting the
 
-00:01:42.686 --> 00:01:48.158
-The unmodifiable List example needs different
-care: Java documents optional mutators, so an
+00:01:46.606 --> 00:01:51.740
+height to ten also changes the width to ten. The
+red square therefore has area one hundred.
 
-00:01:48.158 --> 00:01:53.450
-exception can be permitted by the declared
-contract. A client requiring mutation needs a
+00:01:51.740 --> 00:01:56.930
+The problem is not that the geometry is wrong.
+The problem is that a client-visible mutation
 
-00:01:53.450 --> 00:01:58.862
-stronger capability guarantee. Does the
-mathematical fact that every square is a
-rectangle
+00:01:56.930 --> 00:01:57.833
+promise changed.
 
-00:01:58.862 --> 00:02:01.568
-prove mutable Square is a behavioral subtype?
+00:01:57.833 --> 00:01:59.798
+Substitutability depends on the declared
+programming contract. Mathematical membership
+alone
 
-00:02:01.686 --> 00:02:08.002
-No. The programming interface’s mutation
-promises, not just geometric membership,
-determine
+00:01:59.798 --> 00:02:01.720
+does not establish behavioral compatibility. Be
+equally careful with an unmodifiable List:
 
-00:02:08.002 --> 00:02:09.182
-substitutability.
+00:02:01.720 --> 00:02:03.620
+if the interface explicitly permits an
+unsupported mutator, an exception may satisfy
+that
 
-00:02:09.186 --> 00:02:14.581
+00:02:03.620 --> 00:02:05.329
+contract. A client that requires mutation needs
+a stronger capability guarantee.
+
+00:02:05.333 --> 00:02:10.728
 Interface segregation focuses on what each
 client needs to depend on. A broad interface can
 
-00:02:14.581 --> 00:02:19.917
+00:02:10.728 --> 00:02:16.064
 mix reading, writing and event handling even
 when many clients need only one role. Smaller
 
-00:02:19.917 --> 00:02:22.407
+00:02:16.064 --> 00:02:18.554
 role interfaces make capabilities clearer.
 
-00:02:22.407 --> 00:02:27.542
+00:02:18.554 --> 00:02:23.690
 An adapter with default no-op callbacks may
 reduce implementation effort, but it does not
 
-00:02:27.542 --> 00:02:30.716
+00:02:23.690 --> 00:02:26.863
 erase the conceptual breadth of the original
 interface.
 
-00:02:30.907 --> 00:02:36.749
+00:02:27.054 --> 00:02:32.897
 Dependency inversion places policy behind stable
 abstractions instead of binding it directly
 
-00:02:36.749 --> 00:02:42.338
+00:02:32.897 --> 00:02:38.485
 to implementation details. JDBC illustrates
 application code using a database-facing API
 
-00:02:42.338 --> 00:02:47.673
+00:02:38.485 --> 00:02:43.820
 implemented by drivers. The boundary can
 localize many implementation changes, while
 
-00:02:47.673 --> 00:02:52.055
+00:02:43.820 --> 00:02:48.202
 behavioral differences and contract changes may
 still affect clients.
 
-00:02:52.055 --> 00:02:56.970
+00:02:48.202 --> 00:02:53.117
 Together, these principles encourage focused
 contracts owned by the needs of the caller,
 
-00:02:56.970 --> 00:03:01.717
+00:02:53.117 --> 00:02:57.864
 with concrete implementations replaceable only
 to the extent that they preserve those
 
-00:03:01.717 --> 00:03:06.855
+00:02:57.864 --> 00:03:03.003
 contracts. Does adding an interface guarantee
 callers are unaffected by every implementation
 
-00:03:06.855 --> 00:03:07.246
+00:03:03.003 --> 00:03:03.394
 change?
 
-00:03:07.246 --> 00:03:12.707
+00:03:03.394 --> 00:03:08.854
 No. Changes in observable behavior, contract or
 supported capabilities can still affect
 
-00:03:12.707 --> 00:03:15.845
+00:03:08.854 --> 00:03:11.992
 callers even when method signatures remain
 stable.

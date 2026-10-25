@@ -3,7 +3,7 @@ Illustrated lesson · Part 2 · Synthetic narration
 
 Partitioning a social graph — One author has distant followers
 
-Partitioning social data is difficult because different readers want the same post near different places. A viewer's user row and follow-list entries can share a shard, but the authors they follow may be distributed across the entire service. Placing one author's posts beside one follower helps that follower without necessarily helping the others. A popular author can have followers on every shard. This is a conflict in the access pattern, not a failure to invent a clever enough hash function. The diagram should place followers on two shards and connect both to one author, showing why a single physical home cannot be local to every reader at once.
+Partitioning social data is difficult because different readers want the same post near different places. A viewer's user row and follow-list entries can share a shard, but the authors they follow may be distributed across the entire service. Placing one author's posts beside one follower helps that follower without necessarily helping the others. A popular author can have followers on every shard. This is a conflict in the access pattern, not a failure to invent a clever enough hash function. This example should place followers on two shards and connect both to one author, showing why a single physical home cannot be local to every reader at once.
 
 Partitioning a social graph — Move communication to publication
 

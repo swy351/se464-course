@@ -47,97 +47,97 @@ different shards. Indexes help locate relevant
 rows, but they do not make every reader's
 selected posts physically adjacent.
 
-00:00:56.035 --> 00:01:01.169
+00:00:56.035 --> 00:01:01.175
 A feed query can require multiple lookups,
 remote requests and a merge before returning a
 
-00:01:01.169 --> 00:01:06.016
+00:01:01.175 --> 00:01:06.027
 small page. Storage systems generally benefit
 from useful locality, while many small
 
-00:01:06.016 --> 00:01:11.265
-scattered accesses add work and latency. The
-diagram should branch from the reader's follow
+00:01:06.027 --> 00:01:11.340
+scattered accesses add work and latency. This
+example should branch from the reader's follow
 
-00:01:11.265 --> 00:01:15.188
+00:01:11.340 --> 00:01:15.268
 list to several author histories and then
 converge at a sorted feed.
 
-00:01:15.188 --> 00:01:19.919
+00:01:15.268 --> 00:01:19.998
 This makes the read amplification visible
 instead of attributing the delay vaguely to a
 
-00:01:19.919 --> 00:01:20.191
+00:01:19.998 --> 00:01:20.270
 join.
 
-00:01:20.191 --> 00:01:25.355
+00:01:20.270 --> 00:01:25.435
 Prebuilding feeds moves the join's work earlier.
 When an author publishes, the system finds
 
-00:01:25.355 --> 00:01:30.180
+00:01:25.435 --> 00:01:30.259
 the followers and inserts a reference or
 suitable representation into each follower's
 
-00:01:30.180 --> 00:01:35.288
+00:01:30.259 --> 00:01:35.367
 materialized feed. A later feed read can use the
 viewer's identifier to retrieve a compact
 
-00:01:35.288 --> 00:01:36.196
+00:01:35.367 --> 00:01:36.275
 prepared result.
 
-00:01:36.196 --> 00:01:41.200
+00:01:36.275 --> 00:01:41.280
 Partitioning feeds by viewer makes the common
 read involve a bounded storage destination
 
-00:01:41.200 --> 00:01:46.376
+00:01:41.280 --> 00:01:46.455
 rather than a growing collection of author
 shards. The benefit is concrete: the reader does
 
-00:01:46.376 --> 00:01:51.608
+00:01:46.455 --> 00:01:51.687
 less assembly while waiting. The cost is equally
 concrete: one publication creates many feed
 
-00:01:51.608 --> 00:01:54.224
+00:01:51.687 --> 00:01:54.304
 updates, and the system stores derived copies.
 
-00:01:54.224 --> 00:01:59.167
+00:01:54.304 --> 00:01:59.246
 A post with a thousand followers can create
 roughly a thousand insertions rather than one.
 
-00:01:59.224 --> 00:02:04.457
+00:01:59.304 --> 00:02:04.536
 Do not make the publishing request wait for
 every follower update. First durably record the
 
-00:02:04.457 --> 00:02:09.459
+00:02:04.536 --> 00:02:09.538
 post and the work that must be performed, then
 let background workers update feeds. The
 
-00:02:09.459 --> 00:02:13.369
+00:02:09.538 --> 00:02:13.448
 client can receive an accepted response while
 propagation continues.
 
-00:02:13.369 --> 00:02:18.205
+00:02:13.448 --> 00:02:18.284
 This reduces the publisher's waiting time but
 does not reduce total fan-out work or
 
-00:02:18.205 --> 00:02:23.390
+00:02:18.284 --> 00:02:23.469
 guarantee that every follower sees the post
 immediately. In the diagram, separate durable
 
-00:02:23.390 --> 00:02:28.692
+00:02:23.469 --> 00:02:28.771
 acceptance from background completion. A queue
 absorbs temporary imbalance between incoming
 
-00:02:28.692 --> 00:02:33.878
+00:02:28.771 --> 00:02:33.957
 publications and worker capacity, but sustained
 overload makes backlog and delivery delay
 
-00:02:33.878 --> 00:02:34.169
+00:02:33.957 --> 00:02:34.248
 grow.
 
-00:02:34.369 --> 00:02:39.558
+00:02:34.448 --> 00:02:39.638
 Monitor the age of pending work as well as queue
 length, because a small number of huge fan-
 
-00:02:39.558 --> 00:02:41.815
+00:02:39.638 --> 00:02:41.894
 out jobs can still produce a long delay.

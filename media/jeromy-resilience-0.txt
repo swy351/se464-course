@@ -5,7 +5,7 @@ Architecture is a set of consequential decisions — Architecture is a set of co
 
 Architecture centers on decisions that are difficult to change and strongly affect a system’s quality attributes. A component diagram helps describe a system, but architectural reasoning also explains why its boundaries, dependencies, storage and recovery mechanisms were chosen.
 
-Architecture is a set of consequential decisions — Reason through the consequences
+Architecture is a set of consequential decisions — Apply the idea: Architecture is a set of consequential decisions
 
 Whether a choice is architectural depends on context. A language choice may deeply affect latency, maintainability or hiring for a long-lived system; for a disposable prototype its consequences may be smaller. Avoid declaring a technology universally architectural without identifying the quality impact and cost of reversal. For a new campus alerting service, ask which decisions determine whether acknowledged alerts survive a crash, whether operators can diagnose a failure, and whether a new delivery channel can be added. These questions connect the opening lecture to later requirements, database, microservices and QODA units. Is a language choice always an architectural decision? Its importance depends on how strongly it affects relevant qualities and how costly it is to reverse in the particular system.
 
@@ -13,7 +13,7 @@ Start with the customer’s quality priorities — Start with the customer’s q
 
 The example’s simplified observability pipeline ingests telemetry, persists it, processes and indexes it, and supports alerts and queries. Those functions depend on one another: an alert cannot be trustworthy if the relevant data was never ingested.
 
-Start with the customer’s quality priorities — Reason through the consequences
+Start with the customer’s quality priorities — Apply the idea: Start with the customer’s quality priorities
 
 In the historical Datadog example, durability is central to customer trust. Availability priorities include preserving ingestion and monitoring before less urgent query behavior. Another important measure is ingestion-to-use latency, including the time until data can support an alert. This ordering belongs to that business context, not every application. A quality requirement should state which user outcome it protects. For a campus safety system, preserving an accepted urgent alert and delivering it on time might outrank historical report generation. State what may be delayed, what may be dropped, and what must not be lost. Apply authorization and data-retention constraints as part of the design. If a dashboard is unavailable but accepted data is durably retained, are availability and durability identical outcomes? No. The service can retain data while failing to provide timely access or alerts. Measure both properties and explain the user consequences.
 
@@ -21,6 +21,6 @@ Trace a correlated failure across the system — Trace a correlated failure acro
 
 The case describes the March 2023 Datadog outage as a historical case study. An unattended operating-system update restarted networking software and disrupted routing on many nodes. A change outside the ordinary staged rollout path crossed otherwise separate deployment boundaries.
 
-Trace a correlated failure across the system — Reason through the consequences
+Trace a correlated failure across the system — Apply the idea: Trace a correlated failure across the system
 
 The lesson is about correlated causes. Multiple machines, regions or cloud providers do not guarantee independence when a shared update mechanism can affect them together. Include operating-system packages, configuration, identity, networking and management services in the dependency and change-control review. Recovery behavior also differed across cloud environments in the case described. Replacing a machine and rebooting a machine can have different consequences for local state. Treat these as historical observations from the recording, not guarantees about current cloud-provider behavior. A recovery plan must specify what survives each action and how service state is reconstructed. Can a geographically replicated system still have one broad failure mechanism? Yes. A shared configuration, update, credential or control-plane dependency can fail across regions. Geographic diversity protects only against the failure classes it actually separates.

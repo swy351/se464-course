@@ -205,10 +205,10 @@ generally cannot use that prefix in the same
 direct way. Index design follows actual query
 predicates and ordering requirements.
 
-00:03:50.628 --> 00:03:55.232
-The diagram should show the query entering a
+00:03:50.628 --> 00:03:55.299
+This example should show the query entering a
 small search structure and then following a
 
-00:03:55.232 --> 00:03:58.999
+00:03:55.299 --> 00:03:59.078
 pointer to selected rows, rather than pretending
 that every row is read.

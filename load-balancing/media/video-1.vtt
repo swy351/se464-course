@@ -16,53 +16,53 @@ that it is ready to serve, and only then
 restore it to the active pool before moving to
 another worker.
 
-00:00:18.580 --> 00:00:23.026
-The illustration separates draining from
-readiness because removing a worker from new
+00:00:18.580 --> 00:00:22.851
+This example separates draining from readiness
+because removing a worker from new
 
-00:00:23.026 --> 00:00:27.786
+00:00:22.851 --> 00:00:27.648
 assignments does not instantly end its in-flight
 work. This procedure needs spare capacity:
 
-00:00:27.786 --> 00:00:32.441
+00:00:27.648 --> 00:00:32.340
 if the remaining pool cannot handle the
 workload, a technically orderly rollout can
 still
 
-00:00:32.441 --> 00:00:36.259
+00:00:32.340 --> 00:00:36.189
 create excessive queueing and errors for users
 throughout the deployment.
 
-00:00:36.259 --> 00:00:41.497
+00:00:36.189 --> 00:00:41.427
 Health checks provide observations that help the
 balancer decide where to send new work. A
 
-00:00:41.497 --> 00:00:46.851
+00:00:41.427 --> 00:00:46.781
 failed probe might indicate a crashed process,
 but it might also reflect overload, a network
 
-00:00:46.851 --> 00:00:48.713
+00:00:46.781 --> 00:00:48.643
 problem, or a failed dependency.
 
-00:00:48.759 --> 00:00:54.033
-The diagram shows a healthy response maintaining
-membership and repeated failed observations
+00:00:48.689 --> 00:00:53.625
+In this example, notice a healthy response
+maintaining membership and repeated failed
 
-00:00:54.033 --> 00:00:59.249
-leading to removal. Thresholds avoid reacting to
-a single transient failure, at the cost of
+00:00:53.625 --> 00:00:58.966
+observations leading to removal. Thresholds
+avoid reacting to a single transient failure, at
 
-00:00:59.249 --> 00:01:04.236
-slower detection. During that interval, some
-real requests may still reach the affected
+00:00:58.966 --> 00:01:04.192
+the cost of slower detection. During that
+interval, some real requests may still reach the
 
-00:01:04.236 --> 00:01:04.637
-worker.
+00:01:04.192 --> 00:01:05.121
+affected worker.
 
-00:01:04.759 --> 00:01:10.018
+00:01:05.189 --> 00:01:10.449
 Explain how the client handles those failures
 and whether a retry is safe. Removing a worker
 
-00:01:10.018 --> 00:01:14.763
+00:01:10.449 --> 00:01:15.193
 changes future routing; it does not prove that
 previous writes did not take effect.

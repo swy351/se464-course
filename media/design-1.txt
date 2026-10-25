@@ -5,7 +5,7 @@ Design for extension — Design for extension
 
 The painter example initially knows how to draw each concrete shape. Adding a triangle requires another branch or loop in the painter, spreading the variation into a client. Introducing a Shape operation moves drawing behavior behind a shared contract. The painter can then iterate over shapes without naming every concrete type, making the supported extension point explicit.
 
-Design for extension — Reason through the consequences
+Design for extension — Apply the idea: Design for extension
 
 Open–closed design protects stable behavior from selected kinds of change; it does not forbid editing code or demand inheritance for every extension. Composition, strategies and registration can serve the same purpose. Adding a shape may still require creation or configuration changes elsewhere. The key question is whether the abstraction matches the expected variation, and whether its contract is sufficient for new implementations to work without special cases in the client. After introducing Shape.draw, must every file remain unchanged when Triangle is added? No. The painting loop can remain stable, while Triangle and its creation or registration still need implementation.
 
@@ -13,14 +13,14 @@ Substitutability and contracts — Substitutability and contracts
 
 Substitutability concerns behavior visible to clients. If a client works under a supertype contract, replacing an object with a subtype should not invalidate those expectations. A subtype must not demand stronger preconditions or provide weaker guarantees. Phrase this through implications: every input accepted by the supertype must remain acceptable, and the subtype’s successful outcome must satisfy the supertype’s promised result.
 
-Substitutability and contracts — Reason through the consequences
+Substitutability and contracts — Apply the idea: Substitutability and contracts
 
-The mutable Rectangle example promises independently adjustable width and height. Square breaks that promise by changing both dimensions in a setter, so a client expecting area fifty receives one hundred. This is a contract problem rather than a statement about geometry. The unmodifiable List example needs different care: Java documents optional mutators, so an exception can be permitted by the declared contract. A client requiring mutation needs a stronger capability guarantee. Does the mathematical fact that every square is a rectangle prove mutable Square is a behavioral subtype? No. The programming interface’s mutation promises, not just geometric membership, determine substitutability.
+Consider this client code: set the width to five, then set the height to ten. Under a mutable Rectangle contract with independently adjustable dimensions, the client expects an area of fifty. The blue rectangle makes that expectation visible. Now substitute a mutable Square whose setters always change both dimensions. Setting the height to ten also changes the width to ten. The red square therefore has area one hundred. The problem is not that the geometry is wrong. The problem is that a client-visible mutation promise changed. Substitutability depends on the declared programming contract. Mathematical membership alone does not establish behavioral compatibility. Be equally careful with an unmodifiable List: if the interface explicitly permits an unsupported mutator, an exception may satisfy that contract. A client that requires mutation needs a stronger capability guarantee.
 
 Client-focused interfaces and dependency inversion — Client-focused interfaces and dependency inversion
 
 Interface segregation focuses on what each client needs to depend on. A broad interface can mix reading, writing and event handling even when many clients need only one role. Smaller role interfaces make capabilities clearer. An adapter with default no-op callbacks may reduce implementation effort, but it does not erase the conceptual breadth of the original interface.
 
-Client-focused interfaces and dependency inversion — Reason through the consequences
+Client-focused interfaces and dependency inversion — Apply the idea: Client-focused interfaces and dependency inversion
 
 Dependency inversion places policy behind stable abstractions instead of binding it directly to implementation details. JDBC illustrates application code using a database-facing API implemented by drivers. The boundary can localize many implementation changes, while behavioral differences and contract changes may still affect clients. Together, these principles encourage focused contracts owned by the needs of the caller, with concrete implementations replaceable only to the extent that they preserve those contracts. Does adding an interface guarantee callers are unaffected by every implementation change? No. Changes in observable behavior, contract or supported capabilities can still affect callers even when method signatures remain stable.

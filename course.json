@@ -23,12 +23,12 @@
           "focus": "Change makes hidden dependencies visible",
           "illustrations": [
             {
-              "src": "media/illustrations/introduction-0-0.jpg",
+              "src": "media/illustrations/introduction-0-0.jpg?v=editorial2",
               "alt": "Change makes hidden dependencies visible",
               "caption": "Change makes hidden dependencies visible"
             },
             {
-              "src": "media/illustrations/introduction-0-1.jpg",
+              "src": "media/illustrations/introduction-0-1.jpg?v=editorial2",
               "alt": "Change makes hidden dependencies visible",
               "caption": "Change makes hidden dependencies visible"
             }
@@ -48,12 +48,12 @@
           "focus": "Stakeholders interact with the system from different roles",
           "illustrations": [
             {
-              "src": "media/illustrations/introduction-1-0.jpg",
+              "src": "media/illustrations/introduction-1-0.jpg?v=editorial2",
               "alt": "Stakeholders interact with the system from different roles",
               "caption": "Stakeholders interact with the system from different roles"
             },
             {
-              "src": "media/illustrations/introduction-1-1.jpg",
+              "src": "media/illustrations/introduction-1-1.jpg?v=editorial2",
               "alt": "Stakeholders interact with the system from different roles",
               "caption": "Stakeholders interact with the system from different roles"
             }
@@ -73,12 +73,12 @@
           "focus": "Compare recovered structure with intended constraints before classifying a difference",
           "illustrations": [
             {
-              "src": "media/illustrations/introduction-2-0.jpg",
+              "src": "media/illustrations/introduction-2-0.jpg?v=editorial2",
               "alt": "Compare recovered structure with intended constraints before classifying a difference",
               "caption": "Compare recovered structure with intended constraints before classifying a difference"
             },
             {
-              "src": "media/illustrations/introduction-2-1.jpg",
+              "src": "media/illustrations/introduction-2-1.jpg?v=editorial2",
               "alt": "Compare recovered structure with intended constraints before classifying a difference",
               "caption": "Compare recovered structure with intended constraints before classifying a difference"
             }
@@ -98,12 +98,12 @@
           "focus": "One scenario connects complementary views",
           "illustrations": [
             {
-              "src": "media/illustrations/introduction-3-0.jpg",
+              "src": "media/illustrations/introduction-3-0.jpg?v=editorial2",
               "alt": "One scenario connects complementary views",
               "caption": "One scenario connects complementary views"
             },
             {
-              "src": "media/illustrations/introduction-3-1.jpg",
+              "src": "media/illustrations/introduction-3-1.jpg?v=editorial2",
               "alt": "One scenario connects complementary views",
               "caption": "One scenario connects complementary views"
             }
@@ -123,12 +123,12 @@
           "focus": "C4 levels change detail; these arrows represent zooming in, not runtime calls",
           "illustrations": [
             {
-              "src": "media/illustrations/introduction-4-0.jpg",
+              "src": "media/illustrations/introduction-4-0.jpg?v=editorial2",
               "alt": "C4 levels change detail; these arrows represent zooming in, not runtime calls",
               "caption": "C4 levels change detail; these arrows represent zooming in, not runtime calls"
             },
             {
-              "src": "media/illustrations/introduction-4-1.jpg",
+              "src": "media/illustrations/introduction-4-1.jpg?v=editorial2",
               "alt": "C4 levels change detail; these arrows represent zooming in, not runtime calls",
               "caption": "C4 levels change detail; these arrows represent zooming in, not runtime calls"
             }
@@ -148,12 +148,12 @@
           "focus": "Logical responsibilities do not establish physical server count",
           "illustrations": [
             {
-              "src": "media/illustrations/introduction-5-0.jpg",
+              "src": "media/illustrations/introduction-5-0.jpg?v=editorial2",
               "alt": "Logical responsibilities do not establish physical server count",
               "caption": "Logical responsibilities do not establish physical server count"
             },
             {
-              "src": "media/illustrations/introduction-5-1.jpg",
+              "src": "media/illustrations/introduction-5-1.jpg?v=editorial2",
               "alt": "Logical responsibilities do not establish physical server count",
               "caption": "Logical responsibilities do not establish physical server count"
             }
@@ -293,12 +293,12 @@
           "focus": "A consequential decision needs an explicit reason",
           "illustrations": [
             {
-              "src": "media/illustrations/jeromy-resilience-0-0.jpg",
+              "src": "media/illustrations/jeromy-resilience-0-0.jpg?v=editorial2",
               "alt": "A consequential decision needs an explicit reason",
               "caption": "A consequential decision needs an explicit reason"
             },
             {
-              "src": "media/illustrations/jeromy-resilience-0-1.jpg",
+              "src": "media/illustrations/jeromy-resilience-0-1.jpg?v=editorial2",
               "alt": "A consequential decision needs an explicit reason",
               "caption": "A consequential decision needs an explicit reason"
             }
@@ -318,12 +318,12 @@
           "focus": "Preserve the customer outcome when capacity is scarce",
           "illustrations": [
             {
-              "src": "media/illustrations/jeromy-resilience-1-0.jpg",
+              "src": "media/illustrations/jeromy-resilience-1-0.jpg?v=editorial2",
               "alt": "Preserve the customer outcome when capacity is scarce",
               "caption": "Preserve the customer outcome when capacity is scarce"
             },
             {
-              "src": "media/illustrations/jeromy-resilience-1-1.jpg",
+              "src": "media/illustrations/jeromy-resilience-1-1.jpg?v=editorial2",
               "alt": "Preserve the customer outcome when capacity is scarce",
               "caption": "Preserve the customer outcome when capacity is scarce"
             }
@@ -343,12 +343,12 @@
           "focus": "A shared cause can defeat apparent redundancy",
           "illustrations": [
             {
-              "src": "media/illustrations/jeromy-resilience-2-0.jpg",
+              "src": "media/illustrations/jeromy-resilience-2-0.jpg?v=editorial2",
               "alt": "A shared cause can defeat apparent redundancy",
               "caption": "A shared cause can defeat apparent redundancy"
             },
             {
-              "src": "media/illustrations/jeromy-resilience-2-1.jpg",
+              "src": "media/illustrations/jeromy-resilience-2-1.jpg?v=editorial2",
               "alt": "A shared cause can defeat apparent redundancy",
               "caption": "A shared cause can defeat apparent redundancy"
             }
@@ -369,12 +369,12 @@
           "focus": "Persistence stages support recovery; restoration still needs tested dependencies",
           "illustrations": [
             {
-              "src": "media/illustrations/jeromy-resilience-3-0.jpg",
+              "src": "media/illustrations/jeromy-resilience-3-0.jpg?v=editorial2",
               "alt": "Persistence stages support recovery; restoration still needs tested dependencies",
               "caption": "Persistence stages support recovery; restoration still needs tested dependencies"
             },
             {
-              "src": "media/illustrations/jeromy-resilience-3-1.jpg",
+              "src": "media/illustrations/jeromy-resilience-3-1.jpg?v=editorial2",
               "alt": "Persistence stages support recovery; restoration still needs tested dependencies",
               "caption": "Persistence stages support recovery; restoration still needs tested dependencies"
             }
@@ -395,12 +395,12 @@
           "focus": "Drain rate = 120 − 100 = 20/s; ideal time = 6000/20 = 300 s",
           "illustrations": [
             {
-              "src": "media/illustrations/jeromy-resilience-4-0.jpg",
+              "src": "media/illustrations/jeromy-resilience-4-0.jpg?v=editorial2",
               "alt": "Drain rate = 120 − 100 = 20/s; ideal time = 6000/20 = 300 s",
               "caption": "Drain rate = 120 − 100 = 20/s; ideal time = 6000/20 = 300 s"
             },
             {
-              "src": "media/illustrations/jeromy-resilience-4-1.jpg",
+              "src": "media/illustrations/jeromy-resilience-4-1.jpg?v=editorial2",
               "alt": "Drain rate = 120 − 100 = 20/s; ideal time = 6000/20 = 300 s",
               "caption": "Drain rate = 120 − 100 = 20/s; ideal time = 6000/20 = 300 s"
             }
@@ -420,12 +420,12 @@
           "focus": "A successful demo is not evidence of long-term maintainability",
           "illustrations": [
             {
-              "src": "media/illustrations/jeromy-resilience-5-0.jpg",
+              "src": "media/illustrations/jeromy-resilience-5-0.jpg?v=editorial2",
               "alt": "A successful demo is not evidence of long-term maintainability",
               "caption": "A successful demo is not evidence of long-term maintainability"
             },
             {
-              "src": "media/illustrations/jeromy-resilience-5-1.jpg",
+              "src": "media/illustrations/jeromy-resilience-5-1.jpg?v=editorial2",
               "alt": "A successful demo is not evidence of long-term maintainability",
               "caption": "A successful demo is not evidence of long-term maintainability"
             }
@@ -491,12 +491,12 @@
           "focus": "Check multiplicities at association ends; array capacity does not prove participation",
           "illustrations": [
             {
-              "src": "media/illustrations/design-0-0.jpg",
+              "src": "media/illustrations/design-0-0.jpg?v=editorial2",
               "alt": "Check multiplicities at association ends; array capacity does not prove participation",
               "caption": "Check multiplicities at association ends; array capacity does not prove participation"
             },
             {
-              "src": "media/illustrations/design-0-1.jpg",
+              "src": "media/illustrations/design-0-1.jpg?v=editorial2",
               "alt": "Check multiplicities at association ends; array capacity does not prove participation",
               "caption": "Check multiplicities at association ends; array capacity does not prove participation"
             }
@@ -515,12 +515,12 @@
           "focus": "Select a pattern for a variation that actually matters",
           "illustrations": [
             {
-              "src": "media/illustrations/design-1-0.jpg",
+              "src": "media/illustrations/design-1-0.jpg?v=editorial2",
               "alt": "Select a pattern for a variation that actually matters",
               "caption": "Select a pattern for a variation that actually matters"
             },
             {
-              "src": "media/illustrations/design-1-1.jpg",
+              "src": "media/illustrations/design-1-1.jpg?v=editorial2",
               "alt": "Select a pattern for a variation that actually matters",
               "caption": "Select a pattern for a variation that actually matters"
             }
@@ -539,12 +539,12 @@
           "focus": "Independent reasons to change suggest separate responsibilities",
           "illustrations": [
             {
-              "src": "media/illustrations/design-2-0.jpg",
+              "src": "media/illustrations/design-2-0.jpg?v=editorial2",
               "alt": "Independent reasons to change suggest separate responsibilities",
               "caption": "Independent reasons to change suggest separate responsibilities"
             },
             {
-              "src": "media/illustrations/design-2-1.jpg",
+              "src": "media/illustrations/design-2-1.jpg?v=editorial2",
               "alt": "Independent reasons to change suggest separate responsibilities",
               "caption": "Independent reasons to change suggest separate responsibilities"
             }
@@ -563,12 +563,12 @@
           "focus": "An extension belongs behind the contract the client already uses",
           "illustrations": [
             {
-              "src": "media/illustrations/design-3-0.jpg",
+              "src": "media/illustrations/design-3-0.jpg?v=editorial2",
               "alt": "An extension belongs behind the contract the client already uses",
               "caption": "An extension belongs behind the contract the client already uses"
             },
             {
-              "src": "media/illustrations/design-3-1.jpg",
+              "src": "media/illustrations/design-3-1.jpg?v=editorial2",
               "alt": "An extension belongs behind the contract the client already uses",
               "caption": "An extension belongs behind the contract the client already uses"
             }
@@ -587,12 +587,12 @@
           "focus": "The client expected area 50; a setter broke the behavioral contract",
           "illustrations": [
             {
-              "src": "media/illustrations/design-4-0.jpg",
+              "src": "media/illustrations/design-4-0.jpg?v=editorial2",
               "alt": "The client expected area 50; a setter broke the behavioral contract",
               "caption": "The client expected area 50; a setter broke the behavioral contract"
             },
             {
-              "src": "media/illustrations/design-4-1.jpg",
+              "src": "media/illustrations/design-4-1.jpg?v=editorial2",
               "alt": "The client expected area 50; a setter broke the behavioral contract",
               "caption": "The client expected area 50; a setter broke the behavioral contract"
             }
@@ -611,12 +611,12 @@
           "focus": "The caller depends on the capability it needs",
           "illustrations": [
             {
-              "src": "media/illustrations/design-5-0.jpg",
+              "src": "media/illustrations/design-5-0.jpg?v=editorial2",
               "alt": "The caller depends on the capability it needs",
               "caption": "The caller depends on the capability it needs"
             },
             {
-              "src": "media/illustrations/design-5-1.jpg",
+              "src": "media/illustrations/design-5-1.jpg?v=editorial2",
               "alt": "The caller depends on the capability it needs",
               "caption": "The caller depends on the capability it needs"
             }
@@ -732,12 +732,12 @@
           "focus": "Discover the outcome before prescribing the technology",
           "illustrations": [
             {
-              "src": "media/illustrations/nfr-0-0.jpg",
+              "src": "media/illustrations/nfr-0-0.jpg?v=editorial2",
               "alt": "Discover the outcome before prescribing the technology",
               "caption": "Discover the outcome before prescribing the technology"
             },
             {
-              "src": "media/illustrations/nfr-0-1.jpg",
+              "src": "media/illustrations/nfr-0-1.jpg?v=editorial2",
               "alt": "Discover the outcome before prescribing the technology",
               "caption": "Discover the outcome before prescribing the technology"
             }
@@ -756,12 +756,12 @@
           "focus": "A requirement must say what evidence would satisfy it",
           "illustrations": [
             {
-              "src": "media/illustrations/nfr-1-0.jpg",
+              "src": "media/illustrations/nfr-1-0.jpg?v=editorial2",
               "alt": "A requirement must say what evidence would satisfy it",
               "caption": "A requirement must say what evidence would satisfy it"
             },
             {
-              "src": "media/illustrations/nfr-1-1.jpg",
+              "src": "media/illustrations/nfr-1-1.jpg?v=editorial2",
               "alt": "A requirement must say what evidence would satisfy it",
               "caption": "A requirement must say what evidence would satisfy it"
             }
@@ -780,12 +780,12 @@
           "focus": "A feature and the quality of that feature answer different questions",
           "illustrations": [
             {
-              "src": "media/illustrations/nfr-2-0.jpg",
+              "src": "media/illustrations/nfr-2-0.jpg?v=editorial2",
               "alt": "A feature and the quality of that feature answer different questions",
               "caption": "A feature and the quality of that feature answer different questions"
             },
             {
-              "src": "media/illustrations/nfr-2-1.jpg",
+              "src": "media/illustrations/nfr-2-1.jpg?v=editorial2",
               "alt": "A feature and the quality of that feature answer different questions",
               "caption": "A feature and the quality of that feature answer different questions"
             }
@@ -804,12 +804,12 @@
           "focus": "Make workload, boundary, metric and threshold explicit",
           "illustrations": [
             {
-              "src": "media/illustrations/nfr-3-0.jpg",
+              "src": "media/illustrations/nfr-3-0.jpg?v=editorial2",
               "alt": "Make workload, boundary, metric and threshold explicit",
               "caption": "Make workload, boundary, metric and threshold explicit"
             },
             {
-              "src": "media/illustrations/nfr-3-1.jpg",
+              "src": "media/illustrations/nfr-3-1.jpg?v=editorial2",
               "alt": "Make workload, boundary, metric and threshold explicit",
               "caption": "Make workload, boundary, metric and threshold explicit"
             }
@@ -828,12 +828,12 @@
           "focus": "Optimizing a non-bottleneck can leave user performance unchanged",
           "illustrations": [
             {
-              "src": "media/illustrations/nfr-4-0.jpg",
+              "src": "media/illustrations/nfr-4-0.jpg?v=editorial2",
               "alt": "Optimizing a non-bottleneck can leave user performance unchanged",
               "caption": "Optimizing a non-bottleneck can leave user performance unchanged"
             },
             {
-              "src": "media/illustrations/nfr-4-1.jpg",
+              "src": "media/illustrations/nfr-4-1.jpg?v=editorial2",
               "alt": "Optimizing a non-bottleneck can leave user performance unchanged",
               "caption": "Optimizing a non-bottleneck can leave user performance unchanged"
             }
@@ -922,12 +922,12 @@
           "focus": "A service must handle overlapping arrivals, not just one input.",
           "illustrations": [
             {
-              "src": "media/illustrations/scaling-0-0.jpg",
+              "src": "media/illustrations/scaling-0-0.jpg?v=editorial2",
               "alt": "A service must handle overlapping arrivals, not just one input.",
               "caption": "A service must handle overlapping arrivals, not just one input."
             },
             {
-              "src": "media/illustrations/scaling-0-1.jpg",
+              "src": "media/illustrations/scaling-0-1.jpg?v=editorial2",
               "alt": "Queues absorb bursts but cannot create sustainable capacity.",
               "caption": "Queues absorb bursts but cannot create sustainable capacity."
             }
@@ -947,12 +947,12 @@
           "focus": "Overlapping IO improves utilization without making one core parallel.",
           "illustrations": [
             {
-              "src": "media/illustrations/scaling-1-0.jpg",
+              "src": "media/illustrations/scaling-1-0.jpg?v=editorial2",
               "alt": "Overlapping IO improves utilization without making one core parallel.",
               "caption": "Overlapping IO improves utilization without making one core parallel."
             },
             {
-              "src": "media/illustrations/scaling-1-1.jpg",
+              "src": "media/illustrations/scaling-1-1.jpg?v=editorial2",
               "alt": "More application machines do not enlarge every downstream resource.",
               "caption": "More application machines do not enlarge every downstream resource."
             }
@@ -972,12 +972,12 @@
           "focus": "Application time is only one part of end-to-end latency.",
           "illustrations": [
             {
-              "src": "media/illustrations/scaling-2-0.jpg",
+              "src": "media/illustrations/scaling-2-0.jpg?v=editorial2",
               "alt": "Application time is only one part of end-to-end latency.",
               "caption": "Application time is only one part of end-to-end latency."
             },
             {
-              "src": "media/illustrations/scaling-2-1.jpg",
+              "src": "media/illustrations/scaling-2-1.jpg?v=editorial2",
               "alt": "A bounded queue forces an explicit overload policy.",
               "caption": "A bounded queue forces an explicit overload policy."
             }
@@ -997,12 +997,12 @@
           "focus": "Separate durable content from the work that creates its representation.",
           "illustrations": [
             {
-              "src": "media/illustrations/scaling-3-0.jpg",
+              "src": "media/illustrations/scaling-3-0.jpg?v=editorial2",
               "alt": "Separate durable content from the work that creates its representation.",
               "caption": "Separate durable content from the work that creates its representation."
             },
             {
-              "src": "media/illustrations/scaling-3-1.jpg",
+              "src": "media/illustrations/scaling-3-1.jpg?v=editorial2",
               "alt": "Personalized output changes which responses can safely be reused.",
               "caption": "Personalized output changes which responses can safely be reused."
             }
@@ -1094,12 +1094,12 @@
           "focus": "Later commands can depend on information from earlier commands.",
           "illustrations": [
             {
-              "src": "media/illustrations/cache-0-0.jpg",
+              "src": "media/illustrations/cache-0-0.jpg?v=editorial2",
               "alt": "Later commands can depend on information from earlier commands.",
               "caption": "Later commands can depend on information from earlier commands."
             },
             {
-              "src": "media/illustrations/cache-0-1.jpg",
+              "src": "media/illustrations/cache-0-1.jpg?v=editorial2",
               "alt": "Worker interchangeability depends on state placement, not code equality.",
               "caption": "Worker interchangeability depends on state placement, not code equality."
             }
@@ -1119,12 +1119,12 @@
           "focus": "Shared state permits worker replacement but remains a shared dependency.",
           "illustrations": [
             {
-              "src": "media/illustrations/cache-1-0.jpg",
+              "src": "media/illustrations/cache-1-0.jpg?v=editorial2",
               "alt": "Shared state permits worker replacement but remains a shared dependency.",
               "caption": "Shared state permits worker replacement but remains a shared dependency."
             },
             {
-              "src": "media/illustrations/cache-1-1.jpg",
+              "src": "media/illustrations/cache-1-1.jpg?v=editorial2",
               "alt": "Sharing a record does not replace concurrency control.",
               "caption": "Sharing a record does not replace concurrency control."
             }
@@ -1144,12 +1144,12 @@
           "focus": "A reusable response can avoid both application and database work.",
           "illustrations": [
             {
-              "src": "media/illustrations/cache-2-0.jpg",
+              "src": "media/illustrations/cache-2-0.jpg?v=editorial2",
               "alt": "A reusable response can avoid both application and database work.",
               "caption": "A reusable response can avoid both application and database work."
             },
             {
-              "src": "media/illustrations/cache-2-1.jpg",
+              "src": "media/illustrations/cache-2-1.jpg?v=editorial2",
               "alt": "A hit changes eviction order; locality determines whether LRU helps.",
               "caption": "A hit changes eviction order; locality determines whether LRU helps."
             }
@@ -1169,12 +1169,12 @@
           "focus": "Storage fraction and request hit ratio are different quantities.",
           "illustrations": [
             {
-              "src": "media/illustrations/cache-3-0.jpg",
+              "src": "media/illustrations/cache-3-0.jpg?v=editorial2",
               "alt": "Storage fraction and request hit ratio are different quantities.",
               "caption": "Storage fraction and request hit ratio are different quantities."
             },
             {
-              "src": "media/illustrations/cache-3-1.jpg",
+              "src": "media/illustrations/cache-3-1.jpg?v=editorial2",
               "alt": "Freshness permits bounded staleness; it does not promise immediate updates.",
               "caption": "Freshness permits bounded staleness; it does not promise immediate updates."
             }
@@ -1266,12 +1266,12 @@
           "focus": "Stateless workers still depend on durable shared state.",
           "illustrations": [
             {
-              "src": "media/illustrations/db1-0-0.jpg",
+              "src": "media/illustrations/db1-0-0.jpg?v=editorial2",
               "alt": "Stateless workers still depend on durable shared state.",
               "caption": "Stateless workers still depend on durable shared state."
             },
             {
-              "src": "media/illustrations/db1-0-1.jpg",
+              "src": "media/illustrations/db1-0-1.jpg?v=editorial2",
               "alt": "Persistence and coordination concentrate work in the database.",
               "caption": "Persistence and coordination concentrate work in the database."
             }
@@ -1291,12 +1291,12 @@
           "focus": "Normalize shared facts; join them for the requested view.",
           "illustrations": [
             {
-              "src": "media/illustrations/db1-1-0.jpg",
+              "src": "media/illustrations/db1-1-0.jpg?v=editorial2",
               "alt": "Normalize shared facts; join them for the requested view.",
               "caption": "Normalize shared facts; join them for the requested view."
             },
             {
-              "src": "media/illustrations/db1-1-1.jpg",
+              "src": "media/illustrations/db1-1-1.jpg?v=editorial2",
               "alt": "Equivalent queries can require very different amounts of intermediate work.",
               "caption": "Equivalent queries can require very different amounts of intermediate work."
             }
@@ -1316,12 +1316,12 @@
           "focus": "A separate search structure supports a different lookup dimension.",
           "illustrations": [
             {
-              "src": "media/illustrations/db1-2-0.jpg",
+              "src": "media/illustrations/db1-2-0.jpg?v=editorial2",
               "alt": "A separate search structure supports a different lookup dimension.",
               "caption": "A separate search structure supports a different lookup dimension."
             },
             {
-              "src": "media/illustrations/db1-2-1.jpg",
+              "src": "media/illustrations/db1-2-1.jpg?v=editorial2",
               "alt": "The order of columns determines which lookup prefixes are useful.",
               "caption": "The order of columns determines which lookup prefixes are useful."
             }
@@ -1341,12 +1341,12 @@
           "focus": "Read replicas add read capacity while preserving one write authority.",
           "illustrations": [
             {
-              "src": "media/illustrations/db1-3-0.jpg",
+              "src": "media/illustrations/db1-3-0.jpg?v=editorial2",
               "alt": "Read replicas add read capacity while preserving one write authority.",
               "caption": "Read replicas add read capacity while preserving one write authority."
             },
             {
-              "src": "media/illustrations/db1-3-1.jpg",
+              "src": "media/illustrations/db1-3-1.jpg?v=editorial2",
               "alt": "Choose an explicit policy for reads that must observe a recent write.",
               "caption": "Choose an explicit policy for reads that must observe a recent write."
             }
@@ -1366,12 +1366,12 @@
           "focus": "Partition around operations that can stay within one shard.",
           "illustrations": [
             {
-              "src": "media/illustrations/db1-4-0.jpg",
+              "src": "media/illustrations/db1-4-0.jpg?v=editorial2",
               "alt": "Partition around operations that can stay within one shard.",
               "caption": "Partition around operations that can stay within one shard."
             },
             {
-              "src": "media/illustrations/db1-4-1.jpg",
+              "src": "media/illustrations/db1-4-1.jpg?v=editorial2",
               "alt": "A query without the shard key may become more expensive as the cluster grows.",
               "caption": "A query without the shard key may become more expensive as the cluster grows."
             }
@@ -1465,12 +1465,12 @@
           "focus": "References become network work when related rows live on different shards.",
           "illustrations": [
             {
-              "src": "media/illustrations/db2-0-0.jpg",
+              "src": "media/illustrations/db2-0-0.jpg?v=editorial2",
               "alt": "References become network work when related rows live on different shards.",
               "caption": "References become network work when related rows live on different shards."
             },
             {
-              "src": "media/illustrations/db2-0-1.jpg",
+              "src": "media/illustrations/db2-0-1.jpg?v=editorial2",
               "alt": "Denormalization reduces read-time joins and creates update obligations.",
               "caption": "Denormalization reduces read-time joins and creates update obligations."
             }
@@ -1490,12 +1490,12 @@
           "focus": "A key and an ownership map identify a bounded destination.",
           "illustrations": [
             {
-              "src": "media/illustrations/db2-1-0.jpg",
+              "src": "media/illustrations/db2-1-0.jpg?v=editorial2",
               "alt": "A key and an ownership map identify a bounded destination.",
               "caption": "A key and an ownership map identify a bounded destination."
             },
             {
-              "src": "media/illustrations/db2-1-1.jpg",
+              "src": "media/illustrations/db2-1-1.jpg?v=editorial2",
               "alt": "Uniform hash ranges do not eliminate hot-key bottlenecks.",
               "caption": "Uniform hash ranges do not eliminate hot-key bottlenecks."
             }
@@ -1515,12 +1515,12 @@
           "focus": "A fixed replica group can provide redundancy within a much larger cluster.",
           "illustrations": [
             {
-              "src": "media/illustrations/db2-2-0.jpg",
+              "src": "media/illustrations/db2-2-0.jpg?v=editorial2",
               "alt": "A fixed replica group can provide redundancy within a much larger cluster.",
               "caption": "A fixed replica group can provide redundancy within a much larger cluster."
             },
             {
-              "src": "media/illustrations/db2-2-1.jpg",
+              "src": "media/illustrations/db2-2-1.jpg?v=editorial2",
               "alt": "Replication creates intervals in which reads can disagree.",
               "caption": "Replication creates intervals in which reads can disagree."
             }
@@ -1540,12 +1540,12 @@
           "focus": "Monotonic reads prevents a session from observing an older version later.",
           "illustrations": [
             {
-              "src": "media/illustrations/db2-3-0.jpg",
+              "src": "media/illustrations/db2-3-0.jpg?v=editorial2",
               "alt": "Monotonic reads prevents a session from observing an older version later.",
               "caption": "Monotonic reads prevents a session from observing an older version later."
             },
             {
-              "src": "media/illustrations/db2-3-1.jpg",
+              "src": "media/illustrations/db2-3-1.jpg?v=editorial2",
               "alt": "A session promise must remain meaningful when routing changes.",
               "caption": "A session promise must remain meaningful when routing changes."
             }
@@ -1565,12 +1565,12 @@
           "focus": "R + W > N proves set overlap under stated membership assumptions.",
           "illustrations": [
             {
-              "src": "media/illustrations/db2-4-0.jpg",
+              "src": "media/illustrations/db2-4-0.jpg?v=editorial2",
               "alt": "R + W > N proves set overlap under stated membership assumptions.",
               "caption": "R + W > N proves set overlap under stated membership assumptions."
             },
             {
-              "src": "media/illustrations/db2-4-1.jpg",
+              "src": "media/illustrations/db2-4-1.jpg?v=editorial2",
               "alt": "W = 2 can proceed here; W = 3 cannot.",
               "caption": "W = 2 can proceed here; W = 3 cannot."
             }
@@ -1590,12 +1590,12 @@
           "focus": "Linearizability preserves real-time precedence of completed operations.",
           "illustrations": [
             {
-              "src": "media/illustrations/db2-5-0.jpg",
+              "src": "media/illustrations/db2-5-0.jpg?v=editorial2",
               "alt": "Linearizability preserves real-time precedence of completed operations.",
               "caption": "Linearizability preserves real-time precedence of completed operations."
             },
             {
-              "src": "media/illustrations/db2-5-1.jpg",
+              "src": "media/illustrations/db2-5-1.jpg?v=editorial2",
               "alt": "Placement, redundancy and consistency answer different questions.",
               "caption": "Placement, redundancy and consistency answer different questions."
             }
@@ -1705,12 +1705,12 @@
           "focus": "Choose an access pattern and guarantee before a database category.",
           "illustrations": [
             {
-              "src": "media/illustrations/choosing-0-0.jpg",
+              "src": "media/illustrations/choosing-0-0.jpg?v=editorial2",
               "alt": "Choose an access pattern and guarantee before a database category.",
               "caption": "Choose an access pattern and guarantee before a database category."
             },
             {
-              "src": "media/illustrations/choosing-0-1.jpg",
+              "src": "media/illustrations/choosing-0-1.jpg?v=editorial2",
               "alt": "Keep authoritative decisions separate from useful derived views.",
               "caption": "Keep authoritative decisions separate from useful derived views."
             }
@@ -1730,12 +1730,12 @@
           "focus": "Atomicity keeps related changes from becoming a partial purchase.",
           "illustrations": [
             {
-              "src": "media/illustrations/choosing-1-0.jpg",
+              "src": "media/illustrations/choosing-1-0.jpg?v=editorial2",
               "alt": "Atomicity keeps related changes from becoming a partial purchase.",
               "caption": "Atomicity keeps related changes from becoming a partial purchase."
             },
             {
-              "src": "media/illustrations/choosing-1-1.jpg",
+              "src": "media/illustrations/choosing-1-1.jpg?v=editorial2",
               "alt": "Concurrency control must protect the decision as well as the writes.",
               "caption": "Concurrency control must protect the decision as well as the writes."
             }
@@ -1755,12 +1755,12 @@
           "focus": "Workload shape matters even when both stores accept SQL.",
           "illustrations": [
             {
-              "src": "media/illustrations/choosing-2-0.jpg",
+              "src": "media/illustrations/choosing-2-0.jpg?v=editorial2",
               "alt": "Workload shape matters even when both stores accept SQL.",
               "caption": "Workload shape matters even when both stores accept SQL."
             },
             {
-              "src": "media/illustrations/choosing-2-1.jpg",
+              "src": "media/illustrations/choosing-2-1.jpg?v=editorial2",
               "alt": "Read relevant attributes and return a compact answer.",
               "caption": "Read relevant attributes and return a compact answer."
             }
@@ -1780,12 +1780,12 @@
           "focus": "A text index maps terms to documents before retrieving content.",
           "illustrations": [
             {
-              "src": "media/illustrations/choosing-3-0.jpg",
+              "src": "media/illustrations/choosing-3-0.jpg?v=editorial2",
               "alt": "A text index maps terms to documents before retrieving content.",
               "caption": "A text index maps terms to documents before retrieving content."
             },
             {
-              "src": "media/illustrations/choosing-3-1.jpg",
+              "src": "media/illustrations/choosing-3-1.jpg?v=editorial2",
               "alt": "Partition keys and within-partition ordering solve different lookup steps.",
               "caption": "Partition keys and within-partition ordering solve different lookup steps."
             }
@@ -1805,12 +1805,12 @@
           "focus": "A response cache and an application value cache sit at different layers.",
           "illustrations": [
             {
-              "src": "media/illustrations/choosing-4-0.jpg",
+              "src": "media/illustrations/choosing-4-0.jpg?v=editorial2",
               "alt": "A response cache and an application value cache sit at different layers.",
               "caption": "A response cache and an application value cache sit at different layers."
             },
             {
-              "src": "media/illustrations/choosing-4-1.jpg",
+              "src": "media/illustrations/choosing-4-1.jpg?v=editorial2",
               "alt": "Decide whether fast in-memory state is authoritative or derived.",
               "caption": "Decide whether fast in-memory state is authoritative or derived."
             }
@@ -1830,12 +1830,12 @@
           "focus": "File operations and object operations are distinct application contracts.",
           "illustrations": [
             {
-              "src": "media/illustrations/choosing-5-0.jpg",
+              "src": "media/illustrations/choosing-5-0.jpg?v=editorial2",
               "alt": "File operations and object operations are distinct application contracts.",
               "caption": "File operations and object operations are distinct application contracts."
             },
             {
-              "src": "media/illustrations/choosing-5-1.jpg",
+              "src": "media/illustrations/choosing-5-1.jpg?v=editorial2",
               "alt": "Separate stores require an explicit completion and cleanup workflow.",
               "caption": "Separate stores require an explicit completion and cleanup workflow."
             }
@@ -1946,12 +1946,12 @@
           "focus": "Callers depend on the API contract, not the implementation language.",
           "illustrations": [
             {
-              "src": "media/illustrations/rest-0-0.jpg",
+              "src": "media/illustrations/rest-0-0.jpg?v=editorial2",
               "alt": "Callers depend on the API contract, not the implementation language.",
               "caption": "Callers depend on the API contract, not the implementation language."
             },
             {
-              "src": "media/illustrations/rest-0-1.jpg",
+              "src": "media/illustrations/rest-0-1.jpg?v=editorial2",
               "alt": "Status, fields, and content must be interpreted together.",
               "caption": "Status, fields, and content must be interpreted together."
             }
@@ -1971,12 +1971,12 @@
           "focus": "Stable resource identity changes the consequences of repeating a write.",
           "illustrations": [
             {
-              "src": "media/illustrations/rest-1-0.jpg",
+              "src": "media/illustrations/rest-1-0.jpg?v=editorial2",
               "alt": "Stable resource identity changes the consequences of repeating a write.",
               "caption": "Stable resource identity changes the consequences of repeating a write."
             },
             {
-              "src": "media/illustrations/rest-1-1.jpg",
+              "src": "media/illustrations/rest-1-1.jpg?v=editorial2",
               "alt": "Idempotency requires an explicit effect and a durable deduplication contract.",
               "caption": "Idempotency requires an explicit effect and a durable deduplication contract."
             }
@@ -1996,12 +1996,12 @@
           "focus": "Wire values need explicit domain conventions across languages.",
           "illustrations": [
             {
-              "src": "media/illustrations/rest-2-0.jpg",
+              "src": "media/illustrations/rest-2-0.jpg?v=editorial2",
               "alt": "Wire values need explicit domain conventions across languages.",
               "caption": "Wire values need explicit domain conventions across languages."
             },
             {
-              "src": "media/illustrations/rest-2-1.jpg",
+              "src": "media/illustrations/rest-2-1.jpg?v=editorial2",
               "alt": "Identifiers preserve shared references without recursively copying objects.",
               "caption": "Identifiers preserve shared references without recursively copying objects."
             }
@@ -2021,12 +2021,12 @@
           "focus": "Protocol choice includes operational tools and client accessibility.",
           "illustrations": [
             {
-              "src": "media/illustrations/rest-3-0.jpg",
+              "src": "media/illustrations/rest-3-0.jpg?v=editorial2",
               "alt": "Protocol choice includes operational tools and client accessibility.",
               "caption": "Protocol choice includes operational tools and client accessibility."
             },
             {
-              "src": "media/illustrations/rest-3-1.jpg",
+              "src": "media/illustrations/rest-3-1.jpg?v=editorial2",
               "alt": "Compact RPC brings schema discipline; serialization and transport remain separate.",
               "caption": "Compact RPC brings schema discipline; serialization and transport remain separate."
             }
@@ -2144,12 +2144,12 @@
           "focus": "One deployable application can run on many machines.",
           "illustrations": [
             {
-              "src": "media/illustrations/micro-0-0.jpg",
+              "src": "media/illustrations/micro-0-0.jpg?v=editorial2",
               "alt": "One deployable application can run on many machines.",
               "caption": "One deployable application can run on many machines."
             },
             {
-              "src": "media/illustrations/micro-0-1.jpg",
+              "src": "media/illustrations/micro-0-1.jpg?v=editorial2",
               "alt": "Modularity and deployment granularity are separate design decisions.",
               "caption": "Modularity and deployment granularity are separate design decisions."
             }
@@ -2169,12 +2169,12 @@
           "focus": "Independent deployment requires a stable contract and clear ownership.",
           "illustrations": [
             {
-              "src": "media/illustrations/micro-1-0.jpg",
+              "src": "media/illustrations/micro-1-0.jpg?v=editorial2",
               "alt": "Independent deployment requires a stable contract and clear ownership.",
               "caption": "Independent deployment requires a stable contract and clear ownership."
             },
             {
-              "src": "media/illustrations/micro-1-1.jpg",
+              "src": "media/illustrations/micro-1-1.jpg?v=editorial2",
               "alt": "Network boundaries make partial completion an architectural concern.",
               "caption": "Network boundaries make partial completion an architectural concern."
             }
@@ -2194,12 +2194,12 @@
           "focus": "A mock verifies selected interactions, not real service semantics.",
           "illustrations": [
             {
-              "src": "media/illustrations/micro-2-0.jpg",
+              "src": "media/illustrations/micro-2-0.jpg?v=editorial2",
               "alt": "A mock verifies selected interactions, not real service semantics.",
               "caption": "A mock verifies selected interactions, not real service semantics."
             },
             {
-              "src": "media/illustrations/micro-2-1.jpg",
+              "src": "media/illustrations/micro-2-1.jpg?v=editorial2",
               "alt": "Different presentation layers can share backend behavior and validation.",
               "caption": "Different presentation layers can share backend behavior and validation."
             }
@@ -2283,12 +2283,12 @@
           ],
           "illustrations": [
             {
-              "src": "media/illustrations/load-balancing-0-0.jpg",
+              "src": "media/illustrations/load-balancing-0-0.jpg?v=editorial2",
               "alt": "A stable service interface can hide changing worker membership.",
               "caption": "A stable service interface can hide changing worker membership."
             },
             {
-              "src": "media/illustrations/load-balancing-0-1.jpg",
+              "src": "media/illustrations/load-balancing-0-1.jpg?v=editorial2",
               "alt": "Balance useful work, not only the number of assigned requests.",
               "caption": "Balance useful work, not only the number of assigned requests."
             }
@@ -2306,12 +2306,12 @@
           ],
           "illustrations": [
             {
-              "src": "media/illustrations/load-balancing-1-0.jpg",
+              "src": "media/illustrations/load-balancing-1-0.jpg?v=editorial2",
               "alt": "Transport routing preserves connection mappings without interpreting HTTP paths.",
               "caption": "Transport routing preserves connection mappings without interpreting HTTP paths."
             },
             {
-              "src": "media/illustrations/load-balancing-1-1.jpg",
+              "src": "media/illustrations/load-balancing-1-1.jpg?v=editorial2",
               "alt": "Application-aware routing requires access to application information.",
               "caption": "Application-aware routing requires access to application information."
             }
@@ -2329,12 +2329,12 @@
           ],
           "illustrations": [
             {
-              "src": "media/illustrations/load-balancing-2-0.jpg",
+              "src": "media/illustrations/load-balancing-2-0.jpg?v=editorial2",
               "alt": "A safe rollout needs sequencing, spare capacity, and compatibility.",
               "caption": "A safe rollout needs sequencing, spare capacity, and compatibility."
             },
             {
-              "src": "media/illustrations/load-balancing-2-1.jpg",
+              "src": "media/illustrations/load-balancing-2-1.jpg?v=editorial2",
               "alt": "A failed probe is evidence, not proof of a process crash.",
               "caption": "A failed probe is evidence, not proof of a process crash."
             }
@@ -2352,12 +2352,12 @@
           ],
           "illustrations": [
             {
-              "src": "media/illustrations/load-balancing-3-0.jpg",
+              "src": "media/illustrations/load-balancing-3-0.jpg?v=editorial2",
               "alt": "One cached DNS answer may direct many clients.",
               "caption": "One cached DNS answer may direct many clients."
             },
             {
-              "src": "media/illustrations/load-balancing-3-1.jpg",
+              "src": "media/illustrations/load-balancing-3-1.jpg?v=editorial2",
               "alt": "Changing authoritative policy does not invalidate every cached answer immediately.",
               "caption": "Changing authoritative policy does not invalidate every cached answer immediately."
             }
@@ -2375,12 +2375,12 @@
           ],
           "illustrations": [
             {
-              "src": "media/illustrations/load-balancing-4-0.jpg",
+              "src": "media/illustrations/load-balancing-4-0.jpg?v=editorial2",
               "alt": "A CDN saves origin work only for responses that may be reused.",
               "caption": "A CDN saves origin work only for responses that may be reused."
             },
             {
-              "src": "media/illustrations/load-balancing-4-1.jpg",
+              "src": "media/illustrations/load-balancing-4-1.jpg?v=editorial2",
               "alt": "Anycast selects a network path; caching determines content reuse.",
               "caption": "Anycast selects a network path; caching determines content reuse."
             }
@@ -2398,12 +2398,12 @@
           ],
           "illustrations": [
             {
-              "src": "media/illustrations/load-balancing-5-0.jpg",
+              "src": "media/illustrations/load-balancing-5-0.jpg?v=editorial2",
               "alt": "Choose the request path from its freshness and correctness requirements.",
               "caption": "Choose the request path from its freshness and correctness requirements."
             },
             {
-              "src": "media/illustrations/load-balancing-5-1.jpg",
+              "src": "media/illustrations/load-balancing-5-1.jpg?v=editorial2",
               "alt": "Routing recovery still requires deduplication and concurrency control.",
               "caption": "Routing recovery still requires deduplication and concurrency control."
             }
@@ -2463,12 +2463,12 @@
           "focus": "HTML generation and media delivery can follow different paths.",
           "illustrations": [
             {
-              "src": "media/illustrations/basic-0-0.jpg",
+              "src": "media/illustrations/basic-0-0.jpg?v=editorial2",
               "alt": "HTML generation and media delivery can follow different paths.",
               "caption": "HTML generation and media delivery can follow different paths."
             },
             {
-              "src": "media/illustrations/basic-0-1.jpg",
+              "src": "media/illustrations/basic-0-1.jpg?v=editorial2",
               "alt": "Identify each interface by its operation and authority.",
               "caption": "Identify each interface by its operation and authority."
             }
@@ -2488,12 +2488,12 @@
           "focus": "Reusable image variants reduce repeated transfer and transformation work.",
           "illustrations": [
             {
-              "src": "media/illustrations/basic-1-0.jpg",
+              "src": "media/illustrations/basic-1-0.jpg?v=editorial2",
               "alt": "Reusable image variants reduce repeated transfer and transformation work.",
               "caption": "Reusable image variants reduce repeated transfer and transformation work."
             },
             {
-              "src": "media/illustrations/basic-1-1.jpg",
+              "src": "media/illustrations/basic-1-1.jpg?v=editorial2",
               "alt": "Origin savings and user-delivery costs are different quantities.",
               "caption": "Origin savings and user-delivery costs are different quantities."
             }
@@ -2513,12 +2513,12 @@
           "focus": "Additional stateless workers and read replicas address different bottlenecks.",
           "illustrations": [
             {
-              "src": "media/illustrations/basic-2-0.jpg",
+              "src": "media/illustrations/basic-2-0.jpg?v=editorial2",
               "alt": "Additional stateless workers and read replicas address different bottlenecks.",
               "caption": "Additional stateless workers and read replicas address different bottlenecks."
             },
             {
-              "src": "media/illustrations/basic-2-1.jpg",
+              "src": "media/illustrations/basic-2-1.jpg?v=editorial2",
               "alt": "Cache eligibility determines how much origin work can be avoided.",
               "caption": "Cache eligibility determines how much origin work can be avoided."
             }
@@ -2538,12 +2538,12 @@
           "focus": "Large monthly totals need a rate conversion before capacity comparison.",
           "illustrations": [
             {
-              "src": "media/illustrations/basic-3-0.jpg",
+              "src": "media/illustrations/basic-3-0.jpg?v=editorial2",
               "alt": "Large monthly totals need a rate conversion before capacity comparison.",
               "caption": "Large monthly totals need a rate conversion before capacity comparison."
             },
             {
-              "src": "media/illustrations/basic-3-1.jpg",
+              "src": "media/illustrations/basic-3-1.jpg?v=editorial2",
               "alt": "Validate peaks, contention and cache behavior before accepting linear scaling.",
               "caption": "Validate peaks, contention and cache behavior before accepting linear scaling."
             }
@@ -2632,12 +2632,12 @@
           "focus": "Start with the event and its recipient, not an endpoint on the phone.",
           "illustrations": [
             {
-              "src": "media/illustrations/push-0-0.jpg",
+              "src": "media/illustrations/push-0-0.jpg?v=editorial2",
               "alt": "Start with the event and its recipient, not an endpoint on the phone.",
               "caption": "Start with the event and its recipient, not an endpoint on the phone."
             },
             {
-              "src": "media/illustrations/push-0-1.jpg",
+              "src": "media/illustrations/push-0-1.jpg?v=editorial2",
               "alt": "Reachability and durable state are different architectural responsibilities.",
               "caption": "Reachability and durable state are different architectural responsibilities."
             }
@@ -2658,12 +2658,12 @@
           "focus": "Registration connects business identity to a changeable delivery destination.",
           "illustrations": [
             {
-              "src": "media/illustrations/push-1-0.jpg",
+              "src": "media/illustrations/push-1-0.jpg?v=editorial2",
               "alt": "Registration connects business identity to a changeable delivery destination.",
               "caption": "Registration connects business identity to a changeable delivery destination."
             },
             {
-              "src": "media/illustrations/push-1-1.jpg",
+              "src": "media/illustrations/push-1-1.jpg?v=editorial2",
               "alt": "Provider acceptance is not end-to-end confirmation of user attention.",
               "caption": "Provider acceptance is not end-to-end confirmation of user attention."
             }
@@ -2684,12 +2684,12 @@
           "focus": "Short polling pays repeatedly for discovering that nothing changed.",
           "illustrations": [
             {
-              "src": "media/illustrations/push-2-0.jpg",
+              "src": "media/illustrations/push-2-0.jpg?v=editorial2",
               "alt": "Short polling pays repeatedly for discovering that nothing changed.",
               "caption": "Short polling pays repeatedly for discovering that nothing changed."
             },
             {
-              "src": "media/illustrations/push-2-1.jpg",
+              "src": "media/illustrations/push-2-1.jpg?v=editorial2",
               "alt": "Reconnection restores a transport; resynchronization restores application state.",
               "caption": "Reconnection restores a transport; resynchronization restores application state."
             }
@@ -2710,12 +2710,12 @@
           "focus": "A load balancer distributes connections; a registry locates their owners.",
           "illustrations": [
             {
-              "src": "media/illustrations/push-3-0.jpg",
+              "src": "media/illustrations/push-3-0.jpg?v=editorial2",
               "alt": "A load balancer distributes connections; a registry locates their owners.",
               "caption": "A load balancer distributes connections; a registry locates their owners."
             },
             {
-              "src": "media/illustrations/push-3-1.jpg",
+              "src": "media/illustrations/push-3-1.jpg?v=editorial2",
               "alt": "Treat live routes as transient indexes over durable business state.",
               "caption": "Treat live routes as transient indexes over durable business state."
             }
@@ -2793,12 +2793,12 @@
           "focus": "A model should answer a stated design question",
           "illustrations": [
             {
-              "src": "media/illustrations/modeling-0-0.jpg",
+              "src": "media/illustrations/modeling-0-0.jpg?v=editorial2",
               "alt": "A model should answer a stated design question",
               "caption": "A model should answer a stated design question"
             },
             {
-              "src": "media/illustrations/modeling-0-1.jpg",
+              "src": "media/illustrations/modeling-0-1.jpg?v=editorial2",
               "alt": "A model should answer a stated design question",
               "caption": "A model should answer a stated design question"
             }
@@ -2817,12 +2817,12 @@
           "focus": "An estimate guides a decision; measurements check its assumptions",
           "illustrations": [
             {
-              "src": "media/illustrations/modeling-1-0.jpg",
+              "src": "media/illustrations/modeling-1-0.jpg?v=editorial2",
               "alt": "An estimate guides a decision; measurements check its assumptions",
               "caption": "An estimate guides a decision; measurements check its assumptions"
             },
             {
-              "src": "media/illustrations/modeling-1-1.jpg",
+              "src": "media/illustrations/modeling-1-1.jpg?v=editorial2",
               "alt": "An estimate guides a decision; measurements check its assumptions",
               "caption": "An estimate guides a decision; measurements check its assumptions"
             }
@@ -2841,12 +2841,12 @@
           "focus": "Sum sequences; probability-weight choices; count repeated work",
           "illustrations": [
             {
-              "src": "media/illustrations/modeling-2-0.jpg",
+              "src": "media/illustrations/modeling-2-0.jpg?v=editorial2",
               "alt": "Sum sequences; probability-weight choices; count repeated work",
               "caption": "Sum sequences; probability-weight choices; count repeated work"
             },
             {
-              "src": "media/illustrations/modeling-2-1.jpg",
+              "src": "media/illustrations/modeling-2-1.jpg?v=editorial2",
               "alt": "Sum sequences; probability-weight choices; count repeated work",
               "caption": "Sum sequences; probability-weight choices; count repeated work"
             }
@@ -2865,12 +2865,12 @@
           "focus": "One software operation can consume several hardware resources",
           "illustrations": [
             {
-              "src": "media/illustrations/modeling-3-0.jpg",
+              "src": "media/illustrations/modeling-3-0.jpg?v=editorial2",
               "alt": "One software operation can consume several hardware resources",
               "caption": "One software operation can consume several hardware resources"
             },
             {
-              "src": "media/illustrations/modeling-3-1.jpg",
+              "src": "media/illustrations/modeling-3-1.jpg?v=editorial2",
               "alt": "One software operation can consume several hardware resources",
               "caption": "One software operation can consume several hardware resources"
             }
@@ -2889,12 +2889,12 @@
           "focus": "Choose one transaction branch; use its matching probability for an expected cost",
           "illustrations": [
             {
-              "src": "media/illustrations/modeling-4-0.jpg",
+              "src": "media/illustrations/modeling-4-0.jpg?v=editorial2",
               "alt": "Choose one transaction branch; use its matching probability for an expected cost",
               "caption": "Choose one transaction branch; use its matching probability for an expected cost"
             },
             {
-              "src": "media/illustrations/modeling-4-1.jpg",
+              "src": "media/illustrations/modeling-4-1.jpg?v=editorial2",
               "alt": "Choose one transaction branch; use its matching probability for an expected cost",
               "caption": "Choose one transaction branch; use its matching probability for an expected cost"
             }
@@ -2964,12 +2964,12 @@
           "focus": "Residence time = waiting time + service time",
           "illustrations": [
             {
-              "src": "media/illustrations/queue6-0-0.jpg",
+              "src": "media/illustrations/queue6-0-0.jpg?v=editorial2",
               "alt": "Residence time = waiting time + service time",
               "caption": "Residence time = waiting time + service time"
             },
             {
-              "src": "media/illustrations/queue6-0-1.jpg",
+              "src": "media/illustrations/queue6-0-1.jpg?v=editorial2",
               "alt": "Residence time = waiting time + service time",
               "caption": "Residence time = waiting time + service time"
             }
@@ -2988,12 +2988,12 @@
           "focus": "Over the same 20 s: X = 8/20; U = 16/20; S = U/X = 2 s",
           "illustrations": [
             {
-              "src": "media/illustrations/queue6-1-0.jpg",
+              "src": "media/illustrations/queue6-1-0.jpg?v=editorial2",
               "alt": "Over the same 20 s: X = 8/20; U = 16/20; S = U/X = 2 s",
               "caption": "Over the same 20 s: X = 8/20; U = 16/20; S = U/X = 2 s"
             },
             {
-              "src": "media/illustrations/queue6-1-1.jpg",
+              "src": "media/illustrations/queue6-1-1.jpg?v=editorial2",
               "alt": "Over the same 20 s: X = 8/20; U = 16/20; S = U/X = 2 s",
               "caption": "Over the same 20 s: X = 8/20; U = 16/20; S = U/X = 2 s"
             }
@@ -3012,12 +3012,12 @@
           "focus": "As utilization approaches one, mean delay grows sharply",
           "illustrations": [
             {
-              "src": "media/illustrations/queue6-2-0.jpg",
+              "src": "media/illustrations/queue6-2-0.jpg?v=editorial2",
               "alt": "As utilization approaches one, mean delay grows sharply",
               "caption": "As utilization approaches one, mean delay grows sharply"
             },
             {
-              "src": "media/illustrations/queue6-2-1.jpg",
+              "src": "media/illustrations/queue6-2-1.jpg?v=editorial2",
               "alt": "As utilization approaches one, mean delay grows sharply",
               "caption": "As utilization approaches one, mean delay grows sharply"
             }
@@ -3036,12 +3036,12 @@
           "focus": "Per-request demands; CPU U = lambda × .156: .468 at 3/s, .936 at 6/s",
           "illustrations": [
             {
-              "src": "media/illustrations/queue6-3-0.jpg",
+              "src": "media/illustrations/queue6-3-0.jpg?v=editorial2",
               "alt": "Per-request demands; CPU U = lambda × .156: .468 at 3/s, .936 at 6/s",
               "caption": "Per-request demands; CPU U = lambda × .156: .468 at 3/s, .936 at 6/s"
             },
             {
-              "src": "media/illustrations/queue6-3-1.jpg",
+              "src": "media/illustrations/queue6-3-1.jpg?v=editorial2",
               "alt": "Per-request demands; CPU U = lambda × .156: .468 at 3/s, .936 at 6/s",
               "caption": "Per-request demands; CPU U = lambda × .156: .468 at 3/s, .936 at 6/s"
             }
@@ -3060,12 +3060,12 @@
           "focus": "Closed workloads couple throughput to response and think times",
           "illustrations": [
             {
-              "src": "media/illustrations/queue6-4-0.jpg",
+              "src": "media/illustrations/queue6-4-0.jpg?v=editorial2",
               "alt": "Closed workloads couple throughput to response and think times",
               "caption": "Closed workloads couple throughput to response and think times"
             },
             {
-              "src": "media/illustrations/queue6-4-1.jpg",
+              "src": "media/illustrations/queue6-4-1.jpg?v=editorial2",
               "alt": "Closed workloads couple throughput to response and think times",
               "caption": "Closed workloads couple throughput to response and think times"
             }
@@ -3084,12 +3084,12 @@
           "focus": "Check every resource for stability before calculating mean delay",
           "illustrations": [
             {
-              "src": "media/illustrations/queue6-5-0.jpg",
+              "src": "media/illustrations/queue6-5-0.jpg?v=editorial2",
               "alt": "Check every resource for stability before calculating mean delay",
               "caption": "Check every resource for stability before calculating mean delay"
             },
             {
-              "src": "media/illustrations/queue6-5-1.jpg",
+              "src": "media/illustrations/queue6-5-1.jpg?v=editorial2",
               "alt": "Check every resource for stability before calculating mean delay",
               "caption": "Check every resource for stability before calculating mean delay"
             }
@@ -3205,12 +3205,12 @@
           "focus": "Define the alternatives and constraints before scoring",
           "illustrations": [
             {
-              "src": "media/illustrations/jeromy-evaluation-0-0.jpg",
+              "src": "media/illustrations/jeromy-evaluation-0-0.jpg?v=editorial2",
               "alt": "Define the alternatives and constraints before scoring",
               "caption": "Define the alternatives and constraints before scoring"
             },
             {
-              "src": "media/illustrations/jeromy-evaluation-0-1.jpg",
+              "src": "media/illustrations/jeromy-evaluation-0-1.jpg?v=editorial2",
               "alt": "Define the alternatives and constraints before scoring",
               "caption": "Define the alternatives and constraints before scoring"
             }
@@ -3232,12 +3232,12 @@
           "focus": "A quality scenario must be observable and comparable",
           "illustrations": [
             {
-              "src": "media/illustrations/jeromy-evaluation-1-0.jpg",
+              "src": "media/illustrations/jeromy-evaluation-1-0.jpg?v=editorial2",
               "alt": "A quality scenario must be observable and comparable",
               "caption": "A quality scenario must be observable and comparable"
             },
             {
-              "src": "media/illustrations/jeromy-evaluation-1-1.jpg",
+              "src": "media/illustrations/jeromy-evaluation-1-1.jpg?v=editorial2",
               "alt": "A quality scenario must be observable and comparable",
               "caption": "A quality scenario must be observable and comparable"
             }
@@ -3263,12 +3263,12 @@
           },
           "illustrations": [
             {
-              "src": "media/illustrations/jeromy-evaluation-2-0.jpg",
+              "src": "media/illustrations/jeromy-evaluation-2-0.jpg?v=editorial2",
               "alt": "Sibling priorities are local to their parent",
               "caption": "Sibling priorities are local to their parent"
             },
             {
-              "src": "media/illustrations/jeromy-evaluation-2-1.jpg",
+              "src": "media/illustrations/jeromy-evaluation-2-1.jpg?v=editorial2",
               "alt": "Sibling priorities are local to their parent",
               "caption": "Sibling priorities are local to their parent"
             }
@@ -3289,12 +3289,12 @@
           "focus": "ROC translates an ordinal ranking into explicit modeling weights",
           "illustrations": [
             {
-              "src": "media/illustrations/jeromy-evaluation-3-0.jpg",
+              "src": "media/illustrations/jeromy-evaluation-3-0.jpg?v=editorial2",
               "alt": "ROC translates an ordinal ranking into explicit modeling weights",
               "caption": "ROC translates an ordinal ranking into explicit modeling weights"
             },
             {
-              "src": "media/illustrations/jeromy-evaluation-3-1.jpg",
+              "src": "media/illustrations/jeromy-evaluation-3-1.jpg?v=editorial2",
               "alt": "ROC translates an ordinal ranking into explicit modeling weights",
               "caption": "ROC translates an ordinal ranking into explicit modeling weights"
             }
@@ -3315,12 +3315,12 @@
           "focus": "Multiply local weights along the whole path",
           "illustrations": [
             {
-              "src": "media/illustrations/jeromy-evaluation-4-0.jpg",
+              "src": "media/illustrations/jeromy-evaluation-4-0.jpg?v=editorial2",
               "alt": "Multiply local weights along the whole path",
               "caption": "Multiply local weights along the whole path"
             },
             {
-              "src": "media/illustrations/jeromy-evaluation-4-1.jpg",
+              "src": "media/illustrations/jeromy-evaluation-4-1.jpg?v=editorial2",
               "alt": "Multiply local weights along the whole path",
               "caption": "Multiply local weights along the whole path"
             }
@@ -3342,12 +3342,12 @@
           "focus": "Unknown evidence is not a zero rating",
           "illustrations": [
             {
-              "src": "media/illustrations/jeromy-evaluation-5-0.jpg",
+              "src": "media/illustrations/jeromy-evaluation-5-0.jpg?v=editorial2",
               "alt": "Unknown evidence is not a zero rating",
               "caption": "Unknown evidence is not a zero rating"
             },
             {
-              "src": "media/illustrations/jeromy-evaluation-5-1.jpg",
+              "src": "media/illustrations/jeromy-evaluation-5-1.jpg?v=editorial2",
               "alt": "Unknown evidence is not a zero rating",
               "caption": "Unknown evidence is not a zero rating"
             }
@@ -3368,12 +3368,12 @@
           "focus": "A fragile lead deserves investigation before commitment",
           "illustrations": [
             {
-              "src": "media/illustrations/jeromy-evaluation-6-0.jpg",
+              "src": "media/illustrations/jeromy-evaluation-6-0.jpg?v=editorial2",
               "alt": "A fragile lead deserves investigation before commitment",
               "caption": "A fragile lead deserves investigation before commitment"
             },
             {
-              "src": "media/illustrations/jeromy-evaluation-6-1.jpg",
+              "src": "media/illustrations/jeromy-evaluation-6-1.jpg?v=editorial2",
               "alt": "A fragile lead deserves investigation before commitment",
               "caption": "A fragile lead deserves investigation before commitment"
             }
@@ -3394,12 +3394,12 @@
           "focus": "A quality gap does not directly measure repayment effort",
           "illustrations": [
             {
-              "src": "media/illustrations/jeromy-evaluation-7-0.jpg",
+              "src": "media/illustrations/jeromy-evaluation-7-0.jpg?v=editorial2",
               "alt": "A quality gap does not directly measure repayment effort",
               "caption": "A quality gap does not directly measure repayment effort"
             },
             {
-              "src": "media/illustrations/jeromy-evaluation-7-1.jpg",
+              "src": "media/illustrations/jeromy-evaluation-7-1.jpg?v=editorial2",
               "alt": "A quality gap does not directly measure repayment effort",
               "caption": "A quality gap does not directly measure repayment effort"
             }
@@ -3420,12 +3420,12 @@
           "focus": "Another team must be able to reproduce the reasoning",
           "illustrations": [
             {
-              "src": "media/illustrations/jeromy-evaluation-8-0.jpg",
+              "src": "media/illustrations/jeromy-evaluation-8-0.jpg?v=editorial2",
               "alt": "Another team must be able to reproduce the reasoning",
               "caption": "Another team must be able to reproduce the reasoning"
             },
             {
-              "src": "media/illustrations/jeromy-evaluation-8-1.jpg",
+              "src": "media/illustrations/jeromy-evaluation-8-1.jpg?v=editorial2",
               "alt": "Another team must be able to reproduce the reasoning",
               "caption": "Another team must be able to reproduce the reasoning"
             }
@@ -3493,12 +3493,12 @@
           "focus": "Authentication identifies a requester; authorization judges a particular action.",
           "illustrations": [
             {
-              "src": "media/illustrations/security-0-0.jpg",
+              "src": "media/illustrations/security-0-0.jpg?v=editorial2",
               "alt": "Authentication identifies a requester; authorization judges a particular action.",
               "caption": "Authentication identifies a requester; authorization judges a particular action."
             },
             {
-              "src": "media/illustrations/security-0-1.jpg",
+              "src": "media/illustrations/security-0-1.jpg?v=editorial2",
               "alt": "An access decision is useful only if the executed operation retains its meaning.",
               "caption": "An access decision is useful only if the executed operation retains its meaning."
             }
@@ -3519,12 +3519,12 @@
           "focus": "Give each component the authority required by its actual responsibility.",
           "illustrations": [
             {
-              "src": "media/illustrations/security-1-0.jpg",
+              "src": "media/illustrations/security-1-0.jpg?v=editorial2",
               "alt": "Give each component the authority required by its actual responsibility.",
               "caption": "Give each component the authority required by its actual responsibility."
             },
             {
-              "src": "media/illustrations/security-1-1.jpg",
+              "src": "media/illustrations/security-1-1.jpg?v=editorial2",
               "alt": "Specify security behavior during failures, not just during successful login.",
               "caption": "Specify security behavior during failures, not just during successful login."
             }
@@ -3545,12 +3545,12 @@
           "focus": "Salts defeat reusable precomputation; costly hashing slows offline guessing.",
           "illustrations": [
             {
-              "src": "media/illustrations/security-2-0.jpg",
+              "src": "media/illustrations/security-2-0.jpg?v=editorial2",
               "alt": "Salts defeat reusable precomputation; costly hashing slows offline guessing.",
               "caption": "Salts defeat reusable precomputation; costly hashing slows offline guessing."
             },
             {
-              "src": "media/illustrations/security-2-1.jpg",
+              "src": "media/illustrations/security-2-1.jpg?v=editorial2",
               "alt": "Protect secrets after transport termination as carefully as while in transit.",
               "caption": "Protect secrets after transport termination as carefully as while in transit."
             }
@@ -3571,12 +3571,12 @@
           "focus": "Resolve identity from the verified session rather than trusting a claimed username.",
           "illustrations": [
             {
-              "src": "media/illustrations/security-3-0.jpg",
+              "src": "media/illustrations/security-3-0.jpg?v=editorial2",
               "alt": "Resolve identity from the verified session rather than trusting a claimed username.",
               "caption": "Resolve identity from the verified session rather than trusting a claimed username."
             },
             {
-              "src": "media/illustrations/security-3-1.jpg",
+              "src": "media/illustrations/security-3-1.jpg?v=editorial2",
               "alt": "Caching an authorization result also caches its revocation delay.",
               "caption": "Caching an authorization result also caches its revocation delay."
             }
@@ -3597,12 +3597,12 @@
           "focus": "Compare delegation and revocation costs, not just the shape of a credential.",
           "illustrations": [
             {
-              "src": "media/illustrations/security-4-0.jpg",
+              "src": "media/illustrations/security-4-0.jpg?v=editorial2",
               "alt": "Compare delegation and revocation costs, not just the shape of a credential.",
               "caption": "Compare delegation and revocation costs, not just the shape of a credential."
             },
             {
-              "src": "media/illustrations/security-4-1.jpg",
+              "src": "media/illustrations/security-4-1.jpg?v=editorial2",
               "alt": "Delegating one operation should not delegate the issuer’s entire account.",
               "caption": "Delegating one operation should not delegate the issuer’s entire account."
             }
@@ -3623,12 +3623,12 @@
           "focus": "Authenticity does not establish freshness or permission to repeat an effect.",
           "illustrations": [
             {
-              "src": "media/illustrations/security-5-0.jpg",
+              "src": "media/illustrations/security-5-0.jpg?v=editorial2",
               "alt": "Authenticity does not establish freshness or permission to repeat an effect.",
               "caption": "Authenticity does not establish freshness or permission to repeat an effect."
             },
             {
-              "src": "media/illustrations/security-5-1.jpg",
+              "src": "media/illustrations/security-5-1.jpg?v=editorial2",
               "alt": "Trust evidence informs a decision but does not replace a verified authorization path.",
               "caption": "Trust evidence informs a decision but does not replace a verified authorization path."
             }
@@ -3649,12 +3649,12 @@
           "focus": "Isolation limits the consequences of a defect; it does not eliminate defects.",
           "illustrations": [
             {
-              "src": "media/illustrations/security-6-0.jpg",
+              "src": "media/illustrations/security-6-0.jpg?v=editorial2",
               "alt": "Isolation limits the consequences of a defect; it does not eliminate defects.",
               "caption": "Isolation limits the consequences of a defect; it does not eliminate defects."
             },
             {
-              "src": "media/illustrations/security-6-1.jpg",
+              "src": "media/illustrations/security-6-1.jpg?v=editorial2",
               "alt": "Combine exposure reduction, containment, and timely repair.",
               "caption": "Combine exposure reduction, containment, and timely repair."
             }
@@ -3794,12 +3794,12 @@
           "focus": "Compact writes can require repeated personalized assembly on reads.",
           "illustrations": [
             {
-              "src": "media/illustrations/twitter-0-0.jpg",
+              "src": "media/illustrations/twitter-0-0.jpg?v=editorial2",
               "alt": "Compact writes can require repeated personalized assembly on reads.",
               "caption": "Compact writes can require repeated personalized assembly on reads."
             },
             {
-              "src": "media/illustrations/twitter-0-1.jpg",
+              "src": "media/illustrations/twitter-0-1.jpg?v=editorial2",
               "alt": "Scattered access and shard participation explain the expensive read path.",
               "caption": "Scattered access and shard participation explain the expensive read path."
             }
@@ -3819,12 +3819,12 @@
           "focus": "Fast feed reads are purchased with publication work and derived storage.",
           "illustrations": [
             {
-              "src": "media/illustrations/twitter-1-0.jpg",
+              "src": "media/illustrations/twitter-1-0.jpg?v=editorial2",
               "alt": "Fast feed reads are purchased with publication work and derived storage.",
               "caption": "Fast feed reads are purchased with publication work and derived storage."
             },
             {
-              "src": "media/illustrations/twitter-1-1.jpg",
+              "src": "media/illustrations/twitter-1-1.jpg?v=editorial2",
               "alt": "Asynchrony shortens the request without removing the work.",
               "caption": "Asynchrony shortens the request without removing the work."
             }
@@ -3844,12 +3844,12 @@
           "focus": "One post location cannot be local to every follower.",
           "illustrations": [
             {
-              "src": "media/illustrations/twitter-2-0.jpg",
+              "src": "media/illustrations/twitter-2-0.jpg?v=editorial2",
               "alt": "One post location cannot be local to every follower.",
               "caption": "One post location cannot be local to every follower."
             },
             {
-              "src": "media/illustrations/twitter-2-1.jpg",
+              "src": "media/illustrations/twitter-2-1.jpg?v=editorial2",
               "alt": "Precomputation relocates graph traversal rather than eliminating it.",
               "caption": "Precomputation relocates graph traversal rather than eliminating it."
             }
@@ -3869,12 +3869,12 @@
           "focus": "Asynchrony hides waiting time but does not remove fan-out amplification.",
           "illustrations": [
             {
-              "src": "media/illustrations/twitter-3-0.jpg",
+              "src": "media/illustrations/twitter-3-0.jpg?v=editorial2",
               "alt": "Asynchrony hides waiting time but does not remove fan-out amplification.",
               "caption": "Asynchrony hides waiting time but does not remove fan-out amplification."
             },
             {
-              "src": "media/illustrations/twitter-3-1.jpg",
+              "src": "media/illustrations/twitter-3-1.jpg?v=editorial2",
               "alt": "A hybrid trades a little read-time assembly for much less extreme fan-out.",
               "caption": "A hybrid trades a little read-time assembly for much less extreme fan-out."
             }
@@ -3949,12 +3949,12 @@
           "focus": "A local regression may be amplified or hidden by the architecture",
           "illustrations": [
             {
-              "src": "media/illustrations/lizhi-performance-0-0.jpg",
+              "src": "media/illustrations/lizhi-performance-0-0.jpg?v=editorial2",
               "alt": "A local regression may be amplified or hidden by the architecture",
               "caption": "A local regression may be amplified or hidden by the architecture"
             },
             {
-              "src": "media/illustrations/lizhi-performance-0-1.jpg",
+              "src": "media/illustrations/lizhi-performance-0-1.jpg?v=editorial2",
               "alt": "A local regression may be amplified or hidden by the architecture",
               "caption": "A local regression may be amplified or hidden by the architecture"
             }
@@ -3975,12 +3975,12 @@
           "focus": "Repeat comparable experiments before interpreting a difference",
           "illustrations": [
             {
-              "src": "media/illustrations/lizhi-performance-1-0.jpg",
+              "src": "media/illustrations/lizhi-performance-1-0.jpg?v=editorial2",
               "alt": "Repeat comparable experiments before interpreting a difference",
               "caption": "Repeat comparable experiments before interpreting a difference"
             },
             {
-              "src": "media/illustrations/lizhi-performance-1-1.jpg",
+              "src": "media/illustrations/lizhi-performance-1-1.jpg?v=editorial2",
               "alt": "Repeat comparable experiments before interpreting a difference",
               "caption": "Repeat comparable experiments before interpreting a difference"
             }
@@ -4001,12 +4001,12 @@
           "focus": "Map the measured change to the modeled activity it affects",
           "illustrations": [
             {
-              "src": "media/illustrations/lizhi-performance-2-0.jpg",
+              "src": "media/illustrations/lizhi-performance-2-0.jpg?v=editorial2",
               "alt": "Map the measured change to the modeled activity it affects",
               "caption": "Map the measured change to the modeled activity it affects"
             },
             {
-              "src": "media/illustrations/lizhi-performance-2-1.jpg",
+              "src": "media/illustrations/lizhi-performance-2-1.jpg?v=editorial2",
               "alt": "Map the measured change to the modeled activity it affects",
               "caption": "Map the measured change to the modeled activity it affects"
             }
@@ -4027,12 +4027,12 @@
           "focus": "Different activities can compete at the same modeled resource queue",
           "illustrations": [
             {
-              "src": "media/illustrations/lizhi-performance-3-0.jpg",
+              "src": "media/illustrations/lizhi-performance-3-0.jpg?v=editorial2",
               "alt": "Different activities can compete at the same modeled resource queue",
               "caption": "Different activities can compete at the same modeled resource queue"
             },
             {
-              "src": "media/illustrations/lizhi-performance-3-1.jpg",
+              "src": "media/illustrations/lizhi-performance-3-1.jpg?v=editorial2",
               "alt": "Different activities can compete at the same modeled resource queue",
               "caption": "Different activities can compete at the same modeled resource queue"
             }
@@ -4053,12 +4053,12 @@
           "focus": "Separate fitting the model from testing its predictions",
           "illustrations": [
             {
-              "src": "media/illustrations/lizhi-performance-4-0.jpg",
+              "src": "media/illustrations/lizhi-performance-4-0.jpg?v=editorial2",
               "alt": "Separate fitting the model from testing its predictions",
               "caption": "Separate fitting the model from testing its predictions"
             },
             {
-              "src": "media/illustrations/lizhi-performance-4-1.jpg",
+              "src": "media/illustrations/lizhi-performance-4-1.jpg?v=editorial2",
               "alt": "Separate fitting the model from testing its predictions",
               "caption": "Separate fitting the model from testing its predictions"
             }
@@ -4079,12 +4079,12 @@
           "focus": "At fixed 75/s: 8 ms demand gives 20 ms response; 10 ms gives 40 ms",
           "illustrations": [
             {
-              "src": "media/illustrations/lizhi-performance-5-0.jpg",
+              "src": "media/illustrations/lizhi-performance-5-0.jpg?v=editorial2",
               "alt": "At fixed 75/s: 8 ms demand gives 20 ms response; 10 ms gives 40 ms",
               "caption": "At fixed 75/s: 8 ms demand gives 20 ms response; 10 ms gives 40 ms"
             },
             {
-              "src": "media/illustrations/lizhi-performance-5-1.jpg",
+              "src": "media/illustrations/lizhi-performance-5-1.jpg?v=editorial2",
               "alt": "At fixed 75/s: 8 ms demand gives 20 ms response; 10 ms gives 40 ms",
               "caption": "At fixed 75/s: 8 ms demand gives 20 ms response; 10 ms gives 40 ms"
             }
@@ -4150,12 +4150,12 @@
           "focus": "A gateway is a control, not a universal trust boundary",
           "illustrations": [
             {
-              "src": "media/illustrations/secure-0-0.jpg",
+              "src": "media/illustrations/secure-0-0.jpg?v=editorial2",
               "alt": "A gateway is a control, not a universal trust boundary",
               "caption": "A gateway is a control, not a universal trust boundary"
             },
             {
-              "src": "media/illustrations/secure-0-1.jpg",
+              "src": "media/illustrations/secure-0-1.jpg?v=editorial2",
               "alt": "A gateway is a control, not a universal trust boundary",
               "caption": "A gateway is a control, not a universal trust boundary"
             }
@@ -4174,12 +4174,12 @@
           "focus": "Verify the peer, protect the channel, and separately authorize the requested operation",
           "illustrations": [
             {
-              "src": "media/illustrations/secure-1-0.jpg",
+              "src": "media/illustrations/secure-1-0.jpg?v=editorial2",
               "alt": "Verify the peer, protect the channel, and separately authorize the requested operation",
               "caption": "Verify the peer, protect the channel, and separately authorize the requested operation"
             },
             {
-              "src": "media/illustrations/secure-1-1.jpg",
+              "src": "media/illustrations/secure-1-1.jpg?v=editorial2",
               "alt": "Verify the peer, protect the channel, and separately authorize the requested operation",
               "caption": "Verify the peer, protect the channel, and separately authorize the requested operation"
             }
@@ -4198,12 +4198,12 @@
           "focus": "Restrict lateral paths; detection complements rather than replaces enforcement",
           "illustrations": [
             {
-              "src": "media/illustrations/secure-2-0.jpg",
+              "src": "media/illustrations/secure-2-0.jpg?v=editorial2",
               "alt": "Restrict lateral paths; detection complements rather than replaces enforcement",
               "caption": "Restrict lateral paths; detection complements rather than replaces enforcement"
             },
             {
-              "src": "media/illustrations/secure-2-1.jpg",
+              "src": "media/illustrations/secure-2-1.jpg?v=editorial2",
               "alt": "Restrict lateral paths; detection complements rather than replaces enforcement",
               "caption": "Restrict lateral paths; detection complements rather than replaces enforcement"
             }
@@ -4222,12 +4222,12 @@
           "focus": "A valid signature is only one part of token validation",
           "illustrations": [
             {
-              "src": "media/illustrations/secure-3-0.jpg",
+              "src": "media/illustrations/secure-3-0.jpg?v=editorial2",
               "alt": "A valid signature is only one part of token validation",
               "caption": "A valid signature is only one part of token validation"
             },
             {
-              "src": "media/illustrations/secure-3-1.jpg",
+              "src": "media/illustrations/secure-3-1.jpg?v=editorial2",
               "alt": "A valid signature is only one part of token validation",
               "caption": "A valid signature is only one part of token validation"
             }
@@ -4246,12 +4246,12 @@
           "focus": "Match each defense to the destination and threat",
           "illustrations": [
             {
-              "src": "media/illustrations/secure-4-0.jpg",
+              "src": "media/illustrations/secure-4-0.jpg?v=editorial2",
               "alt": "Match each defense to the destination and threat",
               "caption": "Match each defense to the destination and threat"
             },
             {
-              "src": "media/illustrations/secure-4-1.jpg",
+              "src": "media/illustrations/secure-4-1.jpg?v=editorial2",
               "alt": "Match each defense to the destination and threat",
               "caption": "Match each defense to the destination and threat"
             }
@@ -4270,12 +4270,12 @@
           "focus": "Test the response process with bounded scenarios",
           "illustrations": [
             {
-              "src": "media/illustrations/secure-5-0.jpg",
+              "src": "media/illustrations/secure-5-0.jpg?v=editorial2",
               "alt": "Test the response process with bounded scenarios",
               "caption": "Test the response process with bounded scenarios"
             },
             {
-              "src": "media/illustrations/secure-5-1.jpg",
+              "src": "media/illustrations/secure-5-1.jpg?v=editorial2",
               "alt": "Test the response process with bounded scenarios",
               "caption": "Test the response process with bounded scenarios"
             }
@@ -4419,12 +4419,12 @@
           "focus": "Separate deciding, composing and delivering an update",
           "illustrations": [
             {
-              "src": "media/illustrations/pushcase-0-0.jpg",
+              "src": "media/illustrations/pushcase-0-0.jpg?v=editorial2",
               "alt": "Separate deciding, composing and delivering an update",
               "caption": "Separate deciding, composing and delivering an update"
             },
             {
-              "src": "media/illustrations/pushcase-0-1.jpg",
+              "src": "media/illustrations/pushcase-0-1.jpg?v=editorial2",
               "alt": "Separate deciding, composing and delivering an update",
               "caption": "Separate deciding, composing and delivering an update"
             }
@@ -4443,12 +4443,12 @@
           "focus": "Delivery feedback supports recovery but cannot remove duplicate ambiguity",
           "illustrations": [
             {
-              "src": "media/illustrations/pushcase-1-0.jpg",
+              "src": "media/illustrations/pushcase-1-0.jpg?v=editorial2",
               "alt": "Delivery feedback supports recovery but cannot remove duplicate ambiguity",
               "caption": "Delivery feedback supports recovery but cannot remove duplicate ambiguity"
             },
             {
-              "src": "media/illustrations/pushcase-1-1.jpg",
+              "src": "media/illustrations/pushcase-1-1.jpg?v=editorial2",
               "alt": "Delivery feedback supports recovery but cannot remove duplicate ambiguity",
               "caption": "Delivery feedback supports recovery but cannot remove duplicate ambiguity"
             }
@@ -4467,12 +4467,12 @@
           "focus": "A directory locates ownership; the payload then goes to the owning worker",
           "illustrations": [
             {
-              "src": "media/illustrations/pushcase-2-0.jpg",
+              "src": "media/illustrations/pushcase-2-0.jpg?v=editorial2",
               "alt": "A directory locates ownership; the payload then goes to the owning worker",
               "caption": "A directory locates ownership; the payload then goes to the owning worker"
             },
             {
-              "src": "media/illustrations/pushcase-2-1.jpg",
+              "src": "media/illustrations/pushcase-2-1.jpg?v=editorial2",
               "alt": "A directory locates ownership; the payload then goes to the owning worker",
               "caption": "A directory locates ownership; the payload then goes to the owning worker"
             }
@@ -4491,12 +4491,12 @@
           "focus": "A transport acknowledgement is not proof that a person acted",
           "illustrations": [
             {
-              "src": "media/illustrations/pushcase-3-0.jpg",
+              "src": "media/illustrations/pushcase-3-0.jpg?v=editorial2",
               "alt": "A transport acknowledgement is not proof that a person acted",
               "caption": "A transport acknowledgement is not proof that a person acted"
             },
             {
-              "src": "media/illustrations/pushcase-3-1.jpg",
+              "src": "media/illustrations/pushcase-3-1.jpg?v=editorial2",
               "alt": "A transport acknowledgement is not proof that a person acted",
               "caption": "A transport acknowledgement is not proof that a person acted"
             }
@@ -4572,12 +4572,12 @@
           "focus": "The same graph can express different styles",
           "illustrations": [
             {
-              "src": "media/illustrations/styles-0-0.jpg",
+              "src": "media/illustrations/styles-0-0.jpg?v=editorial2",
               "alt": "The same graph can express different styles",
               "caption": "The same graph can express different styles"
             },
             {
-              "src": "media/illustrations/styles-0-1.jpg",
+              "src": "media/illustrations/styles-0-1.jpg?v=editorial2",
               "alt": "The same graph can express different styles",
               "caption": "The same graph can express different styles"
             }
@@ -4596,12 +4596,12 @@
           "focus": "Independent tools still couple through the data model",
           "illustrations": [
             {
-              "src": "media/illustrations/styles-1-0.jpg",
+              "src": "media/illustrations/styles-1-0.jpg?v=editorial2",
               "alt": "Independent tools still couple through the data model",
               "caption": "Independent tools still couple through the data model"
             },
             {
-              "src": "media/illustrations/styles-1-1.jpg",
+              "src": "media/illustrations/styles-1-1.jpg?v=editorial2",
               "alt": "Independent tools still couple through the data model",
               "caption": "Independent tools still couple through the data model"
             }
@@ -4620,12 +4620,12 @@
           "focus": "Filters need compatible contracts and bounded buffering",
           "illustrations": [
             {
-              "src": "media/illustrations/styles-2-0.jpg",
+              "src": "media/illustrations/styles-2-0.jpg?v=editorial2",
               "alt": "Filters need compatible contracts and bounded buffering",
               "caption": "Filters need compatible contracts and bounded buffering"
             },
             {
-              "src": "media/illustrations/styles-2-1.jpg",
+              "src": "media/illustrations/styles-2-1.jpg?v=editorial2",
               "alt": "Filters need compatible contracts and bounded buffering",
               "caption": "Filters need compatible contracts and bounded buffering"
             }
@@ -4644,12 +4644,12 @@
           "focus": "Logical layers need not occupy separate deployment tiers",
           "illustrations": [
             {
-              "src": "media/illustrations/styles-3-0.jpg",
+              "src": "media/illustrations/styles-3-0.jpg?v=editorial2",
               "alt": "Logical layers need not occupy separate deployment tiers",
               "caption": "Logical layers need not occupy separate deployment tiers"
             },
             {
-              "src": "media/illustrations/styles-3-1.jpg",
+              "src": "media/illustrations/styles-3-1.jpg?v=editorial2",
               "alt": "Logical layers need not occupy separate deployment tiers",
               "caption": "Logical layers need not occupy separate deployment tiers"
             }
@@ -4668,12 +4668,12 @@
           "focus": "The execution engine interprets program data while managing distinct forms of state",
           "illustrations": [
             {
-              "src": "media/illustrations/styles-4-0.jpg",
+              "src": "media/illustrations/styles-4-0.jpg?v=editorial2",
               "alt": "The execution engine interprets program data while managing distinct forms of state",
               "caption": "The execution engine interprets program data while managing distinct forms of state"
             },
             {
-              "src": "media/illustrations/styles-4-1.jpg",
+              "src": "media/illustrations/styles-4-1.jpg?v=editorial2",
               "alt": "The execution engine interprets program data while managing distinct forms of state",
               "caption": "The execution engine interprets program data while managing distinct forms of state"
             }
@@ -4692,12 +4692,12 @@
           "focus": "Feedback uses observed results to adjust the next action",
           "illustrations": [
             {
-              "src": "media/illustrations/styles-5-0.jpg",
+              "src": "media/illustrations/styles-5-0.jpg?v=editorial2",
               "alt": "Feedback uses observed results to adjust the next action",
               "caption": "Feedback uses observed results to adjust the next action"
             },
             {
-              "src": "media/illustrations/styles-5-1.jpg",
+              "src": "media/illustrations/styles-5-1.jpg?v=editorial2",
               "alt": "Feedback uses observed results to adjust the next action",
               "caption": "Feedback uses observed results to adjust the next action"
             }
@@ -4716,12 +4716,12 @@
           "focus": "A remote call includes latency, authorization and partial failure",
           "illustrations": [
             {
-              "src": "media/illustrations/styles-6-0.jpg",
+              "src": "media/illustrations/styles-6-0.jpg?v=editorial2",
               "alt": "A remote call includes latency, authorization and partial failure",
               "caption": "A remote call includes latency, authorization and partial failure"
             },
             {
-              "src": "media/illustrations/styles-6-1.jpg",
+              "src": "media/illustrations/styles-6-1.jpg?v=editorial2",
               "alt": "A remote call includes latency, authorization and partial failure",
               "caption": "A remote call includes latency, authorization and partial failure"
             }
@@ -4740,12 +4740,12 @@
           "focus": "Decentralized transfer can retain a bootstrap dependency",
           "illustrations": [
             {
-              "src": "media/illustrations/styles-7-0.jpg",
+              "src": "media/illustrations/styles-7-0.jpg?v=editorial2",
               "alt": "Decentralized transfer can retain a bootstrap dependency",
               "caption": "Decentralized transfer can retain a bootstrap dependency"
             },
             {
-              "src": "media/illustrations/styles-7-1.jpg",
+              "src": "media/illustrations/styles-7-1.jpg?v=editorial2",
               "alt": "Decentralized transfer can retain a bootstrap dependency",
               "caption": "Decentralized transfer can retain a bootstrap dependency"
             }
@@ -4848,12 +4848,12 @@
           "focus": "Asynchrony changes the promise made by a response, not the existence of a response.",
           "illustrations": [
             {
-              "src": "media/illustrations/async-0-0.jpg",
+              "src": "media/illustrations/async-0-0.jpg?v=editorial2",
               "alt": "Asynchrony changes the promise made by a response, not the existence of a response.",
               "caption": "Asynchrony changes the promise made by a response, not the existence of a response."
             },
             {
-              "src": "media/illustrations/async-0-1.jpg",
+              "src": "media/illustrations/async-0-1.jpg?v=editorial2",
               "alt": "Separate immediate acceptance from a durable, discoverable completion record.",
               "caption": "Separate immediate acceptance from a durable, discoverable completion record."
             }
@@ -4874,12 +4874,12 @@
           "focus": "A queue message is a versioned work interface, not an unstructured note.",
           "illustrations": [
             {
-              "src": "media/illustrations/async-1-0.jpg",
+              "src": "media/illustrations/async-1-0.jpg?v=editorial2",
               "alt": "A queue message is a versioned work interface, not an unstructured note.",
               "caption": "A queue message is a versioned work interface, not an unstructured note."
             },
             {
-              "src": "media/illustrations/async-1-1.jpg",
+              "src": "media/illustrations/async-1-1.jpg?v=editorial2",
               "alt": "Design explicitly for crashes between durable effects and acknowledgements.",
               "caption": "Design explicitly for crashes between durable effects and acknowledgements."
             }
@@ -4900,12 +4900,12 @@
           "focus": "Queues defer work; sustained overload needs more capacity or less demand.",
           "illustrations": [
             {
-              "src": "media/illustrations/async-2-0.jpg",
+              "src": "media/illustrations/async-2-0.jpg?v=editorial2",
               "alt": "Queues defer work; sustained overload needs more capacity or less demand.",
               "caption": "Queues defer work; sustained overload needs more capacity or less demand."
             },
             {
-              "src": "media/illustrations/async-2-1.jpg",
+              "src": "media/illustrations/async-2-1.jpg?v=editorial2",
               "alt": "Queue persistence and log retention determine which failures can be recovered.",
               "caption": "Queue persistence and log retention determine which failures can be recovered."
             }
@@ -4926,12 +4926,12 @@
           "focus": "Bounded queues force explicit admission policy before work becomes unmanageable.",
           "illustrations": [
             {
-              "src": "media/illustrations/async-3-0.jpg",
+              "src": "media/illustrations/async-3-0.jpg?v=editorial2",
               "alt": "Bounded queues force explicit admission policy before work becomes unmanageable.",
               "caption": "Bounded queues force explicit admission policy before work becomes unmanageable."
             },
             {
-              "src": "media/illustrations/async-3-1.jpg",
+              "src": "media/illustrations/async-3-1.jpg?v=editorial2",
               "alt": "Specify ordering at the business-effect boundary, not only at queue delivery.",
               "caption": "Specify ordering at the business-effect boundary, not only at queue delivery."
             }
@@ -5011,12 +5011,12 @@
           "focus": "An event separates the fact that occurred from the set of components reacting to it.",
           "illustrations": [
             {
-              "src": "media/illustrations/events-0-0.jpg",
+              "src": "media/illustrations/events-0-0.jpg?v=editorial2",
               "alt": "An event separates the fact that occurred from the set of components reacting to it.",
               "caption": "An event separates the fact that occurred from the set of components reacting to it."
             },
             {
-              "src": "media/illustrations/events-0-1.jpg",
+              "src": "media/illustrations/events-0-1.jpg?v=editorial2",
               "alt": "Dispatch semantics determine waiting, ordering, and failure propagation.",
               "caption": "Dispatch semantics determine waiting, ordering, and failure propagation."
             }
@@ -5037,12 +5037,12 @@
           "focus": "Fan-out copies an event across subscriptions; workers can compete within a subscription.",
           "illustrations": [
             {
-              "src": "media/illustrations/events-1-0.jpg",
+              "src": "media/illustrations/events-1-0.jpg?v=editorial2",
               "alt": "Fan-out copies an event across subscriptions; workers can compete within a subscription.",
               "caption": "Fan-out copies an event across subscriptions; workers can compete within a subscription."
             },
             {
-              "src": "media/illustrations/events-1-1.jpg",
+              "src": "media/illustrations/events-1-1.jpg?v=editorial2",
               "alt": "Loose addressing reduces coupling to locations, not coupling to data meaning.",
               "caption": "Loose addressing reduces coupling to locations, not coupling to data meaning."
             }
@@ -5063,12 +5063,12 @@
           "focus": "Deduplication prevents repeats; version checks prevent stale overwrites.",
           "illustrations": [
             {
-              "src": "media/illustrations/events-2-0.jpg",
+              "src": "media/illustrations/events-2-0.jpg?v=editorial2",
               "alt": "Deduplication prevents repeats; version checks prevent stale overwrites.",
               "caption": "Deduplication prevents repeats; version checks prevent stale overwrites."
             },
             {
-              "src": "media/illustrations/events-2-1.jpg",
+              "src": "media/illustrations/events-2-1.jpg?v=editorial2",
               "alt": "Dead-letter handling is an operational recovery workflow, not a place to forget failures.",
               "caption": "Dead-letter handling is an operational recovery workflow, not a place to forget failures."
             }
@@ -5089,12 +5089,12 @@
           "focus": "Topics, services, and actions express different timing and completion contracts.",
           "illustrations": [
             {
-              "src": "media/illustrations/events-3-0.jpg",
+              "src": "media/illustrations/events-3-0.jpg?v=editorial2",
               "alt": "Topics, services, and actions express different timing and completion contracts.",
               "caption": "Topics, services, and actions express different timing and completion contracts."
             },
             {
-              "src": "media/illustrations/events-3-1.jpg",
+              "src": "media/illustrations/events-3-1.jpg?v=editorial2",
               "alt": "Discovery finds peers; delivery and failure policies determine useful behavior.",
               "caption": "Discovery finds peers; delivery and failure policies determine useful behavior."
             }
@@ -5174,12 +5174,12 @@
           "focus": "A valid summary can replace a large transfer when the aggregate composes correctly.",
           "illustrations": [
             {
-              "src": "media/illustrations/streaming-0-0.jpg",
+              "src": "media/illustrations/streaming-0-0.jpg?v=editorial2",
               "alt": "A valid summary can replace a large transfer when the aggregate composes correctly.",
               "caption": "A valid summary can replace a large transfer when the aggregate composes correctly."
             },
             {
-              "src": "media/illustrations/streaming-0-1.jpg",
+              "src": "media/illustrations/streaming-0-1.jpg?v=editorial2",
               "alt": "Correct distributed summaries preserve weighting and the target statistic.",
               "caption": "Correct distributed summaries preserve weighting and the target statistic."
             }
@@ -5200,12 +5200,12 @@
           "focus": "Intermediate keys determine which records are brought together for reduction.",
           "illustrations": [
             {
-              "src": "media/illustrations/streaming-1-0.jpg",
+              "src": "media/illustrations/streaming-1-0.jpg?v=editorial2",
               "alt": "Intermediate keys determine which records are brought together for reduction.",
               "caption": "Intermediate keys determine which records are brought together for reduction."
             },
             {
-              "src": "media/illustrations/streaming-1-1.jpg",
+              "src": "media/illustrations/streaming-1-1.jpg?v=editorial2",
               "alt": "Batch parallelism does not remove shuffle cost, skew, or retry semantics.",
               "caption": "Batch parallelism does not remove shuffle cost, skew, or retry semantics."
             }
@@ -5226,12 +5226,12 @@
           "focus": "An ongoing stream needs explicit rules for time, windows, and late evidence.",
           "illustrations": [
             {
-              "src": "media/illustrations/streaming-2-0.jpg",
+              "src": "media/illustrations/streaming-2-0.jpg?v=editorial2",
               "alt": "An ongoing stream needs explicit rules for time, windows, and late evidence.",
               "caption": "An ongoing stream needs explicit rules for time, windows, and late evidence."
             },
             {
-              "src": "media/illustrations/streaming-2-1.jpg",
+              "src": "media/illustrations/streaming-2-1.jpg?v=editorial2",
               "alt": "Recover state and input progress together to avoid silent loss or double application.",
               "caption": "Recover state and input progress together to avoid silent loss or double application."
             }
@@ -5252,12 +5252,12 @@
           "focus": "Move the waiting role so another thread can receive events while work proceeds.",
           "illustrations": [
             {
-              "src": "media/illustrations/streaming-3-0.jpg",
+              "src": "media/illustrations/streaming-3-0.jpg?v=editorial2",
               "alt": "Move the waiting role so another thread can receive events while work proceeds.",
               "caption": "Move the waiting role so another thread can receive events while work proceeds."
             },
             {
-              "src": "media/illustrations/streaming-3-1.jpg",
+              "src": "media/illustrations/streaming-3-1.jpg?v=editorial2",
               "alt": "Identify what leadership controls before claiming a failure or performance benefit.",
               "caption": "Identify what leadership controls before claiming a failure or performance benefit."
             }
@@ -5278,12 +5278,12 @@
           "focus": "Partitioning defines the ordering scope; replication protects copies of that scope.",
           "illustrations": [
             {
-              "src": "media/illustrations/streaming-4-0.jpg",
+              "src": "media/illustrations/streaming-4-0.jpg?v=editorial2",
               "alt": "Partitioning defines the ordering scope; replication protects copies of that scope.",
               "caption": "Partitioning defines the ordering scope; replication protects copies of that scope."
             },
             {
-              "src": "media/illustrations/streaming-4-1.jpg",
+              "src": "media/illustrations/streaming-4-1.jpg?v=editorial2",
               "alt": "Check producer durability, replica promotion, and external effects as separate contracts.",
               "caption": "Check producer durability, replica promotion, and external effects as separate contracts."
             }

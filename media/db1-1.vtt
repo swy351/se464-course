@@ -124,26 +124,26 @@ every shard, combine results and sort or
 00:02:18.243 --> 00:02:19.133
 aggregate them.
 
-00:02:19.133 --> 00:02:24.086
+00:02:19.133 --> 00:02:24.105
 That scatter-and-gather query grows more
 expensive as shards are added and can wait for
 the
 
-00:02:24.086 --> 00:02:28.766
+00:02:24.105 --> 00:02:28.804
 slowest participating shard. Dividing data can
 therefore improve one access path while
 
-00:02:28.766 --> 00:02:33.719
-making another harder. The diagram needs both
+00:02:28.804 --> 00:02:33.831
+making another harder. This example needs both
 paths: a direct arrow from account key to one
 
-00:02:33.719 --> 00:02:37.093
+00:02:33.831 --> 00:02:37.218
 shard and a branching arrow from a global query
 to all shards.
 
-00:02:37.133 --> 00:02:42.186
+00:02:37.218 --> 00:02:42.271
 A secondary read model may improve the global
 query, but it creates additional data to
 
-00:02:42.186 --> 00:02:42.715
+00:02:42.271 --> 00:02:42.799
 maintain.

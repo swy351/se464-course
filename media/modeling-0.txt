@@ -5,7 +5,7 @@ Choose what the architecture model must explain — Choose what the architecture
 
 An architectural model records selected design decisions, not every fact about the program. Components, connectors, interfaces, configurations and rationale answer different stakeholder questions. The web-system examples show how a cache, application, database, object store and external services can be placed in a shared picture. The important question is what each element and edge means and which decision the picture helps evaluate.
 
-Choose what the architecture model must explain — Reason through the consequences
+Choose what the architecture model must explain — Apply the idea: Choose what the architecture model must explain
 
 Choose detail and formality according to the benefit of creating and maintaining the model. Include constraints on interaction, concurrency or behavior when those constraints matter. Static structure and runtime state are different perspectives, although a running system can also change topology through scaling or redeployment. Functional and quality concerns can both be modeled; “prints medical records” leaves speed and confidentiality unresolved until the description specifies relevant conditions and evidence. Is a more detailed model always more useful? No. Detail incurs maintenance and cognitive costs; select what answers consequential stakeholder questions.
 
@@ -13,7 +13,7 @@ Estimate before committing to implementation — Estimate before committing to i
 
 Performance modeling can reveal a costly design before a full system exists. Execution graphs estimate scenario work; queueing networks estimate contention; other approaches can use simulation or learned relationships. Models allow early comparison of alternatives and resource needs, but their answers remain conditional on assumptions about operations, infrastructure and workload. A plausible model is an engineering aid rather than a performance guarantee.
 
-Estimate before committing to implementation — Reason through the consequences
+Estimate before committing to implementation — Apply the idea: Estimate before committing to implementation
 
 Execution models in this unit omit resource contention. Their service costs therefore provide a baseline, not the response a busy production system must achieve. Finding an unacceptable baseline is valuable because queueing will not rescue it. Passing that check does not prove adequate loaded performance. Combine early models with prototypes and subsequent measurements, revising parameters as evidence becomes available instead of treating modeling and testing as mutually exclusive stages. If an execution graph predicts 100 ms without contention, is 100 ms guaranteed under concurrent users? No. Queueing, interference and model omissions can increase response time.
 
@@ -21,6 +21,6 @@ Reduce execution graphs — Reduce execution graphs
 
 Execution graphs make a scenario’s control flow explicit. Basic nodes represent processing steps; expanded nodes refer to another graph. Repetition nodes specify loops, case nodes select alternatives, parallel-and-join nodes wait for all branches and division nodes start work that need not finish before continuation. These distinctions determine whether work contributes directly to the response being measured.
 
-Reduce execution graphs — Reason through the consequences
+Reduce execution graphs — Apply the idea: Reduce execution graphs
 
 Reduce simple structures while preserving the chosen metric. Sequential times add, a fixed loop multiplies its body cost by the repetition count and a case uses the minimum, maximum or probability-weighted average according to the question. Parallel elapsed time can depend on the longest branch only under assumptions about available resources and synchronization. Keep best path separate from best resource conditions: an average path without contention is still not an average loaded response. Two exclusive branches take 10 and 90 ms with probabilities .9 and .1. What is expected branch cost? 0.9×10+0.1×90=18 ms, plus any case-node overhead.

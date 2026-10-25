@@ -11,7 +11,7 @@ The next step can avoid application work altogether for eligible requests. Put a
 
 Evaluate scaling claims with workload evidence — Convert volume into a rate
 
-A large monthly total can sound more demanding than its rate actually is. The case projects roughly four hundred thousand monthly write-generating events at two hundred times the traffic: eighty million events per month. Dividing by approximately 2.6 million seconds gives about thirty-one events per second on average. This calculation does not prove that the system can handle the workload, but it challenges the assumption that a large audience automatically requires sharded writes. The diagram should show the conversion from events per month to events per second. Always attach the unit to a number; comparing a monthly event count directly with a per-second device capacity is meaningless.
+A large monthly total can sound more demanding than its rate actually is. The case projects roughly four hundred thousand monthly write-generating events at two hundred times the traffic: eighty million events per month. Dividing by approximately 2.6 million seconds gives about thirty-one events per second on average. This calculation does not prove that the system can handle the workload, but it challenges the assumption that a large audience automatically requires sharded writes. This example should show the conversion from events per month to events per second. Always attach the unit to a number; comparing a monthly event count directly with a per-second device capacity is meaningless.
 
 Evaluate scaling claims with workload evidence — A projection is a hypothesis
 

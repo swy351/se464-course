@@ -126,7 +126,7 @@
     {
       "chapter": 6,
       "title": "Client-focused interfaces and dependency inversion",
-      "start": 129.19,
+      "start": 125.33,
       "part": 2,
       "path": "media/design-1"
     }
@@ -193,7 +193,7 @@
     {
       "chapter": 4,
       "title": "A Wikipedia request, end to end",
-      "start": 76.25,
+      "start": 76.09,
       "part": 2,
       "path": "media/scaling-1"
     }
@@ -209,7 +209,7 @@
     {
       "chapter": 2,
       "title": "Stateless workers with stateful data",
-      "start": 84.0,
+      "start": 84.46,
       "part": 1,
       "path": "media/cache-0"
     },
@@ -223,7 +223,7 @@
     {
       "chapter": 4,
       "title": "Popularity, freshness and HTTP caching",
-      "start": 77.75,
+      "start": 93.25,
       "part": 2,
       "path": "media/cache-1"
     }
@@ -341,14 +341,14 @@
     {
       "chapter": 5,
       "title": "Caches and memory data structures",
-      "start": 84.02,
+      "start": 84.1,
       "part": 2,
       "path": "media/choosing-1"
     },
     {
       "chapter": 6,
       "title": "Files, objects and final selection",
-      "start": 163.89,
+      "start": 163.96,
       "part": 2,
       "path": "media/choosing-1"
     }
@@ -364,7 +364,7 @@
     {
       "chapter": 2,
       "title": "Retries and resource identity",
-      "start": 81.22,
+      "start": 81.5,
       "part": 1,
       "path": "media/rest-0"
     },
@@ -378,7 +378,7 @@
     {
       "chapter": 4,
       "title": "Choosing a protocol",
-      "start": 86.54,
+      "start": 87.58,
       "part": 2,
       "path": "media/rest-1"
     }
@@ -394,7 +394,7 @@
     {
       "chapter": 2,
       "title": "Choosing service boundaries",
-      "start": 91.46,
+      "start": 92.03,
       "part": 1,
       "path": "media/micro-0"
     },
@@ -417,7 +417,7 @@
     {
       "chapter": 2,
       "title": "Local routing: L4 and L7",
-      "start": 83.04,
+      "start": 83.43,
       "part": 1,
       "path": "load-balancing/media/video-0"
     },
@@ -445,7 +445,7 @@
     {
       "chapter": 6,
       "title": "Design review and self-check",
-      "start": 85.66,
+      "start": 85.59,
       "part": 4,
       "path": "load-balancing/media/video-3"
     }
@@ -565,7 +565,7 @@
     {
       "chapter": 3,
       "title": "Understand single and multiple server queues",
-      "start": 162.86,
+      "start": 180.33,
       "part": 1,
       "path": "media/queue6-0"
     },
@@ -623,7 +623,7 @@
     {
       "chapter": 5,
       "title": "5. Multiply weights down each path",
-      "start": 425.02,
+      "start": 418.74,
       "part": 1,
       "path": "media/jeromy-evaluation-0"
     },
@@ -718,7 +718,7 @@
     {
       "chapter": 2,
       "title": "Materialized feeds and asynchronous publication",
-      "start": 80.19,
+      "start": 80.27,
       "part": 1,
       "path": "media/twitter-0"
     },
@@ -732,7 +732,7 @@
     {
       "chapter": 4,
       "title": "Hybrid feeds and the celebrity exception",
-      "start": 79.96,
+      "start": 80.04,
       "part": 2,
       "path": "media/twitter-1"
     }
@@ -984,14 +984,14 @@
     {
       "chapter": 2,
       "title": "MapReduce and finite batch jobs",
-      "start": 84.88,
+      "start": 88.88,
       "part": 1,
       "path": "media/streaming-0"
     },
     {
       "chapter": 3,
       "title": "Continuous streams and state",
-      "start": 167.35,
+      "start": 171.36,
       "part": 1,
       "path": "media/streaming-0"
     },

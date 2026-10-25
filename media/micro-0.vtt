@@ -19,137 +19,132 @@ not automatically turn that application into
 00:00:21.876 --> 00:00:22.746
 microservices.
 
-00:00:22.746 --> 00:00:28.005
-The diagram shows one application artifact
-copied to several workers. Replication increases
+00:00:22.746 --> 00:00:27.819
+In this example, notice one application artifact
+copied to several workers. Replication
 
-00:00:28.005 --> 00:00:33.323
-the capacity for independent requests while
-keeping the code and release unit together. This
+00:00:27.819 --> 00:00:32.892
+increases the capacity for independent requests
+while keeping the code and release unit
 
-00:00:33.323 --> 00:00:38.466
-distinction prevents a common category error:
-counting deployment machines tells us about
+00:00:32.892 --> 00:00:38.082
+together. This distinction prevents a common
+category error: counting deployment machines
 
-00:00:38.466 --> 00:00:43.610
-runtime topology, while identifying
-independently developed and deployed
-responsibilities
+00:00:38.082 --> 00:00:43.156
+tells us about runtime topology, while
+identifying independently developed and deployed
 
-00:00:43.610 --> 00:00:46.789
-tells us about the structure of the application
-itself.
+00:00:43.156 --> 00:00:47.354
+responsibilities tells us about the structure of
+the application itself.
 
-00:00:46.789 --> 00:00:52.030
+00:00:47.354 --> 00:00:52.596
 For a small team, keeping related functionality
 in one application can make development
 
-00:00:52.030 --> 00:00:57.031
+00:00:52.596 --> 00:00:57.596
 practical. A developer runs one application
 locally, steps through one request in a
 
-00:00:57.031 --> 00:01:02.333
+00:00:57.596 --> 00:01:02.898
 debugger, and can coordinate a database
 transaction without crossing service boundaries.
 
-00:01:02.333 --> 00:01:07.467
+00:01:02.898 --> 00:01:08.032
 In the diagram, catalogue lookup, reservation
 validation, and reservation storage are
 
-00:01:07.467 --> 00:01:12.721
+00:01:08.032 --> 00:01:13.287
 modules inside the same deployable boundary.
 They should still have clear interfaces; a
 
-00:01:12.721 --> 00:01:18.157
+00:01:13.287 --> 00:01:18.723
 monolith need not be an undifferentiated pile of
 code. The simplicity comes from sharing a
 
-00:01:18.157 --> 00:01:21.962
+00:01:18.723 --> 00:01:22.528
 runtime and deployment process, not from
 abandoning modularity.
 
-00:01:21.962 --> 00:01:26.724
+00:01:22.528 --> 00:01:27.290
 Before splitting the system, identify a concrete
 limitation that separate services would
 
-00:01:26.724 --> 00:01:31.324
+00:01:27.290 --> 00:01:31.890
 address and compare that benefit with the new
 coordination work the split introduces.
 
-00:01:31.462 --> 00:01:36.514
+00:01:32.028 --> 00:01:37.080
 A service boundary turns a local collaboration
 into an explicit network contract. Imagine
 
-00:01:36.514 --> 00:01:41.510
+00:01:37.080 --> 00:01:42.075
 separating a shop's catalogue from its order
 workflow because they have distinct owners,
 
-00:01:41.510 --> 00:01:46.278
+00:01:42.075 --> 00:01:46.843
 change patterns, and scaling needs. The order
 service asks the catalogue for product
 
-00:01:46.278 --> 00:01:51.103
+00:01:46.843 --> 00:01:51.668
 information through an API rather than reading
 its private tables or calling internal
 
-00:01:51.103 --> 00:01:51.670
+00:01:51.668 --> 00:01:52.236
 functions.
 
-00:01:51.670 --> 00:01:56.498
-The diagram marks both the request boundary and
-the data owned behind it. Each side can
+00:01:52.236 --> 00:01:57.048
+Notice both the request boundary and the data
+owned behind it. Each side can change its
 
-00:01:56.498 --> 00:02:01.437
-change its implementation while preserving the
-contract, but only if callers respect that
+00:01:57.048 --> 00:02:02.081
+implementation while preserving the contract,
+but only if callers respect that boundary. If
 
-00:02:01.437 --> 00:02:06.487
-boundary. If every release still requires
-coordinated changes to both services, the
-network
+00:02:02.081 --> 00:02:07.170
+every release still requires coordinated changes
+to both services, the network split has not
 
-00:02:06.487 --> 00:02:11.593
-split has not delivered much independence and
-may simply have made an existing coupling more
+00:02:07.170 --> 00:02:12.093
+delivered much independence and may simply have
+made an existing coupling more expensive.
 
-00:02:11.593 --> 00:02:12.148
-expensive.
-
-00:02:12.170 --> 00:02:17.563
+00:02:12.236 --> 00:02:17.628
 Splitting a checkout across services also
 changes failures. A payment service might accept
 a
 
-00:02:17.563 --> 00:02:22.487
+00:02:17.628 --> 00:02:22.552
 charge before an inventory reservation fails,
 leaving a partially completed business
 
-00:02:22.487 --> 00:02:27.235
+00:02:22.552 --> 00:02:27.300
 operation. There is no automatic single-process
 rollback across those independent
 
-00:02:27.235 --> 00:02:27.879
+00:02:27.300 --> 00:02:27.945
 boundaries.
 
-00:02:27.879 --> 00:02:33.087
-The diagram stops the inventory branch after
+00:02:27.945 --> 00:02:33.218
+This example stops the inventory branch after
 payment succeeds and then adds a compensating
 
-00:02:33.087 --> 00:02:38.295
+00:02:33.218 --> 00:02:38.433
 action such as releasing or refunding the
 payment under a defined policy. This is a design
 
-00:02:38.295 --> 00:02:42.634
+00:02:38.433 --> 00:02:42.779
 decision, not a generic promise that
 compensation perfectly erases history.
 
-00:02:42.879 --> 00:02:48.549
+00:02:42.945 --> 00:02:48.614
 Timeouts, duplicate delivery, and uncertain
 outcomes need explicit handling. Follow the full
 
-00:02:48.549 --> 00:02:53.972
+00:02:48.614 --> 00:02:54.037
 operation rather than evaluating each small
 service only in isolation, because customers
 
-00:02:53.972 --> 00:02:55.882
+00:02:54.037 --> 00:02:55.948
 experience the combined result.

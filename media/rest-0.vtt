@@ -23,118 +23,115 @@ for a named location, and the service
 returns structured data with a documented
 meaning.
 
-00:00:25.500 --> 00:00:30.717
-The diagram distinguishes the resource
+00:00:25.500 --> 00:00:30.793
+This example distinguishes the resource
 identifier, request parameters, and response
 
-00:00:30.717 --> 00:00:36.123
+00:00:30.793 --> 00:00:36.212
 representation. These pieces form a contract
 that lets a browser application, a mobile
 
-00:00:36.123 --> 00:00:41.718
+00:00:36.212 --> 00:00:41.820
 application, or another backend use the same
 service independently of its implementation.
 
-00:00:41.718 --> 00:00:47.244
+00:00:42.000 --> 00:00:47.527
 HTTP provides an existing envelope for that
 contract. A request selects a target and method,
 
-00:00:47.244 --> 00:00:52.531
+00:00:47.527 --> 00:00:52.813
 supplies fields such as authorization or
 accepted media types, and may carry a body. The
 
-00:00:52.531 --> 00:00:57.877
+00:00:52.813 --> 00:00:58.159
 service responds with an appropriate status and
 a representation whose content type tells
 
-00:00:57.877 --> 00:00:59.559
+00:00:58.159 --> 00:00:59.841
 the client how to decode it.
 
-00:00:59.718 --> 00:01:04.628
+00:01:00.000 --> 00:01:04.912
 For a forecast endpoint, a successful JSON
 response and an unknown-location error are
 
-00:01:04.628 --> 00:01:09.653
-different documented outcomes. The diagram
+00:01:04.912 --> 00:01:09.998
+different documented outcomes. This example
 branches on the service's result rather than
 
-00:01:09.653 --> 00:01:14.678
+00:01:09.998 --> 00:01:15.026
 assuming every response contains usable forecast
 data. A client that ignores status and
 
-00:01:14.678 --> 00:01:19.877
+00:01:15.026 --> 00:01:20.228
 attempts to parse every body as a forecast can
 turn a clear service error into a confusing
 
-00:01:19.877 --> 00:01:21.032
+00:01:20.228 --> 00:01:21.384
 application failure.
 
-00:01:21.218 --> 00:01:26.208
+00:01:21.500 --> 00:01:26.491
 A client sends a write and waits, but the
 connection fails before it receives a response.
 
-00:01:26.208 --> 00:01:30.919
+00:01:26.491 --> 00:01:31.201
 The server may have completed the write; the
 client simply cannot tell. Retrying can
 
-00:01:30.919 --> 00:01:33.835
+00:01:31.201 --> 00:01:34.117
 therefore repeat an operation that already
 happened.
 
-00:01:33.835 --> 00:01:39.116
+00:01:34.117 --> 00:01:39.398
 Compare two ways to create a document. A PUT to
 a client-chosen identifier replaces the
 
-00:01:39.116 --> 00:01:44.458
+00:01:39.398 --> 00:01:44.740
 representation at that identifier, so repeating
 the same intended operation has the same
 
-00:01:44.458 --> 00:01:49.557
+00:01:44.740 --> 00:01:49.839
 effect on that resource. A POST to a collection
 may ask the server to allocate a new
 
-00:01:49.557 --> 00:01:53.138
+00:01:49.839 --> 00:01:53.421
 identifier each time, creating two documents
 after a retry.
 
-00:01:53.335 --> 00:01:58.663
-The diagram follows the lost response, then
-contrasts the stable target with two newly
+00:01:53.617 --> 00:01:59.307
+Follow the lost response, then contrasts the
+stable target with two newly allocated targets.
 
-00:01:58.663 --> 00:01:59.779
-allocated targets.
-
-00:01:59.835 --> 00:02:04.543
+00:01:59.307 --> 00:02:04.016
 The important distinction is the intended
 effect, not whether repeated responses have
 
-00:02:04.543 --> 00:02:09.418
+00:02:04.016 --> 00:02:08.891
 identical bytes or status codes. Deleting an
 existing resource and deleting it again can
 
-00:02:09.418 --> 00:02:14.293
+00:02:08.891 --> 00:02:13.766
 leave the same final absence even if the second
 response reports that nothing was found.
 
-00:02:14.335 --> 00:02:19.767
+00:02:13.807 --> 00:02:19.240
 A safe read does not request a state change; an
 idempotent write can request a change whose
 
-00:02:19.767 --> 00:02:25.140
+00:02:19.240 --> 00:02:24.613
 repetition has the same intended effect. For an
 operation such as charging an account, the
 
-00:02:25.140 --> 00:02:30.215
+00:02:24.613 --> 00:02:29.688
 API can define an idempotency key and atomically
 associate that key with one accepted
 
-00:02:30.215 --> 00:02:30.633
+00:02:29.688 --> 00:02:30.106
 result.
 
-00:02:30.835 --> 00:02:36.028
-The illustration shows a repeated key returning
-the recorded result rather than initiating a
+00:02:30.307 --> 00:02:35.475
+Here, we see a repeated key returning the
+recorded result rather than initiating a second
 
-00:02:36.028 --> 00:02:40.713
-second charge, provided the documented retention
-and parameter rules are satisfied.
+00:02:35.475 --> 00:02:39.889
+charge, provided the documented retention and
+parameter rules are satisfied.

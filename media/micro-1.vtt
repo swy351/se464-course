@@ -12,57 +12,57 @@ finished. A messaging client can initially call
 a mock inbox service that returns a fixed list
 of messages in the agreed response format.
 
-00:00:15.500 --> 00:00:20.637
-The diagram shows the same client first
+00:00:15.500 --> 00:00:20.567
+In this example, notice the same client first
 connected to a mock and later to the real
-service
 
-00:00:20.637 --> 00:00:25.659
-through the same contract. This helps developers
-build parsing, presentation, and basic
+00:00:20.567 --> 00:00:25.750
+service through the same contract. This helps
+developers build parsing, presentation, and
 
-00:00:25.659 --> 00:00:30.853
-error handling early. It does not prove end-to-
-end correctness: a mock that always returns
+00:00:25.750 --> 00:00:30.875
+basic error handling early. It does not prove
+end-to-end correctness: a mock that always
 
-00:00:30.853 --> 00:00:36.106
-the same inbox will not reflect newly sent
-messages, enforce permissions, or reproduce real
+00:00:30.875 --> 00:00:35.767
+returns the same inbox will not reflect newly
+sent messages, enforce permissions, or
 
-00:00:36.106 --> 00:00:38.241
-persistence and concurrency behavior.
+00:00:35.767 --> 00:00:38.795
+reproduce real persistence and concurrency
+behavior.
 
-00:00:38.241 --> 00:00:43.865
+00:00:39.000 --> 00:00:44.623
 The same backend contract can serve several
 kinds of client. A mobile application, a desktop
 
-00:00:43.865 --> 00:00:49.488
+00:00:44.623 --> 00:00:50.247
 application, and a browser interface may all
 fetch messages, send messages, and authenticate
 
-00:00:49.488 --> 00:00:53.889
+00:00:50.247 --> 00:00:54.647
 through the same service API while presenting
 different user interfaces.
 
-00:00:53.889 --> 00:00:59.334
+00:00:54.647 --> 00:01:00.140
 In a traditional web design, a server builds
 HTML; in a single-page design, browser code
 
-00:00:59.334 --> 00:01:04.718
-obtains data and updates the interface. The
-diagram shows different presentation layers
+00:01:00.140 --> 00:01:05.508
+obtains data and updates the interface. In this
+example, notice different presentation
 
-00:01:04.718 --> 00:01:10.225
-converging on the same domain operation. These
-choices form a continuum, and a system can
+00:01:05.508 --> 00:01:11.250
+layers converging on the same domain operation.
+These choices form a continuum, and a system
 
-00:01:10.225 --> 00:01:13.690
-combine server-rendered pages with browser
+00:01:11.250 --> 00:01:14.995
+can combine server-rendered pages with browser
 interactions.
 
-00:01:13.889 --> 00:01:19.004
+00:01:15.147 --> 00:01:20.263
 Moving presentation to the browser does not move
 the authority to approve operations there:
 
-00:01:19.004 --> 00:01:21.590
+00:01:20.263 --> 00:01:22.849
 the backend must still validate every request.

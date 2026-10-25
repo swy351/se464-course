@@ -16,117 +16,128 @@ it
 00:00:16.620 --> 00:00:19.055
 forwards the request to the application.
 
-00:00:19.055 --> 00:00:24.084
+00:00:19.055 --> 00:00:24.141
 The application reads data and constructs the
 response; the proxy saves an eligible copy
 
-00:00:24.084 --> 00:00:29.341
+00:00:24.141 --> 00:00:29.401
 while returning it. A second equivalent request
-can be answered directly from that copy. The
+can be answered directly from that copy. In
 
-00:00:29.341 --> 00:00:33.113
-diagram shows the miss visiting origin and the
-hit stopping early.
+00:00:29.401 --> 00:00:33.621
+this example, notice the miss visiting origin
+and the hit stopping early.
 
-00:00:33.113 --> 00:00:37.939
+00:00:33.621 --> 00:00:38.447
 The performance gain comes from avoiding
 repeated work, not from making the original
 
-00:00:37.939 --> 00:00:39.836
+00:00:38.447 --> 00:00:40.343
 computation intrinsically faster.
 
-00:00:39.836 --> 00:00:45.610
-Because a cache has a finite budget, admitting a
-new object may require evicting another.
+00:00:40.343 --> 00:00:46.318
+Let us actually run the eviction policy. There
+is room for three equally sized items. After
 
-00:00:45.610 --> 00:00:51.319
-Consider room for three equally sized items and
-accesses A, B, C, A, D. After the second
+00:00:46.318 --> 00:00:52.359
+accessing A, then B, then C, the shelf reads A,
+B, C from oldest to newest. All three spaces
 
-00:00:51.319 --> 00:00:54.434
-access to A, B is the least recently used entry.
+00:00:52.359 --> 00:00:58.400
+are occupied. The question is not simply which
+objects are present. We also need to remember
 
-00:00:54.434 --> 00:01:00.035
-An LRU policy evicts B when D arrives,
-preserving A and C. The illustration emphasizes
-that
+00:00:58.400 --> 00:00:59.319
+their recency.
 
-00:01:00.035 --> 00:01:05.512
-a hit updates the recency order even though it
-does not fetch another object. This policy
+00:00:59.343 --> 00:01:05.077
+Now access A again. This is a hit, so we do not
+fetch another copy. But we do change the
 
-00:01:05.512 --> 00:01:10.067
-exploits temporal locality: recently useful data
-may be needed again soon.
+00:01:05.077 --> 00:01:10.550
+order. Move A to the newest end. The shelf now
+reads B, C, A. B has become the least
 
-00:01:10.067 --> 00:01:15.330
-It is a prediction about the workload, not a
-guarantee; a scan of unrelated objects can
+00:01:10.550 --> 00:01:14.524
+recently used item. A hit changes the next
+eviction decision.
 
-00:01:15.330 --> 00:01:17.750
-displace a genuinely useful working set.
+00:01:14.524 --> 00:01:20.548
+Finally, D arrives. The shelf is full, so remove
+B and place D at the newest end. The result
 
-00:01:17.750 --> 00:01:22.659
+00:01:20.548 --> 00:01:26.310
+is C, A, D. LRU uses recent access as a
+prediction of future usefulness. That prediction
+
+00:01:26.310 --> 00:01:31.876
+often helps with temporal locality, but a scan
+of unrelated objects can still evict a
+
+00:01:31.876 --> 00:01:33.251
+valuable working set.
+
+00:01:33.251 --> 00:01:38.160
 Why can a small cache remove a large fraction of
 service traffic? Requests are often
 
-00:01:22.659 --> 00:01:27.977
+00:01:38.160 --> 00:01:43.478
 unevenly distributed. A few popular articles
 receive repeated reads while many less popular
 
-00:01:27.977 --> 00:01:33.236
+00:01:43.478 --> 00:01:48.737
 articles form a long tail. If a cache stores the
 frequently requested subset, its fraction
 
-00:01:33.236 --> 00:01:38.554
+00:01:48.737 --> 00:01:54.055
 of all stored documents can be small even while
 its fraction of answered requests is large.
 
-00:01:38.750 --> 00:01:43.820
+00:01:54.251 --> 00:01:59.328
 For an illustrative workload of one thousand
 requests per second with a ninety percent hit
 
-00:01:43.820 --> 00:01:48.947
+00:01:59.328 --> 00:02:04.461
 ratio, only about one hundred misses per second
 reach origin, ignoring validation and other
 
-00:01:48.947 --> 00:01:53.792
-traffic. The diagram separates the hot set from
+00:02:04.461 --> 00:02:09.369
+traffic. This example separates the hot set from
 the long tail rather than treating all
 
-00:01:53.792 --> 00:01:56.271
+00:02:09.369 --> 00:02:11.851
 documents as equally likely to be requested.
 
-00:01:56.271 --> 00:02:01.493
+00:02:11.851 --> 00:02:17.073
 The price of reuse appears when an authoritative
 value changes after a cached copy was
 
-00:02:01.493 --> 00:02:07.018
+00:02:17.073 --> 00:02:22.598
 saved. Suppose a public timetable response can
 remain fresh for sixty seconds. At time zero
 
-00:02:07.018 --> 00:02:11.754
+00:02:22.598 --> 00:02:27.335
 the proxy stores version one; at time twenty the
 origin publishes version two.
 
-00:02:11.771 --> 00:02:16.824
+00:02:27.351 --> 00:02:32.413
 An otherwise eligible request at time forty can
 still receive version one under that
 
-00:02:16.824 --> 00:02:22.238
+00:02:32.413 --> 00:02:37.897
 freshness policy. At expiry, the cache must
-refresh or validate before ordinary reuse. The
+refresh or validate before ordinary reuse. This
 
-00:02:22.238 --> 00:02:27.592
-diagram places the edit and expiry on separate
+00:02:37.897 --> 00:02:43.260
+example places the edit and expiry on separate
 paths to show why updating origin does not
 
-00:02:27.592 --> 00:02:29.276
+00:02:43.260 --> 00:02:44.947
 instantly update every copy.
 
-00:02:29.276 --> 00:02:34.300
+00:02:44.947 --> 00:02:49.971
 Select a freshness window from the application's
 tolerance for stale information, not only
 
-00:02:34.300 --> 00:02:36.477
+00:02:49.971 --> 00:02:52.148
 from the hit ratio you hope to achieve.

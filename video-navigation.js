@@ -10,7 +10,7 @@
  async function enhance(video){
   if(video.dataset.navigationReady)return;video.dataset.navigationReady='true';
   const source=video.querySelector('source')?.src||video.src;if(!source)return;
-  const url=new URL(source,location.href);url.pathname=url.pathname.replace(/\.mp4$/,'.chapters.json');url.search='?v=illustrated1';url.hash='';
+  const url=new URL(source,location.href);url.pathname=url.pathname.replace(/\.mp4$/,'.chapters.json');url.search='?v=editorial2';url.hash='';
   try{
    const r=await fetch(url);if(!r.ok)return;const entries=await r.json();if(!video.isConnected)return;
    const unique=entries.filter((x,i)=>i===0||x.chapter!==entries[i-1].chapter);
@@ -27,7 +27,7 @@
    if(r.chapter){
     const e=entries.find(e=>e.chapter===r.chapter);if(e){
      box.innerHTML=`<h2>Video for this chapter</h2><p>Unit ${esc(r.id==='load-balancing'?'12':String(Object.keys(index).indexOf(r.id)+1).padStart(2,'0'))} · Chapter ${e.chapter} · Part ${e.part} · Starts at ${time(e.start)}</p>`;
-     let video=main.querySelector('video');if(!video){video=document.createElement('video');video.controls=true;video.preload='metadata';video.poster=base+e.path+'.jpg?v=illustrated1';video.innerHTML=`<source src="${base+e.path}.mp4?v=illustrated1" type="video/mp4"><track default kind="captions" srclang="en" label="English" src="${base+e.path}.vtt?v=illustrated1">`;box.append(video);}
+     let video=main.querySelector('video');if(!video){video=document.createElement('video');video.controls=true;video.preload='metadata';video.poster=base+e.path+'.jpg?v=editorial2';video.innerHTML=`<source src="${base+e.path}.mp4?v=editorial2" type="video/mp4"><track default kind="captions" srclang="en" label="English" src="${base+e.path}.vtt?v=editorial2">`;box.append(video);}
      const b=document.createElement('button');b.className='button';b.textContent=`Watch chapter ${e.chapter} from ${time(e.start)}`;b.onclick=()=>{seek(video,e.start);video.scrollIntoView({block:'center',behavior:'smooth'});};box.append(b);
      const a=document.createElement('a');a.className='button';a.href=lb?'#home':'#unit/'+r.id;a.textContent='All videos and chapters in this unit';box.append(a);
     }
@@ -39,5 +39,5 @@
   main.querySelectorAll('video').forEach(enhance);
  }
  new MutationObserver(scan).observe(main,{childList:true,subtree:true});
- fetch(base+'video-index.json?v=chapterlinks1').then(r=>r.json()).then(d=>{index=d;scan();}).catch(()=>{});scan();
+ fetch(base+'video-index.json?v=editorial2').then(r=>r.json()).then(d=>{index=d;scan();}).catch(()=>{});scan();
 })();

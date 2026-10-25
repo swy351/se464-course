@@ -5,7 +5,7 @@ Read and write class diagrams — Read and write class diagrams
 
 A class diagram summarizes selected structural facts. Class boxes can show names, attributes and operations; visibility symbols communicate access, while inheritance and interface realization express different contracts. Associations describe relationships between instances, with multiplicity constraining how many may participate. The BankAccount and Student–Course examples connect these symbols to code so that notation supports an explanation rather than becoming a memorization exercise.
 
-Read and write class diagrams — Reason through the consequences
+Read and write class diagrams — Apply the idea: Read and write class diagrams
 
 Read multiplicity from the relevant association end and distinguish capacity from actual participation. An array with thirty slots is not evidence that thirty courses are always assigned. Composition expresses strong ownership in the model, whereas an ordinary association need not imply a shared lifetime. Nested classes, dependencies and notes add detail when needed. Correct partial snippets before treating them as runnable implementations, and state conventions where the diagram omits information. Does a Student containing a Course array of length thirty imply exactly thirty enrolled courses? No. Storage capacity does not establish actual enrollment; multiplicity should express the intended domain constraint.
 
@@ -13,7 +13,7 @@ Patterns as reusable design knowledge — Patterns as reusable design knowledge
 
 UML can be used selectively to resolve a design question rather than to document every implementation detail. The cited industry study illustrates different usage patterns, not a universal adoption rate for every team. A diagram earns its place by helping collaborators reason. Design patterns likewise provide reusable language for a problem, a solution structure and the consequences that accompany it.
 
-Patterns as reusable design knowledge — Reason through the consequences
+Patterns as reusable design knowledge — Apply the idea: Patterns as reusable design knowledge
 
 A pattern is not a mechanical recipe. Its forces and tradeoffs must fit the system, language and expected changes. The architectural-doorway example makes this concrete: the layout responds to patterns of movement rather than to an abstract preference for doors in corners. Composition delegates behavior through collaborating objects, while inheritance commits to a subtype relationship and its contracts. Prefer the mechanism that expresses the relationship and controls the intended variation. Should every recurring code fragment be replaced by a named design pattern? No. Use a pattern when its problem and tradeoffs match; adding structure without a need can reduce clarity.
 
@@ -21,6 +21,6 @@ Single responsibility and cohesion — Single responsibility and cohesion
 
 The single responsibility principle asks whether a class has one coherent reason to change. Responsibilities arise from the concerns and policies it serves, not simply the number of methods. A cohesion graph connecting methods that share fields can expose clusters, but shared state is only a clue. Methods can share a field while serving unrelated purposes, and a coherent responsibility can use several data structures.
 
-Single responsibility and cohesion — Reason through the consequences
+Single responsibility and cohesion — Apply the idea: Single responsibility and cohesion
 
 The split-class exercise asks which changes should remain independent. Separating storage, formatting or domain calculations can reduce the number of clients affected by a change. The historical Date API example illustrates the long-lived cost of mixing concerns in a public library. Compatibility limits cleanup after release, so careful boundaries matter. Avoid splitting every method into its own object; the goal is a coherent model with understandable responsibilities and interfaces. If every method touches the same field, has SRP been proved? No. Shared fields suggest structural cohesion but do not establish a single policy or reason to change.

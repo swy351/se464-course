@@ -5,7 +5,7 @@ Why software needs architecture — Why software needs architecture
 
 Software supports everyday activities, and a large system can exceed what any one developer can understand at once. The historical codebase examples in the slides illustrate growth and complexity. Their exact line counts are snapshots, not a measure of design quality or a rule for when architecture becomes necessary.
 
-Why software needs architecture — Reason through the consequences
+Why software needs architecture — Apply the idea: Why software needs architecture
 
 Complexity creates practical questions: where should a change go, what might it break, how can we inspect security and quality, and how will the system run and evolve? Architecture provides a manageable account of important parts, their relationships, and the decisions that constrain them. It connects a problem and its requirements to a solution that developers can implement and test. The engineering analogy in the slides emphasizes planning, coordination, and checking the result. It does not require every decision to be completed before coding. Architectural reasoning can continue as implementation and feedback reveal new constraints. Maintenance and evolution make preserving the reasons behind important decisions valuable. Two systems have the same number of source lines. Must they need the same architectural effort? No. Relationships, stakeholder concerns, quality requirements, and the cost of changing important decisions matter. Line count alone does not reveal these factors.
 
@@ -13,7 +13,7 @@ Systems, stakeholders, and decisions — Systems, stakeholders, and decisions
 
 A system exists in an environment and serves a mission. Its stakeholders are people or organizations with an interest in its behavior or development. For a museum catalog, the mission might be to help visitors discover exhibits; curators, visitors, and maintainers have different concerns. State the system boundary so that external people and systems are not mistaken for internal components.
 
-Systems, stakeholders, and decisions — Reason through the consequences
+Systems, stakeholders, and decisions — Apply the idea: Systems, stakeholders, and decisions
 
 The definitions in the slides emphasize components, relationships, interfaces, behavior, composition, and guiding principles. Architectural decisions are the design decisions significant to the system as a whole: they shape how major responsibilities fit together and how important qualities can be achieved. Architecture is design, but a local design choice is not automatically architecturally significant. Significance depends on context. An algorithm or data structure can become an architectural concern if it determines system-wide performance, compatibility, or feasible behavior. Conversely, a small local implementation choice may be easy to replace. Architecture supports communication among stakeholders, analysis of a proposed system, and reuse of successful structures; a diagram is useful only when people agree on its meaning. Is choosing an algorithm always outside software architecture? No. A locally replaceable algorithm may be detailed design, but one that constrains the whole system or determines a critical quality can be architecturally significant.
 
@@ -21,6 +21,6 @@ Intended and implemented architecture — Intended and implemented architecture
 
 Prescriptive, or intended, architecture describes how the system is supposed to be organized. Descriptive, or implemented, architecture describes what actually exists. The two can differ because software evolves, documentation becomes stale, or implementation decisions bypass agreed boundaries. Treat an intended diagram as a statement of design intent, not proof of the current code structure.
 
-Intended and implemented architecture — Reason through the consequences
+Intended and implemented architecture — Apply the idea: Intended and implemented architecture
 
 Architecture drift means new implementation decisions are absent from the intended description without violating it. Architecture erosion means the implementation violates the intended architecture. Suppose the intended design permits a presentation module to call only an application interface. An allowed new implementation behind that interface may be undocumented drift; a direct presentation-to-storage dependency violates the stated boundary and is erosion. Architecture recovery reconstructs an account of the implemented system from evidence such as source code, executable structure, configuration, and developer knowledge. Record uncertainty rather than filling gaps with guesses. Compare the recovered account with the intended one, investigate differences, and decide whether to repair the implementation or deliberately revise the intended design and its rationale. An undocumented component is added within all permitted dependency rules. Is that necessarily erosion? No. Under the distinction in the slides, a compatible undocumented decision is drift. Erosion requires evidence of a violated intended rule.

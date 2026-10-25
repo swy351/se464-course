@@ -12,60 +12,61 @@ avoiding
 00:00:11.088 --> 00:00:13.704
 a single central lookup for every request.
 
-00:00:13.704 --> 00:00:18.824
+00:00:13.704 --> 00:00:18.827
 An authoritative service can provide different
 addresses to different resolvers or return
 
-00:00:18.824 --> 00:00:23.714
-several candidate addresses. The diagram
+00:00:18.827 --> 00:00:23.778
+several candidate addresses. This example
 separates a client's local resolver from the
 
-00:00:23.714 --> 00:00:28.950
+00:00:23.778 --> 00:00:29.017
 authority that supplies an answer when needed.
 Many clients may share one cached answer, so
 
-00:00:28.950 --> 00:00:32.919
+00:00:29.017 --> 00:00:32.989
 varying DNS responses does not imply perfectly
 even per-request load.
 
-00:00:32.919 --> 00:00:38.075
+00:00:33.204 --> 00:00:38.360
 After discovery, the client connects to the
 selected address; DNS is not necessarily
 
-00:00:38.075 --> 00:00:42.065
+00:00:38.360 --> 00:00:42.349
 consulted again for every application request on
 that connection.
 
-00:00:42.065 --> 00:00:47.264
+00:00:42.349 --> 00:00:47.549
 Caching makes a DNS change gradual rather than
 instantaneous. Suppose a resolver stores
 
-00:00:47.264 --> 00:00:52.464
+00:00:47.549 --> 00:00:52.749
 Region East at time zero with a ninety-second
 TTL. At time twenty, the authority begins
 
-00:00:52.464 --> 00:00:57.784
+00:00:52.749 --> 00:00:58.068
 returning Region West to new lookups. A client
 asking the same resolver at time fifty can
 
-00:00:57.784 --> 00:01:02.864
+00:00:58.068 --> 00:01:03.149
 still receive East under the ordinary cache
 model, because that cached answer has not
 
-00:01:02.864 --> 00:01:03.342
+00:01:03.149 --> 00:01:03.627
 expired.
 
-00:01:03.565 --> 00:01:09.179
+00:01:03.849 --> 00:01:08.676
 At time ninety, the resolver can refresh and
-obtain West. The diagram puts the authoritative
+obtain West. This example puts the
 
-00:01:09.179 --> 00:01:14.610
-change above the still-valid cached copy to
-explain the overlap. Existing connections and
+00:01:08.676 --> 00:01:13.990
+authoritative change above the still-valid
+cached copy to explain the overlap. Existing
 
-00:01:14.610 --> 00:01:19.736
-client behavior add further complications, so a
-TTL is not a promise that every user
+00:01:13.990 --> 00:01:19.428
+connections and client behavior add further
+complications, so a TTL is not a promise that
 
-00:01:19.736 --> 00:01:22.238
-switches regions at precisely one moment.
+00:01:19.428 --> 00:01:22.604
+every user switches regions at precisely one
+moment.

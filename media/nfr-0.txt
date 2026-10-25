@@ -5,7 +5,7 @@ Discover the problem and its stakeholders — Discover the problem and its stake
 
 Requirements begin with stakeholders who have needs, constraints and competing priorities. Elicitation gathers these concerns; analysis examines consistency, feasibility and completeness; specification records an agreed account; validation checks that the account addresses the actual problem. A request to use a particular technology may reflect a real operational constraint, or it may be a proposed solution that hides the underlying need.
 
-Discover the problem and its stakeholders — Reason through the consequences
+Discover the problem and its stakeholders — Apply the idea: Discover the problem and its stakeholders
 
 Ask why a statement matters and who is affected if it is unmet. Distinguish a business goal from an observable system behavior and from a contractual or organizational constraint. A system boundary helps expose missing actors and dependencies. Conflicts should become explicit tradeoffs rather than being concealed in vague wording. Architecture then starts from a clearer problem, avoiding detailed optimization of a solution that stakeholders never needed. A stakeholder says “use Java.” Is that automatically a functional requirement? No. It is a technology constraint or proposed solution; discover its rationale and whether it is actually mandatory.
 
@@ -13,7 +13,7 @@ Write specifications people can test — Write specifications people can test
 
 A specification bridges stakeholder needs and implementation. It may describe functions, data, interfaces, quality constraints, operating environments and delivery obligations. Good requirements are understandable, consistent, verifiable and traceable to goals. Completeness does not mean unlimited detail; it means including what is necessary for the intended agreement and identifying unresolved questions instead of hiding them.
 
-Write specifications people can test — Reason through the consequences
+Write specifications people can test — Apply the idea: Write specifications people can test
 
 Ambiguity becomes visible when different readers can produce different valid interpretations. Soup or salad and bread has more than one grouping; a name that “can be 127 characters” leaves optionality and length boundaries unclear. Rewrite statements so a tester can distinguish compliance from noncompliance. Preserve links to rationale and design choices, because changing a requirement after deployment may affect architecture, tests, training and operational procedures as well as code. Can two reviewers agree that a sentence sounds reasonable yet disagree about an implementation passing it? Yes. Missing boundaries, definitions and acceptance criteria allow incompatible interpretations; testable examples help expose them.
 
@@ -21,6 +21,6 @@ Classify requirements and quality attributes — Classify requirements and quali
 
 Functional requirements describe what the system does, while quality requirements constrain how well relevant behavior occurs under stated conditions. Delivery or technology constraints form additional categories. These categories do not determine priority: a quality requirement can be essential, and a proposed function can be optional. “Secure login” needs decomposition into authentication behavior and explicit security properties rather than a stronger adjective.
 
-Classify requirements and quality attributes — Reason through the consequences
+Classify requirements and quality attributes — Apply the idea: Classify requirements and quality attributes
 
 Quality attributes often span multiple responsibilities. Reliability can depend on persistence, retries, status reporting and recovery; performance can depend on database work, communication and workload. They therefore influence architecture, even though the system can continue evolving after an initial design. Express these concerns in scenarios and acceptance checks. Asking how an attribute is observed makes it easier to compare designs and prevents quality from becoming a list of aspirations. Is a two-second response requirement less mandatory because it is nonfunctional? No. Mandatory status depends on the agreement and system context, not whether the requirement describes a function or a quality attribute.

@@ -5,7 +5,7 @@ From polling to separated responsibilities — From polling to separated respons
 
 The historical Uber case begins with rider and driver applications polling for changing trip state. The slides report that polling dominated gateway traffic and that startup requests competed on weak mobile networks. RAMEN separates the decision to send an update from creating its content and delivering it. This division targets both operational efficiency and the difficulty of migrating many existing features.
 
-From polling to separated responsibilities — Reason through the consequences
+From polling to separated responsibilities — Apply the idea: From polling to separated responsibilities
 
 Fireball reacts to domain events and determines recipients and message types. The API gateway assembles payloads using domain services, reusing logic associated with earlier pull APIs. A delivery system then owns connections and retries. These are case-study responsibilities, not mandatory product names for every architecture. In a course system, enrolment events, timetable composition and device delivery can be separated in the same way. Should the connection server also decide every business rule about when a ride update is needed? Separating that decision reduces coupling between domain evolution and delivery infrastructure.
 
@@ -13,6 +13,6 @@ Priority, expiry and resumable delivery — Priority, expiry and resumable deliv
 
 RAMEN attaches delivery policy to payloads: priority determines which pending updates matter first, expiry limits how long an update remains useful, and replacement can retain the latest state instead of every intermediate version. The historical SSE protocol adds sequence numbers, reconnect cursors and separate acknowledgements. These application mechanisms supply recovery behavior that a persistent transport alone cannot guarantee to the user.
 
-Priority, expiry and resumable delivery — Reason through the consequences
+Priority, expiry and resumable delivery — Apply the idea: Priority, expiry and resumable delivery
 
 A lost acknowledgement is ambiguous: the client may have processed a message even though the server retries it. Consumers must therefore tolerate duplicates. Expiry also bounds the delivery promise: an offline device cannot receive a timely update indefinitely. Distinguish coalescing state snapshots from deduplicating identical messages; replacing an old location with a new location is reasonable, but dropping an independent payment event is different. If the client processes sequence 3 but its acknowledgement is lost, may sequence 3 arrive again? Yes. Retry can produce duplicates; the client needs safe repeat processing or message-ID tracking.

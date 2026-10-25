@@ -92,57 +92,57 @@ Dividing by approximately 2.6 million seconds
 gives about thirty-one events per second on
 average.
 
-00:01:39.734 --> 00:01:44.480
+00:01:39.734 --> 00:01:44.486
 This calculation does not prove that the system
 can handle the workload, but it challenges
 
-00:01:44.480 --> 00:01:49.067
+00:01:44.486 --> 00:01:49.132
 the assumption that a large audience
-automatically requires sharded writes. The
-diagram
+automatically requires sharded writes. This
+example
 
-00:01:49.067 --> 00:01:52.759
+00:01:49.132 --> 00:01:52.828
 should show the conversion from events per month
 to events per second.
 
-00:01:52.759 --> 00:01:57.723
+00:01:52.828 --> 00:01:57.792
 Always attach the unit to a number; comparing a
 monthly event count directly with a per-
 
-00:01:57.723 --> 00:01:59.866
+00:01:57.792 --> 00:01:59.936
 second device capacity is meaningless.
 
-00:01:59.866 --> 00:02:05.263
+00:01:59.936 --> 00:02:05.333
 Next compare the projection with measurements.
 If a current workload uses about ten storage
 
-00:02:05.263 --> 00:02:10.482
+00:02:05.333 --> 00:02:10.552
 operations per second, a simple two-hundred-fold
 projection suggests about two thousand,
 
-00:02:10.482 --> 00:02:15.642
+00:02:10.552 --> 00:02:15.712
 subject to the assumption that operations grow
 proportionally. CPU observations provide
 
-00:02:15.642 --> 00:02:20.743
+00:02:15.712 --> 00:02:20.812
 another estimate, but multiplying core count by
 current spare capacity is only a rough
 
-00:02:20.743 --> 00:02:21.099
+00:02:20.812 --> 00:02:21.168
 bound.
 
-00:02:21.099 --> 00:02:26.547
+00:02:21.168 --> 00:02:26.617
 Lock contention, serial work, memory pressure
 and changed cache behavior can break linear
 
-00:02:26.547 --> 00:02:32.119
+00:02:26.617 --> 00:02:32.188
 extrapolation. Likewise, one application event
 is not necessarily one database write or one
 
-00:02:32.119 --> 00:02:37.506
+00:02:32.188 --> 00:02:37.576
 storage operation. The purpose of the estimate
 is to identify plausible capacity and the
 
-00:02:37.506 --> 00:02:43.139
+00:02:37.576 --> 00:02:43.209
 next experiment, not to replace a load test with
 arithmetic that ignores the execution path.

@@ -88,56 +88,56 @@ transfer
 00:01:40.706 --> 00:01:42.091
 cost and faster display.
 
-00:01:42.180 --> 00:01:47.347
+00:01:42.180 --> 00:01:47.353
 The application can return a media URL while the
 browser fetches the bytes directly from the
 
-00:01:47.347 --> 00:01:52.457
+00:01:47.353 --> 00:01:52.470
 delivery path. This separates the cost of
 constructing a page from the cost of
 transferring
 
-00:01:52.457 --> 00:01:57.568
-its images. The diagram should show one source
+00:01:52.470 --> 00:01:57.643
+its images. This example should show one source
 image producing several named variants, then
 
-00:01:57.568 --> 00:02:00.151
+00:01:57.643 --> 00:02:00.230
 a page choosing the size it actually displays.
 
-00:02:00.180 --> 00:02:04.532
+00:02:00.230 --> 00:02:04.582
 This is a concrete example of moving repeated
 work out of the request path.
 
-00:02:04.680 --> 00:02:09.901
+00:02:04.730 --> 00:02:09.951
 A content-delivery network places reusable media
 nearer users and reduces repeated requests
 
-00:02:09.901 --> 00:02:15.122
+00:02:09.951 --> 00:02:15.172
 to the origin. It is not free, and a high hit
 rate does not mean there is no delivery bill:
 
-00:02:15.122 --> 00:02:17.761
+00:02:15.172 --> 00:02:17.811
 bytes still travel from the cache to visitors.
 
-00:02:17.761 --> 00:02:23.382
+00:02:17.811 --> 00:02:23.432
 The case's historical cost breakdown shows why
 architecture discussions need measurements of
 
-00:02:23.382 --> 00:02:29.003
+00:02:23.432 --> 00:02:29.053
 both demand and spending. Compute instances,
 database capacity, object storage, requests and
 
-00:02:29.003 --> 00:02:34.257
+00:02:29.053 --> 00:02:34.307
 data transfer are separate cost drivers. A fast
 media path can dominate cost even when
 
-00:02:34.257 --> 00:02:36.090
+00:02:34.307 --> 00:02:36.140
 application servers are small.
 
-00:02:36.261 --> 00:02:41.410
+00:02:36.311 --> 00:02:41.460
 Treat the historical dollar amounts as evidence
 about that particular workload and time, not
 
-00:02:41.410 --> 00:02:45.329
+00:02:41.460 --> 00:02:45.379
 as current prices or a universal budget for
 another publishing system.

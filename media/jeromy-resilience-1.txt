@@ -5,7 +5,7 @@ Durability, bootstrap dependencies and tested restoration — Durability, bootst
 
 Multiple persistence stages helped preserve data in the case: client-side buffering, local journals and durable messaging provided different opportunities for recovery. Buffers still need capacity and a policy for sustained downstream failure. A persistent queue is not an infinite sink. One protective circumstance was that many messaging nodes did not share the affected operating-system version. The case explicitly cautions against treating delayed upgrades as the lesson. The useful questions concern failure-domain diversity, safe update procedures and tested recovery, not avoiding security maintenance.
 
-Durability, bootstrap dependencies and tested restoration — Reason through the consequences
+Durability, bootstrap dependencies and tested restoration — Apply the idea: Durability, bootstrap dependencies and tested restoration
 
 Startup dependencies can form cycles even when normal operation seems healthy. If service A needs B to start and B needs A, restoring both from zero may require an independent bootstrap path. Identify such cycles in advance, document the minimal recovery set, and rehearse it. A stored backup is not proof of recoverability. Test restoration into the environment that will exist after the failure, measure recovery time, and verify the resulting data. The case also contrasts independently recoverable shards with systems that need enough cooperating members before serving; actual behavior depends on the design and failure assumptions. A team has daily backups but has never restored them. What is missing? Evidence that the restore process works with available keys, dependencies, capacity and state. Rehearse restoration and validate the result and recovery time.
 
@@ -13,7 +13,7 @@ Recover customer value, not just machine count — Recover customer value, not j
 
 A fleet can regain machines before customers regain useful service. Dependencies, backlog and competing work can make recovery uneven. The case emphasizes graceful degradation: as capacity falls, preserve the most valuable outcomes and relax lower-priority service where the requirements permit it. Self-monitoring can also fail with the monitored system. Keep independent signals and operational access for diagnosing an outage. Manual procedures are useful only when practiced; a recovery runbook should identify its dependencies and how it is tested.
 
-Recover customer value, not just machine count — Reason through the consequences
+Recover customer value, not just machine count — Apply the idea: Recover customer value, not just machine count
 
 New teaching calculation: incoming work is 100 items/second, recovered capacity is 120, and a durable backlog contains 6,000 items. Only 20 items/second remain for old work, so ideal drainage takes 300 seconds. At capacity 100 the backlog does not drain. This fluid model omits retries, variation and downstream bottlenecks; real recovery needs measurement. Define priority classes, throttle backfill, and avoid overwhelming control services during mass provisioning. Exercise capacity loss in a controlled game day and measure end-to-end customer outcomes. Do not assume a universal percentage of remaining capacity guarantees useful service. After machines return, why might service recovery still be slow? Live arrivals, retries and stored backlog compete for limited resources; some dependent services may still be unavailable. Measure useful completed operations and backlog drainage, not only node count.
 
@@ -21,6 +21,6 @@ Apply quality thinking to AI-assisted development — Apply quality thinking to 
 
 A related question concerns a discussion of AI-assisted software development. Its architectural connection is long-term maintainability: rapidly producing code does not by itself show that a team can understand, operate, secure or change the result.
 
-Apply quality thinking to AI-assisted development — Reason through the consequences
+Apply quality thinking to AI-assisted development — Apply the idea: Apply quality thinking to AI-assisted development
 
 Treat the lecture’s tool usage and industry predictions as a 2025 discussion rather than current adoption statistics. The durable question is whether the resulting software meets explicit quality scenarios. A disposable personal prototype and a long-lived production service have different consequences if no one understands the implementation. New exercise: an AI-generated incident dashboard works for a demonstration. Before deploying it as a lasting service, specify authorization, safe handling of untrusted input, failure behavior, diagnostic visibility and changeability. Review the implementation, test the relevant scenarios, and assign ownership for maintenance. Generated output still requires engineering evidence. A generated application works in a demo. What architectural questions remain? Whether it remains correct, secure, diagnosable, operable and maintainable under the intended workloads, failures and future changes. A demo demonstrates only the behavior exercised.

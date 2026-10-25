@@ -11,7 +11,7 @@ Now follow an administrative change. The request must identify the user and chec
 
 Place media, caching and operating cost in context — Generate the size the page needs
 
-Photographs are stored as objects, with derived sizes for different uses. A page showing a small thumbnail should not force every visitor to download the original full-size image. Generating reusable variants trades some processing and storage for lower repeated transfer cost and faster display. The application can return a media URL while the browser fetches the bytes directly from the delivery path. This separates the cost of constructing a page from the cost of transferring its images. The diagram should show one source image producing several named variants, then a page choosing the size it actually displays. This is a concrete example of moving repeated work out of the request path.
+Photographs are stored as objects, with derived sizes for different uses. A page showing a small thumbnail should not force every visitor to download the original full-size image. Generating reusable variants trades some processing and storage for lower repeated transfer cost and faster display. The application can return a media URL while the browser fetches the bytes directly from the delivery path. This separates the cost of constructing a page from the cost of transferring its images. This example should show one source image producing several named variants, then a page choosing the size it actually displays. This is a concrete example of moving repeated work out of the request path.
 
 Place media, caching and operating cost in context — A cache changes the bill and path
 

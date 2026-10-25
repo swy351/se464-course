@@ -24,4 +24,6 @@ Teaching weeks and dates now follow the Fall 2026 course timetable. Unit numbers
 
 Three guest-recording units added: Jeromy’s resilience lecture (September 14), Jeromy’s Quality-Oriented Decision Analysis and technical debt lecture (November 9), and Lizhi Liao’s performance modeling lecture (November 18). The 2025 recordings supply material for the 2026 teaching slots. Course totals: 26 units, 137 chapters, 54 illustrated lessons, 29 labs, and 81 original practice questions. QODA includes a nine-chapter walkthrough, ROC tree and scoring lab. Original recordings and raw transcripts are not bundled.
 
-The illustrated edition includes 274 original diagrams and approximately 186 minutes of narration, with captions, transcripts and chapter navigation. Notes explain mechanisms, worked examples and tradeoffs in detail.
+The illustrated edition includes 274 teaching visuals and approximately 186 minutes of narration, with captions, transcripts and chapter navigation. Notes explain mechanisms, worked examples and tradeoffs in detail.
+
+The visual revision selects typography, code and HTTP examples, tables, timelines, calculations, interface illustrations and architecture diagrams according to the teaching task. Chapter references remain visible, and all chapters link to their corresponding video section.

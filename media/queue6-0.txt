@@ -5,15 +5,15 @@ From execution cost to resource contention — From execution cost to resource c
 
 A software execution model estimates the resources a scenario demands without competition from other requests. A queueing model adds that competition. A service station contains waiting work and one or more servers, where a server might represent a processor, disk or network link rather than a physical computer. Residence time includes both waiting and service; service time measures the resource work alone.
 
-From execution cost to resource contention — Reason through the consequences
+From execution cost to resource contention — Apply the idea: From execution cost to resource contention
 
 Kendall notation records assumptions about arrivals, service times, server count, capacity, population and scheduling. In the slide example, total capacity twenty includes three jobs in service and seventeen waiting. State this convention explicitly because “buffer” is ambiguous. Model choices matter: bursty arrivals, finite populations and priority scheduling can produce different behavior even when average service demand is unchanged. A useful model is precise about its boundary and assumptions. Does a two-millisecond service demand imply a two-millisecond response at high load? No. Waiting behind other work adds residence time even if the service demand is unchanged.
 
 Measure throughput and apply operational laws — Measure throughput and apply operational laws
 
-An execution profile records arrivals, completions and busy intervals over a measurement period. For the supplied twenty-second observation, eight completions yield throughput 0.4 jobs per second and sixteen busy seconds yield utilization 0.8. Average service demand is two seconds per completed job under the accounting assumptions. These measurements describe different quantities; utilization is a fraction, throughput is a rate and residence time is a duration.
+Start with the observation window, not with a queueing formula. In twenty seconds, eight jobs complete. Divide completions by elapsed time: eight over twenty gives a throughput of zero point four jobs per second. The device was busy for sixteen of those twenty seconds. Its utilization is therefore sixteen over twenty, or zero point eight. Notice the units: throughput is a rate, while utilization is a fraction of elapsed time. Under the measurement and accounting assumptions, divide utilization by throughput to obtain service demand. Zero point eight divided by zero point four gives two seconds per job. Check the result in the other direction: throughput times service demand returns utilization. Residence time also includes waiting, so it is a different quantity.
 
-Measure throughput and apply operational laws — Reason through the consequences
+Measure throughput and apply operational laws — Apply the idea: Measure throughput and apply operational laws
 
 The utilization law connects throughput and service demand, U=X×S for a single service resource. Little’s law relates average jobs inside a boundary to throughput and average residence time, N=X×R. Use consistent boundaries and a stable observation regime; do not mix system throughput with a device queue length. The NFS exercise completes 10,800 requests in 1,800 seconds, giving six per second; three active requests imply average residence of half a second. A single encoding device is busy 40% of the time at 800 frames/s. A firmware change reduces mean service per frame to 0.3 ms. What mean service time did the measurements imply before the change, and what utilization is predicted afterward? Before: S=U/X=.40/800=.0005 seconds, or 0.5 ms per frame. After: U=800×.0003=.24, or 24%, assuming the throughput and device boundary stay the same. Lower utilization alone does not establish an end-to-end latency target.
 
@@ -21,6 +21,6 @@ Understand single and multiple server queues — Understand single and multiple 
 
 The M/M/1 model assumes Poisson arrivals, independent exponentially distributed service times and one server with an unbounded waiting room. In steady state it requires arrival rate λ below service rate μ. Its utilization is ρ=λ/μ, mean residence time is 1/(μ−λ), and mean jobs is ρ/(1−ρ). These expressions describe long-run averages under the model, not deterministic limits on individual requests.
 
-Understand single and multiple server queues — Reason through the consequences
+Understand single and multiple server queues — Apply the idea: Understand single and multiple server queues
 
 Birth–death balance explains the geometric state distribution. At an empty system, departure rate is zero; at nonempty states it is μ. Multiple servers change departure capacity to min(n,m)μ and require a different waiting calculation such as Erlang C. Finite buffers change the model again: an infinite-queue tail probability is not automatically the exact blocking probability of a bounded system. Always define whether capacity includes the job being served. What happens to M/M/1 residence time as λ approaches μ from below? It grows without bound in the model; the stable formula cannot be used at or above capacity.

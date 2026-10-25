@@ -5,7 +5,7 @@ Protect the exposed service boundary — Protect the exposed service boundary
 
 A microservice system has more communication paths and administrative surfaces than one isolated process. Begin by identifying which routes clients actually need. An API gateway can expose those routes, apply common checks and direct requests to internal services. Restricting direct access reduces opportunities to bypass those checks, but the gateway is one control rather than a reason to trust everything behind it.
 
-Protect the exposed service boundary — Reason through the consequences
+Protect the exposed service boundary — Apply the idea: Protect the exposed service boundary
 
 Client application credentials and user identity answer different questions. A secret embedded in a distributed browser or mobile application cannot be assumed confidential. Apply request limits and protect the infrastructure control plane, while planning gateway capacity and failure behavior. Include outbound dependencies in the trust model: an internal service may call an external endpoint that supplies malicious data or receives sensitive information. Draw both directions of traffic before deciding where checks belong. If only the gateway is publicly reachable, can an internal billing service skip authorization? No. A compromised internal caller or a mistaken route can still reach it. Enforce resource permissions at a trustworthy boundary that cannot be bypassed.
 
@@ -13,7 +13,7 @@ Verify peers and protect channels — Verify peers and protect channels
 
 Encryption is useful only when the connection reaches the intended peer. Certificate verification links a presented key to a trusted identity under the client’s policy. Accepting every certificate removes that assurance. A self-signed certificate can be deliberately trusted through an authenticated provisioning process; simply accepting any self-signed certificate does not establish the correct peer. Verification includes the intended service identity, not merely a recognizable issuer.
 
-Verify peers and protect channels — Reason through the consequences
+Verify peers and protect channels — Apply the idea: Verify peers and protect channels
 
 TLS protects data while it crosses the established channel. In mutual TLS, both sides authenticate with certificates; this identifies a workload or client credential, not automatically a human user or permission to perform every operation. Protect private keys and plan issuance, renewal and compromise response. Pinning narrows accepted credentials but adds rotation and recovery responsibilities. Keep authentication, confidentiality and application authorization distinct in the architecture diagram. If a client encrypts traffic but accepts any certificate, has it authenticated the intended server? No. It may establish an encrypted channel to an impostor; identity verification is essential.
 
@@ -21,6 +21,6 @@ Contain compromise inside the cluster — Contain compromise inside the cluster
 
 An internal network should not imply unrestricted communication. List the connections each workload requires, then restrict both incoming and outgoing paths. Kubernetes namespaces organize resources but do not automatically isolate their network traffic. NetworkPolicy requires enforcement by the selected networking implementation. Separate intended policy from demonstrated behavior, and test whether an unrelated service can reach a protected dependency.
 
-Contain compromise inside the cluster — Reason through the consequences
+Contain compromise inside the cluster — Apply the idea: Contain compromise inside the cluster
 
 Outbound restrictions help reduce unwanted destinations and some SSRF consequences, but they complement rather than replace application validation. Runtime monitoring can report suspicious behavior; an alert is not necessarily a preventive control. Resource quotas bound aggregate namespace allocations, while workload requests and limits address individual resource behavior. These measures can reduce blast radius and resource contention without promising to eliminate denial of service. Define who investigates alerts and how a service is isolated without losing essential evidence. Does placing billing and search in separate namespaces block search from contacting billing? No. Namespaces alone do not impose that network boundary; enforced policies and the relevant selectors must establish it.

@@ -24,121 +24,121 @@ followers on every shard. This is a conflict
 in the access pattern, not a failure to invent a
 clever enough hash function.
 
-00:00:27.719 --> 00:00:32.812
-The diagram should place followers on two shards
-and connect both to one author, showing why
+00:00:27.719 --> 00:00:32.659
+This example should place followers on two
+shards and connect both to one author, showing
 
-00:00:32.812 --> 00:00:36.299
-a single physical home cannot be local to every
-reader at once.
+00:00:32.659 --> 00:00:36.378
+why a single physical home cannot be local to
+every reader at once.
 
-00:00:36.299 --> 00:00:41.273
+00:00:36.378 --> 00:00:41.352
 Represent the follow structure as a graph. Users
 are nodes and follow relationships are
 
-00:00:41.273 --> 00:00:46.475
+00:00:41.352 --> 00:00:46.554
 edges. A balanced partitioning tries to
 distribute load while keeping frequently used
 edges
 
-00:00:46.475 --> 00:00:51.621
+00:00:46.554 --> 00:00:51.700
 within partitions. Communities can improve
 locality, but cross-community relationships and
 
-00:00:51.621 --> 00:00:53.965
+00:00:51.700 --> 00:00:54.044
 high-degree users still create crossings.
 
-00:00:53.965 --> 00:00:58.920
+00:00:54.044 --> 00:00:58.999
 A perfectly balanced count of users can also
 conceal large differences in query rate and
 
-00:00:58.920 --> 00:01:04.101
+00:00:58.999 --> 00:01:04.180
 audience size. Weight the graph by the
 operations that actually traverse it, not just
 by the
 
-00:01:04.101 --> 00:01:09.113
+00:01:04.180 --> 00:01:09.192
 existence of a relationship. Moving an account
 between partitions can change locality for
 
-00:01:09.113 --> 00:01:12.379
+00:01:09.192 --> 00:01:12.458
 several neighbors and requires routing and
 migration work.
 
-00:01:12.465 --> 00:01:17.290
+00:01:12.544 --> 00:01:17.370
 The useful question is how much communication a
 placement avoids for the measured workload,
 
-00:01:17.290 --> 00:01:19.942
+00:01:17.370 --> 00:01:20.021
 rather than whether it makes an appealing
 picture.
 
-00:01:19.965 --> 00:01:24.964
+00:01:20.044 --> 00:01:25.043
 A single publication policy becomes inefficient
 when follower counts vary by orders of
 
-00:01:24.964 --> 00:01:30.254
+00:01:25.043 --> 00:01:30.333
 magnitude. An ordinary author with a few hundred
 followers may be inexpensive to fan out. A
 
-00:01:30.254 --> 00:01:34.963
+00:01:30.333 --> 00:01:35.042
 highly followed author can create millions of
 feed updates for one post, delaying
 
-00:01:34.963 --> 00:01:39.962
+00:01:35.042 --> 00:01:40.041
 propagation and consuming resources even for
 followers who never open the application.
 
-00:01:39.965 --> 00:01:44.883
+00:01:40.044 --> 00:01:44.962
 A queue keeps the publisher from waiting for all
 those updates, but it does not make them
 
-00:01:44.883 --> 00:01:49.745
+00:01:44.962 --> 00:01:49.825
 disappear. The hybrid idea is to keep
 materialized feeds for ordinary publications
 while
 
-00:01:49.745 --> 00:01:54.608
+00:01:49.825 --> 00:01:54.687
 storing very high-fan-out authors' posts in a
 separate path that can be consulted when a
 
-00:01:54.608 --> 00:01:55.879
+00:01:54.687 --> 00:01:55.958
 reader requests a feed.
 
-00:01:55.965 --> 00:02:01.222
+00:01:56.044 --> 00:02:01.301
 A feed request now has two inputs. Fetch the
 reader's prepared ordinary-author entries, then
 
-00:02:01.222 --> 00:02:06.308
+00:02:01.301 --> 00:02:06.387
 fetch recent posts from the exceptional authors
 that reader follows, and merge them using
 
-00:02:06.308 --> 00:02:11.109
+00:02:06.387 --> 00:02:11.188
 the feed's ordering rules. This adds bounded
 read-time work in exchange for avoiding
 
-00:02:11.109 --> 00:02:13.166
+00:02:11.188 --> 00:02:13.245
 enormous publication-time expansion.
 
-00:02:13.166 --> 00:02:18.349
+00:02:13.245 --> 00:02:18.428
 The exceptional-post store can have read
 replicas or caches because relatively few
 authors
 
-00:02:18.349 --> 00:02:23.302
+00:02:18.428 --> 00:02:23.381
 generate its writes while many readers retrieve
 them. The important asymmetry is write
 
-00:02:23.302 --> 00:02:28.543
+00:02:23.381 --> 00:02:28.622
 amplification per publication, not a claim that
 famous users intrinsically perform more API
 
-00:02:28.543 --> 00:02:29.579
+00:02:28.622 --> 00:02:29.659
 writes than reads.
 
-00:02:29.666 --> 00:02:34.539
+00:02:29.745 --> 00:02:34.618
 Draw both sources converging at the merge step
 so students can see precisely which work was
 
-00:02:34.539 --> 00:02:36.520
+00:02:34.618 --> 00:02:36.599
 retained and which work was deferred.

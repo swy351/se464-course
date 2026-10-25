@@ -5,7 +5,7 @@ Describe a style through its constraints — Describe a style through its constr
 
 An architectural style defines a vocabulary of components and connectors together with constraints on their organization and behavior. A label such as layered or client–server is therefore only the beginning of a description. Identify what components do, what communication means and which arrangements are permitted. The same graph shape can represent different styles if its edges have different semantics.
 
-Describe a style through its constraints — Reason through the consequences
+Describe a style through its constraints — Apply the idea: Describe a style through its constraints
 
 The opening examples combine several ideas: distributed communication, objects, layers and pipelines. Real systems can combine styles, so classification should clarify a design rather than force an exclusive label. Ask what problem a style addresses, which invariants must hold and what advantages require those invariants. The slide list includes implicit invocation but does not develop a dedicated treatment; event-driven content elsewhere can supply that connection without implying it is fully covered here. Can one system use both repository and pipeline structures? Yes. Different responsibilities or views may combine styles; explain where each applies and how their constraints interact.
 
@@ -13,7 +13,7 @@ Repository and blackboard architectures — Repository and blackboard architectu
 
 A repository architecture centers collaboration on a shared body of information. Independent components read or modify that state according to a common schema. An IDE offers a useful example because multiple tools can inspect and transform program information. A blackboard specialization allows cooperating computations to contribute partial results that other computations use, with coordination organized around the evolving shared information.
 
-Repository and blackboard architectures — Reason through the consequences
+Repository and blackboard architectures — Apply the idea: Repository and blackboard architectures
 
 Centralized data management can consolidate access policy, backup and concurrency control. It also creates coupling through the data model: a schema change can affect many consumers even when their code does not call one another. Persistence and distribution are implementation choices, not automatic consequences of drawing one repository box. Ask who owns schema evolution, how concurrent updates are coordinated and whether the repository becomes a capacity or availability constraint. If repository clients never call each other, are they independent of each other’s changes? Not completely. They share schema and data semantics, so changes can affect other clients through the repository.
 
@@ -21,7 +21,7 @@ Pipes, filters and compiler hybrids — Pipes, filters and compiler hybrids
 
 Filters transform streams and pipes carry output to subsequent input. In the pure style, filters avoid shared state and do not depend on the identity of adjacent filters. Compatible data contracts let stages be replaced or reordered when semantics allow. A pipeline is a linear specialization; batch sequential processing waits for an entire input batch before the next transformation produces its result.
 
-Pipes, filters and compiler hybrids — Reason through the consequences
+Pipes, filters and compiler hybrids — Apply the idea: Pipes, filters and compiler hybrids
 
 The shell example illustrates composition, while the compiler history shows why pure categories can be insufficient. Compiler phases may follow an ordered pipeline while sharing symbol tables or an intermediate representation, forming a hybrid with repository structure. Streaming can support overlap, but throughput, buffering and synchronization still matter. Data conversion between stages introduces cost, and interactive feedback may require additional coordination beyond a one-way transformational flow. If compiler phases all update a shared symbol table, is the design a pure stateless pipe-and-filter system? No. It combines pipeline sequencing with shared repository state.
 
@@ -29,6 +29,6 @@ Objects and layers as boundaries — Objects and layers as boundaries
 
 Object-oriented organization groups state with operations that preserve its invariants. Clients should rely on a contract rather than internal representation. Shared mutable objects can still create unexpected interactions when one client changes state another observes. Encapsulation reduces certain dependencies, but does not make every implementation change invisible or require hard-coded identities in every caller; indirection can manage references.
 
-Objects and layers as boundaries — Reason through the consequences
+Objects and layers as boundaries — Apply the idea: Objects and layers as boundaries
 
 Layering organizes services by abstraction and restricts dependencies between them. Strict layering normally permits adjacent interactions; relaxed designs document deliberate bypasses. A layer is logical organization, while a tier describes deployment separation, so several layers may reside in one process or tier. Stable contracts can localize changes, but effects may propagate when behavior or assumptions change. Evaluate dependency direction and runtime cost instead of assuming a fixed upper bound on affected layers. Does a three-layer codebase require three physical servers? No. Layers express logical responsibility; deployment tiers and server count are separate choices.

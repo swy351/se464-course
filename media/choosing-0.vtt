@@ -206,19 +206,19 @@ small result instead of shipping every raw
 00:03:53.240 --> 00:03:54.561
 event over the network.
 
-00:03:54.561 --> 00:04:00.015
-The diagram should show many stored rows
+00:03:54.561 --> 00:04:00.080
+This example should show many stored rows
 becoming a few grouped results. This explains
 the
 
-00:04:00.015 --> 00:04:05.530
+00:04:00.080 --> 00:04:05.600
 benefit more clearly than saying that analytics
 needs a faster database. Parallel execution
 
-00:04:05.530 --> 00:04:10.802
+00:04:05.600 --> 00:04:10.877
 can divide large scans, but layout, compression,
 pruning and query shape also influence
 
-00:04:10.802 --> 00:04:16.014
+00:04:10.877 --> 00:04:16.093
 performance; not every analytical query requires
 a cluster or avoids indexes entirely.
